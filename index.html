@@ -80,7 +80,6 @@ input[type=checkbox]{flex-shrink:0}
 .opacity-0{opacity:0}
 .opacity-100{opacity:1}
 .opacity-50{opacity:0.5}
-.opacity-80{opacity:0.8}
 .opacity-85{opacity:0.85}
 .overflow-hidden{overflow:hidden}
 .overflow-x-auto{overflow-x:auto}
@@ -664,12 +663,12 @@ input[type=checkbox]{flex-shrink:0}
           </article>
           <article class="border border-hairline dark:border-darkHairline border-t-4 border-t-dilr rounded-lg p-3 text-sm leading-relaxed">
             <h3 class="font-semibold text-dilr">DILR · 40m</h3><p class="mt-1 font-medium">One reliable set → two viable sets</p>
-            <p class="mt-1 text-xs font-mono">0–4 scan · 4–18 set 1 · 18–32 set 2 · 32–39 optional · 39–40 audit</p>
-            <p class="mt-2 text-xs">Prefer tight coded/elimination sets as a tie-breaker only; rank by actual solvability and avoid unpruned branches. Reassess 4–6m; switch by 6–7m if stalled. First failure: 11–25, 25–39. Second: 25–39. Check clues and totals.</p>
+            <p class="mt-1 text-xs font-mono"><span data-plan="dilrQuick"></span></p>
+            <p class="mt-2 text-xs">Prefer tight coded/elimination sets as a tie-breaker only; rank by actual solvability and avoid unpruned branches. Reassess 4–6m; switch by 6–7m if stalled. <span data-plan="dilrRecoveryQuick"></span> Check clues and totals.</p>
           </article>
           <article class="border border-hairline dark:border-darkHairline border-t-4 border-t-qa rounded-lg p-3 text-sm leading-relaxed">
-            <h3 class="font-semibold text-qa">QA · 40m</h3><p class="mt-1 font-medium">11–12 correct as primary aim</p>
-            <p class="mt-1 text-xs font-mono">0–22 sitters · 22–36 mediums · 36–40 cleanup</p>
+            <h3 class="font-semibold text-qa">QA · 40m</h3><p class="mt-1 font-medium"><span data-plan="qaCorrect"></span> as primary aim</p>
+            <p class="mt-1 text-xs font-mono"><span data-plan="qaQuick"></span></p>
             <p class="mt-2 text-xs">Pen down on arithmetic. 45s ignition; 2.5m R1 cap unless finishing. R2: unseen questions first, then L/I, U later, X leave. TITA cleanup. Audit requested value, unit, sign and format.</p>
           </article>
         </div>
@@ -719,9 +718,9 @@ input[type=checkbox]{flex-shrink:0}
           <div class="rounded-xl p-4 bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-l-4 border-l-dilr">
             <div class="flex items-center justify-between gap-2">
               <span class="text-xs font-semibold uppercase tracking-wider text-dilr">DILR</span>
-              <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-dilr/10 text-dilr font-medium">30–36 before penalties</span>
+              <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-dilr/10 text-dilr font-medium"><span data-plan="dilrMarks"></span></span>
             </div>
-            <p class="mt-2.5 text-lg font-bold tracking-tight font-mono">10–12 correct Qs</p>
+            <p class="mt-2.5 text-lg font-bold tracking-tight font-mono"><span data-plan="dilrCorrect"></span> Qs</p>
             <p class="mt-1 text-xs text-muted dark:text-darkMuted leading-relaxed">
               <strong class="text-ink dark:text-darkInk font-medium">Aim for two viable verified sets</strong>; pursue additional independent questions only if time permits.
             </p>
@@ -731,9 +730,9 @@ input[type=checkbox]{flex-shrink:0}
           <div class="rounded-xl p-4 bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-l-4 border-l-qa">
             <div class="flex items-center justify-between gap-2">
               <span class="text-xs font-semibold uppercase tracking-wider text-qa">QA</span>
-              <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-qa/10 text-qa font-medium">33–36 before penalties</span>
+              <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-qa/10 text-qa font-medium"><span data-plan="qaMarks"></span></span>
             </div>
-            <p class="mt-2.5 text-lg font-bold tracking-tight font-mono">11–12 correct Qs</p>
+            <p class="mt-2.5 text-lg font-bold tracking-tight font-mono"><span data-plan="qaCorrect"></span> Qs</p>
             <p class="mt-1 text-xs text-muted dark:text-darkMuted leading-relaxed">
               Aim for a 13–15 question selection pool; the estimated Priority 1–3 range is 10–15, not guaranteed.
             </p>
@@ -1000,18 +999,10 @@ input[type=checkbox]{flex-shrink:0}
               <span class="font-mono text-[11px] text-muted dark:text-darkMuted">00 &rarr; 40m</span>
             </div>
             <div data-mobile-clock class="flex w-full h-10 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
-              <button type="button" data-accent="dilr" data-timeline-detail="DILR | Min 0–4 (4m): Never start Set 1 blindly. Scan all available sets &amp; rank all sets by viability using Green/Red flags; pick a 5-Q set over an equal 4-Q set." style="width: 10%" class="timeline-seg bg-dilr/20 hover:bg-dilr/30 text-dilr dark:text-emerald-300 font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
-                <span>Scan</span><span class="text-[9px] opacity-80">0–4m</span>
-              </button>
-              <button type="button" data-accent="dilr" data-timeline-detail="DILR | Min 4–18 (14m): Aim for a complete verified set; reassess at 4–6m and switch by 6–7m if stalled. Allow productive progress; preserve cleanup." style="width: 35%" class="timeline-seg bg-dilr hover:bg-dilr/90 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
-                <span>Set 1</span><span class="text-[9px] opacity-85">4–18m</span>
-              </button>
-              <button type="button" data-accent="dilr" data-timeline-detail="DILR | Min 18–32 (14m): Aim for a second viable verified set. Reassess progress, record important totals and check clues; use failure recovery if stalled." style="width: 35%" class="timeline-seg bg-dilr/80 hover:bg-dilr/70 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
-                <span>Set 2</span><span class="text-[9px] opacity-85">18–32m</span>
-              </button>
-              <button type="button" data-accent="dilr" data-timeline-detail="DILR | 32–39: optional third-set opportunity or verified standalone/conditional questions. 39–40: save and TITA audit. Rebase these times after a set switch." style="width: 20%" class="timeline-seg bg-dilr/40 hover:bg-dilr/50 text-ink dark:text-darkInk font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
-                <span>Set 3 + TITA</span><span class="text-[9px] opacity-80">32–40m</span>
-              </button>
+              <button type="button" data-accent="dilr" data-fixed-segment="dilr:0" class="timeline-seg bg-dilr/20 hover:bg-dilr/30 text-dilr dark:text-emerald-300 font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate"><span data-clock-label></span><span data-clock-time></span></button>
+              <button type="button" data-accent="dilr" data-fixed-segment="dilr:1" class="timeline-seg bg-dilr hover:bg-dilr/90 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate"><span data-clock-label></span><span data-clock-time></span></button>
+              <button type="button" data-accent="dilr" data-fixed-segment="dilr:2" class="timeline-seg bg-dilr/80 hover:bg-dilr/70 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate"><span data-clock-label></span><span data-clock-time></span></button>
+              <button type="button" data-accent="dilr" data-fixed-segment="dilr:3" class="timeline-seg bg-dilr/40 hover:bg-dilr/50 text-ink dark:text-darkInk font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate"><span data-clock-label></span><span data-clock-time></span></button>
             </div>
           </div>
 
@@ -1022,15 +1013,9 @@ input[type=checkbox]{flex-shrink:0}
               <span class="font-mono text-[11px] text-muted dark:text-darkMuted">00 &rarr; 40m</span>
             </div>
             <div data-mobile-clock class="flex w-full h-10 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
-              <button type="button" data-accent="qa" data-timeline-detail="QA | Round 1 (0–22m | 7–8 attempted questions, flexible | ~2.5m/Q checkpoint): Sitters only — Arithmetic (pen-down), Logs/Exponents, Number Theory, Mensuration, direct arithmetic/geometric progressions &amp; Linear/Quadratic. Defer complex geometry; allow direct mensuration or an obvious geometry sitter." style="width: 55%" class="timeline-seg bg-qa hover:bg-qa/90 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
-                <span>Round 1: Sitters (7–8 Qs)</span><span class="text-[9px] opacity-85">0–22m</span>
-              </button>
-              <button type="button" data-accent="qa" data-timeline-detail="QA | Round 2 (22–36m | 3–5 additional attempts as needed | ~3.5m/Q checkpoint): Complete initial assessment of unseen questions first; then revisit L/I by confidence and time to finish. U only after stronger opportunities." style="width: 35%" class="timeline-seg bg-qa/75 hover:bg-qa/65 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
-                <span>Round 2: Mediums (3–5 Qs as needed)</span><span class="text-[9px] opacity-85">22–36m</span>
-              </button>
-              <button type="button" data-accent="qa" data-timeline-detail="QA | Round 3 (36–40m | optional extra + TITA sweep): Protect saved answers and reasoned TITA entries; attempt an extra question only if time permits." style="width: 10%" class="timeline-seg bg-qa/25 hover:bg-qa/35 text-qa dark:text-amber-300 font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
-                <span>R3</span><span class="text-[9px] opacity-80">36–40m</span>
-              </button>
+              <button type="button" data-accent="qa" data-fixed-segment="qa:0" class="timeline-seg bg-qa hover:bg-qa/90 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate"><span data-clock-label></span><span data-clock-time></span></button>
+              <button type="button" data-accent="qa" data-fixed-segment="qa:1" class="timeline-seg bg-qa/75 hover:bg-qa/65 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate"><span data-clock-label></span><span data-clock-time></span></button>
+              <button type="button" data-accent="qa" data-fixed-segment="qa:2" class="timeline-seg bg-qa/25 hover:bg-qa/35 text-qa dark:text-amber-300 font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate"><span data-clock-label></span><span data-clock-time></span></button>
             </div>
           </div>
         </div>
@@ -1627,39 +1612,31 @@ input[type=checkbox]{flex-shrink:0}
             <span class="font-mono text-[11px] uppercase tracking-wider text-dilr font-semibold">DILR &middot; recent pattern: 5 sets / 22 Qs &middot; 40 Mins</span>
             <h2 class="text-xl sm:text-2xl font-bold tracking-tight mt-0.5">One reliable set → two viable sets; optional extra questions</h2>
           </div>
-          <span class="font-mono text-xs px-2.5 py-1 rounded-md bg-dilr/10 text-dilr font-semibold self-start sm:self-auto shrink-0">Target: 10–12 correct = 30–36 before penalties</span>
+          <span class="font-mono text-xs px-2.5 py-1 rounded-md bg-dilr/10 text-dilr font-semibold self-start sm:self-auto shrink-0">Target: <span data-plan="dilrCorrect"></span> = <span data-plan="dilrMarks"></span></span>
         </div>
 
         <!-- 40-Min DILR Bar -->
         <div class="mt-4">
           <div data-mobile-clock class="flex w-full h-12 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
-            <div style="width: 10%" class="bg-dilr/20 text-dilr dark:text-emerald-300 font-mono text-xs font-semibold flex flex-col items-center justify-center px-1 text-center">
-              <span>Scan</span><span class="text-[10px] opacity-80">0–4m</span>
-            </div>
-            <div style="width: 35%" class="bg-dilr text-white font-mono text-xs font-semibold flex flex-col items-center justify-center px-2 text-center">
-              <span>Set 1</span><span class="text-[10px] opacity-85">4–18m (14m)</span>
-            </div>
-            <div style="width: 35%" class="bg-dilr/80 text-white font-mono text-xs font-semibold flex flex-col items-center justify-center px-2 text-center">
-              <span>Set 2</span><span class="text-[10px] opacity-85">18–32m (14m)</span>
-            </div>
-            <div style="width: 20%" class="bg-dilr/35 text-ink dark:text-darkInk font-mono text-xs font-semibold flex flex-col items-center justify-center px-1 text-center">
-              <span>Set 3 + TITA</span><span class="text-[10px] opacity-80">32–40m (8m)</span>
-            </div>
+            <div data-fixed-segment="dilr:0" class="bg-dilr/20 text-dilr dark:text-emerald-300 font-mono text-xs font-semibold flex flex-col items-center justify-center px-1 text-center"><span data-clock-label></span><span data-clock-time></span></div>
+            <div data-fixed-segment="dilr:1" class="bg-dilr text-white font-mono text-xs font-semibold flex flex-col items-center justify-center px-2 text-center"><span data-clock-label></span><span data-clock-time></span></div>
+            <div data-fixed-segment="dilr:2" class="bg-dilr/80 text-white font-mono text-xs font-semibold flex flex-col items-center justify-center px-2 text-center"><span data-clock-label></span><span data-clock-time></span></div>
+            <div data-fixed-segment="dilr:3" class="bg-dilr/35 text-ink dark:text-darkInk font-mono text-xs font-semibold flex flex-col items-center justify-center px-1 text-center"><span data-clock-label></span><span data-clock-time></span></div>
           </div>
 
           <!-- 4 Fixed Captions -->
           <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 text-xs">
             <div class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
-              <span class="font-mono font-bold text-dilr">00–04m:</span> Never start Set 1 blindly. Scan all available sets &amp; rank all sets by viability.
+              <span class="font-mono font-bold text-dilr" data-plan="dilrTime0"></span> · Never start Set 1 blindly. Scan all available sets &amp; rank all sets by viability.
             </div>
             <div class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
-              <span class="font-mono font-bold text-dilr">04–18m:</span> Crack Set 1; verify the model and answers before moving.
+              <span class="font-mono font-bold text-dilr" data-plan="dilrTime1"></span> · Crack Set 1; verify the model and answers before moving.
             </div>
             <div class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
-              <span class="font-mono font-bold text-dilr">18–32m:</span> Crack Set 2 cleanly; run full clue back-check.
+              <span class="font-mono font-bold text-dilr" data-plan="dilrTime2"></span> · Crack Set 2 cleanly; run full clue back-check.
             </div>
             <div class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
-              <span class="font-mono font-bold text-dilr">32–40m:</span> 32–39 optional third-set opportunity or verified partial questions; 39–40 save and TITA audit. Rebase after a switch.
+              <span class="font-mono font-bold text-dilr" data-plan="dilrTime3"></span> · <span data-plan="dilrCaption3"></span> Rebase after a switch.
             </div>
           </div>
 
@@ -1827,25 +1804,13 @@ input[type=checkbox]{flex-shrink:0}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
             <h4 class="text-xs font-bold">A · First set stalls</h4>
-            <div class="flex h-8 mt-2 rounded overflow-hidden text-[10px] font-mono text-center">
-              <div class="bg-dilr/20 flex items-center justify-center" style="width:10%">0–4</div>
-              <div class="bg-alert/15 flex items-center justify-center" style="width:17.5%">4–11</div>
-              <div class="bg-dilr text-white flex items-center justify-center" style="width:35%">11–25</div>
-              <div class="bg-dilr/80 text-white flex items-center justify-center" style="width:35%">25–39</div>
-              <div class="bg-dilr/20" style="width:2.5%"></div>
-            </div>
-            <p class="mt-2 text-xs leading-relaxed">0–4 scan; 4–10/11 initial set; 11–25 next ranked set; 25–39 another viable set; 39–40 save/TITA audit. Preserve any independently verified answers and switch promptly.</p>
+            <div data-recovery-clock class="flex h-8 mt-2 rounded overflow-hidden text-[10px] font-mono text-center"><div data-fixed-segment="first:0" class="bg-dilr/20 flex items-center justify-center"><span data-clock-time></span></div><div data-fixed-segment="first:1" class="bg-alert/15 flex items-center justify-center"><span data-clock-time></span></div><div data-fixed-segment="first:2" class="bg-dilr text-white flex items-center justify-center"><span data-clock-time></span></div><div data-fixed-segment="first:3" class="bg-dilr/80 text-white flex items-center justify-center"><span data-clock-time></span></div><div data-fixed-segment="first:4" class="bg-dilr/20 flex items-center justify-center"><span data-clock-time></span></div></div>
+            <p class="mt-2 text-xs leading-relaxed"><span data-plan="firstRecovery"></span> Preserve any independently verified answers and switch promptly.</p>
           </article>
           <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
             <h4 class="text-xs font-bold">B · Second set stalls</h4>
-            <div class="flex h-8 mt-2 rounded overflow-hidden text-[10px] font-mono text-center">
-              <div class="bg-dilr/20 flex items-center justify-center" style="width:10%">0–4</div>
-              <div class="bg-dilr text-white flex items-center justify-center" style="width:35%">4–18</div>
-              <div class="bg-alert/15 flex items-center justify-center" style="width:17.5%">18–25</div>
-              <div class="bg-dilr/80 text-white flex items-center justify-center" style="width:35%">25–39</div>
-              <div class="bg-dilr/20" style="width:2.5%"></div>
-            </div>
-            <p class="mt-2 text-xs leading-relaxed">0–4 scan; 4–18 verified first set; 18–24/25 stalled second; 25–39 next viable set; 39–40 audit. Preserve saved, verified first-set answers; do not chase the failed set.</p>
+            <div data-recovery-clock class="flex h-8 mt-2 rounded overflow-hidden text-[10px] font-mono text-center"><div data-fixed-segment="second:0" class="bg-dilr/20 flex items-center justify-center"><span data-clock-time></span></div><div data-fixed-segment="second:1" class="bg-dilr text-white flex items-center justify-center"><span data-clock-time></span></div><div data-fixed-segment="second:2" class="bg-alert/15 flex items-center justify-center"><span data-clock-time></span></div><div data-fixed-segment="second:3" class="bg-dilr/80 text-white flex items-center justify-center"><span data-clock-time></span></div><div data-fixed-segment="second:4" class="bg-dilr/20 flex items-center justify-center"><span data-clock-time></span></div></div>
+            <p class="mt-2 text-xs leading-relaxed"><span data-plan="secondRecovery"></span> Preserve saved, verified first-set answers; do not chase the failed set.</p>
           </article>
         </div>
         <p class="mt-3 text-xs leading-relaxed text-muted dark:text-darkMuted"><strong class="text-ink dark:text-darkInk">Late failure / both stall:</strong> recalculate remaining minutes after reserving the last minute. Prefer independently answerable questions or a partly solved set with a credible breakthrough. If no complete set is feasible, protect reliable partial marks and reasoned TITA entries. Never invent a full solution to meet a target.</p>
@@ -1922,7 +1887,7 @@ input[type=checkbox]{flex-shrink:0}
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-hairline dark:border-darkHairline">
           <div>
             <span class="font-mono text-[11px] uppercase tracking-wider text-qa font-semibold">QA &middot; recent pattern: 22 Qs &middot; 40 Mins</span>
-            <h2 class="text-xl sm:text-2xl font-bold tracking-tight mt-0.5">8–10 &rarr; 11–12 correct answers (33–36 before penalties)</h2>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight mt-0.5">Build toward <span data-plan="qaCorrect"></span> answers (<span data-plan="qaMarks"></span>)</h2>
             <p class="mt-1.5 font-mono text-[11px] text-muted dark:text-darkMuted">
               Recent-paper estimates: Arithmetic 7–9 and Algebra 4–8 questions depending on slot and classification; Number System may offer additional opportunities. Verify actual counts and marking on exam day.
             </p>
@@ -1933,35 +1898,29 @@ input[type=checkbox]{flex-shrink:0}
         <!-- 3-Round Triage Bar -->
         <div class="mt-4">
           <div data-mobile-clock class="flex w-full h-12 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
-            <div style="width: 55%" class="bg-qa text-white font-mono text-xs font-semibold flex flex-col items-center justify-center px-2 text-center">
-              <span>Round 1: Sitters (7–8 Qs)</span><span class="text-[10px] opacity-85">0–22m &middot; ~2.5m/Q checkpoint</span>
-            </div>
-            <div style="width: 35%" class="bg-qa/75 text-white font-mono text-xs font-semibold flex flex-col items-center justify-center px-2 text-center">
-              <span>Round 2: Mediums (3–5 Qs as needed)</span><span class="text-[10px] opacity-85">22–36m &middot; ~3.5m/Q checkpoint</span>
-            </div>
-            <div style="width: 10%" class="bg-qa/25 text-qa dark:text-amber-300 font-mono text-xs font-semibold flex flex-col items-center justify-center px-1 text-center">
-              <span>R3</span><span class="text-[10px] opacity-80">36–40m</span>
-            </div>
+            <div data-fixed-segment="qa:0" class="bg-qa text-white font-mono text-xs font-semibold flex flex-col items-center justify-center px-2 text-center"><span data-clock-label></span><span data-clock-time></span></div>
+            <div data-fixed-segment="qa:1" class="bg-qa/75 text-white font-mono text-xs font-semibold flex flex-col items-center justify-center px-2 text-center"><span data-clock-label></span><span data-clock-time></span></div>
+            <div data-fixed-segment="qa:2" class="bg-qa/25 text-qa dark:text-amber-300 font-mono text-xs font-semibold flex flex-col items-center justify-center px-1 text-center"><span data-clock-label></span><span data-clock-time></span></div>
           </div>
 
           <div class="mt-3 grid grid-cols-1 md:grid-cols-3 gap-2.5 text-xs">
             <div class="p-3 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
               <div class="flex items-center justify-between font-mono text-[11px] font-bold text-qa mb-1">
-                <span>ROUND 1 (0–22m)</span>
+                <span>ROUND 1 · <span data-plan="qaTime0"></span></span>
                 <span>7–8 attempts, flexible &middot; ~2.5m/Q</span>
               </div>
               <p class="text-muted dark:text-darkMuted leading-relaxed">Sitters: Arithmetic, Logs/Exponents, Number Theory, Mensuration, direct arithmetic/geometric progressions &amp; Linear/Quadratic.</p>
             </div>
             <div class="p-3 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
               <div class="flex items-center justify-between font-mono text-[11px] font-bold text-qa mb-1">
-                <span>ROUND 2 (22–36m)</span>
+                <span>ROUND 2 · <span data-plan="qaTime1"></span></span>
                 <span>3–5 additional attempts as feasible &middot; ~3.5m/Q</span>
               </div>
               <p class="text-muted dark:text-darkMuted leading-relaxed">If any questions are unseen, finish first-pass triage first. Then revisit L/I skips by confidence and time to finish; consider U only after stronger opportunities.</p>
             </div>
             <div class="p-3 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
               <div class="flex items-center justify-between font-mono text-[11px] font-bold text-qa mb-1">
-                <span>ROUND 3 (36–40m)</span>
+                <span>ROUND 3 · <span data-plan="qaTime2"></span></span>
                 <span>Optional extra + TITA sweep</span>
               </div>
               <p class="text-muted dark:text-darkMuted leading-relaxed">Protect saved responses and enter reasoned TITA estimates if time permits; attempt an extra question only if there is time after cleanup.</p>
@@ -2212,6 +2171,131 @@ input[type=checkbox]{flex-shrink:0}
       // <module:strategy> Pure exam strategy, clocks and score derivation
       const strategy = (() => {
         // Author each mode here. Minute boundaries derive the rendered bar widths.
+        // Canonical minute boundaries for the non-VARC clocks and recovery examples.
+        const FIXED_CLOCKS = {
+          "dilr": [
+            {
+              "start": 0,
+              "end": 4,
+              "label": "Scan",
+              "quick": "scan",
+              "caption": "Scan and rank every available set.",
+              "rule": "Rank by actual solvability; prefer five questions only if effort and risk are comparable."
+            },
+            {
+              "start": 4,
+              "end": 18,
+              "label": "Set 1",
+              "quick": "set 1",
+              "caption": "Solve a viable first set and verify.",
+              "rule": "Reassess after 4–6m; switch by 6–7m if stalled, not while making credible progress."
+            },
+            {
+              "start": 18,
+              "end": 32,
+              "label": "Set 2",
+              "quick": "set 2",
+              "caption": "Solve the next viable set; check clues, cases and totals.",
+              "rule": "Use the recovery clock if stalled."
+            },
+            {
+              "start": 32,
+              "end": 39,
+              "label": "Optional",
+              "quick": "optional",
+              "caption": "Pursue independent questions or a credible partial set.",
+              "rule": "Do not force a third set."
+            },
+            {
+              "start": 39,
+              "end": 40,
+              "label": "Audit",
+              "quick": "audit",
+              "caption": "Verify saved answers and reasonable penalty-free entries.",
+              "rule": "Protect the final minute."
+            }
+          ],
+          "qa": [
+            {
+              "start": 0,
+              "end": 22,
+              "label": "Round 1 · Sitters",
+              "quick": "sitters",
+              "caption": "Assess questions in sequence; choose clear methods, especially strong topics.",
+              "rule": "7–8 attempts, flexible; about 2.5m per question unless finishing."
+            },
+            {
+              "start": 22,
+              "end": 36,
+              "label": "Round 2 · Mediums",
+              "quick": "mediums",
+              "caption": "Assess unseen questions first, then revisit L/I, then viable U.",
+              "rule": "3–5 additional attempts as feasible; about 3.5m per question."
+            },
+            {
+              "start": 36,
+              "end": 40,
+              "label": "Cleanup",
+              "quick": "cleanup",
+              "caption": "Audit saved answers; consider reasoned TITA estimates and optional extra work.",
+              "rule": "Only attempt extra questions after protecting cleanup."
+            }
+          ],
+          "first": [
+            {
+              "start": 0,
+              "end": 4,
+              "label": "Scan"
+            },
+            {
+              "start": 4,
+              "end": 11,
+              "label": "Stalled first"
+            },
+            {
+              "start": 11,
+              "end": 25,
+              "label": "Next set"
+            },
+            {
+              "start": 25,
+              "end": 39,
+              "label": "Another set"
+            },
+            {
+              "start": 39,
+              "end": 40,
+              "label": "Audit"
+            }
+          ],
+          "second": [
+            {
+              "start": 0,
+              "end": 4,
+              "label": "Scan"
+            },
+            {
+              "start": 4,
+              "end": 18,
+              "label": "Verified first"
+            },
+            {
+              "start": 18,
+              "end": 25,
+              "label": "Stalled second"
+            },
+            {
+              "start": 25,
+              "end": 39,
+              "label": "Next set"
+            },
+            {
+              "start": 39,
+              "end": 40,
+              "label": "Audit"
+            }
+          ]
+        };
         const SCORE_TARGETS = {
           "dilr": [
             30,
@@ -2440,11 +2524,41 @@ input[type=checkbox]{flex-shrink:0}
             }))
           }];
         })));
+        const fixedClocks = deepFreeze(FIXED_CLOCKS);
+        const fixedBars = deepFreeze({
+          dilr: fixedClocks.dilr.slice(0,3).concat([{
+            start:fixedClocks.dilr[3].start,end:fixedClocks.dilr[4].end,
+            label:'Optional + audit',
+            caption:fixedClocks.dilr.slice(3).map(seg=>seg.start+'–'+seg.end+'m '+seg.caption).join(' '),
+            rule:fixedClocks.dilr.slice(3).map(seg=>seg.rule).join(' ')
+          }]),
+          qa:fixedClocks.qa, first:fixedClocks.first, second:fixedClocks.second
+        });
+        const timeRange = seg => seg.start+'–'+seg.end+'m';
+        function fixedValues() {
+          const out={};
+          for(const section of ['dilr','qa']){
+            out[section+'Quick']=fixedClocks[section].map(seg=>timeRange(seg)+' '+seg.quick).join(' · ');
+            out[section+'Marks']=range(SCORE_TARGETS[section])+' before penalties';
+            out[section+'Correct']=range(SCORE_TARGETS[section].map(mark=>mark/3))+' correct';
+            fixedBars[section].forEach((seg,i)=>{
+              out[section+'Time'+i]=timeRange(seg);
+              out[section+'Caption'+i]=seg.caption;
+              out[section+'Rule'+i]=seg.rule;
+            });
+          }
+          for(const recovery of ['first','second']){
+            out[recovery+'Recovery']=fixedBars[recovery].map(seg=>timeRange(seg)+' '+seg.label.toLowerCase()).join('; ')+'.';
+          }
+          out.dilrRecoveryQuick='First failure: '+fixedBars.first.slice(2,4).map(timeRange).join(', ')+'. Second: '+timeRange(fixedBars.second[3])+'.';
+          return out;
+        }
         function planValues(key) {
           const mode = validModes.includes(key) ? key : 'standard';
           const p = MODES[mode];
           return {
             ...p,
+            ...fixedValues(),
             quick: orders[mode].segments.map(seg => seg.time + ' ' + seg.label).join(' · '),
             heading: p.heading + ' (' + range(p.attempts) + ' attempts)',
             attempts: range(p.attempts) + ' attempts',
@@ -2461,7 +2575,7 @@ input[type=checkbox]{flex-shrink:0}
         deepFreeze(MODES);
         deepFreeze(SCORE_TARGETS);
         deepFreeze(SCENARIOS);
-        return Object.freeze({validModes, orders, planValues, scenarioValues});
+        return Object.freeze({validModes, orders, fixedClocks, fixedBars, planValues, scenarioValues});
       })();
       // </module:strategy>
 
@@ -3093,6 +3207,17 @@ input[type=checkbox]{flex-shrink:0}
       function createPlanView(storage, checklist, showToast) {
         function renderPlan(mode) {
           const values = strategy.planValues(mode);
+          document.querySelectorAll('[data-fixed-segment]').forEach(el=>{
+            const [section,index]=el.dataset.fixedSegment.split(':');
+            const seg=strategy.fixedBars[section]?.[Number(index)];
+            if(!seg)return;
+            const time=seg.start+'–'+seg.end+'m';
+            el.style.width=((seg.end-seg.start)*2.5)+'%';
+            const label=el.querySelector('[data-clock-label]'), clock=el.querySelector('[data-clock-time]');
+            if(label)label.textContent=seg.label;
+            if(clock)clock.textContent=time;
+            if(el.dataset.accent)el.setAttribute('data-timeline-detail',section.toUpperCase()+' | '+time+': '+seg.caption+' '+seg.rule);
+          });
           document.querySelectorAll('[data-plan]').forEach(el => {const value=values[el.dataset.plan];if(typeof value==='string')el.textContent=value;});
           const table=document.getElementById('scenario-rows');
           if(table) {
