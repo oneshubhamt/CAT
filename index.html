@@ -1588,943 +1588,1075 @@
   <!-- ===================================================================== -->
   <!-- VANILLA JAVASCRIPT: TABS, CLOCKS, INDEXEDDB & HTML EXPORT   -->
   <!-- ===================================================================== -->
-  <script>
+  <script id="cat-app">
     (function () {
       'use strict';
 
-      const DB_NAME = 'cat99_playbook';
-      const DB_VERSION = 1;
-      const STORE = 'records';
-      const JOURNAL_PREFIX = 'cat99_emergency_v2:';
-      const JOURNAL_LIMIT = 64 * 1024;
-      const VALID_VARC_ORDERS = ['standard', 'split', 'readable'];
-
-      // Common raw-score planning model; no predicted percentile or guaranteed floor.
-      const SCORE_TARGETS = {dilr:[30,36],qa:[33,36]};
-      const SCENARIOS = [
-        {label:'Minimum / recovery',varc:30,dilr:24,qa:24,action:'Protect attainable marks; do not compensate recklessly.'},
-        {label:'Primary',varc:38,dilr:30,qa:33,action:'Execute the selected pacing plan; two viable DILR sets.'},
-        {label:'Stretch',varc:44,dilr:39,qa:39,action:'Add only viable opportunities after primary work.'}
-      ];
-      const MODE_PLANS = {
-        standard:{heading:'3 RCs + 8 VA strategy',attempts:[17,18],marks:[37,40],summary:'3 RCs + 8 VA (20-question pool). Aim for 10–11 RC, 4 TITA VA and 3–4 MCQ VA; 17–18 primary, 19 optional.',gate:'45–60s P1 gate; default to three readable RCs. Consider the fourth only under the readable-paper trigger.',checkTitle:'Commit to Standard (3 RCs)',checkDetail:'Protect three readable RCs and all available TITA VA; do not force weak MCQs.',scoreExample:'Illustrative: 17–18 attempts, 13–14 correct, 2 wrong MCQs and 2 wrong TITAs = 37–40 raw marks (about 76–78% accuracy).',quick:'0–25 RCs · 25–32 TITA VA · 32–39 MCQ VA · 39–40 cleanup'},
-        split:{heading:'Anti-fatigue split (3 RCs + 8 VA)',attempts:[17,18],marks:[37,40],summary:'2 RCs → TITA VA → 1 RC → MCQ VA (20-question pool). Aim for 10–11 RC, 4 TITA VA and 3–4 MCQ VA; 17–18 primary, 19 optional.',gate:'45–60s P1 gate; use the initial 1m allowance and protect the early TITA block. Do not force a fourth RC.',checkTitle:'Commit to Anti-Fatigue Split',checkDetail:'2 RCs, TITA VA, 1 RC, MCQ VA; protect the cleanup minute.',scoreExample:'Illustrative: 17–18 attempts, 13–14 correct, 2 wrong MCQs and 2 wrong TITAs = 37–40 raw marks (about 76–78% accuracy).',quick:'0–17 two RCs · 17–24 TITA VA · 24–32 third RC · 32–39 MCQ VA · 39–40 cleanup'},
-        readable:{heading:'Readable-paper alternative (4 RCs + selective VA)',attempts:[18,20],marks:[40,43],summary:'4 RCs + selective VA (24-question potential pool). Aim for 13–14 RC, 4 TITA VA and 1–2 MCQ VA.',gate:'Use only if three RCs finish within 22 elapsed minutes and RC #4 is more attractive than remaining VA. Otherwise revert to Standard.',checkTitle:'Understand Readable-Paper trigger',checkDetail:'Fourth RC only if early and worthwhile; protect TITA VA and one-minute cleanup.',scoreExample:'Illustrative: 18–19 attempts, 14–15 correct, 2 wrong MCQs and 2 wrong TITAs = 40–43 raw marks. A 20th attempt is optional, not required.',quick:'0–30 four RCs (conditional) · 30–36 TITA VA · 36–39 selective MCQ VA · 39–40 cleanup'}
-      };
-      function planValues(mode) {
-        const p = MODE_PLANS[mode] || MODE_PLANS.standard;
-        const range = a => a.join('–');
-        return {...p,quick:VARC_ORDERS[mode]?.segments.map(seg=>seg.time+' '+seg.label).join(' · ') || p.quick,heading:p.heading+' ('+range(p.attempts)+' attempts)',attempts:range(p.attempts)+' attempts',varcMarks:range(p.marks)+' illustrative raw marks',combined:range(p.marks.map((v,i)=>v+SCORE_TARGETS.dilr[i]+SCORE_TARGETS.qa[i]))+' raw marks'};
-      }
-      function renderPlan(mode) {
-        const values = planValues(mode);
-        document.querySelectorAll('[data-plan]').forEach(el => {const value=values[el.dataset.plan];if(typeof value==='string')el.textContent=value;});
-        const table=document.getElementById('scenario-rows');
-        if(table) {
-          table.replaceChildren();
-          for(const item of SCENARIOS) {
-            const v = mode==='readable' && item.label==='Primary' ? 41 : item.varc;
-            const tr=document.createElement('tr');
-            tr.className='border-t border-hairline dark:border-darkHairline';
-            for(const cell of [item.label,v,item.dilr,item.qa,v+item.dilr+item.qa,item.action]) {
-              const td=document.createElement('td'); td.className='px-2.5 py-2 align-top'; td.textContent=cell;tr.append(td);
-            }
-            table.append(tr);
-          }
-        }
-      }
-
-      // 3-Mode VARC Clock Configurations (Standard / Anti-Fatigue Split / Readable-Paper 4-RC Backup)
-      const VARC_ORDERS = {
-        standard: {
-          label: '(Standard · 3 RCs)',
-          title: 'Standard (3 RCs): 3 RCs \u2192 4 TITA VA \u2192 4 MCQ VA \u2192 1m Cleanup',
-          poolBadge: '20-Q Active Pool · Target 17–18',
-          toast: 'VARC: Standard (3 RCs) active',
-          segments: [
-            {
-              width: 62.5,
-              label: '3 RCs (10–11 Qs)',
-              time: '0–25m',
-              classes: 'bg-varc hover:bg-varc/90 text-white',
-              detail: 'VARC | Min 0–25 (25m): Solve your best 3 RCs (~8m/RC + 1m P1 reject buffer) \u2192 10–11 Qs. 3:30 structural read + 4:30 Qs; flag unresolved MCQs unanswered at 45s.',
-              caption: '3 RCs (~8m each + 1m reject buffer) \u2192 10–11 Qs.'
-            },
-            {
-              width: 17.5,
-              label: '4 TITA VA',
-              time: '25–32m',
-              classes: 'bg-varc/75 hover:bg-varc/65 text-white',
-              detail: 'VARC | Min 25–32 (7m): 2 Para Jumbles + 2 Odd One Out (~1:45/Q). Zero negative marking \u2014 attempt all 4 unconditionally, cap at 2:00/Q.',
-              caption: '4 TITA VA (2 PJ + 2 Odd Out) \u2192 Attempt all 4 (no -1).'
-            },
-            {
-              width: 17.5,
-              label: '4 MCQ VA',
-              time: '32–39m',
-              classes: 'bg-varc/40 hover:bg-varc/50 text-ink dark:text-darkInk',
-              detail: 'VARC | Min 32–39 (7m): 2 Para Summary + 2 Para Completion (~1:45/Q). Target 3–4 clean Qs; flag unresolved MCQs unanswered at 45s.',
-              caption: '4 MCQ VA (2 Summary + 2 Completion) \u2192 3–4 clean Qs.'
-            },
-            {
-              width: 2.5,
-              label: '1m',
-              time: '39–40m',
-              classes: 'bg-varc/20 hover:bg-varc/30 text-varc dark:text-indigo-300',
-              detail: 'VARC | Min 39–40 (1m): Cleanup \u2014 confirm all 4 TITA boxes are filled; revisit a genuinely shortlisted MCQ only after clearer opportunities and TITA saves.',
-              caption: 'Cleanup \u2192 confirm all 4 TITA entries saved.'
-            }
-          ]
-        },
-        split: {
-          label: '(Anti-Fatigue Split)',
-          title: 'Anti-Fatigue Split: 2 RCs (17m, including gate) → TITA VA (7m) → RC #3 (8m) → MCQ VA (7m) → cleanup (1m)',
-          poolBadge: '20-Q Active Pool · Target 17–18',
-          toast: 'VARC: Anti-Fatigue Split active',
-          segments: [
-            {
-              width: 42.5,
-              label: '2 RCs',
-              time: '0–17m',
-              classes: 'bg-varc hover:bg-varc/90 text-white',
-              detail: 'VARC | Min 0–17 (17m): Solve your first 2 readable RCs (~8m each plus 1m gate allowance) while focus is sharpest. Enforce 45–60s P1 gate.',
-              caption: 'First 2 RCs (~8m each + 1m gate) \u2192 6–8 Qs; aim for 10–11 across three RCs.'
-            },
-            {
-              width: 17.5,
-              label: '4 TITA VA',
-              time: '17–24m',
-              classes: 'bg-varc/70 hover:bg-varc/60 text-white',
-              detail: 'VARC | Min 17–24 (7m): Palate cleanser \u2014 knock out 2 Para Jumbles + 2 Odd One Out (zero negative marking) before RC #3.',
-              caption: '4 TITA VA palate cleanser \u2192 all 4 locked early.'
-            },
-            {
-              width: 20,
-              label: 'RC #3',
-              time: '24–32m',
-              classes: 'bg-varc hover:bg-varc/90 text-white',
-              detail: 'VARC | Min 24–32 (8m): Return fresh for RC #3. 3:30 structural read + 4:30 Qs; don\'t force 4/4.',
-              caption: 'RC #3 with fresh eyes \u2192 3–4 Qs.'
-            },
-            {
-              width: 17.5,
-              label: '4 MCQ VA',
-              time: '32–39m',
-              classes: 'bg-varc/40 hover:bg-varc/50 text-ink dark:text-darkInk',
-              detail: 'VARC | Min 32–39 (7m): 2 Para Summary + 2 Para Completion (~1:45/Q). High-accuracy finish; flag unresolved MCQs unanswered at 45s.',
-              caption: '4 MCQ VA (Summary + Completion) \u2192 3–4 Qs.'
-            },
-            {
-              width: 2.5,
-              label: '1m',
-              time: '39–40m',
-              classes: 'bg-varc/20 hover:bg-varc/30 text-varc dark:text-indigo-300',
-              detail: 'VARC | Min 39–40 (1m): Cleanup \u2014 confirm all 4 TITAs are entered and revisit a genuinely shortlisted MCQ if time remains.',
-              caption: 'Final 1m TITA & flag audit.'
-            }
-          ]
-        },
-        readable: {
-          label: '(Readable-Paper · 4 RCs)',
-          title: 'Trigger: Open RC #4 only if the first three finish within 22 elapsed minutes and it offers better value than remaining VA; otherwise use Standard.',
-          poolBadge: '24-Q potential pool · target 18–20 attempts',
-          toast: 'VARC: Readable-Paper (4 RCs) backup active',
-          segments: [
-            {
-              width: 75,
-              label: '4 RCs (~7.5m each · 13–14 Qs)',
-              time: '0–30m',
-              classes: 'bg-varc hover:bg-varc/90 text-white',
-              detail: 'VARC (Backup) | Min 0–30 (30m): Trigger: first three RCs finished within 22 elapsed minutes and RC #4 is higher-value than remaining VA; otherwise use Standard. Pace ~7.5m/RC \u2192 13–14 Qs; flag unresolved MCQs unanswered at 45s.',
-              caption: 'Open RC #4 if first three finish within 22m and it beats remaining VA (~7.5m/RC \u2192 13–14 Qs).'
-            },
-            {
-              width: 15,
-              label: '4 TITA VA',
-              time: '30–36m',
-              classes: 'bg-varc/75 hover:bg-varc/65 text-white',
-              detail: 'VARC (Backup) | Min 30–36 (6m): Hit all 4 TITA VA questions first (2 Para Jumbles + 2 Odd One Out \u2014 zero -1 penalty).',
-              caption: '4 TITA VA first (all 4, zero -1 penalty).'
-            },
-            {
-              width: 7.5,
-              label: 'MCQ',
-              time: '36–39m',
-              classes: 'bg-varc/40 hover:bg-varc/50 text-ink dark:text-darkInk',
-              detail: 'VARC (Backup) | Min 36–39 (3m): Pick 1–2 quick Para Summary / Para Completion MCQs for 18–20 total attempts.',
-              caption: '1–2 quick Summary/Completion MCQs (Target: 18–20 total).'
-            },
-            {
-              width: 2.5,
-              label: '1m',
-              time: '39–40m',
-              classes: 'bg-varc/20 hover:bg-varc/30 text-varc dark:text-indigo-300',
-              detail: 'VARC (Backup) | Min 39–40 (1m): Cleanup \u2014 confirm available TITA entries are saved, then consider genuinely shortlisted MCQs if time remains.',
-              caption: 'Cleanup \u2192 verify all 4 TITA boxes saved.'
-            }
-          ]
-        }
-      };
-
-      // Active state object
-      let state = {
-        theme: 'light',
-        varcOrder: 'standard',
-        checklist: {
-          'chk-bailout': false,
-          'chk-dilr-shield': false,
-          'chk-varc-gate': false,
-          'chk-qa-quarantine': false,
-          'chk-taper': false,
-          'chk-logistics': false
-        },
-        notes: {
-          overview: '',
-          varc: '',
-          dilr: '',
-          qa: ''
-        },
-        errors: Object.create(null)
-      };
-
-      let toastTimer = null;
-
-      /**
-       * Show subtle non-blocking toast notification.
+      /*
+       * CAT PLAYBOOK | SINGLE-FILE MODULE MAP
+       * Search <module:ID> for a stable entry point. No external JS modules or build step.
+       * Data flow: view event -> persistence.setRecord -> private record model
+       * -> recovery journal / IndexedDB -> explicit reconciliation callback -> views.
+       * Strategy and schema are pure. Feature modules own their DOM bindings.
+       * The composition root is the only place that wires modules together.
+       * See AGENTS.md for ownership, invariants, and validation commands.
        */
-      function showToast(message) {
-        const toast = document.getElementById('toast');
-        if (!toast) return;
-        toast.textContent = message;
-        toast.classList.remove('opacity-0', 'translate-y-2');
-        toast.classList.add('opacity-100', 'translate-y-0');
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => {
-          toast.classList.add('opacity-0', 'translate-y-2');
-          toast.classList.remove('opacity-100', 'translate-y-0');
-        }, 2200);
-      }
 
-      // Versioned, independently mergeable records. No legacy migration.
-      const uid = () => globalThis.crypto?.randomUUID?.() || Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
-      const writer = uid();
-      let journalKey = null, journalRaw = null, journalSerial = 0;
-      const records = new Map(), pending = new Map();
-      const sections = ['VARC', 'DILR', 'QA'];
-      const categories = ['Selection', 'Time management', 'Comprehension', 'Representation', 'Deduction / elimination', 'Arithmetic / execution', 'Verification', 'Interface', 'Other'];
-      const noteKeys = Object.keys(state.notes), checklistKeys = Object.keys(state.checklist);
-      let db = null, clock = 0, serial = 0, saving = false, saveTimer = null;
-      let recoveredKeys = [], journalOK = true, editingError = null, exporting = false, exportUrl = null;
+      // <module:strategy> Pure exam strategy, clocks and score derivation
+      const strategy = (() => {
+        const VALID_VARC_ORDERS = ['standard', 'split', 'readable'];
 
-      function isValidRecord(r) {
-        if (!r || typeof r.key !== 'string' || !Number.isSafeInteger(r.time) || r.time < 0 ||
-            !Number.isSafeInteger(r.seq) || r.seq < 0 || typeof r.writer !== 'string' || r.writer.length > 100) return false;
-        const v = r.value;
-        if (r.key === 'pref:theme') return v === 'light' || v === 'dark';
-        if (r.key === 'pref:varcOrder') return VALID_VARC_ORDERS.includes(v);
-        if (r.key.startsWith('check:')) return checklistKeys.includes(r.key.slice(6)) && typeof v === 'boolean';
-        if (r.key.startsWith('note:')) return noteKeys.includes(r.key.slice(5)) && typeof v === 'string';
-        if (!/^error:[a-zA-Z0-9-]{1,100}$/.test(r.key)) return false;
-        if (v === null) return true; // Tombstone prevents deleted entries resurfacing from older exports.
-        return !!(v && Object.keys(v).length === 9 && typeof v.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v.date) && sections.includes(v.section) &&
-          categories.includes(v.category) && ['open','reviewed'].includes(v.status) &&
-          typeof v.reference === 'string' && v.reference.length <= 200 &&
-          typeof v.cause === 'string' && v.cause.trim() && v.cause.length <= 2000 &&
-          typeof v.correction === 'string' && v.correction.trim() && v.correction.length <= 2000 &&
-          (v.marks === null || Number.isFinite(v.marks) && v.marks >= 0 && v.marks <= 300) &&
-          (v.minutes === null || Number.isFinite(v.minutes) && v.minutes >= 0 && v.minutes <= 120));
-      }
-      function newer(a, b) {
-        if (!b) return true;
-        if (a.time !== b.time) return a.time > b.time;
-        if (a.seq !== b.seq) return a.seq > b.seq;
-        return a.writer > b.writer;
-      }
-      function applyRecord(r) {
-        if (!isValidRecord(r) || !newer(r, records.get(r.key))) return false;
-        records.set(r.key, r);
-        clock = Math.max(clock, r.time);
-        if (r.key === 'pref:theme') state.theme = r.value;
-        else if (r.key === 'pref:varcOrder') state.varcOrder = r.value;
-        else if (r.key.startsWith('check:')) state.checklist[r.key.slice(6)] = r.value;
-        else if (r.key.startsWith('note:')) state.notes[r.key.slice(5)] = r.value;
-        else if (r.value === null) delete state.errors[r.key.slice(6)];
-        else state.errors[r.key.slice(6)] = r.value;
-        return true;
-      }
-      function snapshot() { return {schemaVersion: 2, records: Array.from(records.values())}; }
-      function safeSnapshot() { return JSON.stringify(snapshot()).replace(/</g, '\\u003c'); }
-      function readSnapshot(raw) {
-        const parsed = JSON.parse(raw);
-        if (!parsed || parsed.schemaVersion !== 2 || !Array.isArray(parsed.records) || !parsed.records.every(isValidRecord) || new Set(parsed.records.map(r=>r.key)).size !== parsed.records.length)
-          throw new Error('Invalid record snapshot');
-        return parsed.records;
-      }
-      function reportStorage(message) {
-        const el = document.getElementById('storage-status');
-        if (el) el.textContent = message;
-        const retry = document.getElementById('btn-retry-storage');
-        if (retry) retry.hidden = !!db;
-        document.querySelectorAll('[data-note-status]').forEach(el => { el.textContent = message; });
-      }
-      // Journal holds only dirty records and is removed after durable transaction completion.
-      // Per-page keys avoid concurrent tabs erasing one another's uncommitted edits.
-      function writeJournal() {
-        try {
-          if (!pending.size) {
-            if (journalKey) localStorage.removeItem(journalKey);
-            journalKey = journalRaw = null; journalOK = true; return true;
-          }
-          const raw = JSON.stringify({schemaVersion:2, records:Array.from(pending.values())});
-          if (raw.length * 2 > JOURNAL_LIMIT) throw new Error('Emergency journal limit exceeded');
-          if (journalKey && raw === journalRaw && localStorage.getItem(journalKey) === raw) { journalOK = true; return true; }
-          // Immutable journal keys: another tab may retire an old key without racing a new write to it.
-          const nextKey = JOURNAL_PREFIX + writer + ':' + (++journalSerial);
-          localStorage.setItem(nextKey, raw);
-          const previous = journalKey;
-          journalKey = nextKey; journalRaw = raw; journalOK = true;
-          if (previous) { try { localStorage.removeItem(previous); } catch {} }
-          return true;
-        } catch (err) { journalOK = false; console.warn('Emergency journal unavailable:', err); return false; }
-      }
-      function stage(r) { if (applyRecord(r)) pending.set(r.key, r); }
-      function mergeDurable(r) {
-        if (!isValidRecord(r)) return false;
-        const dirty = pending.get(r.key);
-        if (dirty && !newer(dirty,r)) pending.delete(r.key);
-        return applyRecord(r);
-      }
-      function recoverJournals() {
-        try {
-          const keys = [];
-          for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            if (key && key.startsWith(JOURNAL_PREFIX)) keys.push(key);
-          }
-          for (const key of keys) {
-            try {
-              const raw = localStorage.getItem(key);
-              if (!raw || raw.length * 2 > JOURNAL_LIMIT) continue;
-              readSnapshot(raw).forEach(stage);
-              if (!recoveredKeys.some(item=>item.key===key)) recoveredKeys.push({key, raw});
-            } catch (err) { console.warn('Unreadable recovery journal retained:', err); }
-          }
-        } catch (err) { journalOK = false; console.warn('Journal recovery unavailable:', err); }
-      }
-      function openDatabase() {
-        return new Promise((resolve, reject) => {
-          let settled = false;
-          const timer = setTimeout(() => { settled = true; reject(new Error('IndexedDB open timeout')); }, 2500);
-          const finish = (fn, value) => { if (!settled) { settled = true; clearTimeout(timer); fn(value); } };
-          try {
-            const req = globalThis.indexedDB.open(DB_NAME, DB_VERSION);
-            req.onupgradeneeded = () => {
-              if (!req.result.objectStoreNames.contains(STORE)) req.result.createObjectStore(STORE, {keyPath:'key'});
-            };
-            req.onerror = () => finish(reject, req.error);
-            req.onblocked = () => finish(reject, new Error('IndexedDB upgrade blocked'));
-            req.onsuccess = () => {
-              if (settled) { req.result.close(); return; }
-              finish(resolve, req.result);
-            };
-          } catch (err) { finish(reject, err); }
-        });
-      }
-      function readDatabase() {
-        return new Promise((resolve, reject) => {
-          const tx = db.transaction(STORE, 'readonly'), req = tx.objectStore(STORE).getAll();
-          const timer = setTimeout(() => { try { tx.abort(); } catch {} reject(new Error('Read timed out')); }, 2500);
-          tx.oncomplete = () => { clearTimeout(timer); resolve(req.result); };
-          tx.onabort = tx.onerror = () => { clearTimeout(timer); reject(tx.error || req.error || new Error('Read failed')); };
-        });
-      }
-      // Atomic compare-and-write prevents stale records overwriting newer edits.
-      function writeDatabase(batch) {
-        return new Promise((resolve, reject) => {
-          const tx = db.transaction(STORE, 'readwrite'), store = tx.objectStore(STORE), winners = [];
-          const timer = setTimeout(() => { try { tx.abort(); } catch {} reject(new Error('Write timed out')); }, 4000);
-          tx.oncomplete = () => { clearTimeout(timer); resolve(winners); };
-          tx.onabort = tx.onerror = () => { clearTimeout(timer); reject(tx.error || new Error('Write failed')); };
-          for (const r of batch) {
-            const req = store.get(r.key);
-            req.onsuccess = () => {
-              if (!isValidRecord(req.result) || newer(r, req.result)) { store.put(r); winners.push(r); }
-              else winners.push(req.result);
-            };
-          }
-        });
-      }
-      function closeDatabase() { if (db) db.close(); db = null; }
-      async function flushPending() {
-        if (saving || !db || !pending.size && !recoveredKeys.length) return;
-        saving = true;
-        const batch = Array.from(pending.values());
-        try {
-          const winners = batch.length ? await writeDatabase(batch) : [];
-          let changed = false;
-          for (const r of winners) changed = mergeDurable(r) || changed;
-          for (const r of batch) if (pending.get(r.key) === r) pending.delete(r.key);
-          if (changed) { refreshFromRecords(); showToast('A newer saved record was reconciled'); }
-          for (const item of recoveredKeys) {
-            try { if (localStorage.getItem(item.key) === item.raw) localStorage.removeItem(item.key); } catch {}
-          }
-          recoveredKeys = [];
-          writeJournal();
-          reportStorage(pending.size ? (journalOK ? 'Saving to IndexedDB…' : 'Saving — emergency journal unavailable') : 'Saved to IndexedDB');
-        } catch (err) {
-          console.warn('IndexedDB write failed:', err);
-          closeDatabase(); writeJournal();
-          reportStorage(journalOK ? 'Temporary recovery only — export HTML for backup' : 'Unsaved in memory — export HTML now');
-        } finally {
-          saving = false;
-          if (db && pending.size) scheduleSave(0);
-        }
-      }
-      function scheduleSave(delay = 0) {
-        // Throttle rather than sliding debounce: continuous typing cannot indefinitely postpone saving.
-        if (saveTimer !== null && delay > 0) return;
-        clearTimeout(saveTimer);
-        saveTimer = setTimeout(() => { saveTimer = null; flushPending(); }, delay);
-      }
-      function setRecord(key, value, delay = 0) {
-        const r = {key, value, time: Math.max(Date.now(), clock + 1), seq: ++serial, writer};
-        if (!isValidRecord(r)) throw new Error('Invalid record: ' + key);
-        stage(r);
-        writeJournal(); // synchronous before deferred IndexedDB write
-        reportStorage(db ? (journalOK ? 'Saving to IndexedDB…' : 'Saving — emergency journal unavailable') :
-          (journalOK ? 'Temporary recovery only — export HTML for backup' : 'Unsaved in memory — export HTML now'));
-        if (db) scheduleSave(delay);
-      }
-      async function loadState() {
-        try {
-          db = await openDatabase();
-          db.onversionchange = () => { closeDatabase(); writeJournal(); reportStorage('Storage changed — reload or export HTML'); };
-          db.onclose = () => { db = null; reportStorage('Storage closed — reload or export HTML'); };
-          (await readDatabase()).forEach(mergeDurable);
-        } catch (err) { console.warn('IndexedDB unavailable:', err); closeDatabase(); }
-        try { readSnapshot(document.getElementById('embedded-user-state').textContent).forEach(stage); }
-        catch (err) { console.warn('Embedded recovery snapshot unavailable:', err); }
-        recoverJournals();
-        if (pending.size || journalKey) writeJournal();
-        if (db) {
-          await flushPending();
-          if (db && !pending.size) reportStorage('Saved to IndexedDB');
-        } else reportStorage(journalOK ? 'IndexedDB unavailable — temporary recovery; export HTML' : 'Storage unavailable — export HTML now');
-      }
-      async function reconcileDatabase() {
-        if (!db) return false;
-        try {
-          let changed = false;
-          for (const r of await readDatabase()) changed = mergeDurable(r) || changed;
-          if (pending.size || journalKey) writeJournal();
-          if (changed) refreshFromRecords();
-          return true;
-        } catch (err) {
-          console.warn('Could not refresh IndexedDB:', err);
-          return false;
-        }
-      }
-      function refreshFromRecords() {
-        applyTheme(state.theme); renderVarcClock(state.varcOrder); renderChecklist(); renderNotes(); renderErrorLog();
-      }
-      document.addEventListener('visibilitychange', () => {
-        if (document.visibilityState === 'hidden' && pending.size) { writeJournal(); flushPending(); }
-      });
-      window.addEventListener('pagehide', () => { if (pending.size) { writeJournal(); flushPending(); } });
-      window.addEventListener('beforeunload', event => {
-        if (pending.size && !journalOK) { event.preventDefault(); event.returnValue = ''; }
-      });
-
-      function localDate() {
-        const d = new Date();
-        return [d.getFullYear(), String(d.getMonth()+1).padStart(2,'0'), String(d.getDate()).padStart(2,'0')].join('-');
-      }
-      function resetErrorForm() {
-        const form = document.getElementById('error-log-form');
-        editingError = null; form.reset(); form.elements.date.value = localDate();
-        document.getElementById('error-log-submit').textContent = 'Add error';
-        document.getElementById('error-log-cancel').hidden = true;
-      }
-      function renderErrorLog() {
-        const list = document.getElementById('error-log-list');
-        const filter = document.getElementById('error-log-filter').value;
-        const all = Object.entries(state.errors);
-        document.getElementById('error-log-count').textContent = all.length + ' entries · ' + all.filter(([,e]) => e.status === 'open').length + ' open';
-        list.replaceChildren();
-        const shown = all.filter(([,e]) => filter === 'all' || e.section === filter).sort((a,b) => b[1].date.localeCompare(a[1].date) || records.get('error:'+b[0]).time - records.get('error:'+a[0]).time);
-        if (!shown.length) { const p = document.createElement('p'); p.textContent = 'No entries in this view.'; p.className = 'text-muted dark:text-darkMuted'; list.append(p); }
-        for (const [id,e] of shown) {
-          const card = document.createElement('article');
-          card.className = 'border border-hairline dark:border-darkHairline rounded-lg p-3 space-y-2 break-inside-avoid';
-          const add = (tag, value, cls) => { const el = document.createElement(tag); el.textContent = value; el.className = cls; card.append(el); return el; };
-          add('h4', [e.date, e.section, e.category, e.status === 'open' ? 'Open' : 'Reviewed'].join(' · '), 'font-semibold');
-          if (e.reference) add('p', e.reference, 'text-muted dark:text-darkMuted break-words');
-          add('p', 'Root cause: ' + e.cause, 'whitespace-pre-wrap break-words');
-          add('p', 'Correction / recall: ' + e.correction, 'whitespace-pre-wrap break-words font-medium');
-          if (e.marks !== null || e.minutes !== null) add('p', [e.marks === null ? '' : e.marks+' marks lost', e.minutes === null ? '' : e.minutes+' min lost'].filter(Boolean).join(' · '), 'text-muted dark:text-darkMuted');
-          const actions = add('div', '', 'no-print flex flex-wrap gap-4');
-          const button = (label, fn) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = label; b.className = 'underline font-medium'; b.addEventListener('click',fn); actions.append(b); };
-          button('Edit', () => {
-            editingError = id;
-            const form = document.getElementById('error-log-form');
-            for (const [key,val] of Object.entries(e)) form.elements.namedItem(key).value = val ?? '';
-            document.getElementById('error-log-submit').textContent = 'Save edit';
-            document.getElementById('error-log-cancel').hidden = false;
-            form.scrollIntoView({block:'center'}); form.elements.cause.focus();
-          });
-          button(e.status === 'open' ? 'Mark reviewed' : 'Reopen', () => {
-            setRecord('error:'+id, {...e,status:e.status === 'open' ? 'reviewed' : 'open'});
-            if (editingError === id) resetErrorForm();
-            renderErrorLog();
-          });
-          button('Delete', () => {
-            if (!window.confirm('Delete this error-log entry?')) return;
-            setRecord('error:'+id,null);
-            if (editingError === id) resetErrorForm();
-            renderErrorLog();
-          });
-          list.append(card);
-        }
-      }
-      function bindErrorLog() {
-        const form = document.getElementById('error-log-form');
-        resetErrorForm();
-        form.addEventListener('submit', e => {
-          e.preventDefault();
-          const value = Object.fromEntries(new FormData(form));
-          for (const key of ['cause','correction','reference']) value[key] = value[key].trim();
-          for (const key of ['marks','minutes']) value[key] = value[key] === '' ? null : Number(value[key]);
-          const id = editingError || uid();
-          try { setRecord('error:'+id,value); }
-          catch (err) { showToast('Check required error-log fields'); return; }
-          resetErrorForm(); renderErrorLog();
-        });
-        document.getElementById('error-log-cancel').addEventListener('click',resetErrorForm);
-        document.getElementById('error-log-filter').addEventListener('change',renderErrorLog);
-        renderErrorLog();
-      }
-
-      /**
-       * Apply Light / Dark theme class and update toggle icon visibility.
-       */
-      function applyTheme(theme) {
-        const html = document.documentElement;
-        const iconSun = document.getElementById('icon-sun');
-        const iconMoon = document.getElementById('icon-moon');
-        if (theme === 'dark') {
-          html.classList.add('dark');
-          if (iconSun) iconSun.classList.remove('hidden');
-          if (iconMoon) iconMoon.classList.add('hidden');
-        } else {
-          html.classList.remove('dark');
-          if (iconSun) iconSun.classList.add('hidden');
-          if (iconMoon) iconMoon.classList.remove('hidden');
-        }
-      }
-
-      /**
-       * Switch active tab with crisp section-colored underline.
-       */
-      let revisionOpen = false;
-      function toggleRevision(open, focus = true) {
-        revisionOpen = open;
-        document.getElementById('quick-revision').hidden = !open;
-        document.getElementById('overview-full').hidden = open;
-        document.getElementById('btn-quick-revision').setAttribute('aria-pressed',String(open));
-        if (open) { activateTab('overview',true); if(focus) document.getElementById('quick-revision-title').focus(); }
-        else if(focus) document.getElementById('btn-quick-revision').focus();
-      }
-      function activateTab(tabName, keepRevision = false) {
-        if (revisionOpen && !keepRevision) toggleRevision(false,false);
-        const accentMap = {
-          overview: 'border-ink dark:border-darkInk text-ink dark:text-darkInk',
-          varc: 'border-varc text-varc',
-          dilr: 'border-dilr text-dilr',
-          qa: 'border-qa text-qa'
+        // Common raw-score planning model; no predicted percentile or guaranteed floor.
+        const SCORE_TARGETS = {dilr:[30,36],qa:[33,36]};
+        const SCENARIOS = [
+          {label:'Minimum / recovery',varc:30,dilr:24,qa:24,action:'Protect attainable marks; do not compensate recklessly.'},
+          {label:'Primary',varc:38,dilr:30,qa:33,action:'Execute the selected pacing plan; two viable DILR sets.'},
+          {label:'Stretch',varc:44,dilr:39,qa:39,action:'Add only viable opportunities after primary work.'}
+        ];
+        const MODE_PLANS = {
+          standard:{heading:'3 RCs + 8 VA strategy',attempts:[17,18],marks:[37,40],summary:'3 RCs + 8 VA (20-question pool). Aim for 10–11 RC, 4 TITA VA and 3–4 MCQ VA; 17–18 primary, 19 optional.',gate:'45–60s P1 gate; default to three readable RCs. Consider the fourth only under the readable-paper trigger.',checkTitle:'Commit to Standard (3 RCs)',checkDetail:'Protect three readable RCs and all available TITA VA; do not force weak MCQs.',scoreExample:'Illustrative: 17–18 attempts, 13–14 correct, 2 wrong MCQs and 2 wrong TITAs = 37–40 raw marks (about 76–78% accuracy).',quick:'0–25 RCs · 25–32 TITA VA · 32–39 MCQ VA · 39–40 cleanup'},
+          split:{heading:'Anti-fatigue split (3 RCs + 8 VA)',attempts:[17,18],marks:[37,40],summary:'2 RCs → TITA VA → 1 RC → MCQ VA (20-question pool). Aim for 10–11 RC, 4 TITA VA and 3–4 MCQ VA; 17–18 primary, 19 optional.',gate:'45–60s P1 gate; use the initial 1m allowance and protect the early TITA block. Do not force a fourth RC.',checkTitle:'Commit to Anti-Fatigue Split',checkDetail:'2 RCs, TITA VA, 1 RC, MCQ VA; protect the cleanup minute.',scoreExample:'Illustrative: 17–18 attempts, 13–14 correct, 2 wrong MCQs and 2 wrong TITAs = 37–40 raw marks (about 76–78% accuracy).',quick:'0–17 two RCs · 17–24 TITA VA · 24–32 third RC · 32–39 MCQ VA · 39–40 cleanup'},
+          readable:{heading:'Readable-paper alternative (4 RCs + selective VA)',attempts:[18,20],marks:[40,43],summary:'4 RCs + selective VA (24-question potential pool). Aim for 13–14 RC, 4 TITA VA and 1–2 MCQ VA.',gate:'Use only if three RCs finish within 22 elapsed minutes and RC #4 is more attractive than remaining VA. Otherwise revert to Standard.',checkTitle:'Understand Readable-Paper trigger',checkDetail:'Fourth RC only if early and worthwhile; protect TITA VA and one-minute cleanup.',scoreExample:'Illustrative: 18–19 attempts, 14–15 correct, 2 wrong MCQs and 2 wrong TITAs = 40–43 raw marks. A 20th attempt is optional, not required.',quick:'0–30 four RCs (conditional) · 30–36 TITA VA · 36–39 selective MCQ VA · 39–40 cleanup'}
         };
-        const inactiveClasses = 'border-transparent text-muted dark:text-darkMuted hover:text-ink dark:hover:text-darkInk';
+        function planValues(mode) {
+          const p = MODE_PLANS[mode] || MODE_PLANS.standard;
+          const range = a => a.join('–');
+          return {...p,quick:VARC_ORDERS[mode]?.segments.map(seg=>seg.time+' '+seg.label).join(' · ') || p.quick,heading:p.heading+' ('+range(p.attempts)+' attempts)',attempts:range(p.attempts)+' attempts',varcMarks:range(p.marks)+' illustrative raw marks',combined:range(p.marks.map((v,i)=>v+SCORE_TARGETS.dilr[i]+SCORE_TARGETS.qa[i]))+' raw marks'};
+        }
 
-        document.querySelectorAll('.tab-panel').forEach((panel) => {
-          panel.classList.toggle('hidden', panel.id !== 'panel-' + tabName);
-        });
-
-        document.querySelectorAll('.tab-btn').forEach((btn) => {
-          const isTarget = btn.dataset.tab === tabName;
-          btn.className =
-            'tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer ' +
-            (isTarget ? accentMap[tabName] : inactiveClasses);
-          btn.setAttribute('aria-selected', isTarget ? 'true' : 'false');
-        });
-
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-
-      /**
-       * Render VARC 40-minute timeline bars in BOTH Overview and VARC tab.
-       */
-      function renderVarcClock(orderKey) {
-        const config = VARC_ORDERS[orderKey] || VARC_ORDERS.standard;
-        renderPlan(orderKey);
-
-        // Sync toggle buttons across Overview and VARC tab
-        document.querySelectorAll('.varc-order-btn').forEach((btn) => {
-          const isSelected = btn.dataset.varcOrder === orderKey;
-          btn.setAttribute("aria-pressed",String(isSelected));
-          if (isSelected) {
-            btn.classList.add('bg-varc', 'text-white', 'shadow-sm');
-            btn.classList.remove('text-muted', 'dark:text-darkMuted', 'hover:text-ink', 'dark:hover:text-darkInk');
-          } else {
-            btn.classList.remove('bg-varc', 'text-white', 'shadow-sm');
-            btn.classList.add('text-muted', 'dark:text-darkMuted', 'hover:text-ink', 'dark:hover:text-darkInk');
+        // 3-Mode VARC Clock Configurations (Standard / Anti-Fatigue Split / Readable-Paper 4-RC Backup)
+        const VARC_ORDERS = {
+          standard: {
+            label: '(Standard · 3 RCs)',
+            title: 'Standard (3 RCs): 3 RCs \u2192 4 TITA VA \u2192 4 MCQ VA \u2192 1m Cleanup',
+            poolBadge: '20-Q Active Pool · Target 17–18',
+            toast: 'VARC: Standard (3 RCs) active',
+            segments: [
+              {
+                width: 62.5,
+                label: '3 RCs (10–11 Qs)',
+                time: '0–25m',
+                classes: 'bg-varc hover:bg-varc/90 text-white',
+                detail: 'VARC | Min 0–25 (25m): Solve your best 3 RCs (~8m/RC + 1m P1 reject buffer) \u2192 10–11 Qs. 3:30 structural read + 4:30 Qs; flag unresolved MCQs unanswered at 45s.',
+                caption: '3 RCs (~8m each + 1m reject buffer) \u2192 10–11 Qs.'
+              },
+              {
+                width: 17.5,
+                label: '4 TITA VA',
+                time: '25–32m',
+                classes: 'bg-varc/75 hover:bg-varc/65 text-white',
+                detail: 'VARC | Min 25–32 (7m): 2 Para Jumbles + 2 Odd One Out (~1:45/Q). Zero negative marking \u2014 attempt all 4 unconditionally, cap at 2:00/Q.',
+                caption: '4 TITA VA (2 PJ + 2 Odd Out) \u2192 Attempt all 4 (no -1).'
+              },
+              {
+                width: 17.5,
+                label: '4 MCQ VA',
+                time: '32–39m',
+                classes: 'bg-varc/40 hover:bg-varc/50 text-ink dark:text-darkInk',
+                detail: 'VARC | Min 32–39 (7m): 2 Para Summary + 2 Para Completion (~1:45/Q). Target 3–4 clean Qs; flag unresolved MCQs unanswered at 45s.',
+                caption: '4 MCQ VA (2 Summary + 2 Completion) \u2192 3–4 clean Qs.'
+              },
+              {
+                width: 2.5,
+                label: '1m',
+                time: '39–40m',
+                classes: 'bg-varc/20 hover:bg-varc/30 text-varc dark:text-indigo-300',
+                detail: 'VARC | Min 39–40 (1m): Cleanup \u2014 confirm all 4 TITA boxes are filled; revisit a genuinely shortlisted MCQ only after clearer opportunities and TITA saves.',
+                caption: 'Cleanup \u2192 confirm all 4 TITA entries saved.'
+              }
+            ]
+          },
+          split: {
+            label: '(Anti-Fatigue Split)',
+            title: 'Anti-Fatigue Split: 2 RCs (17m, including gate) → TITA VA (7m) → RC #3 (8m) → MCQ VA (7m) → cleanup (1m)',
+            poolBadge: '20-Q Active Pool · Target 17–18',
+            toast: 'VARC: Anti-Fatigue Split active',
+            segments: [
+              {
+                width: 42.5,
+                label: '2 RCs',
+                time: '0–17m',
+                classes: 'bg-varc hover:bg-varc/90 text-white',
+                detail: 'VARC | Min 0–17 (17m): Solve your first 2 readable RCs (~8m each plus 1m gate allowance) while focus is sharpest. Enforce 45–60s P1 gate.',
+                caption: 'First 2 RCs (~8m each + 1m gate) \u2192 6–8 Qs; aim for 10–11 across three RCs.'
+              },
+              {
+                width: 17.5,
+                label: '4 TITA VA',
+                time: '17–24m',
+                classes: 'bg-varc/70 hover:bg-varc/60 text-white',
+                detail: 'VARC | Min 17–24 (7m): Palate cleanser \u2014 knock out 2 Para Jumbles + 2 Odd One Out (zero negative marking) before RC #3.',
+                caption: '4 TITA VA palate cleanser \u2192 all 4 locked early.'
+              },
+              {
+                width: 20,
+                label: 'RC #3',
+                time: '24–32m',
+                classes: 'bg-varc hover:bg-varc/90 text-white',
+                detail: 'VARC | Min 24–32 (8m): Return fresh for RC #3. 3:30 structural read + 4:30 Qs; don\'t force 4/4.',
+                caption: 'RC #3 with fresh eyes \u2192 3–4 Qs.'
+              },
+              {
+                width: 17.5,
+                label: '4 MCQ VA',
+                time: '32–39m',
+                classes: 'bg-varc/40 hover:bg-varc/50 text-ink dark:text-darkInk',
+                detail: 'VARC | Min 32–39 (7m): 2 Para Summary + 2 Para Completion (~1:45/Q). High-accuracy finish; flag unresolved MCQs unanswered at 45s.',
+                caption: '4 MCQ VA (Summary + Completion) \u2192 3–4 Qs.'
+              },
+              {
+                width: 2.5,
+                label: '1m',
+                time: '39–40m',
+                classes: 'bg-varc/20 hover:bg-varc/30 text-varc dark:text-indigo-300',
+                detail: 'VARC | Min 39–40 (1m): Cleanup \u2014 confirm all 4 TITAs are entered and revisit a genuinely shortlisted MCQ if time remains.',
+                caption: 'Final 1m TITA & flag audit.'
+              }
+            ]
+          },
+          readable: {
+            label: '(Readable-Paper · 4 RCs)',
+            title: 'Trigger: Open RC #4 only if the first three finish within 22 elapsed minutes and it offers better value than remaining VA; otherwise use Standard.',
+            poolBadge: '24-Q potential pool · target 18–20 attempts',
+            toast: 'VARC: Readable-Paper (4 RCs) backup active',
+            segments: [
+              {
+                width: 75,
+                label: '4 RCs (~7.5m each · 13–14 Qs)',
+                time: '0–30m',
+                classes: 'bg-varc hover:bg-varc/90 text-white',
+                detail: 'VARC (Backup) | Min 0–30 (30m): Trigger: first three RCs finished within 22 elapsed minutes and RC #4 is higher-value than remaining VA; otherwise use Standard. Pace ~7.5m/RC \u2192 13–14 Qs; flag unresolved MCQs unanswered at 45s.',
+                caption: 'Open RC #4 if first three finish within 22m and it beats remaining VA (~7.5m/RC \u2192 13–14 Qs).'
+              },
+              {
+                width: 15,
+                label: '4 TITA VA',
+                time: '30–36m',
+                classes: 'bg-varc/75 hover:bg-varc/65 text-white',
+                detail: 'VARC (Backup) | Min 30–36 (6m): Hit all 4 TITA VA questions first (2 Para Jumbles + 2 Odd One Out \u2014 zero -1 penalty).',
+                caption: '4 TITA VA first (all 4, zero -1 penalty).'
+              },
+              {
+                width: 7.5,
+                label: 'MCQ',
+                time: '36–39m',
+                classes: 'bg-varc/40 hover:bg-varc/50 text-ink dark:text-darkInk',
+                detail: 'VARC (Backup) | Min 36–39 (3m): Pick 1–2 quick Para Summary / Para Completion MCQs for 18–20 total attempts.',
+                caption: '1–2 quick Summary/Completion MCQs (Target: 18–20 total).'
+              },
+              {
+                width: 2.5,
+                label: '1m',
+                time: '39–40m',
+                classes: 'bg-varc/20 hover:bg-varc/30 text-varc dark:text-indigo-300',
+                detail: 'VARC (Backup) | Min 39–40 (1m): Cleanup \u2014 confirm available TITA entries are saved, then consider genuinely shortlisted MCQs if time remains.',
+                caption: 'Cleanup \u2192 verify all 4 TITA boxes saved.'
+              }
+            ]
           }
-        });
-
-        // Update Overview mode label & bar
-        document.querySelectorAll('.varc-mode-label').forEach((el) => {
-          el.textContent = config.label;
-        });
-
-        const overviewBar = document.getElementById('overview-varc-bar');
-        if (overviewBar) {
-          overviewBar.innerHTML = config.segments
-            .map(
-              (seg) => `
-              <button
-                type="button"
-                data-accent="varc"
-                data-timeline-detail="${seg.detail.replace(/"/g, '&quot;')}"
-                style="width: ${seg.width}%"
-                class="timeline-seg ${seg.classes} font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate"
-              >
-                <span class="truncate max-w-full">${seg.label}</span>
-                <span class="text-[9px] opacity-85">${seg.time}</span>
-              </button>
-            `
-            )
-            .join('');
-        }
-
-        // Update VARC tab title, pool badge, bar, and caption cards
-        const varcTitle = document.getElementById('varc-order-title');
-        if (varcTitle) varcTitle.textContent = config.title;
-
-        const varcPoolBadge = document.getElementById('varc-pool-badge');
-        if (varcPoolBadge) varcPoolBadge.textContent = config.poolBadge;
-
-        const varcTabBar = document.getElementById('varc-tab-bar');
-        if (varcTabBar) {
-          varcTabBar.innerHTML = config.segments
-            .map(
-              (seg) => `
-              <div
-                style="width: ${seg.width}%"
-                title="${seg.detail.replace(/"/g, '&quot;')}"
-                class="${seg.classes} font-mono text-xs font-semibold flex flex-col items-center justify-center px-1 text-center truncate"
-              >
-                <span class="truncate max-w-full">${seg.label}</span>
-                <span class="text-[10px] opacity-85">${seg.time}</span>
-              </div>
-            `
-            )
-            .join('');
-        }
-
-        const varcCaption = document.getElementById('varc-order-caption');
-        if (varcCaption) {
-          const gridCols = config.segments.length === 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-4';
-          varcCaption.className = `mt-3 grid grid-cols-1 sm:grid-cols-2 ${gridCols} gap-2.5 text-xs`;
-          varcCaption.innerHTML = config.segments
-            .map(
-              (seg) => `
-              <div class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
-                <span class="font-mono font-bold text-varc">${seg.time}:</span>
-                <span class="text-muted dark:text-darkMuted"> ${seg.caption}</span>
-              </div>
-            `
-            )
-            .join('');
-        }
-
-        const inspector = document.getElementById("overview-timeline-readout");
-        if (inspector) inspector.textContent = "Select any time segment above to inspect its exact clock rule.";
-        bindOverviewTimelineSegments();
-      }
-
-      /**
-       * Bind interactive click readout for Overview 40-minute timeline bars.
-       */
-      function bindOverviewTimelineSegments() {
-        const readout = document.getElementById('overview-timeline-readout');
-        if (!readout) return;
-
-        const dotColorMap = {
-          varc: 'bg-varc',
-          dilr: 'bg-dilr',
-          qa: 'bg-qa'
         };
+        function scenarioValues(mode) {
+          return SCENARIOS.map(item => {
+            const varc = mode === 'readable' && item.label === 'Primary' ? 41 : item.varc;
+            return {...item, varc, total: varc + item.dilr + item.qa};
+          });
+        }
+        return Object.freeze({validModes: VALID_VARC_ORDERS, orders: VARC_ORDERS, planValues, scenarioValues});
+      })();
+      // </module:strategy>
 
-        document.querySelectorAll('#panel-overview .timeline-seg').forEach((seg) => {
-          seg.onclick = () => {
-            const detail = seg.getAttribute('data-timeline-detail');
-            if (!detail) return;
-            const accent = seg.getAttribute('data-accent') || 'varc';
-            const dotClass = dotColorMap[accent] || 'bg-varc';
-            readout.innerHTML = `<span class="w-2 h-2 rounded-full ${dotClass} shrink-0"></span><span class="text-ink dark:text-darkInk">${detail}</span>`;
+
+      // <module:schema> Record types, defaults, validation, portable serialization
+      const schema = (() => {
+        function initialState() {
+          return {
+            theme: 'light',
+            varcOrder: 'standard',
+            checklist: {
+              'chk-bailout': false,
+              'chk-dilr-shield': false,
+              'chk-varc-gate': false,
+              'chk-qa-quarantine': false,
+              'chk-taper': false,
+              'chk-logistics': false
+            },
+            notes: {
+              overview: '',
+              varc: '',
+              dilr: '',
+              qa: ''
+            },
+            errors: Object.create(null)
           };
-        });
-      }
-
-      /**
-       * Hydrate checklist checkboxes and update readiness counter.
-       */
-      function renderChecklist() {
-        const checkboxes = document.querySelectorAll('.reset-chk');
-        let checkedCount = 0;
-
-        checkboxes.forEach((chk) => {
-          const key = chk.dataset.chk;
-          const isChecked = Boolean(state.checklist[key]);
-          chk.checked = isChecked;
-          if (isChecked) checkedCount++;
-        });
-
-        const progressEl = document.getElementById('checklist-progress');
-        if (progressEl) {
-          progressEl.textContent = `${checkedCount} / ${checkboxes.length} Ready`;
-          if (checkedCount === checkboxes.length) {
-            progressEl.classList.add('text-dilr', 'border-dilr/40');
-          } else {
-            progressEl.classList.remove('text-dilr', 'border-dilr/40');
-          }
         }
-      }
-
-      /**
-       * Hydrate personal notes textareas and "Saved" badges.
-       */
-      function renderNotes() {
-        document.querySelectorAll('textarea[data-note-key]').forEach((ta) => {
-          const key = ta.dataset.noteKey;
-          const val = state.notes[key] || '';
-          if (ta.value !== val) {
-            const focused = document.activeElement === ta;
-            const start = ta.selectionStart, end = ta.selectionEnd;
-            ta.value = val;
-            if (focused) { ta.setSelectionRange(Math.min(start,val.length),Math.min(end,val.length)); showToast('Newer saved note reconciled from another tab'); }
-          }
-          updateNoteBadge(key, val);
-        });
-      }
-
-      function updateNoteBadge(key, val) {
-        const badge = document.querySelector(`[data-note-badge="${key}"]`);
-        if (badge) {
-          badge.classList.toggle('hidden', !val.trim());
+        const sections = ['VARC', 'DILR', 'QA'];
+        const categories = ['Selection', 'Time management', 'Comprehension', 'Representation', 'Deduction / elimination', 'Arithmetic / execution', 'Verification', 'Interface', 'Other'];
+        const noteKeys = Object.keys(initialState().notes), checklistKeys = Object.keys(initialState().checklist);
+        function isValidRecord(r) {
+          if (!r || typeof r.key !== 'string' || !Number.isSafeInteger(r.time) || r.time < 0 ||
+              !Number.isSafeInteger(r.seq) || r.seq < 0 || typeof r.writer !== 'string' || r.writer.length > 100) return false;
+          const v = r.value;
+          if (r.key === 'pref:theme') return v === 'light' || v === 'dark';
+          if (r.key === 'pref:varcOrder') return strategy.validModes.includes(v);
+          if (r.key.startsWith('check:')) return checklistKeys.includes(r.key.slice(6)) && typeof v === 'boolean';
+          if (r.key.startsWith('note:')) return noteKeys.includes(r.key.slice(5)) && typeof v === 'string';
+          if (!/^error:[a-zA-Z0-9-]{1,100}$/.test(r.key)) return false;
+          if (v === null) return true; // Tombstone prevents deleted entries resurfacing from older exports.
+          return !!(v && Object.keys(v).length === 9 && typeof v.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v.date) && sections.includes(v.section) &&
+            categories.includes(v.category) && ['open','reviewed'].includes(v.status) &&
+            typeof v.reference === 'string' && v.reference.length <= 200 &&
+            typeof v.cause === 'string' && v.cause.trim() && v.cause.length <= 2000 &&
+            typeof v.correction === 'string' && v.correction.trim() && v.correction.length <= 2000 &&
+            (v.marks === null || Number.isFinite(v.marks) && v.marks >= 0 && v.marks <= 300) &&
+            (v.minutes === null || Number.isFinite(v.minutes) && v.minutes >= 0 && v.minutes <= 120));
         }
-      }
+        function newer(a, b) {
+          if (!b) return true;
+          if (a.time !== b.time) return a.time > b.time;
+          if (a.seq !== b.seq) return a.seq > b.seq;
+          return a.writer > b.writer;
+        }
+        function readSnapshot(raw) {
+          const parsed = JSON.parse(raw);
+          if (!parsed || parsed.schemaVersion !== 2 || !Array.isArray(parsed.records) || !parsed.records.every(isValidRecord) || new Set(parsed.records.map(r=>r.key)).size !== parsed.records.length)
+            throw new Error('Invalid record snapshot');
+          return parsed.records;
+        }
+        function makeSnapshot(records) { return {schemaVersion: 2, records: Array.from(records)}; }
+        function encodeSnapshot(records) { return JSON.stringify(makeSnapshot(records)).replace(/</g, '\\u003c'); }
+        return Object.freeze({initialState, isValidRecord, newer, readSnapshot, makeSnapshot, encodeSnapshot});
+      })();
+      const uid = () => globalThis.crypto?.randomUUID?.() || Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
+      // </module:schema>
 
-      /**
-       * Export a clean, standalone copy of this HTML file with all current notes,
-       * checklist checked states, active theme, and active varcOrder embedded inside.
-       */
-      async function exportUpdatedHtml() {
-        if (exporting) return;
-        const exportButton = document.getElementById('btn-export-html');
-        const errorForm = document.getElementById('error-log-form');
-        if ((errorForm.elements.cause.value.trim() || errorForm.elements.correction.value.trim() || errorForm.elements.reference.value.trim()) && !window.confirm('An error-log draft has not been submitted. Export saved records without this draft?')) return;
-        exporting = true; exportButton.disabled = true;
-        try {
-          // Capture any live textarea edits before the asynchronous database read.
-          document.querySelectorAll('textarea[data-note-key]').forEach(ta=>{
-            const key=ta.dataset.noteKey; if(ta.value!==state.notes[key]) setRecord('note:'+key,ta.value);
+
+      // <module:record-model> Private state projection and per-record versioning
+      function createRecordModel(schema, writer) {
+
+        const state = schema.initialState();
+        const records = new Map();
+        let clock = 0, serial = 0;
+        function applyRecord(r) {
+          if (!schema.isValidRecord(r) || !schema.newer(r, records.get(r.key))) return false;
+          records.set(r.key, r);
+          clock = Math.max(clock, r.time);
+          if (r.key === 'pref:theme') state.theme = r.value;
+          else if (r.key === 'pref:varcOrder') state.varcOrder = r.value;
+          else if (r.key.startsWith('check:')) state.checklist[r.key.slice(6)] = r.value;
+          else if (r.key.startsWith('note:')) state.notes[r.key.slice(5)] = r.value;
+          else if (r.value === null) delete state.errors[r.key.slice(6)];
+          else state.errors[r.key.slice(6)] = r.value;
+          return true;
+        }
+        function createRecord(key, value) {
+          const r = {key, value, time: Math.max(Date.now(), clock + 1), seq: ++serial, writer};
+          if (!schema.isValidRecord(r)) throw new Error('Invalid record: ' + key);
+          return r;
+        }
+        // The projection is read-only to callers; only applyRecord mutates it.
+        function view() { return state; }
+        function recordTime(key) { return records.get(key)?.time ?? 0; }
+        function snapshot() { return schema.makeSnapshot(records.values()); }
+        function safeSnapshot() { return schema.encodeSnapshot(records.values()); }
+        return Object.freeze({view, recordTime, snapshot, safeSnapshot, createRecord, applyRecord});
+      }
+      // </module:record-model>
+
+
+      // <module:persistence> IndexedDB, temporary journal, reconciliation, lifecycle
+      function createPersistence({onStatus, onReconcile, readEmbedded}) {
+        const DB_NAME = 'cat99_playbook';
+        const DB_VERSION = 1;
+        const STORE = 'records';
+        const JOURNAL_PREFIX = 'cat99_emergency_v2:';
+        const JOURNAL_LIMIT = 64 * 1024;
+        const writer = uid();
+        const model = createRecordModel(schema, writer);
+        let journalKey = null, journalRaw = null, journalSerial = 0;
+        const pending = new Map();
+        let db = null, saving = false, saveTimer = null;
+        let recoveredKeys = [], journalOK = true;
+        const isValidRecord = schema.isValidRecord, newer = schema.newer, readSnapshot = schema.readSnapshot;
+        const applyRecord = model.applyRecord;
+
+        function reportStorage(message) { onStatus(message, !!db); }
+
+        // -- Recovery journal: only pending records; never a full database mirror.
+        // Journal holds only dirty records and is removed after durable transaction completion.
+        // Per-page keys avoid concurrent tabs erasing one another's uncommitted edits.
+        function writeJournal() {
+          try {
+            if (!pending.size) {
+              if (journalKey) localStorage.removeItem(journalKey);
+              journalKey = journalRaw = null; journalOK = true; return true;
+            }
+            const raw = JSON.stringify({schemaVersion:2, records:Array.from(pending.values())});
+            if (raw.length * 2 > JOURNAL_LIMIT) throw new Error('Emergency journal limit exceeded');
+            if (journalKey && raw === journalRaw && localStorage.getItem(journalKey) === raw) { journalOK = true; return true; }
+            // Immutable journal keys: another tab may retire an old key without racing a new write to it.
+            const nextKey = JOURNAL_PREFIX + writer + ':' + (++journalSerial);
+            localStorage.setItem(nextKey, raw);
+            const previous = journalKey;
+            journalKey = nextKey; journalRaw = raw; journalOK = true;
+            if (previous) { try { localStorage.removeItem(previous); } catch {} }
+            return true;
+          } catch (err) { journalOK = false; console.warn('Emergency journal unavailable:', err); return false; }
+        }
+        function stage(r) { if (applyRecord(r)) pending.set(r.key, r); }
+        function mergeDurable(r) {
+          if (!isValidRecord(r)) return false;
+          const dirty = pending.get(r.key);
+          if (dirty && !newer(dirty,r)) pending.delete(r.key);
+          return applyRecord(r);
+        }
+        function recoverJournals() {
+          try {
+            const keys = [];
+            for (let i = 0; i < localStorage.length; i++) {
+              const key = localStorage.key(i);
+              if (key && key.startsWith(JOURNAL_PREFIX)) keys.push(key);
+            }
+            for (const key of keys) {
+              try {
+                const raw = localStorage.getItem(key);
+                if (!raw || raw.length * 2 > JOURNAL_LIMIT) continue;
+                readSnapshot(raw).forEach(stage);
+                if (!recoveredKeys.some(item=>item.key===key)) recoveredKeys.push({key, raw});
+              } catch (err) { console.warn('Unreadable recovery journal retained:', err); }
+            }
+          } catch (err) { journalOK = false; console.warn('Journal recovery unavailable:', err); }
+        }
+        // -- IndexedDB transport: open, read, atomic compare/write, close.
+        function openDatabase() {
+          return new Promise((resolve, reject) => {
+            let settled = false;
+            const timer = setTimeout(() => { settled = true; reject(new Error('IndexedDB open timeout')); }, 2500);
+            const finish = (fn, value) => { if (!settled) { settled = true; clearTimeout(timer); fn(value); } };
+            try {
+              const req = globalThis.indexedDB.open(DB_NAME, DB_VERSION);
+              req.onupgradeneeded = () => {
+                if (!req.result.objectStoreNames.contains(STORE)) req.result.createObjectStore(STORE, {keyPath:'key'});
+              };
+              req.onerror = () => finish(reject, req.error);
+              req.onblocked = () => finish(reject, new Error('IndexedDB upgrade blocked'));
+              req.onsuccess = () => {
+                if (settled) { req.result.close(); return; }
+                finish(resolve, req.result);
+              };
+            } catch (err) { finish(reject, err); }
           });
-          const refreshed = !!db && await reconcileDatabase();
-          const portable = safeSnapshot(); readSnapshot(portable);
-          // Clone document so live DOM stays untouched
-          const clone = document.documentElement.cloneNode(true);
-
-          // Sync dark mode class on cloned root element
-          if (state.theme === 'dark') {
-            clone.classList.add('dark');
-          } else {
-            clone.classList.remove('dark');
+        }
+        function readDatabase() {
+          return new Promise((resolve, reject) => {
+            const tx = db.transaction(STORE, 'readonly'), req = tx.objectStore(STORE).getAll();
+            const timer = setTimeout(() => { try { tx.abort(); } catch {} reject(new Error('Read timed out')); }, 2500);
+            tx.oncomplete = () => { clearTimeout(timer); resolve(req.result); };
+            tx.onabort = tx.onerror = () => { clearTimeout(timer); reject(tx.error || req.error || new Error('Read failed')); };
+          });
+        }
+        // Atomic compare-and-write prevents stale records overwriting newer edits.
+        function writeDatabase(batch) {
+          return new Promise((resolve, reject) => {
+            const tx = db.transaction(STORE, 'readwrite'), store = tx.objectStore(STORE), winners = [];
+            const timer = setTimeout(() => { try { tx.abort(); } catch {} reject(new Error('Write timed out')); }, 4000);
+            tx.oncomplete = () => { clearTimeout(timer); resolve(winners); };
+            tx.onabort = tx.onerror = () => { clearTimeout(timer); reject(tx.error || new Error('Write failed')); };
+            for (const r of batch) {
+              const req = store.get(r.key);
+              req.onsuccess = () => {
+                if (!isValidRecord(req.result) || newer(r, req.result)) { store.put(r); winners.push(r); }
+                else winners.push(req.result);
+              };
+            }
+          });
+        }
+        function closeDatabase() { if (db) db.close(); db = null; }
+        // -- Persistence coordinator: dirty records, transaction completion, recovery.
+        async function flushPending() {
+          if (saving || !db || !pending.size && !recoveredKeys.length) return;
+          saving = true;
+          const batch = Array.from(pending.values());
+          try {
+            const winners = batch.length ? await writeDatabase(batch) : [];
+            let changed = false;
+            for (const r of winners) changed = mergeDurable(r) || changed;
+            for (const r of batch) if (pending.get(r.key) === r) pending.delete(r.key);
+            if (changed) { onReconcile('A newer saved record was reconciled'); }
+            for (const item of recoveredKeys) {
+              try { if (localStorage.getItem(item.key) === item.raw) localStorage.removeItem(item.key); } catch {}
+            }
+            recoveredKeys = [];
+            writeJournal();
+            reportStorage(pending.size ? (journalOK ? 'Saving to IndexedDB…' : 'Saving — emergency journal unavailable') : 'Saved to IndexedDB');
+          } catch (err) {
+            console.warn('IndexedDB write failed:', err);
+            closeDatabase(); writeJournal();
+            reportStorage(journalOK ? 'Temporary recovery only — export HTML for backup' : 'Unsaved in memory — export HTML now');
+          } finally {
+            saving = false;
+            if (db && pending.size) scheduleSave(0);
           }
+        }
+        function scheduleSave(delay = 0) {
+          // Throttle rather than sliding debounce: continuous typing cannot indefinitely postpone saving.
+          if (saveTimer !== null && delay > 0) return;
+          clearTimeout(saveTimer);
+          saveTimer = setTimeout(() => { saveTimer = null; flushPending(); }, delay);
+        }
+        function setRecord(key, value, delay = 0) {
+          const r = model.createRecord(key, value);
+          stage(r);
+          writeJournal(); // synchronous before deferred IndexedDB write
+          reportStorage(db ? (journalOK ? 'Saving to IndexedDB…' : 'Saving — emergency journal unavailable') :
+            (journalOK ? 'Temporary recovery only — export HTML for backup' : 'Unsaved in memory — export HTML now'));
+          if (db) scheduleSave(delay);
+        }
+        async function loadState() {
+          try {
+            db = await openDatabase();
+            db.onversionchange = () => { closeDatabase(); writeJournal(); reportStorage('Storage changed — reload or export HTML'); };
+            db.onclose = () => { db = null; reportStorage('Storage closed — reload or export HTML'); };
+            (await readDatabase()).forEach(mergeDurable);
+          } catch (err) { console.warn('IndexedDB unavailable:', err); closeDatabase(); }
+          try { readSnapshot(readEmbedded()).forEach(stage); }
+          catch (err) { console.warn('Embedded recovery snapshot unavailable:', err); }
+          recoverJournals();
+          if (pending.size || journalKey) writeJournal();
+          if (db) {
+            await flushPending();
+            if (db && !pending.size) reportStorage('Saved to IndexedDB');
+          } else reportStorage(journalOK ? 'IndexedDB unavailable — temporary recovery; export HTML' : 'Storage unavailable — export HTML now');
+        }
+        async function reconcileDatabase() {
+          if (!db) return false;
+          try {
+            let changed = false;
+            for (const r of await readDatabase()) changed = mergeDurable(r) || changed;
+            if (pending.size || journalKey) writeJournal();
+            if (changed) onReconcile();
+            return true;
+          } catch (err) {
+            console.warn('Could not refresh IndexedDB:', err);
+            return false;
+          }
+        }
+        function isOpen() { return !!db; }
+        function isSaving() { return saving; }
+        function bindLifecycle() {
+          document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden' && pending.size) { writeJournal(); flushPending(); }
+          });
+          window.addEventListener('pagehide', () => { if (pending.size) { writeJournal(); flushPending(); } });
+          window.addEventListener('beforeunload', event => {
+            if (pending.size && !journalOK) { event.preventDefault(); event.returnValue = ''; }
+          });
+        }
+        return Object.freeze({view: model.view, recordTime: model.recordTime, snapshot: model.snapshot, safeSnapshot: model.safeSnapshot, setRecord, loadState, reconcileDatabase, flushPending, isOpen, isSaving, bindLifecycle});
+      }
+      // </module:persistence>
 
-          // Store personal text only once, in the validated escaped snapshot.
-          clone.querySelectorAll('textarea[data-note-key]').forEach(ta=>{ ta.value = ''; ta.textContent = ''; });
-          clone.querySelector('#btn-export-html').disabled = false;
-          clone.querySelector('#btn-retry-storage').disabled = false;
 
-          // Write current checkbox checked attributes into cloned DOM
-          clone.querySelectorAll('input[data-chk]').forEach((chk) => {
-            const key = chk.getAttribute('data-chk');
-            if (state.checklist[key]) {
-              chk.setAttribute('checked', 'checked');
+      // <module:feedback> Toast and storage-status rendering
+      function createFeedback() {
+        let toastTimer = null;
+
+        /**
+         * Show subtle non-blocking toast notification.
+         */
+        function showToast(message) {
+          const toast = document.getElementById('toast');
+          if (!toast) return;
+          toast.textContent = message;
+          toast.classList.remove('opacity-0', 'translate-y-2');
+          toast.classList.add('opacity-100', 'translate-y-0');
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(() => {
+            toast.classList.add('opacity-0', 'translate-y-2');
+            toast.classList.remove('opacity-100', 'translate-y-0');
+          }, 2200);
+        }
+        function reportStorage(message, available) {
+          const el = document.getElementById('storage-status');
+          if (el) el.textContent = message;
+          const retry = document.getElementById('btn-retry-storage');
+          if (retry) retry.hidden = available;
+          document.querySelectorAll('[data-note-status]').forEach(el => { el.textContent = message; });
+        }
+        return Object.freeze({showToast, reportStorage});
+      }
+      // </module:feedback>
+
+
+      // <module:shell> Theme, tabs, compact revision and print
+      function createShell(storage) {
+        function applyTheme(theme) {
+          const html = document.documentElement;
+          const iconSun = document.getElementById('icon-sun');
+          const iconMoon = document.getElementById('icon-moon');
+          if (theme === 'dark') {
+            html.classList.add('dark');
+            if (iconSun) iconSun.classList.remove('hidden');
+            if (iconMoon) iconMoon.classList.add('hidden');
+          } else {
+            html.classList.remove('dark');
+            if (iconSun) iconSun.classList.add('hidden');
+            if (iconMoon) iconMoon.classList.remove('hidden');
+          }
+        }
+
+        /**
+         * Switch active tab with crisp section-colored underline.
+         */
+        let revisionOpen = false;
+        function toggleRevision(open, focus = true) {
+          revisionOpen = open;
+          document.getElementById('quick-revision').hidden = !open;
+          document.getElementById('overview-full').hidden = open;
+          document.getElementById('btn-quick-revision').setAttribute('aria-pressed',String(open));
+          if (open) { activateTab('overview',true); if(focus) document.getElementById('quick-revision-title').focus(); }
+          else if(focus) document.getElementById('btn-quick-revision').focus();
+        }
+        function activateTab(tabName, keepRevision = false) {
+          if (revisionOpen && !keepRevision) toggleRevision(false,false);
+          const accentMap = {
+            overview: 'border-ink dark:border-darkInk text-ink dark:text-darkInk',
+            varc: 'border-varc text-varc',
+            dilr: 'border-dilr text-dilr',
+            qa: 'border-qa text-qa'
+          };
+          const inactiveClasses = 'border-transparent text-muted dark:text-darkMuted hover:text-ink dark:hover:text-darkInk';
+
+          document.querySelectorAll('.tab-panel').forEach((panel) => {
+            panel.classList.toggle('hidden', panel.id !== 'panel-' + tabName);
+          });
+
+          document.querySelectorAll('.tab-btn').forEach((btn) => {
+            const isTarget = btn.dataset.tab === tabName;
+            btn.className =
+              'tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer ' +
+              (isTarget ? accentMap[tabName] : inactiveClasses);
+            btn.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+          });
+
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        function bind() {
+          document.getElementById("btn-quick-revision").addEventListener("click",()=>toggleRevision(!revisionOpen));
+          document.getElementById("btn-close-revision").addEventListener("click",()=>toggleRevision(false));
+          // Tab click listeners
+          document.querySelectorAll('.tab-btn').forEach((btn) => {
+            btn.addEventListener('click', () => activateTab(btn.dataset.tab));
+          });
+
+          // Keyboard shortcuts 1–4 for instant tab switching (when not typing)
+          document.addEventListener('keydown', (e) => {
+            const tag = (e.target && e.target.tagName) || '';
+            if (tag === 'TEXTAREA' || tag === 'INPUT' || tag === 'SELECT' || e.metaKey || e.ctrlKey || e.altKey) return;
+            if (e.key === '1') activateTab('overview');
+            if (e.key === '2') activateTab('varc');
+            if (e.key === '3') activateTab('dilr');
+            if (e.key === '4') activateTab('qa');
+          });
+
+          // Light / Dark theme toggle
+          const btnTheme = document.getElementById('btn-theme');
+          if (btnTheme) {
+            btnTheme.addEventListener('click', () => {
+              storage.setRecord('pref:theme', storage.view().theme === 'dark' ? 'light' : 'dark');
+              applyTheme(storage.view().theme);
+            });
+          }
+          // Print / Save PDF (opens any non-empty notes drawers automatically)
+          const btnPrint = document.getElementById('btn-print');
+          if (btnPrint) {
+            btnPrint.addEventListener('click', () => {
+              document.querySelectorAll('.notes-drawer').forEach((drawer) => {
+                const ta = drawer.querySelector('textarea[data-note-key]');
+                if (ta && ta.value.trim()) {
+                  drawer.setAttribute('open', 'open');
+                }
+              });
+              const wasRevision = revisionOpen;
+              if(wasRevision) toggleRevision(false,false);
+              try { window.print(); } finally { if(wasRevision) toggleRevision(true,false); }
+            });
+          }
+        }
+        return Object.freeze({applyTheme, activateTab, toggleRevision, bind});
+      }
+      // </module:shell>
+
+
+      // <module:checklist> Readiness checklist and reset
+      function createChecklistView(storage, showToast) {
+        function renderChecklist() {
+          const checkboxes = document.querySelectorAll('.reset-chk');
+          let checkedCount = 0;
+
+          checkboxes.forEach((chk) => {
+            const key = chk.dataset.chk;
+            const isChecked = Boolean(storage.view().checklist[key]);
+            chk.checked = isChecked;
+            if (isChecked) checkedCount++;
+          });
+
+          const progressEl = document.getElementById('checklist-progress');
+          if (progressEl) {
+            progressEl.textContent = `${checkedCount} / ${checkboxes.length} Ready`;
+            if (checkedCount === checkboxes.length) {
+              progressEl.classList.add('text-dilr', 'border-dilr/40');
             } else {
-              chk.removeAttribute('checked');
+              progressEl.classList.remove('text-dilr', 'border-dilr/40');
+            }
+          }
+        }
+        function bind() {
+          // Checklist persistence
+          document.querySelectorAll('.reset-chk').forEach((chk) => {
+            chk.addEventListener('change', () => {
+              storage.setRecord('check:' + chk.dataset.chk, chk.checked);
+              renderChecklist();
+            });
+          });
+
+          // Checklist reset button
+          const btnResetChecklist = document.getElementById('btn-reset-checklist');
+          if (btnResetChecklist) {
+            btnResetChecklist.addEventListener('click', () => {
+              Object.keys(storage.view().checklist).forEach(k => storage.setRecord('check:' + k, false));
+              renderChecklist();
+              showToast('Checklist cleared');
+            });
+          }
+        }
+        return Object.freeze({render: renderChecklist, bind});
+      }
+      // </module:checklist>
+
+
+      // <module:notes> Personal note editing and badges
+      function createNotesView(storage, showToast) {
+        function renderNotes() {
+          document.querySelectorAll('textarea[data-note-key]').forEach((ta) => {
+            const key = ta.dataset.noteKey;
+            const val = storage.view().notes[key] || '';
+            if (ta.value !== val) {
+              const focused = document.activeElement === ta;
+              const start = ta.selectionStart, end = ta.selectionEnd;
+              ta.value = val;
+              if (focused) { ta.setSelectionRange(Math.min(start,val.length),Math.min(end,val.length)); showToast('Newer saved note reconciled from another tab'); }
+            }
+            updateNoteBadge(key, val);
+          });
+        }
+
+        function updateNoteBadge(key, val) {
+          const badge = document.querySelector(`[data-note-badge="${key}"]`);
+          if (badge) {
+            badge.classList.toggle('hidden', !val.trim());
+          }
+        }
+        function bind() {
+          // Notes: journal immediately; coalesce durable writes while typing.
+          document.querySelectorAll('textarea[data-note-key]').forEach(ta => {
+            ta.addEventListener('input', () => {
+              const key = ta.dataset.noteKey;
+              storage.setRecord('note:' + key, ta.value, 200);
+              updateNoteBadge(key, ta.value);
+            });
+          });
+        }
+        return Object.freeze({render: renderNotes, bind});
+      }
+      // </module:notes>
+
+
+      // <module:error-log> Error CRUD, filtering and form state
+      function createErrorLogView(storage, showToast) {
+        let editingError = null;
+        function localDate() {
+          const d = new Date();
+          return [d.getFullYear(), String(d.getMonth()+1).padStart(2,'0'), String(d.getDate()).padStart(2,'0')].join('-');
+        }
+        function resetErrorForm() {
+          const form = document.getElementById('error-log-form');
+          editingError = null; form.reset(); form.elements.date.value = localDate();
+          document.getElementById('error-log-submit').textContent = 'Add error';
+          document.getElementById('error-log-cancel').hidden = true;
+        }
+        function renderErrorLog() {
+          const list = document.getElementById('error-log-list');
+          const filter = document.getElementById('error-log-filter').value;
+          const all = Object.entries(storage.view().errors);
+          document.getElementById('error-log-count').textContent = all.length + ' entries · ' + all.filter(([,e]) => e.status === 'open').length + ' open';
+          list.replaceChildren();
+          const shown = all.filter(([,e]) => filter === 'all' || e.section === filter).sort((a,b) => b[1].date.localeCompare(a[1].date) || storage.recordTime('error:'+b[0]) - storage.recordTime('error:'+a[0]));
+          if (!shown.length) { const p = document.createElement('p'); p.textContent = 'No entries in this view.'; p.className = 'text-muted dark:text-darkMuted'; list.append(p); }
+          for (const [id,e] of shown) {
+            const card = document.createElement('article');
+            card.className = 'border border-hairline dark:border-darkHairline rounded-lg p-3 space-y-2 break-inside-avoid';
+            const add = (tag, value, cls) => { const el = document.createElement(tag); el.textContent = value; el.className = cls; card.append(el); return el; };
+            add('h4', [e.date, e.section, e.category, e.status === 'open' ? 'Open' : 'Reviewed'].join(' · '), 'font-semibold');
+            if (e.reference) add('p', e.reference, 'text-muted dark:text-darkMuted break-words');
+            add('p', 'Root cause: ' + e.cause, 'whitespace-pre-wrap break-words');
+            add('p', 'Correction / recall: ' + e.correction, 'whitespace-pre-wrap break-words font-medium');
+            if (e.marks !== null || e.minutes !== null) add('p', [e.marks === null ? '' : e.marks+' marks lost', e.minutes === null ? '' : e.minutes+' min lost'].filter(Boolean).join(' · '), 'text-muted dark:text-darkMuted');
+            const actions = add('div', '', 'no-print flex flex-wrap gap-4');
+            const button = (label, fn) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = label; b.className = 'underline font-medium'; b.addEventListener('click',fn); actions.append(b); };
+            button('Edit', () => {
+              editingError = id;
+              const form = document.getElementById('error-log-form');
+              for (const [key,val] of Object.entries(e)) form.elements.namedItem(key).value = val ?? '';
+              document.getElementById('error-log-submit').textContent = 'Save edit';
+              document.getElementById('error-log-cancel').hidden = false;
+              form.scrollIntoView({block:'center'}); form.elements.cause.focus();
+            });
+            button(e.status === 'open' ? 'Mark reviewed' : 'Reopen', () => {
+              storage.setRecord('error:'+id, {...e,status:e.status === 'open' ? 'reviewed' : 'open'});
+              if (editingError === id) resetErrorForm();
+              renderErrorLog();
+            });
+            button('Delete', () => {
+              if (!window.confirm('Delete this error-log entry?')) return;
+              storage.setRecord('error:'+id,null);
+              if (editingError === id) resetErrorForm();
+              renderErrorLog();
+            });
+            list.append(card);
+          }
+        }
+        function bindErrorLog() {
+          const form = document.getElementById('error-log-form');
+          resetErrorForm();
+          form.addEventListener('submit', e => {
+            e.preventDefault();
+            const value = Object.fromEntries(new FormData(form));
+            for (const key of ['cause','correction','reference']) value[key] = value[key].trim();
+            for (const key of ['marks','minutes']) value[key] = value[key] === '' ? null : Number(value[key]);
+            const id = editingError || uid();
+            try { storage.setRecord('error:'+id,value); }
+            catch (err) { showToast('Check required error-log fields'); return; }
+            resetErrorForm(); renderErrorLog();
+          });
+          document.getElementById('error-log-cancel').addEventListener('click',resetErrorForm);
+          document.getElementById('error-log-filter').addEventListener('change',renderErrorLog);
+          renderErrorLog();
+        }
+        return Object.freeze({render: renderErrorLog, bind: bindErrorLog});
+      }
+      // </module:error-log>
+
+
+      // <module:plan-view> Strategy rendering and VARC mode selection
+      function createPlanView(storage, checklist, showToast) {
+        function renderPlan(mode) {
+          const values = strategy.planValues(mode);
+          document.querySelectorAll('[data-plan]').forEach(el => {const value=values[el.dataset.plan];if(typeof value==='string')el.textContent=value;});
+          const table=document.getElementById('scenario-rows');
+          if(table) {
+            table.replaceChildren();
+            for(const item of strategy.scenarioValues(mode)) {
+              const tr=document.createElement('tr');
+              tr.className='border-t border-hairline dark:border-darkHairline';
+              for(const cell of [item.label,item.varc,item.dilr,item.qa,item.total,item.action]) {
+                const td=document.createElement('td'); td.className='px-2.5 py-2 align-top'; td.textContent=cell;tr.append(td);
+              }
+              table.append(tr);
+            }
+          }
+        }
+        function renderVarcClock(orderKey) {
+          const config = strategy.orders[orderKey] || strategy.orders.standard;
+          renderPlan(orderKey);
+
+          // Sync toggle buttons across Overview and VARC tab
+          document.querySelectorAll('.varc-order-btn').forEach((btn) => {
+            const isSelected = btn.dataset.varcOrder === orderKey;
+            btn.setAttribute("aria-pressed",String(isSelected));
+            if (isSelected) {
+              btn.classList.add('bg-varc', 'text-white', 'shadow-sm');
+              btn.classList.remove('text-muted', 'dark:text-darkMuted', 'hover:text-ink', 'dark:hover:text-darkInk');
+            } else {
+              btn.classList.remove('bg-varc', 'text-white', 'shadow-sm');
+              btn.classList.add('text-muted', 'dark:text-darkMuted', 'hover:text-ink', 'dark:hover:text-darkInk');
             }
           });
 
-          // Embed fresh JSON state (notes, checklist, theme, varcOrder, timestamp)
-          const embeddedClone = clone.querySelector('#embedded-user-state');
-          if (embeddedClone) {
-            embeddedClone.textContent = '\n    ' + portable + '\n  ';
+          // Update Overview mode label & bar
+          document.querySelectorAll('.varc-mode-label').forEach((el) => {
+            el.textContent = config.label;
+          });
+
+          const overviewBar = document.getElementById('overview-varc-bar');
+          if (overviewBar) {
+            overviewBar.innerHTML = config.segments
+              .map(
+                (seg) => `
+                <button
+                  type="button"
+                  data-accent="varc"
+                  data-timeline-detail="${seg.detail.replace(/"/g, '&quot;')}"
+                  style="width: ${seg.width}%"
+                  class="timeline-seg ${seg.classes} font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate"
+                >
+                  <span class="truncate max-w-full">${seg.label}</span>
+                  <span class="text-[9px] opacity-85">${seg.time}</span>
+                </button>
+              `
+              )
+              .join('');
           }
 
-          clone.querySelector("#quick-revision").hidden = true;
-          clone.querySelector("#overview-full").hidden = false;
-          clone.querySelector("#btn-quick-revision").setAttribute("aria-pressed","false");
-          // Derived log UI is reconstructed from the portable records on startup.
-          clone.querySelector('#error-log-list').replaceChildren();
-          clone.querySelector('#error-log-count').textContent = 'Loading…';
-          const cloneForm = clone.querySelector('#error-log-form');
-          cloneForm.reset();
-          cloneForm.querySelectorAll('textarea').forEach(ta=>{ta.value='';ta.textContent='';});
-          cloneForm.querySelectorAll('input').forEach(input=>{input.value='';input.removeAttribute('value');});
-          cloneForm.querySelectorAll('option').forEach(option=>option.removeAttribute('selected'));
-          clone.querySelector('#export-fallback').hidden = true;
-          clone.querySelector('#export-fallback').removeAttribute('href');
-          clone.querySelector('#error-log-submit').textContent = 'Add error';
-          clone.querySelector('#error-log-cancel').hidden = true;
-          clone.querySelector('#storage-status').textContent = 'Opening browser storage…';
-          clone.querySelector('#btn-retry-storage').hidden = true;
-          clone.querySelectorAll('[data-note-status]').forEach(el => { el.textContent = 'Loading storage…'; });
-          // Reset toast visibility in exported copy
-          const toastClone = clone.querySelector('#toast');
-          if (toastClone) {
-            toastClone.textContent = 'Saved';
-            toastClone.classList.add('opacity-0', 'translate-y-2');
-            toastClone.classList.remove('opacity-100', 'translate-y-0');
+          // Update VARC tab title, pool badge, bar, and caption cards
+          const varcTitle = document.getElementById('varc-order-title');
+          if (varcTitle) varcTitle.textContent = config.title;
+
+          const varcPoolBadge = document.getElementById('varc-pool-badge');
+          if (varcPoolBadge) varcPoolBadge.textContent = config.poolBadge;
+
+          const varcTabBar = document.getElementById('varc-tab-bar');
+          if (varcTabBar) {
+            varcTabBar.innerHTML = config.segments
+              .map(
+                (seg) => `
+                <div
+                  style="width: ${seg.width}%"
+                  title="${seg.detail.replace(/"/g, '&quot;')}"
+                  class="${seg.classes} font-mono text-xs font-semibold flex flex-col items-center justify-center px-1 text-center truncate"
+                >
+                  <span class="truncate max-w-full">${seg.label}</span>
+                  <span class="text-[10px] opacity-85">${seg.time}</span>
+                </div>
+              `
+              )
+              .join('');
           }
 
-          const htmlContent = '<!DOCTYPE html>\n' + clone.outerHTML;
-          const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
-          if (exportUrl) URL.revokeObjectURL(exportUrl);
-          exportUrl = URL.createObjectURL(blob);
-          const fallback = document.getElementById('export-fallback');
-          fallback.href = exportUrl; fallback.hidden = false;
-          fallback.click();
-          showToast(refreshed ? 'HTML backup prepared — use link if download did not start' : 'Current records exported; IndexedDB refresh unavailable');
-        } catch (err) {
-          console.error('Export failed:', err);
-          showToast('Export error — please try again');
-        } finally { exporting = false; exportButton.disabled = false; }
+          const varcCaption = document.getElementById('varc-order-caption');
+          if (varcCaption) {
+            const gridCols = config.segments.length === 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-4';
+            varcCaption.className = `mt-3 grid grid-cols-1 sm:grid-cols-2 ${gridCols} gap-2.5 text-xs`;
+            varcCaption.innerHTML = config.segments
+              .map(
+                (seg) => `
+                <div class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
+                  <span class="font-mono font-bold text-varc">${seg.time}:</span>
+                  <span class="text-muted dark:text-darkMuted"> ${seg.caption}</span>
+                </div>
+              `
+              )
+              .join('');
+          }
+
+          const inspector = document.getElementById("overview-timeline-readout");
+          if (inspector) inspector.textContent = "Select any time segment above to inspect its exact clock rule.";
+          bindOverviewTimelineSegments();
+        }
+
+        /**
+         * Bind interactive click readout for Overview 40-minute timeline bars.
+         */
+        function bindOverviewTimelineSegments() {
+          const readout = document.getElementById('overview-timeline-readout');
+          if (!readout) return;
+
+          const dotColorMap = {
+            varc: 'bg-varc',
+            dilr: 'bg-dilr',
+            qa: 'bg-qa'
+          };
+
+          document.querySelectorAll('#panel-overview .timeline-seg').forEach((seg) => {
+            seg.onclick = () => {
+              const detail = seg.getAttribute('data-timeline-detail');
+              if (!detail) return;
+              const accent = seg.getAttribute('data-accent') || 'varc';
+              const dotClass = dotColorMap[accent] || 'bg-varc';
+              readout.innerHTML = `<span class="w-2 h-2 rounded-full ${dotClass} shrink-0"></span><span class="text-ink dark:text-darkInk">${detail}</span>`;
+            };
+          });
+        }
+        function bind() {
+          // Synced 3-Mode VARC Order Toggle (Overview & VARC tab)
+          document.querySelectorAll('.varc-order-btn').forEach((btn) => {
+            btn.addEventListener('click', () => {
+              const nextOrder = btn.dataset.varcOrder;
+              if (!strategy.validModes.includes(nextOrder)) return;
+              if (nextOrder !== storage.view().varcOrder) storage.setRecord('check:chk-varc-gate', false);
+              storage.setRecord('pref:varcOrder', nextOrder);
+              checklist.render();
+              renderVarcClock(storage.view().varcOrder);
+              showToast(strategy.orders[storage.view().varcOrder].toast);
+            });
+          });
+        }
+        return Object.freeze({render: renderVarcClock, bind});
       }
+      // </module:plan-view>
 
-      /**
-       * Initialize application on DOM ready.
-       */
-      document.addEventListener('DOMContentLoaded', async () => {
-        document.body.inert = true;
-        try { await loadState(); }
-        catch (err) { console.error('Storage startup failed:',err); reportStorage('Storage startup failed — export current records'); }
-        finally { document.body.inert = false; }
-        applyTheme(state.theme);
-        activateTab('overview');
-        renderVarcClock(state.varcOrder);
-        renderChecklist();
-        renderNotes();
-        bindErrorLog();
-        toggleRevision(false,false);
-        document.getElementById("btn-quick-revision").addEventListener("click",()=>toggleRevision(!revisionOpen));
-        document.getElementById("btn-close-revision").addEventListener("click",()=>toggleRevision(false));
-        document.getElementById('btn-retry-storage').addEventListener('click', async () => {
-          if (db || saving) return;
-          const button = document.getElementById('btn-retry-storage');
-          button.disabled = true;
-          reportStorage('Retrying IndexedDB…');
-          try { await loadState(); refreshFromRecords(); }
-          finally { button.disabled = false; }
-        });
-        window.addEventListener('focus', () => { if (db) reconcileDatabase(); });
-        window.addEventListener('pagehide',event=>{ if(!event.persisted && exportUrl) { URL.revokeObjectURL(exportUrl); exportUrl=null; } });
 
-        // Tab click listeners
-        document.querySelectorAll('.tab-btn').forEach((btn) => {
-          btn.addEventListener('click', () => activateTab(btn.dataset.tab));
-        });
+      // <module:export> Portable snapshot download and transient clone cleanup
+      function createExportView(storage, showToast) {
+        let exporting = false, exportUrl = null;
+        async function exportUpdatedHtml() {
+          if (exporting) return;
+          const exportButton = document.getElementById('btn-export-html');
+          const errorForm = document.getElementById('error-log-form');
+          if ((errorForm.elements.cause.value.trim() || errorForm.elements.correction.value.trim() || errorForm.elements.reference.value.trim()) && !window.confirm('An error-log draft has not been submitted. Export saved records without this draft?')) return;
+          exporting = true; exportButton.disabled = true;
+          try {
+            // Capture any live textarea edits before the asynchronous database read.
+            document.querySelectorAll('textarea[data-note-key]').forEach(ta=>{
+              const key=ta.dataset.noteKey; if(ta.value!==storage.view().notes[key]) storage.setRecord('note:'+key,ta.value);
+            });
+            const refreshed = storage.isOpen() && await storage.reconcileDatabase();
+            const portable = storage.safeSnapshot(); schema.readSnapshot(portable);
+            // Clone document so live DOM stays untouched
+            const clone = document.documentElement.cloneNode(true);
 
-        // Keyboard shortcuts 1–4 for instant tab switching (when not typing)
-        document.addEventListener('keydown', (e) => {
-          const tag = (e.target && e.target.tagName) || '';
-          if (tag === 'TEXTAREA' || tag === 'INPUT' || tag === 'SELECT' || e.metaKey || e.ctrlKey || e.altKey) return;
-          if (e.key === '1') activateTab('overview');
-          if (e.key === '2') activateTab('varc');
-          if (e.key === '3') activateTab('dilr');
-          if (e.key === '4') activateTab('qa');
-        });
+            // Sync dark mode class on cloned root element
+            if (storage.view().theme === 'dark') {
+              clone.classList.add('dark');
+            } else {
+              clone.classList.remove('dark');
+            }
 
-        // Light / Dark theme toggle
-        const btnTheme = document.getElementById('btn-theme');
-        if (btnTheme) {
-          btnTheme.addEventListener('click', () => {
-            setRecord('pref:theme', state.theme === 'dark' ? 'light' : 'dark');
-            applyTheme(state.theme);
-          });
-        }
+            // Store personal text only once, in the validated escaped snapshot.
+            clone.querySelectorAll('textarea[data-note-key]').forEach(ta=>{ ta.value = ''; ta.textContent = ''; });
+            clone.querySelector('#btn-export-html').disabled = false;
+            clone.querySelector('#btn-retry-storage').disabled = false;
 
-        // Synced 3-Mode VARC Order Toggle (Overview & VARC tab)
-        document.querySelectorAll('.varc-order-btn').forEach((btn) => {
-          btn.addEventListener('click', () => {
-            const nextOrder = btn.dataset.varcOrder;
-            if (!VALID_VARC_ORDERS.includes(nextOrder)) return;
-            if (nextOrder !== state.varcOrder) setRecord('check:chk-varc-gate', false);
-            setRecord('pref:varcOrder', nextOrder);
-            renderChecklist();
-            renderVarcClock(state.varcOrder);
-            showToast(VARC_ORDERS[state.varcOrder].toast);
-          });
-        });
-
-        // Checklist persistence
-        document.querySelectorAll('.reset-chk').forEach((chk) => {
-          chk.addEventListener('change', () => {
-            setRecord('check:' + chk.dataset.chk, chk.checked);
-            renderChecklist();
-          });
-        });
-
-        // Checklist reset button
-        const btnResetChecklist = document.getElementById('btn-reset-checklist');
-        if (btnResetChecklist) {
-          btnResetChecklist.addEventListener('click', () => {
-            Object.keys(state.checklist).forEach(k => setRecord('check:' + k, false));
-            renderChecklist();
-            showToast('Checklist cleared');
-          });
-        }
-
-        // Notes: journal immediately; coalesce durable writes while typing.
-        document.querySelectorAll('textarea[data-note-key]').forEach(ta => {
-          ta.addEventListener('input', () => {
-            const key = ta.dataset.noteKey;
-            setRecord('note:' + key, ta.value, 200);
-            updateNoteBadge(key, ta.value);
-          });
-        });
-
-        // Print / Save PDF (opens any non-empty notes drawers automatically)
-        const btnPrint = document.getElementById('btn-print');
-        if (btnPrint) {
-          btnPrint.addEventListener('click', () => {
-            document.querySelectorAll('.notes-drawer').forEach((drawer) => {
-              const ta = drawer.querySelector('textarea[data-note-key]');
-              if (ta && ta.value.trim()) {
-                drawer.setAttribute('open', 'open');
+            // Write current checkbox checked attributes into cloned DOM
+            clone.querySelectorAll('input[data-chk]').forEach((chk) => {
+              const key = chk.getAttribute('data-chk');
+              if (storage.view().checklist[key]) {
+                chk.setAttribute('checked', 'checked');
+              } else {
+                chk.removeAttribute('checked');
               }
             });
-            const wasRevision = revisionOpen;
-            if(wasRevision) toggleRevision(false,false);
-            try { window.print(); } finally { if(wasRevision) toggleRevision(true,false); }
-          });
+
+            // Embed fresh JSON state (notes, checklist, theme, varcOrder, timestamp)
+            const embeddedClone = clone.querySelector('#embedded-user-state');
+            if (embeddedClone) {
+              embeddedClone.textContent = '\n    ' + portable + '\n  ';
+            }
+
+            clone.querySelector("#quick-revision").hidden = true;
+            clone.querySelector("#overview-full").hidden = false;
+            clone.querySelector("#btn-quick-revision").setAttribute("aria-pressed","false");
+            // Derived log UI is reconstructed from the portable records on startup.
+            clone.querySelector('#error-log-list').replaceChildren();
+            clone.querySelector('#error-log-count').textContent = 'Loading…';
+            const cloneForm = clone.querySelector('#error-log-form');
+            cloneForm.reset();
+            cloneForm.querySelectorAll('textarea').forEach(ta=>{ta.value='';ta.textContent='';});
+            cloneForm.querySelectorAll('input').forEach(input=>{input.value='';input.removeAttribute('value');});
+            cloneForm.querySelectorAll('option').forEach(option=>option.removeAttribute('selected'));
+            clone.querySelector('#export-fallback').hidden = true;
+            clone.querySelector('#export-fallback').removeAttribute('href');
+            clone.querySelector('#error-log-submit').textContent = 'Add error';
+            clone.querySelector('#error-log-cancel').hidden = true;
+            clone.querySelector('#storage-status').textContent = 'Opening browser storage…';
+            clone.querySelector('#btn-retry-storage').hidden = true;
+            clone.querySelectorAll('[data-note-status]').forEach(el => { el.textContent = 'Loading storage…'; });
+            // Reset toast visibility in exported copy
+            const toastClone = clone.querySelector('#toast');
+            if (toastClone) {
+              toastClone.textContent = 'Saved';
+              toastClone.classList.add('opacity-0', 'translate-y-2');
+              toastClone.classList.remove('opacity-100', 'translate-y-0');
+            }
+
+            const htmlContent = '<!DOCTYPE html>\n' + clone.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+            if (exportUrl) URL.revokeObjectURL(exportUrl);
+            exportUrl = URL.createObjectURL(blob);
+            const fallback = document.getElementById('export-fallback');
+            fallback.href = exportUrl; fallback.hidden = false;
+            fallback.click();
+            showToast(refreshed ? 'HTML backup prepared — use link if download did not start' : 'Current records exported; IndexedDB refresh unavailable');
+          } catch (err) {
+            console.error('Export failed:', err);
+            showToast('Export error — please try again');
+          } finally { exporting = false; exportButton.disabled = false; }
+        }
+        function bind() {
+          window.addEventListener('pagehide',event=>{ if(!event.persisted && exportUrl) { URL.revokeObjectURL(exportUrl); exportUrl=null; } });
+          // Download Updated HTML
+          const btnExport = document.getElementById('btn-export-html');
+          if (btnExport) {
+            btnExport.addEventListener('click', exportUpdatedHtml);
+          }
+        }
+        return Object.freeze({bind});
+      }
+      // </module:export>
+
+
+      // <module:bootstrap> Composition root and startup
+      function createApp() {
+        const feedback = createFeedback();
+        const storage = createPersistence({
+          onStatus: feedback.reportStorage,
+          onReconcile(message) {
+            refreshFromRecords();
+            if (message) feedback.showToast(message);
+          },
+          readEmbedded: () => document.getElementById('embedded-user-state').textContent
+        });
+        const checklist = createChecklistView(storage, feedback.showToast);
+        const notes = createNotesView(storage, feedback.showToast);
+        const errors = createErrorLogView(storage, feedback.showToast);
+        const shell = createShell(storage);
+        const plans = createPlanView(storage, checklist, feedback.showToast);
+        const exporter = createExportView(storage, feedback.showToast);
+
+        function refreshFromRecords() {
+          shell.applyTheme(storage.view().theme);
+          plans.render(storage.view().varcOrder);
+          checklist.render();
+          notes.render();
+          errors.render();
         }
 
-        // Download Updated HTML
-        const btnExport = document.getElementById('btn-export-html');
-        if (btnExport) {
-          btnExport.addEventListener('click', exportUpdatedHtml);
+        async function start() {
+          storage.bindLifecycle();
+          document.body.inert = true;
+          try { await storage.loadState(); }
+          catch (err) {
+            console.error('Storage startup failed:', err);
+            feedback.reportStorage('Storage startup failed — export current records', storage.isOpen());
+          } finally { document.body.inert = false; }
+
+          shell.activateTab('overview');
+          refreshFromRecords();
+          errors.bind();
+          shell.toggleRevision(false, false);
+
+          shell.bind();
+          plans.bind();
+          checklist.bind();
+          notes.bind();
+          exporter.bind();
+          document.getElementById('btn-retry-storage').addEventListener('click', async () => {
+            if (storage.isOpen() || storage.isSaving()) return;
+            const button = document.getElementById('btn-retry-storage');
+            button.disabled = true;
+            feedback.reportStorage('Retrying IndexedDB…', false);
+            try { await storage.loadState(); refreshFromRecords(); }
+            finally { button.disabled = false; }
+          });
+          window.addEventListener('focus', () => {
+            if (storage.isOpen()) storage.reconcileDatabase();
+          });
         }
-      });
+        return Object.freeze({start});
+      }
+
+      document.addEventListener('DOMContentLoaded', () => createApp().start());
+      // </module:bootstrap>
+
     })();
   </script>
 </body>
