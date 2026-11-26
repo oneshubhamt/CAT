@@ -696,12 +696,12 @@ input[type=checkbox]{flex-shrink:0}
           <article class="border border-hairline dark:border-darkHairline border-t-4 border-t-dilr rounded-lg p-3 text-sm leading-relaxed">
             <h3 class="font-semibold text-dilr">DILR · 40m</h3><p class="mt-1 font-medium">One reliable set → two viable sets</p>
             <p class="mt-1 text-xs font-mono"><span data-plan="dilrQuick"></span></p>
-            <p class="mt-2 text-xs">Prefer tight coded/elimination sets as a tie-breaker only; rank by actual solvability and avoid unpruned branches. Reassess 4–6m; switch by 6–7m if stalled. <span data-plan="dilrRecoveryQuick"></span> Check clues and totals.</p>
+            <p class="mt-2 text-xs">Prefer tight coded/elimination sets as a tie-breaker only; rank by actual solvability and avoid unpruned branches. Reassess <span data-plan="dilrReassess"></span>; switch by <span data-plan="dilrSwitch"></span> if stalled. <span data-plan="dilrRecoveryQuick"></span> Check clues and totals.</p>
           </article>
           <article class="border border-hairline dark:border-darkHairline border-t-4 border-t-qa rounded-lg p-3 text-sm leading-relaxed">
             <h3 class="font-semibold text-qa">QA · 40m</h3><p class="mt-1 font-medium"><span data-plan="qaCorrect"></span> as primary aim</p>
             <p class="mt-1 text-xs font-mono"><span data-plan="qaQuick"></span></p>
-            <p class="mt-2 text-xs">Pen down on arithmetic. 45s ignition; 2.5m R1 cap unless finishing. R2: unseen questions first, then L/I, U later, X leave. TITA cleanup. Audit requested value, unit, sign and format.</p>
+            <p class="mt-2 text-xs">Pen down on arithmetic. <span data-plan="qaIgnition"></span> ignition; <span data-plan="qaRound1"></span> R1 checkpoint unless finishing. R2: unseen questions first, then L/I, U later, X leave. TITA cleanup. Audit requested value, unit, sign and format.</p>
           </article>
         </div>
         <p class="mt-3 text-xs font-medium">Rule hierarchy: official instructions and safeguards → adaptive checkpoints → default clocks → preferences. Save explicitly, protect cleanup, reset between sections; never chase a score target.</p>
@@ -795,7 +795,7 @@ input[type=checkbox]{flex-shrink:0}
           </article>
           <article class="rounded-lg border border-hairline dark:border-darkHairline border-l-4 border-l-dilr p-3">
             <h4 class="font-semibold text-dilr">2 · Adaptive checkpoints</h4>
-            <p class="mt-1">VARC: 45–60s passage gate, 45s unresolved two-option deadlock. DILR: reassess 4–6m, switch by 6–7m if stalled. QA: 45s ignition, about 2.5m in R1 and 3.5m in R2. Continue briefly only for a credible imminent payoff; otherwise move on. Protect the remaining section time.</p>
+            <p class="mt-1">VARC: 45–60s passage gate, 45s unresolved two-option deadlock. DILR: reassess <span data-plan="dilrReassess"></span>, switch by <span data-plan="dilrSwitch"></span> if stalled. QA: <span data-plan="qaIgnition"></span> ignition, about <span data-plan="qaRound1"></span> in R1 and <span data-plan="qaRound2"></span> in R2. Continue briefly only for a credible imminent payoff; otherwise move on. Protect the remaining section time.</p>
           </article>
           <article class="rounded-lg border border-hairline dark:border-darkHairline border-l-4 border-l-varc p-3">
             <h4 class="font-semibold text-varc">3 · Strong default execution plans</h4>
@@ -855,15 +855,15 @@ input[type=checkbox]{flex-shrink:0}
               <dl class="mt-3.5 space-y-3 text-xs">
                 <div>
                   <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Entry Gate</dt>
-                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">4-min scan and rank all available sets; prefer 5-Q only if equally viable</dd>
+                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium"><span data-plan="dilrScan"></span> scan and rank all available sets; prefer 5-Q only if equally viable</dd>
                 </div>
                 <div class="p-2.5 rounded-lg bg-alert/5 dark:bg-alert/15 border border-alert/20">
                   <dt class="font-mono text-[10px] uppercase tracking-wider text-alert font-semibold">Adaptive checkpoint</dt>
-                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">Reassess at 4–6 min; switch at 6–7 min if no useful deduction or credible path</dd>
+                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">Reassess at <span data-plan="dilrReassess"></span>; switch at <span data-plan="dilrSwitch"></span> if no useful deduction or credible path</dd>
                 </div>
                 <div>
                   <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Pacing Cap</dt>
-                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium font-mono">About 14m per viable set; protect final 1m for save/TITA audit</dd>
+                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium font-mono">About <span data-plan="dilrBudget"></span> per viable set; protect final 1m for save/TITA audit</dd>
                 </div>
                 <div>
                   <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Verification</dt>
@@ -883,11 +883,11 @@ input[type=checkbox]{flex-shrink:0}
               <dl class="mt-3.5 space-y-3 text-xs">
                 <div>
                   <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Entry Gate</dt>
-                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">45s ignition: definite equation, ratio or conceptual route</dd>
+                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium"><span data-plan="qaIgnition"></span> ignition: definite equation, ratio or conceptual route</dd>
                 </div>
                 <div class="p-2.5 rounded-lg bg-alert/5 dark:bg-alert/15 border border-alert/20">
                   <dt class="font-mono text-[10px] uppercase tracking-wider text-alert font-semibold">Adaptive checkpoint</dt>
-                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">2.5m in Round 1 (unless in final calc step)</dd>
+                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium"><span data-plan="qaRound1"></span> in Round 1 (unless in final calc step)</dd>
                 </div>
                 <div>
                   <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Quarantine</dt>
@@ -1176,7 +1176,7 @@ input[type=checkbox]{flex-shrink:0}
             <input type="checkbox" data-chk="chk-bailout" class="reset-chk mt-0.5 w-4 h-4 rounded accent-ink dark:accent-darkInk shrink-0 cursor-pointer" />
             <span class="text-xs leading-relaxed">
               <strong class="block text-ink dark:text-darkInk font-semibold">Internalize the 3 Bail-Out Clocks</strong>
-              <span class="text-muted dark:text-darkMuted">VARC <span class="font-mono">45s</span> deadlock &middot; DILR <span class="font-mono">6–7m</span> stalled without useful progress &middot; QA <span class="font-mono">45s</span> ignition / <span class="font-mono">2.5m</span> R1 cap.</span>
+              <span class="text-muted dark:text-darkMuted">VARC <span class="font-mono">45s</span> deadlock &middot; DILR <span data-plan="dilrSwitch" class="font-mono"></span> stalled without useful progress &middot; QA <span data-plan="qaIgnition" class="font-mono"></span> ignition / <span data-plan="qaRound1" class="font-mono"></span> R1 checkpoint.</span>
             </span>
           </label>
 
@@ -1192,7 +1192,7 @@ input[type=checkbox]{flex-shrink:0}
             <input type="checkbox" data-chk="chk-dilr-shield" class="reset-chk mt-0.5 w-4 h-4 rounded accent-dilr shrink-0 cursor-pointer" />
             <span class="text-xs leading-relaxed">
               <strong class="block text-ink dark:text-darkInk font-semibold">Lock DILR Accuracy Shield</strong>
-              <span class="text-muted dark:text-darkMuted">Scan all sets first (about 4m); check relevant clues, feasibility and requested answer; record consequential totals.</span>
+              <span class="text-muted dark:text-darkMuted">Scan all sets first (about <span data-plan="dilrScan"></span>); check relevant clues, feasibility and requested answer; record consequential totals.</span>
             </span>
           </label>
 
@@ -1694,7 +1694,7 @@ input[type=checkbox]{flex-shrink:0}
           <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2.5 text-xs">
             <div class="p-3 rounded-lg bg-dilr/[0.06] dark:bg-dilr/15 border border-dilr/20 leading-relaxed">
               <strong class="font-mono text-[10px] uppercase tracking-wider text-dilr block mb-0.5">Five-question set payoff tie-breaker</strong>
-              <span class="text-muted dark:text-darkMuted">If a <strong class="text-ink dark:text-darkInk">5-Q set</strong> and a <strong class="text-ink dark:text-darkInk">4-Q set</strong> look equally clean in your 4-min scan, pick the 5-Q set first (<span class="font-mono text-dilr font-semibold">+3 extra marks</span> if the additional question is solved correctly for comparable overall effort).</span>
+              <span class="text-muted dark:text-darkMuted">If a <strong class="text-ink dark:text-darkInk">5-Q set</strong> and a <strong class="text-ink dark:text-darkInk">4-Q set</strong> look equally clean in your <span data-plan="dilrScan"></span> scan, pick the 5-Q set first (<span class="font-mono text-dilr font-semibold">+3 extra marks</span> if the additional question is solved correctly for comparable overall effort).</span>
             </div>
             <div class="p-3 rounded-lg bg-qa/[0.06] dark:bg-qa/15 border border-qa/20 leading-relaxed">
               <strong class="font-mono text-[10px] uppercase tracking-wider text-qa block mb-0.5">On-Screen Calculator Discipline</strong>
@@ -1799,7 +1799,7 @@ input[type=checkbox]{flex-shrink:0}
         <div class="mt-3 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-3">
           <h4 class="text-xs font-bold">During the 0–4 minute scan</h4>
           <p class="mt-1 text-xs leading-relaxed">Scan every available set. For each, ask: <strong>Can I represent it?</strong> What is directly given, and what anchor can be derived by totals, bounds or chaining? Which deduction unlocks the central constraint, and how long might it take? How many branches or calculations remain, and what questions pay off before a full solve?</p>
-          <p class="mt-2 text-xs leading-relaxed">Rank by credible time to reliable answers, not passage length, topic familiarity or raw constraint count. Use the personal preference as a tie-breaker; prefer a five-question set over a four-question set only when overall effort and risk are comparable. After a 4–6 minute attempt, reassess actual progress; switch by 6–7 minutes if stalled.</p>
+          <p class="mt-2 text-xs leading-relaxed">Rank by credible time to reliable answers, not passage length, topic familiarity or raw constraint count. Use the personal preference as a tie-breaker; prefer a five-question set over a four-question set only when overall effort and risk are comparable. After <span data-plan="dilrReassess"></span>, reassess actual progress; switch by <span data-plan="dilrSwitch"></span> if stalled.</p>
           <p class="mt-2 text-xs text-muted dark:text-darkMuted">Calibration: in the error log, record the set chosen, the reason, first useful deduction, time and independent correctness. Compare this with alternatives before strengthening or reversing your preference.</p>
         </div>
       </section>
@@ -1810,7 +1810,7 @@ input[type=checkbox]{flex-shrink:0}
         <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5">
           <div class="flex items-center justify-between pb-3 border-b border-hairline dark:border-darkHairline">
             <h3 class="text-sm font-bold text-alert">The 6-Minute Bail-Out Rule</h3>
-            <span class="font-mono text-xs font-bold text-alert">MIN 6–7 CHECKPOINT</span>
+            <span class="font-mono text-xs font-bold text-alert"><span data-plan="dilrSwitch"></span> checkpoint</span>
           </div>
           <div class="mt-3.5 space-y-2.5 text-xs leading-relaxed">
             <p class="p-2.5 rounded-lg bg-dilr/8 dark:bg-dilr/15 border border-dilr/20">
@@ -1819,7 +1819,7 @@ input[type=checkbox]{flex-shrink:0}
             </p>
             <p class="p-2.5 rounded-lg bg-alert/8 dark:bg-alert/15 border border-alert/20">
               <strong class="text-alert font-mono uppercase text-[11px]">Bail immediately if:</strong>
-              <span class="text-ink dark:text-darkInk"> You have no useful representation or new deduction, are circularly rereading, or a better ranked set has a more credible route. Reassess at 4–6 minutes; switch by 6–7 minutes if still stalled.</span>
+              <span class="text-ink dark:text-darkInk"> You have no useful representation or new deduction, are circularly rereading, or a better ranked set has a more credible route. Reassess at <span data-plan="dilrReassess"></span>; switch by <span data-plan="dilrSwitch"></span> if still stalled.</span>
             </p>
           </div>
         </div>
@@ -1856,7 +1856,7 @@ input[type=checkbox]{flex-shrink:0}
       <!-- Failure recovery clocks: examples, not mandatory quotas -->
       <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6" aria-labelledby="dilr-recovery-title">
         <h3 id="dilr-recovery-title" class="text-sm font-semibold uppercase tracking-wider text-dilr">DILR failure recovery · reset the clock, not the goal</h3>
-        <p class="mt-1 text-xs text-muted dark:text-darkMuted">Elapsed minutes; examples assume an early checkpoint switch and roughly 14 minutes per viable set. Do not force two sets if the remaining time or paper does not support them.</p>
+        <p class="mt-1 text-xs text-muted dark:text-darkMuted">Elapsed minutes; examples assume an early checkpoint switch and roughly <span data-plan="dilrBudget"></span> per viable set. Do not force two sets if the remaining time or paper does not support them.</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
             <h4 class="text-xs font-bold">A · First set stalls</h4>
@@ -1967,21 +1967,21 @@ input[type=checkbox]{flex-shrink:0}
 
           <div class="mt-3 grid grid-cols-1 md:grid-cols-3 gap-2.5 text-xs">
             <div class="p-3 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
-              <div class="flex items-center justify-between font-mono text-[11px] font-bold text-qa mb-1">
+              <div class="flex flex-wrap items-center justify-between gap-2 font-mono text-[11px] font-bold text-qa mb-1">
                 <span>ROUND 1 · <span data-plan="qaTime0"></span></span>
-                <span>7–8 attempts, flexible &middot; ~2.5m/Q</span>
+                <span><span data-plan="qaRule0"></span></span>
               </div>
               <p class="text-muted dark:text-darkMuted leading-relaxed" data-plan="qaCaption0"></p>
             </div>
             <div class="p-3 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
-              <div class="flex items-center justify-between font-mono text-[11px] font-bold text-qa mb-1">
+              <div class="flex flex-wrap items-center justify-between gap-2 font-mono text-[11px] font-bold text-qa mb-1">
                 <span>ROUND 2 · <span data-plan="qaTime1"></span></span>
-                <span>3–5 additional attempts as feasible &middot; ~3.5m/Q</span>
+                <span><span data-plan="qaRule1"></span></span>
               </div>
               <p class="text-muted dark:text-darkMuted leading-relaxed" data-plan="qaCaption1"></p>
             </div>
             <div class="p-3 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
-              <div class="flex items-center justify-between font-mono text-[11px] font-bold text-qa mb-1">
+              <div class="flex flex-wrap items-center justify-between gap-2 font-mono text-[11px] font-bold text-qa mb-1">
                 <span>ROUND 3 · <span data-plan="qaTime2"></span></span>
                 <span>Optional extra + TITA sweep</span>
               </div>
@@ -2026,10 +2026,10 @@ input[type=checkbox]{flex-shrink:0}
           <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-t-2 border-t-alert rounded-xl p-4">
             <div class="flex items-center gap-2 mb-2">
               <span class="font-mono text-xs font-bold text-alert bg-alert/10 px-2 py-0.5 rounded">01</span>
-              <h4 class="font-bold text-xs sm:text-sm">45s Ignition &amp; 2.5m Bail-Out</h4>
+              <h4 class="font-bold text-xs sm:text-sm"><span data-plan="qaIgnition"></span> ignition &amp; <span data-plan="qaRound1"></span> checkpoint</h4>
             </div>
             <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">
-              By <strong class="font-mono text-ink dark:text-darkInk">45s</strong>, identify a definite method, equation, ratio or conceptual route. If none, classify U/X and move on. In R1, reassess at <strong class="font-mono text-alert">2.5m</strong>; briefly extend only if completion is imminent. Mark L/I or genuinely viable U for review; leave dead skips unflagged.
+              By <strong class="font-mono text-ink dark:text-darkInk" data-plan="qaIgnition"></strong>, identify a definite method, equation, ratio or conceptual route. If none, classify U/X and move on. In R1, reassess at <strong class="font-mono text-alert" data-plan="qaRound1"></strong>; briefly extend only if completion is imminent. Mark L/I or genuinely viable U for review; leave dead skips unflagged.
             </p>
           </div>
 
@@ -2245,6 +2245,8 @@ input[type=checkbox]{flex-shrink:0}
       // <module:strategy> Pure exam strategy, clocks and score derivation
       const strategy = (() => {
         // Author each mode here. Minute boundaries derive the rendered bar widths.
+        // Shared checkpoints, distinct from flexible phase budgets.
+        const CHECKPOINTS = Object.freeze({dilrReassess:Object.freeze([4,6]),dilrSwitch:Object.freeze([6,7]),qaIgnition:45,qaRound1:2.5,qaRound2:3.5});
         // Canonical minute boundaries for the non-VARC clocks and recovery examples.
         const FIXED_CLOCKS = {
           "dilr": [
@@ -2262,7 +2264,7 @@ input[type=checkbox]{flex-shrink:0}
               "label": "Set 1",
               "quick": "set 1",
               "caption": "Solve a viable first set and verify.",
-              "rule": "Reassess after 4–6m; switch by 6–7m if stalled, not while making credible progress."
+              "rule": `Reassess after ${CHECKPOINTS.dilrReassess.join("–")}m; switch by ${CHECKPOINTS.dilrSwitch.join("–")}m if stalled, not while making credible progress.`
             },
             {
               "start": 18,
@@ -2296,7 +2298,7 @@ input[type=checkbox]{flex-shrink:0}
               "label": "Round 1 · Sitters",
               "quick": "sitters",
               "caption": "Assess questions in sequence; choose clear methods, especially arithmetic, logs/exponents, number theory, mensuration, arithmetic/geometric progressions and linear/quadratic equations.",
-              "rule": "7–8 attempts, flexible; about 2.5m per question unless finishing."
+              "rule": `7–8 attempts, flexible; about ${CHECKPOINTS.qaRound1}m per question unless finishing.`
             },
             {
               "start": 22,
@@ -2304,7 +2306,7 @@ input[type=checkbox]{flex-shrink:0}
               "label": "Round 2 · Mediums",
               "quick": "mediums",
               "caption": "Assess unseen questions first, then revisit L/I by confidence and time to finish, then viable U after stronger opportunities.",
-              "rule": "3–5 additional attempts as feasible; about 3.5m per question."
+              "rule": `3–5 additional attempts as feasible; about ${CHECKPOINTS.qaRound2}m per question.`
             },
             {
               "start": 36,
@@ -2610,7 +2612,15 @@ input[type=checkbox]{flex-shrink:0}
         });
         const timeRange = seg => seg.start+'–'+seg.end+'m';
         function fixedValues() {
-          const out={};
+          const out={
+            dilrReassess:range(CHECKPOINTS.dilrReassess)+'m',
+            dilrSwitch:range(CHECKPOINTS.dilrSwitch)+'m',
+            dilrScan:(fixedClocks.dilr[0].end-fixedClocks.dilr[0].start)+'m',
+            dilrBudget:(fixedClocks.dilr[1].end-fixedClocks.dilr[1].start)+'m',
+            qaIgnition:CHECKPOINTS.qaIgnition+'s',
+            qaRound1:CHECKPOINTS.qaRound1+'m',
+            qaRound2:CHECKPOINTS.qaRound2+'m'
+          };
           for(const section of ['dilr','qa']){
             out[section+'Quick']=fixedClocks[section].map(seg=>timeRange(seg)+' '+seg.quick).join(' · ');
             out[section+'Marks']=range(SCORE_TARGETS[section])+' before penalties';
@@ -2649,7 +2659,7 @@ input[type=checkbox]{flex-shrink:0}
         deepFreeze(MODES);
         deepFreeze(SCORE_TARGETS);
         deepFreeze(SCENARIOS);
-        return Object.freeze({validModes, orders, fixedClocks, fixedBars, planValues, scenarioValues});
+        return Object.freeze({validModes, orders, fixedClocks, fixedBars, checkpoints: CHECKPOINTS, planValues, scenarioValues});
       })();
       // </module:strategy>
 
