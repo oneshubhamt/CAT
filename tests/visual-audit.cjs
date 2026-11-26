@@ -2,10 +2,14 @@
 // Native layout audit. Evaluated inside the browser; no application hooks.
 // Errors are deterministic geometric failures. Contrast/intentional desktop
 // mini-segment clipping are review warnings, not false claims of WCAG compliance.
-async function audit(page,{pinned=false}={}){
- return page.evaluate(({pinned})=>{
+async function audit(page,{pinned=false,contrast=true}={}){
+ return page.evaluate(({pinned,contrast})=>{
   const rect=e=>e.getBoundingClientRect();
-  const visible=e=>!!e.getClientRects().length&&getComputedStyle(e).visibility!=='hidden';
+  const visible=e=>{
+   if(!e.getClientRects().length||getComputedStyle(e).visibility==='hidden')return false;
+   const closed=e.closest('details:not([open])');
+   return !closed||e===closed||closed.querySelector(':scope > summary')?.contains(e);
+  };
   const width=innerWidth,height=innerHeight,root=document.documentElement;
   const mobile=width<768;
   const errors=[],warnings=[],seen=new Set();
@@ -14,8 +18,8 @@ async function audit(page,{pinned=false}={}){
    return id+' '+(e.textContent||e.getAttribute('aria-label')||e.getAttribute('name')||'').trim().replace(/\s+/g,' ').slice(0,85);
   };
   const issue=(severity,kind,e,detail)=>{
-   const item={kind,element:e?describe(e):'document',detail};
-   const key=severity+JSON.stringify(item);if(seen.has(key))return;seen.add(key);
+   const item={kind,element:e?describe(e):'document',detail,top:e?Math.round(rect(e).top+scrollY):null};
+   const key=severity+kind+item.element+JSON.stringify(detail);if(seen.has(key))return;seen.add(key);
    (severity==='error'?errors:warnings).push(item);
   };
   if(root.scrollWidth>width+2)issue('error','page-overflow',null,{scrollWidth:root.scrollWidth,width});
@@ -63,7 +67,7 @@ async function audit(page,{pinned=false}={}){
   function bg(e){const layers=[];for(let n=e;n;n=n.parentElement){const cs=getComputedStyle(n);if(cs.backgroundImage!=='none'||Number(cs.opacity)<.99)return null;const c=rgb(cs.backgroundColor);if(!c)return null;layers.push(c);if(c[3]>=.999)break;}return layers.reverse().reduce((b,f)=>blend(f,b),[255,255,255,1]);}
   const walker=document.createTreeWalker(document.querySelector('main'),NodeFilter.SHOW_TEXT);
   let n,contrastChecked=0;
-  while((n=walker.nextNode())){
+  while(contrast&&(n=walker.nextNode())){
    const e=n.parentElement;if(!n.textContent.trim()||!e||!visible(e)||e.closest('script,style,textarea,select,input,svg'))continue;
    const cs=getComputedStyle(e),fg=rgb(cs.color),back=bg(e);if(!fg||!back)continue;
    const l1=luminance(blend(fg,back)),l2=luminance(back),ratio=(Math.max(l1,l2)+.05)/(Math.min(l1,l2)+.05);
@@ -77,6 +81,6 @@ async function audit(page,{pinned=false}={}){
   const warningCounts={};for(const w of warnings)warningCounts[w.kind]=(warningCounts[w.kind]||0)+1;
   const kept={};const samples=warnings.filter(w=>(kept[w.kind]=(kept[w.kind]||0)+1)<=8);
   return {viewport:{width,height},scrollWidth:root.scrollWidth,scrollHeight:root.scrollHeight,header:{height:header.height,bottom:header.bottom,navTop:navRect.top},activePanel:active[0]?.id||null,elementsChecked:elements.length,contrastChecked,errors,warnings:samples,warningCounts,warningCount:allWarningCount};
- },{pinned});
+ },{pinned,contrast});
 }
 module.exports={audit};
