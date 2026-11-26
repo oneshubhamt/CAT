@@ -670,7 +670,7 @@ input[type=checkbox]{flex-shrink:0}
           <article class="border border-hairline dark:border-darkHairline border-t-4 border-t-qa rounded-lg p-3 text-sm leading-relaxed">
             <h3 class="font-semibold text-qa">QA · 40m</h3><p class="mt-1 font-medium">11–12 correct as primary aim</p>
             <p class="mt-1 text-xs font-mono">0–22 sitters · 22–36 mediums · 36–40 cleanup</p>
-            <p class="mt-2 text-xs">Pen down on arithmetic. 45s ignition; 2.5m R1 cap unless finishing. R2: L/I first, U later, X leave. TITA cleanup. Audit requested value, unit, sign and format.</p>
+            <p class="mt-2 text-xs">Pen down on arithmetic. 45s ignition; 2.5m R1 cap unless finishing. R2: unseen questions first, then L/I, U later, X leave. TITA cleanup. Audit requested value, unit, sign and format.</p>
           </article>
         </div>
         <p class="mt-3 text-xs font-medium">Rule hierarchy: official instructions and safeguards → adaptive checkpoints → default clocks → preferences. Save explicitly, protect cleanup, reset between sections; never chase a score target.</p>
@@ -750,6 +750,8 @@ input[type=checkbox]{flex-shrink:0}
           <tbody role="rowgroup" id="scenario-rows"></tbody></table></div>
         <p class="mt-2 text-xs text-muted dark:text-darkMuted">Correct +3; wrong MCQ −1; wrong TITA 0 under the recent pattern. DILR and QA correct-answer targets exclude wrong-MCQ deductions. Use actual exam instructions if they differ.</p>
       </section>
+
+      <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">Terminology: VARC — Verbal Ability and Reading Comprehension; DILR — Data Interpretation and Logical Reasoning; QA — Quantitative Ability; RC — Reading Comprehension; VA — Verbal Ability; MCQ — multiple-choice question; TITA — type-in-the-answer. R1/R2/R3 refer to the QA rounds.</p>
 
       <!-- region:rule-hierarchy | Conflict resolution for exam-day decisions -->
       <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6" aria-labelledby="rule-hierarchy-title">
@@ -862,7 +864,7 @@ input[type=checkbox]{flex-shrink:0}
                 </div>
                 <div>
                   <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Verification</dt>
-                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">15s "Final-8-Words" audit before Save &amp; Next</dd>
+                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">Brief answer audit: requested value, units, sign, domain and format before saving</dd>
                 </div>
               </dl>
             </div>
@@ -1020,7 +1022,7 @@ input[type=checkbox]{flex-shrink:0}
               <span class="font-mono text-[11px] text-muted dark:text-darkMuted">00 &rarr; 40m</span>
             </div>
             <div data-mobile-clock class="flex w-full h-10 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
-              <button type="button" data-accent="qa" data-timeline-detail="QA | Round 1 (0–22m | 7–8 attempted questions, flexible | ~2.5m/Q checkpoint): Sitters only — Arithmetic (pen-down), Logs/Exponents, Number Theory, Mensuration, direct AP/GP &amp; Linear/Quadratic. Skip complex pure geometry; allow direct mensuration or an obvious similarity/Pythagoras sitter." style="width: 55%" class="timeline-seg bg-qa hover:bg-qa/90 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
+              <button type="button" data-accent="qa" data-timeline-detail="QA | Round 1 (0–22m | 7–8 attempted questions, flexible | ~2.5m/Q checkpoint): Sitters only — Arithmetic (pen-down), Logs/Exponents, Number Theory, Mensuration, direct AP/GP &amp; Linear/Quadratic. Defer complex geometry; allow direct mensuration or an obvious geometry sitter." style="width: 55%" class="timeline-seg bg-qa hover:bg-qa/90 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
                 <span>Round 1: Sitters (7–8 Qs)</span><span class="text-[9px] opacity-85">0–22m</span>
               </button>
               <button type="button" data-accent="qa" data-timeline-detail="QA | Round 2 (22–36m | 3–5 additional attempts as needed | ~3.5m/Q checkpoint): Complete initial assessment of unseen questions first; then revisit L/I by confidence and time to finish. U only after stronger opportunities." style="width: 35%" class="timeline-seg bg-qa/75 hover:bg-qa/65 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
@@ -1173,15 +1175,15 @@ input[type=checkbox]{flex-shrink:0}
             <input type="checkbox" data-chk="chk-dilr-shield" class="reset-chk mt-0.5 w-4 h-4 rounded accent-dilr shrink-0 cursor-pointer" />
             <span class="text-xs leading-relaxed">
               <strong class="block text-ink dark:text-darkInk font-semibold">Lock DILR Accuracy Shield</strong>
-              <span class="text-muted dark:text-darkMuted">Full 4-min scan first; mandatory 20–60s clue back-check + written intermediate sums.</span>
+              <span class="text-muted dark:text-darkMuted">Scan all sets first (about 4m); check relevant clues, feasibility and requested answer; record consequential totals.</span>
             </span>
           </label>
 
           <label class="flex items-start gap-3 p-3 rounded-lg bg-canvas/60 dark:bg-darkCanvas/50 border border-hairline dark:border-darkHairline hover:border-ink/30 dark:hover:border-darkInk/30 transition-colors cursor-pointer">
             <input type="checkbox" data-chk="chk-qa-quarantine" class="reset-chk mt-0.5 w-4 h-4 rounded accent-qa shrink-0 cursor-pointer" />
             <span class="text-xs leading-relaxed">
-              <strong class="block text-ink dark:text-darkInk font-semibold">QA Pen-Down + Geometry Quarantine</strong>
-              <span class="text-muted dark:text-darkMuted">Write sentence 1 of Arithmetic immediately; skip pure Geometry in 10s; run Final-8-Words audit.</span>
+              <strong class="block text-ink dark:text-darkInk font-semibold">QA Pen-Down + Topic Priorities</strong>
+              <span class="text-muted dark:text-darkMuted">Write useful arithmetic relationships; defer complex geometry unless an obvious route exists; audit requested value, unit, sign, domain and format.</span>
             </span>
           </label>
 
@@ -1189,7 +1191,7 @@ input[type=checkbox]{flex-shrink:0}
             <input type="checkbox" data-chk="chk-taper" class="reset-chk mt-0.5 w-4 h-4 rounded accent-ink dark:accent-darkInk shrink-0 cursor-pointer" />
             <span class="text-xs leading-relaxed">
               <strong class="block text-ink dark:text-darkInk font-semibold">Nov 28 Mental Taper</strong>
-              <span class="text-muted dark:text-darkMuted">Zero heavy mocks or new hard sets. 30-min skim of this playbook &amp; error log only.</span>
+              <span class="text-muted dark:text-darkMuted">No full mocks or new hard sets; brief review, logistics check and adequate sleep.</span>
             </span>
           </label>
 
@@ -1713,19 +1715,19 @@ input[type=checkbox]{flex-shrink:0}
             <ul class="mt-3.5 space-y-2.5 text-xs leading-relaxed text-muted dark:text-darkMuted">
               <li class="flex gap-2">
                 <span class="text-alert font-bold shrink-0">&times;</span>
-                <span><strong class="text-ink dark:text-darkInk">Wall of dense abstract text</strong> with zero numbers or anchors.</span>
+                <span><strong class="text-ink dark:text-darkInk">Dense text</strong> with no useful representation or stated/derivable anchor; length alone is not decisive.</span>
               </li>
               <li class="flex gap-2">
                 <span class="text-alert font-bold shrink-0">&times;</span>
-                <span><strong class="text-ink dark:text-darkInk">Unbounded case explosion:</strong> 4+ early independent branches without elimination.</span>
+                <span><strong class="text-ink dark:text-darkInk">Unbounded case explosion:</strong> Many early independent branches without useful pruning.</span>
               </li>
               <li class="flex gap-2">
                 <span class="text-alert font-bold shrink-0">&times;</span>
-                <span><strong class="text-ink dark:text-darkInk">Heavy messy arithmetic:</strong> Compound growth rates, ugly ratios, vague wording.</span>
+                <span><strong class="text-ink dark:text-darkInk">Heavy calculation burden:</strong> several difficult computations without simplification, or genuinely ambiguous constraints.</span>
               </li>
               <li class="flex gap-2">
                 <span class="text-alert font-bold shrink-0">&times;</span>
-                <span><strong class="text-ink dark:text-darkInk">Hostile stems:</strong> All <span class="font-mono text-[11px]">"Min/Max"</span> or <span class="font-mono text-[11px]">"CANNOT be true"</span> questions. Min/max sets can still be favourable when optimisation is your strength and the bounds are tractable.</span>
+                <span><strong class="text-ink dark:text-darkInk">Potentially costly stems:</strong> Many <span class="font-mono text-[11px]">"Min/Max"</span> or <span class="font-mono text-[11px]">"CANNOT be true"</span> questions. Such questions can still be favourable when bounds or elimination are tractable.</span>
               </li>
             </ul>
           </div>
@@ -1925,7 +1927,7 @@ input[type=checkbox]{flex-shrink:0}
               Recent-paper estimates: Arithmetic 7–9 and Algebra 4–8 questions depending on slot and classification; Number System may offer additional opportunities. Verify actual counts and marking on exam day.
             </p>
           </div>
-          <span class="font-mono text-xs px-2.5 py-1 rounded-md bg-qa/10 text-qa font-semibold self-start sm:self-auto shrink-0">No Full-Paper Upfront Scan</span>
+          <span class="font-mono text-xs px-2.5 py-1 rounded-md bg-qa/10 text-qa font-semibold self-start sm:self-auto shrink-0">Rolling first pass; no separate upfront scan</span>
         </div>
 
         <!-- 3-Round Triage Bar -->
@@ -1984,7 +1986,7 @@ input[type=checkbox]{flex-shrink:0}
             </tbody>
           </table>
         </div>
-        <p class="mt-3 text-xs leading-relaxed"><strong>Round 2:</strong> prioritise L/I by confidence and remaining minutes to finish; U only after stronger opportunities. <strong>Round 3:</strong> save/audit responses, protect TITA opportunities and attempt an extra question only if time remains. Clear uncertain saved MCQ responses before marking for review.</p>
+        <p class="mt-3 text-xs leading-relaxed"><strong>Round 2:</strong> finish first-pass assessment of unseen questions, then prioritise L/I by confidence and remaining minutes to finish; U only after stronger opportunities. <strong>Round 3:</strong> save/audit responses, protect TITA opportunities and attempt an extra question only if time remains. Clear uncertain saved MCQ responses before marking for review.</p>
       </section>
 
       <!-- 2. 6 Mechanical Rules (Balanced 3x2 Desktop Grid Including Calculator Discipline) -->
@@ -2021,7 +2023,7 @@ input[type=checkbox]{flex-shrink:0}
           <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-t-2 border-t-alert rounded-xl p-4">
             <div class="flex items-center gap-2 mb-2">
               <span class="font-mono text-xs font-bold text-alert bg-alert/10 px-2 py-0.5 rounded">03</span>
-              <h4 class="font-bold text-xs sm:text-sm">The Geometry Quarantine</h4>
+              <h4 class="font-bold text-xs sm:text-sm">Geometry: personal preference, not a ban</h4>
             </div>
             <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">
               <strong class="text-alert">Personal default:</strong> quickly defer complex geometry, circle theorems or angle chasing if no obvious route. Allow direct mensuration and obvious similarity, Pythagoras or circle-basics sitters. Classify L/I/U/X by actual method, not topic alone.
@@ -2043,10 +2045,10 @@ input[type=checkbox]{flex-shrink:0}
           <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-t-2 border-t-dilr rounded-xl p-4">
             <div class="flex items-center gap-2 mb-2">
               <span class="font-mono text-xs font-bold text-dilr bg-dilr/10 px-2 py-0.5 rounded">05</span>
-              <h4 class="font-bold text-xs sm:text-sm">15-Second "Final-8-Words" Audit</h4>
+              <h4 class="font-bold text-xs sm:text-sm">Final answer audit (about 15 seconds)</h4>
             </div>
             <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">
-              Before clicking <strong class="text-ink dark:text-darkInk">Save &amp; Next</strong>, re-read the requested value (often the last 8–10 words), unit, sign, domain and answer format. Silly errors happen at the finish line — catch <span class="font-mono text-ink dark:text-darkInk">x</span> vs <span class="font-mono text-ink dark:text-darkInk">2x</span>, <em>"time taken by B alone"</em>, or <em>"% more than"</em> before losing 4 marks.
+              Before saving deliberately via the verified interface, re-read the requested value (often the last 8–10 words), unit, sign, domain and answer format. Silly errors happen at the finish line — catch <span class="font-mono text-ink dark:text-darkInk">x</span> vs <span class="font-mono text-ink dark:text-darkInk">2x</span>, <em>"time taken by B alone"</em>, or <em>"% more than"</em> before losing 4 marks.
             </p>
           </div>
 
@@ -2123,7 +2125,7 @@ input[type=checkbox]{flex-shrink:0}
                 <td role="cell" data-cell-label="Topics" class="py-3 px-4"><div data-cell-value>
                   <span class="font-medium text-muted dark:text-darkMuted block">Pure Geometry &amp; Combinatorics (P&amp;C)</span>
                   <span class="text-[11px] text-muted dark:text-darkMuted mt-1 block leading-relaxed">
-                    On Geometry, rely strictly on existing baseline (basic triangle similarity, Pythagoras, circle basics) only if an obvious 60-second sitter shows up.
+                    For Geometry, prefer familiar direct methods (triangle similarity, Pythagoras, circle basics) when the actual route is clear; do not reject an easy question by topic or a rigid one-minute limit.
                   </span>
                 </div></td>
                 <td role="cell" data-cell-label="Typical Supply" class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap align-top"><div data-cell-value>3–4 Qs</div></td>
