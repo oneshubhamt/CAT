@@ -407,7 +407,8 @@ input[type=checkbox]{flex-shrink:0}
     @media (min-width:768px) and (max-width:1023px){#btn-print{min-width:44px}}
     #playbook-main,.tab-panel,.print-card,.grid > *,.flex > *{min-width:0}
     .tab-panel{overflow-wrap:break-word}
-    #toolbar-actions button,#section-nav button,.varc-order-btn,#btn-close-revision{min-height:44px}
+    #toolbar-actions button,#section-nav button,.varc-order-btn,#btn-close-revision{min-height:44px;min-width:44px}
+    #playbook-main :is(section,article,h3,summary,input,textarea,select,button){scroll-margin-top:110px}
     .notes-drawer summary{min-height:48px}
     #error-log-list button,#btn-reset-checklist,#btn-retry-storage,#export-fallback{min-height:44px;display:inline-flex;align-items:center}
     #error-log-form input,#error-log-form select,#error-log-form textarea,.notes-drawer textarea{max-width:100%;min-width:0}
@@ -435,6 +436,7 @@ input[type=checkbox]{flex-shrink:0}
       #toolbar-storage > div:empty{display:none}
       #toolbar-storage > div:has(> [hidden]:first-child + [hidden]){display:none}
       #playbook-main{padding:16px 12px 24px}
+      #playbook-main :is(section,article,h3,summary,input,textarea,select,button){scroll-margin-top:180px}
       #playbook-main .text-xs{font-size:14px;line-height:1.52}
       #playbook-main .text-sm{font-size:15px;line-height:1.45}
       #playbook-main .text-\[11px\]{font-size:12px;line-height:1.45}
@@ -481,7 +483,7 @@ input[type=checkbox]{flex-shrink:0}
       #error-log-list button{padding:0 6px}
       #toast{max-width:calc(100vw - 24px);right:12px;bottom:max(12px,env(safe-area-inset-bottom,0px));white-space:normal}
     }
-    @media screen and (max-height:500px) and (orientation:landscape){#playbook-header{position:relative}}
+    @media screen and (max-height:500px) and (orientation:landscape){#playbook-header{position:relative}#playbook-main :is(section,article,h3,summary,input,textarea,select,button){scroll-margin-top:12px}}
     @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,::before,::after{transition:none!important}}
     @media print{[data-mobile-only]{display:none!important}}
   </style>
