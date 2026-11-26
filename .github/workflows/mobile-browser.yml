@@ -1,0 +1,46 @@
+name: Mobile browser QA
+
+on:
+  push:
+    branches: [working]
+    paths: [index.html, tests/mobile-browser.cjs, tests/smoke.cjs, tools/build-offline-css.cjs, .github/workflows/mobile-browser.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  mobile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Source checks
+        run: |
+          node tools/build-offline-css.cjs --check
+          node tests/smoke.cjs
+      - name: Install browser test dependencies (development only)
+        run: |
+          npm install --no-save playwright@1.56.1
+          npx playwright install --with-deps ${{ matrix.engine }}
+      - name: Offline native browser screenshots
+        env:
+          CAT_ENGINE: ${{ matrix.engine }}
+        run: node tests/mobile-browser.cjs
+      - name: Upload screenshot and layout evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mobile-${{ matrix.engine }}
+          path: |
+            artifacts/mobile/*.png
+            artifacts/mobile/layout-report.json
+          if-no-files-found: ignore
+          retention-days: 7
