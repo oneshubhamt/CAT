@@ -540,6 +540,38 @@ input[type=checkbox]{flex-shrink:0}
       [data-recovery-clock] > *:last-child{grid-column:1/-1;min-height:36px}
       [data-recovery-clock] [data-clock-time]{font-size:13px!important}
     }
+
+    /* Reading design: short actions, visible steps and readable body text. */
+    @media screen {
+      #playbook-main {line-height:1.55}
+      #playbook-main :is(p,li,dd,td) {line-height:1.55}
+      #playbook-main :is(p,ul,ol,dl).text-xs {font-size:14px}
+      #playbook-main :is(h3,h4) {line-height:1.35}
+      #playbook-main :is(h3,h4).uppercase {letter-spacing:.025em;text-transform:none}
+      #playbook-main :is(ul,ol).list-inside {padding-left:1.15em;list-style-position:outside}
+      #playbook-main :is(ul,ol).list-inside > li + li {margin-top:6px}
+      [data-read-steps] {list-style:disc;padding-left:1.15em}
+      [data-read-steps] > li + li {margin-top:7px}
+      [data-read-steps] > li::marker {color:#5F5F5A}
+      .dark [data-read-steps] > li::marker {color:#A1A09A}
+      [data-selection-steps] {list-style:none;counter-reset:scan;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:8px;margin:10px 0}
+      [data-selection-steps] > li {counter-increment:scan;display:grid;grid-template-columns:25px minmax(0,1fr);column-gap:9px;align-content:start;border:1px solid #E5E4DF;border-radius:8px;padding:10px;font-size:14px}
+      [data-selection-steps] > li::before {content:counter(scan);grid-row:1/3;width:25px;height:25px;display:grid;place-items:center;border-radius:50%;background:#0F766E;color:white;font-weight:700;font-size:13px}
+      [data-selection-steps] > li > span {grid-column:2;font-size:13px;margin-top:3px}
+      .dark [data-selection-steps] > li {border-color:#2D2D29}
+      [data-decision-grid] {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:8px}
+      [data-decision-grid] > div {border:1px solid #E5E4DF;border-radius:8px;padding:10px}
+      [data-decision-grid] > div > strong,[data-decision-grid] > div > span {display:block}
+      [data-decision-grid] > div > span {margin-top:4px}
+      .dark [data-decision-grid] > div {border-color:#2D2D29}
+      #quick-revision [data-read-steps] {font-size:13px}
+      #quick-revision [data-read-steps] > li + li {margin-top:5px}
+    }
+    @media screen and (max-width:767px) {
+      [data-selection-steps],[data-decision-grid] {grid-template-columns:minmax(0,1fr)}
+      [data-selection-steps] > li {padding:9px}
+      #playbook-main [data-read-steps] {line-height:1.5}
+    }
     @media print{[data-mobile-only]{display:none!important}}
   </style>
 
@@ -663,7 +695,7 @@ input[type=checkbox]{flex-shrink:0}
       </nav>
       <div id="toolbar-storage" class="flex flex-wrap items-center justify-between gap-2 py-1.5 text-[11px] text-muted dark:text-darkMuted border-t border-hairline dark:border-darkHairline">
         <span id="storage-status" role="status" aria-live="polite">Opening browser storage…</span>
-        <div class="flex flex-wrap gap-3"><button id="btn-retry-storage" type="button" hidden class="underline">Retry IndexedDB</button><a id="export-fallback" hidden download="cat_99_exam_day_playbook.html" class="underline">Download prepared backup</a></div>
+        <div class="flex flex-wrap gap-3"><button id="btn-retry-storage" type="button" hidden class="underline">Retry saving</button><a id="export-fallback" hidden download="cat_99_exam_day_playbook.html" class="underline">Download prepared backup</a></div>
       </div>
     </div>
   </header>
@@ -696,12 +728,12 @@ input[type=checkbox]{flex-shrink:0}
           <article class="border border-hairline dark:border-darkHairline border-t-4 border-t-dilr rounded-lg p-3 text-sm leading-relaxed">
             <h3 class="font-semibold text-dilr">DILR · 40m</h3><p class="mt-1 font-medium">One reliable set → two viable sets</p>
             <p class="mt-1 text-xs font-mono"><span data-plan="dilrQuick"></span></p>
-            <p class="mt-2 text-xs">Prefer tight coded/elimination sets as a tie-breaker only; rank by actual solvability and avoid unpruned branches. Reassess <span data-plan="dilrReassess"></span>; switch by <span data-plan="dilrSwitch"></span> if stalled. <span data-plan="dilrRecoveryQuick"></span> Check clues and totals.</p>
+            <ul class="mt-2 text-xs" data-read-steps><li><strong>Choose:</strong> tight coded sets as a tie-breaker only; rank by actual solvability.</li><li><strong>Move on:</strong> reassess <span data-plan="dilrReassess"></span>; switch by <span data-plan="dilrSwitch"></span> if stalled.</li><li><strong>Recover:</strong> <span data-plan="dilrRecoveryQuick"></span></li><li><strong>Check:</strong> clues, totals and the asked value.</li></ul>
           </article>
           <article class="border border-hairline dark:border-darkHairline border-t-4 border-t-qa rounded-lg p-3 text-sm leading-relaxed">
             <h3 class="font-semibold text-qa">QA · 40m</h3><p class="mt-1 font-medium"><span data-plan="qaCorrect"></span> as primary aim</p>
             <p class="mt-1 text-xs font-mono"><span data-plan="qaQuick"></span></p>
-            <p class="mt-2 text-xs">Pen down on arithmetic. <span data-plan="qaIgnition"></span> ignition; <span data-plan="qaRound1"></span> R1 checkpoint unless finishing. R2: unseen first, then lengthy/incomplete (L/I); uncertain (U) later; conceptual gaps (X) leave. TITA cleanup. Audit requested value, unit, sign and format.</p>
+            <ul class="mt-2 text-xs" data-read-steps><li><strong>Start:</strong> write useful arithmetic steps. Find a method by <span data-plan="qaIgnition"></span>.</li><li><strong>Move on:</strong> <span data-plan="qaRound1"></span> R1 checkpoint unless finishing.</li><li><strong>R2:</strong> unseen → lengthy/incomplete (L/I) → uncertain (U); skip gaps (X).</li><li><strong>Check:</strong> value, unit, sign, domain, format. TITA in cleanup.</li></ul>
           </article>
         </div>
         <p class="mt-3 text-xs font-medium">Priority: exam rules and safety → time checks → pacing plan → preferences. Save answers, protect cleanup and reset between sections.</p>
@@ -868,7 +900,7 @@ input[type=checkbox]{flex-shrink:0}
                 </div>
                 <div>
                   <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Verification</dt>
-                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">20–60s clue back-check + explicit intermediate sums</dd>
+                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">Check clues, totals and the answer (about 20–60s)</dd>
                 </div>
               </dl>
             </div>
@@ -891,7 +923,7 @@ input[type=checkbox]{flex-shrink:0}
                   <dd class="mt-0.5 text-ink dark:text-darkInk font-medium"><span data-plan="qaRound1"></span> in Round 1 (unless in final calc step)</dd>
                 </div>
                 <div>
-                  <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Quarantine</dt>
+                  <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Topic preference</dt>
                   <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">Deprioritise complex geometry; allow obvious sitters</dd>
                 </div>
                 <div>
@@ -1097,7 +1129,7 @@ input[type=checkbox]{flex-shrink:0}
           <div class="rounded-xl p-4 bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-t-4 border-t-dilr">
             <div class="flex items-center justify-between gap-2">
               <span class="font-mono text-xs font-bold text-dilr">NOV 28 (SATURDAY)</span>
-              <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-dilr/10 text-dilr font-semibold">Strict Taper</span>
+              <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-dilr/10 text-dilr font-semibold">Light review</span>
             </div>
             <p class="mt-2.5 text-xs text-muted dark:text-darkMuted leading-relaxed">
               <strong class="text-alert font-semibold">No full mocks or new hard sets.</strong> Skim this guide and error log. Check documents and departure time. Aim for 7–9 hours of sleep.
@@ -1208,7 +1240,7 @@ input[type=checkbox]{flex-shrink:0}
           <label class="flex items-start gap-3 p-3 rounded-lg bg-canvas/60 dark:bg-darkCanvas/50 border border-hairline dark:border-darkHairline hover:border-ink/30 dark:hover:border-darkInk/30 transition-colors cursor-pointer">
             <input type="checkbox" data-chk="chk-taper" class="reset-chk mt-0.5 w-4 h-4 rounded accent-ink dark:accent-darkInk shrink-0 cursor-pointer" />
             <span class="text-xs leading-relaxed">
-              <strong class="block text-ink dark:text-darkInk font-semibold">Nov 28 Mental Taper</strong>
+              <strong class="block text-ink dark:text-darkInk font-semibold">28 Nov: rest and review</strong>
               <span class="text-muted dark:text-darkMuted">No full mocks or new hard sets; brief review, logistics check and adequate sleep.</span>
             </span>
           </label>
@@ -1373,7 +1405,7 @@ input[type=checkbox]{flex-shrink:0}
               <div>
                 <h4 class="font-semibold text-ink dark:text-darkInk">First paragraph: decide in 45–60s</h4>
                 <p class="text-muted dark:text-darkMuted mt-0.5">
-                  Do not compare every passage upfront. Judge the first paragraph by comprehension, not topic. If you cannot state its point after 45–60 seconds, move on; reject more than one if necessary. <span data-plan="gate">Default to three readable passages.</span> If two passages fail the gate, protect the most readable remaining RCs and shift freed time to viable VA; do not force a third or fourth passage to meet a target.
+                  Judge the first paragraph, not the topic. Cannot state its point in 45–60s? Move on. Do not scan every passage upfront. Reject more than one if needed. <span data-plan="gate">Default to three readable passages.</span> If two passages fail the gate, use the remaining readable RCs and spend saved time on VA. Do not force extra RCs.
                 </p>
               </div>
             </div>
@@ -1382,10 +1414,10 @@ input[type=checkbox]{flex-shrink:0}
             <div class="flex gap-3">
               <div class="font-mono text-[11px] font-bold text-varc bg-varc/10 w-6 h-6 rounded-md flex items-center justify-center shrink-0 mt-0.5">2</div>
               <div>
-                <h4 class="font-semibold text-ink dark:text-darkInk">Pass 1 (<span class="font-mono">3:00–3:30</span>) — Architecture, Not Facts</h4>
+                <h4 class="font-semibold text-ink dark:text-darkInk">Read (<span class="font-mono">3:00–3:30</span>): follow the argument</h4>
                 <ul class="text-muted dark:text-darkMuted mt-1 space-y-1 list-disc list-inside">
-                  <li>Steady normal-to-brisk pace. <strong class="text-ink dark:text-darkInk font-medium">Default No-Backtracking Rule</strong> on confusing lines: the next sentence may clarify the meaning; briefly reread only if the argument cannot otherwise be followed.</li>
-                  <li>Do not memorise names, dates or secondary examples; register where they appear for targeted verification.</li>
+                  <li>Read at a steady pace. On a confusing line, read on: the next sentence may clarify it. Reread briefly only if you lose the argument.</li>
+                  <li>Remember where names, dates and examples appear, not their details.</li>
                   <li>Tag each paragraph's role in <strong class="text-ink dark:text-darkInk font-medium">3–5 words</strong> <span class="italic">(Old view &rarr; Critique &rarr; Evidence &rarr; Caveat)</span>.</li>
                   <li>Read deliberately at <strong class="text-ink dark:text-darkInk font-medium">pivot words</strong> that signal argumentative shifts: <span class="font-mono text-[11px] text-varc">however, yet, ironically, although, despite, rather, paradoxically, admittedly, consequently</span>.</li>
                 </ul>
@@ -1396,11 +1428,11 @@ input[type=checkbox]{flex-shrink:0}
             <div class="flex gap-3">
               <div class="font-mono text-[11px] font-bold text-varc bg-varc/10 w-6 h-6 rounded-md flex items-center justify-center shrink-0 mt-0.5">3</div>
               <div>
-                <h4 class="font-semibold text-ink dark:text-darkInk">Answering (<span class="font-mono">4:00–4:30</span>) — Split by Question Type</h4>
+                <h4 class="font-semibold text-ink dark:text-darkInk">Answer (<span class="font-mono">4:00–4:30</span>): check the evidence</h4>
                 <ul class="text-muted dark:text-darkMuted mt-1 space-y-1 list-disc list-inside">
-                  <li><strong class="text-ink dark:text-darkInk font-medium">Global Qs</strong> (Main Idea / Tone / Purpose / Structure): answer from the mental map first; verify selectively if needed. <strong>Practice diagnostic:</strong> extensive rereading for the main idea suggests the initial structural read needs improvement.</li>
+                  <li><strong class="text-ink dark:text-darkInk font-medium">Global Qs</strong> (Main Idea / Tone / Purpose / Structure): answer from your mental map; check evidence if needed. <strong>In practice:</strong> repeated rereading for the main idea means your first read needs work.</li>
                   <li><strong class="text-ink dark:text-darkInk font-medium">Specific / EXCEPT:</strong> find the evidence; check all options for EXCEPT and read enough context to confirm qualifiers.</li><li><strong>Inference:</strong> use local evidence or combine premises across paragraphs. Ask what follows, not what merely sounds plausible. Aim for a 15–20s lookup; take longer if needed.</li>
-                  <li>Never force 4/4 on a passage; <strong class="text-ink dark:text-darkInk font-medium">3/4 can be preferable</strong> if one inference trap is nasty.</li>
+                  <li>Do not force all four answers. <strong>Three reliable answers can be better.</strong></li>
                 </ul>
               </div>
             </div>
@@ -1555,7 +1587,7 @@ input[type=checkbox]{flex-shrink:0}
             <ul class="mt-3 space-y-1.5 text-xs text-muted dark:text-darkMuted leading-relaxed">
               <li><strong class="text-ink dark:text-darkInk">Method:</strong> Find sentence pairs that must go together before choosing the opener.</li>
               <li><strong class="text-ink dark:text-darkInk">Triggers:</strong> <span class="font-mono text-[11px]">Noun &rarr; Pronoun</span>, <span class="font-mono text-[11px]">Cause &rarr; Effect</span>, <span class="font-mono text-[11px]">Claim &rarr; Contrast</span>, <span class="font-mono text-[11px]">General &rarr; Example</span>, <span class="font-mono text-[11px]">Full form &rarr; Acronym</span>, <span class="font-mono text-[11px]">Earlier &rarr; Later</span> (chronology). Test each pair against the whole paragraph.</li>
-              <li><strong class="text-ink dark:text-darkInk">Checkpoint:</strong> Around <span class="font-mono text-alert font-semibold">2:00</span>, move on if stalled. Save a defensible sequence if actual marking is penalty-free; otherwise judge confidence and opportunity cost. Revisit a reasonable estimate only in cleanup after stronger opportunities.</li>
+              <li><strong class="text-ink dark:text-darkInk">Checkpoint:</strong> At about <span class="font-mono text-alert font-semibold">2:00</span>, move on if stuck. Save a defensible sequence if actual marking is penalty-free; otherwise weigh confidence. Revisit estimates after stronger questions.</li>
             </ul>
           </div>
         </div>
@@ -1699,7 +1731,7 @@ input[type=checkbox]{flex-shrink:0}
             </div>
             <div class="p-3 rounded-lg bg-qa/[0.06] dark:bg-qa/15 border border-qa/20 leading-relaxed">
               <strong class="font-mono text-[10px] uppercase tracking-wider text-qa block mb-0.5">When to use the calculator</strong>
-              <span class="text-muted dark:text-darkMuted">Use paper for simple sums and ratios; use the permitted calculator whenever faster or more reliable.</span>
+              <span class="text-muted dark:text-darkMuted">Use paper for simple sums; calculator when faster or safer.</span>
             </div>
           </div>
         </div>
@@ -1810,7 +1842,7 @@ input[type=checkbox]{flex-shrink:0}
         <!-- 6-Minute Bail-Out Rule -->
         <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5">
           <div class="flex items-center justify-between pb-3 border-b border-hairline dark:border-darkHairline">
-            <h3 class="text-sm font-bold text-alert">The 6-Minute Bail-Out Rule</h3>
+            <h3 class="text-sm font-bold text-alert">When to switch sets</h3>
             <span class="font-mono text-xs font-bold text-alert"><span data-plan="dilrSwitch"></span> checkpoint</span>
           </div>
           <div class="mt-3.5 space-y-2.5 text-xs leading-relaxed">
@@ -1819,7 +1851,7 @@ input[type=checkbox]{flex-shrink:0}
               <span class="text-ink dark:text-darkInk"> A key clue is unlocked or your deductions lead towards reliable answers.</span>
             </p>
             <p class="p-2.5 rounded-lg bg-alert/8 dark:bg-alert/15 border border-alert/20">
-              <strong class="text-alert font-mono uppercase text-[11px]">Bail immediately if:</strong>
+              <strong class="text-alert font-mono uppercase text-[11px]">Move on if:</strong>
               <span class="text-ink dark:text-darkInk"> No useful model or new deduction, repeated rereading, or a better set is available. Reassess at <span data-plan="dilrReassess"></span>; switch by <span data-plan="dilrSwitch"></span> if still stalled.</span>
             </p>
           </div>
@@ -1829,13 +1861,13 @@ input[type=checkbox]{flex-shrink:0}
         <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5">
           <div class="flex items-center justify-between pb-3 border-b border-hairline dark:border-darkHairline">
             <h3 class="text-sm font-bold text-dilr">Check before answering</h3>
-            <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-dilr/10 text-dilr font-semibold">ERROR-LOG TRIGGERS</span>
+            <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-dilr/10 text-dilr font-semibold">What to log</span>
           </div>
           <ol class="mt-3.5 space-y-2.5 text-xs leading-relaxed">
             <li class="flex gap-2.5">
               <span class="font-mono font-bold text-dilr bg-dilr/10 w-5 h-5 rounded flex items-center justify-center shrink-0 mt-0.5">1</span>
               <span>
-                <strong class="text-ink dark:text-darkInk">20–60s Clue Back-Check:</strong> Check relevant constraints, totals and feasibility. Confirm uniqueness of the requested answer across surviving cases (the full grid need not be unique). Re-read the exact quantity and units asked. For independent partial questions, verify necessary premises and answer without waiting for a complete grid.
+                <strong class="text-ink dark:text-darkInk">20–60s check:</strong> Check clues, totals and feasibility. Confirm the asked answer across valid cases, even if the full grid is not unique. Check quantity and units. For partial answers, verify only the facts needed.
               </span>
             </li>
             <li class="flex gap-2.5">
@@ -1850,7 +1882,7 @@ input[type=checkbox]{flex-shrink:0}
 
       <!-- region:dilr-case-discipline | Keep assumptions separate -->
       <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-4" aria-labelledby="dilr-case-title">
-        <h3 id="dilr-case-title" class="text-sm font-semibold text-dilr">Case discipline: master model vs hypothetical question</h3>
+        <h3 id="dilr-case-title" class="text-sm font-semibold text-dilr">Keep the main model separate from “if” questions</h3>
         <ul class="mt-2 text-xs leading-relaxed" data-read-steps><li><strong>Main model:</strong> record given facts and certain deductions.</li><li><strong>Cases:</strong> label alternatives A/B. Keep any question-specific “if” in a separate temporary copy; never carry it into the next question.</li><li><strong>Eliminate:</strong> check original clues, totals, bounds and integer limits.</li><li><strong>Answer:</strong> check that the value agrees across all valid cases. For possible/min/max questions, check feasibility or the bound instead.</li></ul>
       </section>
 
@@ -2008,7 +2040,7 @@ input[type=checkbox]{flex-shrink:0}
             </tbody>
           </table>
         </div>
-        <p class="mt-3 text-xs leading-relaxed"><strong>Round 2:</strong> finish first-pass assessment of unseen questions, then prioritise L/I by confidence and remaining minutes to finish; U only after stronger opportunities. <strong>Round 3:</strong> save/audit responses, protect TITA opportunities and attempt an extra question only if time remains. Clear uncertain saved MCQ responses before marking for review.</p>
+        <p class="mt-3 text-xs leading-relaxed"><strong>Round 2:</strong> unseen → L/I (best chance first) → U. <strong>Round 3:</strong> check saved answers, then TITA; extra questions only if time remains. Clear accidental MCQ guesses before marking for review.</p>
       </section>
 
       <!-- region:strategy-detail-qa-rules -->
@@ -2041,7 +2073,7 @@ input[type=checkbox]{flex-shrink:0}
               <h4 class="font-bold text-xs sm:text-sm">Do not skip arithmetic by length</h4>
             </div>
             <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">
-              <strong class="text-ink dark:text-darkInk">"Pen-Down on Word One":</strong> Force yourself to read the <strong class="text-ink dark:text-darkInk">first 2 lines of every Arithmetic problem in Round 1</strong> before deciding to skip; write meaningful variables, ratios, timelines and constraints as you read. Length alone is neither a green nor a red flag; do not auto-reject Arithmetic because it looks long.
+              <strong>Read the first two lines</strong> of arithmetic questions in Round 1 before skipping. Write useful variables, ratios, timelines and clues. Length alone tells you little about difficulty.
             </p>
           </div>
 
@@ -2052,7 +2084,7 @@ input[type=checkbox]{flex-shrink:0}
               <h4 class="font-bold text-xs sm:text-sm">Geometry: take easy questions</h4>
             </div>
             <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">
-              <strong class="text-alert">Personal default:</strong> quickly defer complex geometry, circle theorems or angle chasing if no obvious route. Allow direct mensuration and obvious similarity, Pythagoras or circle-basics sitters. Classify L/I/U/X by actual method, not topic alone.
+              <strong>Defer complex geometry</strong> if no clear method. Take direct mensuration, similarity, Pythagoras or basic circle questions. Classify L/I/U/X by actual method, not topic alone.
             </p>
           </div>
 
@@ -2085,7 +2117,7 @@ input[type=checkbox]{flex-shrink:0}
               <h4 class="font-bold text-xs sm:text-sm">When to use the calculator</h4>
             </div>
             <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">
-              Paper for simple sums and ratios. Use the on-screen calculator when faster or safer: difficult division, powers or totals. Routine calculator use can waste time.
+              Paper for simple sums and ratios. Calculator for difficult division, powers or totals if faster or safer.
             </p>
           </div>
         </div>
@@ -2101,7 +2133,7 @@ input[type=checkbox]{flex-shrink:0}
       <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl overflow-hidden">
         <div class="px-5 py-3.5 border-b border-hairline dark:border-darkHairline flex flex-wrap items-center justify-between gap-2">
           <h3 class="text-xs font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">Topic priorities and estimated solvable questions</h3>
-          <span class="font-mono text-[11px] text-qa font-semibold">Aim for 13–15 solvable questions; choose the best 12</span>
+          <span class="font-mono text-[11px] text-qa font-semibold">Aim to find 13–15 solvable questions; aim for 12 attempts</span>
         </div>
 
         <div class="overflow-x-auto">
@@ -2298,7 +2330,7 @@ input[type=checkbox]{flex-shrink:0}
               "end": 22,
               "label": "Round 1 · Sitters",
               "quick": "sitters",
-              "caption": "Assess questions in sequence; choose clear methods, especially arithmetic, logs/exponents, number theory, mensuration, arithmetic/geometric progressions and linear/quadratic equations.",
+              "caption": "Assess each question. Prefer clear methods: arithmetic, logs/exponents, number theory, mensuration and direct algebra (progressions, linear/quadratic equations).",
               "rule": `7–8 attempts, flexible; about ${CHECKPOINTS.qaRound1}m per question unless finishing.`
             },
             {
@@ -2306,7 +2338,7 @@ input[type=checkbox]{flex-shrink:0}
               "end": 36,
               "label": "Round 2 · Mediums",
               "quick": "mediums",
-              "caption": "Assess unseen questions first, then revisit L/I by confidence and time to finish, then viable U after stronger opportunities.",
+              "caption": "Unseen first, then L/I by confidence and time to finish. Try U only after better options.",
               "rule": `3–5 additional attempts as feasible; about ${CHECKPOINTS.qaRound2}m per question.`
             },
             {
@@ -2314,7 +2346,7 @@ input[type=checkbox]{flex-shrink:0}
               "end": 40,
               "label": "Cleanup",
               "quick": "cleanup",
-              "caption": "Audit saved answers; consider reasoned TITA estimates and optional extra work.",
+              "caption": "Check saved answers. Consider TITA estimates, then extra questions if time remains.",
               "rule": "Only attempt extra questions after protecting cleanup."
             }
           ],
@@ -2417,14 +2449,14 @@ input[type=checkbox]{flex-shrink:0}
               37,
               40
             ],
-            "summary": "3 RCs + 8 VA (20-question pool). Aim for 10–11 RC, 4 TITA VA and 3–4 MCQ VA; 17–18 primary, 19 optional.",
-            "gate": "45–60s first-paragraph gate; default to three readable RCs. Consider the fourth only under the readable-paper trigger.",
+            "summary": "20-question pool: aim for 10–11 RC, 4 TITA and 3–4 MCQ VA. Target 17–18; 19 optional.",
+            "gate": "Judge the first paragraph in 45–60s. Aim for 3 readable RCs; try a fourth only if it meets the timing rule.",
             "checkTitle": "Commit to Standard (3 RCs)",
             "checkDetail": "Protect three readable RCs and all available TITA VA; do not force weak MCQs.",
             "scoreExample": "Illustrative: 17–18 attempts, 13–14 correct, 2 wrong MCQs and 2 wrong TITAs = 37–40 raw marks (about 76–78% accuracy).",
             "pool": 20,
             "label": "(Standard · 3 RCs)",
-            "title": "Standard (3 RCs): 3 RCs → 4 TITA VA → 4 MCQ VA → 1m Cleanup",
+            "title": "Standard: 3 RCs → 4 TITA → 4 MCQs → cleanup",
             "toast": "VARC: Standard (3 RCs) active",
             "segments": [
               {
@@ -2441,7 +2473,7 @@ input[type=checkbox]{flex-shrink:0}
                 "label": "4 TITA VA",
                 "classes": "bg-varc/75 hover:bg-varc/65 text-white",
                 "detail": "VARC | Min 25–32 (7m): 2 Para Jumbles + 2 Odd One Out (~1:45/Q). Under recent marking, wrong TITA answers have no penalty. Prioritise these questions; move on around 2:00/Q if stalled and reserve reasonable estimates for cleanup.",
-                "caption": "4 TITA VA (2 Para Jumbles + 2 Odd One Out) → Prioritise available TITA (no -1 under recent marking)."
+                "caption": "Try 2 Para Jumbles + 2 Odd One Out. No negative marking under recent rules."
               },
               {
                 "start": 32,
@@ -2449,7 +2481,7 @@ input[type=checkbox]{flex-shrink:0}
                 "label": "4 MCQ VA",
                 "classes": "bg-varc/40 hover:bg-varc/50 text-ink dark:text-darkInk",
                 "detail": "VARC | Min 32–39 (7m): 2 Para Summary + 2 Para Completion (~1:45/Q). Target 3–4 clean Qs; flag unresolved MCQs unanswered at 45s.",
-                "caption": "4 MCQ VA (2 Summary + 2 Completion) → 3–4 clean Qs."
+                "caption": "2 Summary + 2 Completion; aim for 3–4 reliable answers."
               },
               {
                 "start": 39,
@@ -2471,14 +2503,14 @@ input[type=checkbox]{flex-shrink:0}
               37,
               40
             ],
-            "summary": "2 RCs → TITA VA → 1 RC → MCQ VA (20-question pool). Aim for 10–11 RC, 4 TITA VA and 3–4 MCQ VA; 17–18 primary, 19 optional.",
-            "gate": "45–60s first-paragraph gate; use the initial 1m allowance and protect the early TITA block. Do not force a fourth RC.",
+            "summary": "20-question pool: aim for 10–11 RC, 4 TITA and 3–4 MCQ VA. Target 17–18; 19 optional.",
+            "gate": "Judge the first paragraph in 45–60s. Use the extra minute to switch if needed. Keep time for TITA.",
             "checkTitle": "Commit to Anti-Fatigue Split",
             "checkDetail": "2 RCs, TITA VA, 1 RC, MCQ VA; protect the cleanup minute.",
             "scoreExample": "Illustrative: 17–18 attempts, 13–14 correct, 2 wrong MCQs and 2 wrong TITAs = 37–40 raw marks (about 76–78% accuracy).",
             "pool": 20,
             "label": "(Anti-Fatigue Split)",
-            "title": "Anti-Fatigue Split: 2 RCs (17m, including gate) → TITA VA (7m) → RC #3 (8m) → MCQ VA (7m) → cleanup (1m)",
+            "title": "Split: 2 RCs → TITA → RC 3 → MCQ → cleanup",
             "toast": "VARC: Anti-Fatigue Split active",
             "segments": [
               {
@@ -2494,8 +2526,8 @@ input[type=checkbox]{flex-shrink:0}
                 "end": 24,
                 "label": "4 TITA VA",
                 "classes": "bg-varc/70 hover:bg-varc/60 text-white",
-                "detail": "VARC | Min 17–24 (7m): Palate cleanser — knock out 2 Para Jumbles + 2 Odd One Out (zero negative marking) before RC #3.",
-                "caption": "TITA VA early → solve viable questions; save remaining estimates for cleanup."
+                "detail": "VARC | Min 17–24 (7m): Use the VA break: try 2 Para Jumbles and 2 Odd One Out (no negative marking in recent papers). Move on if stuck.",
+                "caption": "Solve TITA first; leave estimates for cleanup."
               },
               {
                 "start": 24,
@@ -2503,14 +2535,14 @@ input[type=checkbox]{flex-shrink:0}
                 "label": "RC #3",
                 "classes": "bg-varc hover:bg-varc/90 text-white",
                 "detail": "VARC | Min 24–32 (8m): Return fresh for RC #3. 3:30 structural read + 4:30 Qs; don't force 4/4.",
-                "caption": "RC #3 with fresh eyes → 3–4 Qs."
+                "caption": "Return to RC 3; aim for 3–4 answers."
               },
               {
                 "start": 32,
                 "end": 39,
                 "label": "4 MCQ VA",
                 "classes": "bg-varc/40 hover:bg-varc/50 text-ink dark:text-darkInk",
-                "detail": "VARC | Min 32–39 (7m): 2 Para Summary + 2 Para Completion (~1:45/Q). High-accuracy finish; flag unresolved MCQs unanswered at 45s.",
+                "detail": "VARC | Min 32–39 (7m): 2 Para Summary + 2 Para Completion (~1:45/Q). Choose reliable answers; flag unresolved MCQs unanswered at 45s.",
                 "caption": "4 MCQ VA (Summary + Completion) → 3–4 Qs."
               },
               {
@@ -2534,13 +2566,13 @@ input[type=checkbox]{flex-shrink:0}
               43
             ],
             "summary": "4 RCs + selective VA (24-question potential pool). Aim for 13–14 RC, 4 TITA VA and 1–2 MCQ VA.",
-            "gate": "Use only if three RCs finish within 22 elapsed minutes and RC #4 is more attractive than remaining VA. Otherwise revert to Standard.",
+            "gate": "Try RC 4 only if the first three finish by 22m and it is a better use of time than VA. Otherwise use Standard.",
             "checkTitle": "Understand Readable-Paper trigger",
             "checkDetail": "Fourth RC only if early and worthwhile; protect TITA VA and one-minute cleanup.",
             "scoreExample": "Illustrative: 18–19 attempts, 14–15 correct, 2 wrong MCQs and 2 wrong TITAs = 40–43 raw marks. A 20th attempt is optional, not required.",
             "pool": 24,
             "label": "(Readable-Paper · 4 RCs)",
-            "title": "Trigger: Open RC #4 only if the first three finish within 22 elapsed minutes and it offers better value than remaining VA; otherwise use Standard.",
+            "title": "RC 4 only if the first three finish by 22m and RC 4 is worth more than remaining VA. Otherwise use Standard.",
             "toast": "VARC: Readable-Paper (4 RCs) backup active",
             "segments": [
               {
@@ -3185,7 +3217,7 @@ input[type=checkbox]{flex-shrink:0}
               const focused = document.activeElement === ta;
               const start = ta.selectionStart, end = ta.selectionEnd;
               ta.value = val;
-              if (focused) { ta.setSelectionRange(Math.min(start,val.length),Math.min(end,val.length)); showToast('Newer saved note reconciled from another tab'); }
+              if (focused) { ta.setSelectionRange(Math.min(start,val.length),Math.min(end,val.length)); showToast('Note updated from another tab'); }
             }
             updateNoteBadge(key, val);
           });
@@ -3527,7 +3559,7 @@ input[type=checkbox]{flex-shrink:0}
             const fallback = document.getElementById('export-fallback');
             fallback.href = exportUrl; fallback.hidden = false;
             fallback.click();
-            showToast(refreshed ? 'HTML backup prepared — use link if download did not start' : 'Current records exported; IndexedDB refresh unavailable');
+            showToast(refreshed ? 'Backup ready — use the download link if needed' : 'Backup ready; could not refresh browser storage');
           } catch (err) {
             console.error('Export failed:', err);
             showToast('Export error — please try again');
@@ -3578,7 +3610,7 @@ input[type=checkbox]{flex-shrink:0}
           try { await storage.loadState(); }
           catch (err) {
             console.error('Storage startup failed:', err);
-            feedback.reportStorage('Storage startup failed — export current records', storage.isOpen());
+            feedback.reportStorage('Could not open storage — download a backup', storage.isOpen());
           } finally { document.body.inert = false; }
 
           shell.activateTab('overview');
@@ -3595,7 +3627,7 @@ input[type=checkbox]{flex-shrink:0}
             if (storage.isOpen() || storage.isSaving()) return;
             const button = document.getElementById('btn-retry-storage');
             button.disabled = true;
-            feedback.reportStorage('Retrying IndexedDB…', false);
+            feedback.reportStorage('Retrying storage…', false);
             try { await storage.loadState(); refreshFromRecords(); }
             finally { button.disabled = false; }
           });
