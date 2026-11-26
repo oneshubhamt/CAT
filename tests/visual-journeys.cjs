@@ -80,11 +80,11 @@ async function runJourney(api){
   await page.waitForFunction(b=>b?/unsaved|unavailable/i.test(document.querySelector('#storage-status').textContent):/temporary recovery/i.test(document.querySelector('#storage-status').textContent),both);
   await measure('pending-note');await snap('pending-note');
   if(both)assert.match(await page.locator('#storage-status').textContent(),/unsaved in memory/i);
-  else assert(await page.evaluate(()=>Object.keys(localStorage).some(k=>k.startsWith('cat99_emergency_v2:'))),'Emergency recovery journal exists');
+  else assert(await page.evaluate(()=>Array.from({length:localStorage.length},(_,i)=>localStorage.key(i)).some(k=>k?.startsWith('cat99_emergency_v2:'))),'Emergency recovery journal exists');
   if(!both){
    await page.evaluate(()=>{sessionStorage.setItem('qa-allow-idb','yes');window.__qaDenyIDB=false;});
    await page.locator('#btn-retry-storage').click();await saved(page);
-    assert.equal(await page.evaluate(()=>Object.keys(localStorage).filter(k=>k.startsWith('cat99_emergency_v2:')).length),0,'Durable commit retires emergency journal');
+    assert.equal(await page.evaluate(()=>Array.from({length:localStorage.length},(_,i)=>localStorage.key(i)).filter(k=>k?.startsWith('cat99_emergency_v2:')).length),0,'Durable commit retires emergency journal');
    await measure('recovered');await snap('recovered');
    await ready(page,url);assert.equal(await page.locator('textarea[data-note-key="qa"]').inputValue(),fixture);
    action('Journal recovery persisted through reload');
