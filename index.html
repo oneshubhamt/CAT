@@ -404,6 +404,7 @@ input[type=checkbox]{flex-shrink:0}
   <!-- region:mobile-layout | Authored responsive overrides; no generated utilities -->
   <style id="cat-mobile-layout">
     [data-mobile-only]{display:none}
+    @media (min-width:768px) and (max-width:1023px){#btn-print{min-width:44px}}
     #playbook-main,.tab-panel,.print-card,.grid > *,.flex > *{min-width:0}
     .tab-panel{overflow-wrap:break-word}
     #toolbar-actions button,#section-nav button,.varc-order-btn,#btn-close-revision{min-height:44px}
@@ -414,7 +415,7 @@ input[type=checkbox]{flex-shrink:0}
     .reset-chk{width:20px;height:20px}
     #playbook-header{padding-top:env(safe-area-inset-top,0px)}
     #playbook-main{padding-bottom:max(24px,env(safe-area-inset-bottom,0px))}
-    @media (max-width:767px) {
+    @media screen and (max-width:767px) {
       #playbook-header{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
       #playbook-header > div{padding-left:12px;padding-right:12px}
       #toolbar-main{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;padding:10px 0 6px}
@@ -422,7 +423,7 @@ input[type=checkbox]{flex-shrink:0}
       #toolbar-brand h1{font-size:15px;line-height:1.2}
       #toolbar-brand p{font-size:10px;line-height:1.3}
       #toolbar-actions{display:grid;grid-template-columns:1.6fr 1fr 1fr 44px;gap:6px;width:100%}
-      #toolbar-actions button{justify-content:center;padding:6px;white-space:nowrap;font-size:12px;line-height:1.2;width:100%}
+      #toolbar-actions button{justify-content:center;padding:5px 3px;white-space:normal;font-size:12px;line-height:1.2;width:100%;text-align:center}
       #btn-theme{height:44px;width:44px}
       #toolbar-actions svg{flex-shrink:0}
       [data-mobile-only]{display:inline}
@@ -431,6 +432,7 @@ input[type=checkbox]{flex-shrink:0}
       #section-nav .tab-btn{padding:8px 3px;text-align:center;font-size:13px;line-height:1.2;min-height:44px}
       #section-nav .tab-btn > span{margin-right:3px}
       #toolbar-storage{font-size:11px;line-height:1.3;padding:4px 0;gap:4px}
+      #toolbar-storage > div:empty{display:none}
       #toolbar-storage > div:has(> [hidden]:first-child + [hidden]){display:none}
       #playbook-main{padding:16px 12px 24px}
       #playbook-main .text-xs{font-size:14px;line-height:1.52}
@@ -465,7 +467,7 @@ input[type=checkbox]{flex-shrink:0}
       [data-responsive-table] td{display:grid;grid-template-columns:minmax(78px,35%) minmax(0,1fr);gap:8px;padding:7px 12px!important;white-space:normal!important;overflow-wrap:anywhere;align-items:start}
       [data-responsive-table] td::before{content:attr(data-cell-label);font-size:11px;font-weight:600;color:#5F5F5A;line-height:1.45}
       .dark [data-responsive-table] td::before{color:#A1A09A}
-      [data-responsive-table] td > *{grid-column:2;min-width:0}
+      [data-responsive-table] [data-cell-value]{grid-column:2;min-width:0;overflow-wrap:anywhere}
       [data-responsive-table] td[data-summary-cell]{display:block}
       [data-responsive-table] td[data-summary-cell]::before{content:none}
       [data-responsive-table] td:first-child{font-weight:600}
@@ -479,6 +481,7 @@ input[type=checkbox]{flex-shrink:0}
       #error-log-list button{padding:0 6px}
       #toast{max-width:calc(100vw - 24px);right:12px;bottom:max(12px,env(safe-area-inset-bottom,0px));white-space:normal}
     }
+    @media screen and (max-height:500px) and (orientation:landscape){#playbook-header{position:relative}}
     @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,::before,::after{transition:none!important}}
     @media print{[data-mobile-only]{display:none!important}}
   </style>
@@ -1442,34 +1445,34 @@ input[type=checkbox]{flex-shrink:0}
             </thead>
             <tbody role="rowgroup" class="divide-y divide-hairline dark:divide-darkHairline">
               <tr role="row">
-                <td role="cell" data-cell-label="Question Type" class="py-2.5 px-5 font-semibold whitespace-nowrap">Reading Comprehension</td>
-                <td role="cell" data-cell-label="Count" class="py-2.5 px-4 font-mono whitespace-nowrap">16 (4&times;4)</td>
-                <td role="cell" data-cell-label="Format &amp; Penalty" class="py-2.5 px-4 font-mono whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-alert/10 text-alert">MCQ (-1)</span></td>
-                <td role="cell" data-cell-label="Core Focus &amp; CAT 2025 Nuance" class="py-2.5 px-5 text-muted dark:text-darkMuted">Inference, Main Idea, Tone, Assumption/Application. <strong class="text-ink dark:text-darkInk font-medium">CAT 2025 Slot 1 also tested contextual vocab-in-application inside an RC.</strong></td>
+                <td role="cell" data-cell-label="Question Type" class="py-2.5 px-5 font-semibold whitespace-nowrap"><div data-cell-value>Reading Comprehension</div></td>
+                <td role="cell" data-cell-label="Count" class="py-2.5 px-4 font-mono whitespace-nowrap"><div data-cell-value>16 (4&times;4)</div></td>
+                <td role="cell" data-cell-label="Format &amp; Penalty" class="py-2.5 px-4 font-mono whitespace-nowrap"><div data-cell-value><span class="px-1.5 py-0.5 rounded bg-alert/10 text-alert">MCQ (-1)</span></div></td>
+                <td role="cell" data-cell-label="Core Focus &amp; CAT 2025 Nuance" class="py-2.5 px-5 text-muted dark:text-darkMuted"><div data-cell-value>Inference, Main Idea, Tone, Assumption/Application. <strong class="text-ink dark:text-darkInk font-medium">CAT 2025 Slot 1 also tested contextual vocab-in-application inside an RC.</strong></div></td>
               </tr>
               <tr role="row">
-                <td role="cell" data-cell-label="Question Type" class="py-2.5 px-5 font-semibold whitespace-nowrap">Para Jumbles</td>
-                <td role="cell" data-cell-label="Count" class="py-2.5 px-4 font-mono whitespace-nowrap">2</td>
-                <td role="cell" data-cell-label="Format &amp; Penalty" class="py-2.5 px-4 font-mono whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-varc/10 text-varc">TITA (No -1)</span></td>
-                <td role="cell" data-cell-label="Core Focus &amp; CAT 2025 Nuance" class="py-2.5 px-5 text-muted dark:text-darkMuted">Rearrange to coherent paragraph. <strong class="text-ink dark:text-darkInk font-medium">Returned in CAT 2025 after being dropped in CAT 2024.</strong></td>
+                <td role="cell" data-cell-label="Question Type" class="py-2.5 px-5 font-semibold whitespace-nowrap"><div data-cell-value>Para Jumbles</div></td>
+                <td role="cell" data-cell-label="Count" class="py-2.5 px-4 font-mono whitespace-nowrap"><div data-cell-value>2</div></td>
+                <td role="cell" data-cell-label="Format &amp; Penalty" class="py-2.5 px-4 font-mono whitespace-nowrap"><div data-cell-value><span class="px-1.5 py-0.5 rounded bg-varc/10 text-varc">TITA (No -1)</span></div></td>
+                <td role="cell" data-cell-label="Core Focus &amp; CAT 2025 Nuance" class="py-2.5 px-5 text-muted dark:text-darkMuted"><div data-cell-value>Rearrange to coherent paragraph. <strong class="text-ink dark:text-darkInk font-medium">Returned in CAT 2025 after being dropped in CAT 2024.</strong></div></td>
               </tr>
               <tr role="row">
-                <td role="cell" data-cell-label="Question Type" class="py-2.5 px-5 font-semibold whitespace-nowrap">Odd Sentence Out</td>
-                <td role="cell" data-cell-label="Count" class="py-2.5 px-4 font-mono whitespace-nowrap">2</td>
-                <td role="cell" data-cell-label="Format &amp; Penalty" class="py-2.5 px-4 font-mono whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-varc/10 text-varc">TITA (No -1)</span></td>
-                <td role="cell" data-cell-label="Core Focus &amp; CAT 2025 Nuance" class="py-2.5 px-5 text-muted dark:text-darkMuted">Identify the 1 sentence out of 5 that breaks the coherent paragraph.</td>
+                <td role="cell" data-cell-label="Question Type" class="py-2.5 px-5 font-semibold whitespace-nowrap"><div data-cell-value>Odd Sentence Out</div></td>
+                <td role="cell" data-cell-label="Count" class="py-2.5 px-4 font-mono whitespace-nowrap"><div data-cell-value>2</div></td>
+                <td role="cell" data-cell-label="Format &amp; Penalty" class="py-2.5 px-4 font-mono whitespace-nowrap"><div data-cell-value><span class="px-1.5 py-0.5 rounded bg-varc/10 text-varc">TITA (No -1)</span></div></td>
+                <td role="cell" data-cell-label="Core Focus &amp; CAT 2025 Nuance" class="py-2.5 px-5 text-muted dark:text-darkMuted"><div data-cell-value>Identify the 1 sentence out of 5 that breaks the coherent paragraph.</div></td>
               </tr>
               <tr role="row">
-                <td role="cell" data-cell-label="Question Type" class="py-2.5 px-5 font-semibold whitespace-nowrap">Para Summary</td>
-                <td role="cell" data-cell-label="Count" class="py-2.5 px-4 font-mono whitespace-nowrap">2</td>
-                <td role="cell" data-cell-label="Format &amp; Penalty" class="py-2.5 px-4 font-mono whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-alert/10 text-alert">MCQ (-1)</span></td>
-                <td role="cell" data-cell-label="Core Focus &amp; CAT 2025 Nuance" class="py-2.5 px-5 text-muted dark:text-darkMuted">Pick the option capturing central claim without distortion or omission.</td>
+                <td role="cell" data-cell-label="Question Type" class="py-2.5 px-5 font-semibold whitespace-nowrap"><div data-cell-value>Para Summary</div></td>
+                <td role="cell" data-cell-label="Count" class="py-2.5 px-4 font-mono whitespace-nowrap"><div data-cell-value>2</div></td>
+                <td role="cell" data-cell-label="Format &amp; Penalty" class="py-2.5 px-4 font-mono whitespace-nowrap"><div data-cell-value><span class="px-1.5 py-0.5 rounded bg-alert/10 text-alert">MCQ (-1)</span></div></td>
+                <td role="cell" data-cell-label="Core Focus &amp; CAT 2025 Nuance" class="py-2.5 px-5 text-muted dark:text-darkMuted"><div data-cell-value>Pick the option capturing central claim without distortion or omission.</div></td>
               </tr>
               <tr role="row">
-                <td role="cell" data-cell-label="Question Type" class="py-2.5 px-5 font-semibold whitespace-nowrap">Para Completion</td>
-                <td role="cell" data-cell-label="Count" class="py-2.5 px-4 font-mono whitespace-nowrap">2</td>
-                <td role="cell" data-cell-label="Format &amp; Penalty" class="py-2.5 px-4 font-mono whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-alert/10 text-alert">MCQ (-1)</span></td>
-                <td role="cell" data-cell-label="Core Focus &amp; CAT 2025 Nuance" class="py-2.5 px-5 text-muted dark:text-darkMuted">Place a full missing sentence (not just a phrase) into 1 of 4 numbered blanks.</td>
+                <td role="cell" data-cell-label="Question Type" class="py-2.5 px-5 font-semibold whitespace-nowrap"><div data-cell-value>Para Completion</div></td>
+                <td role="cell" data-cell-label="Count" class="py-2.5 px-4 font-mono whitespace-nowrap"><div data-cell-value>2</div></td>
+                <td role="cell" data-cell-label="Format &amp; Penalty" class="py-2.5 px-4 font-mono whitespace-nowrap"><div data-cell-value><span class="px-1.5 py-0.5 rounded bg-alert/10 text-alert">MCQ (-1)</span></div></td>
+                <td role="cell" data-cell-label="Core Focus &amp; CAT 2025 Nuance" class="py-2.5 px-5 text-muted dark:text-darkMuted"><div data-cell-value>Place a full missing sentence (not just a phrase) into 1 of 4 numbered blanks.</div></td>
               </tr>
             </tbody>
           </table>
@@ -1863,11 +1866,11 @@ input[type=checkbox]{flex-shrink:0}
           <table data-responsive-table role="table" class="w-full text-left text-xs border-collapse">
             <thead role="rowgroup"><tr role="row" class="text-muted dark:text-darkMuted"><th role="columnheader" scope="col" class="px-2.5 py-2">Skip class</th><th role="columnheader" scope="col" class="px-2.5 py-2">Signal</th><th role="columnheader" scope="col" class="px-2.5 py-2">Action</th></tr></thead>
             <tbody role="rowgroup">
-              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold text-qa align-top">L · Solvable but lengthy</td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top">Clear method, more steps than R1 allows.</td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top">Mark unanswered for review. R2 high priority.</td></tr>
-              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold text-qa align-top">I · Calculation incomplete</td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top">Known method and useful working already on paper.</td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top">Mark unanswered for review. R2 high priority; finish first if near completion.</td></tr>
-              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold align-top">U · Method uncertain</td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top">Possible route, but no reliable setup.</td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top">Low priority; mark only if there is a credible avenue. Revisit after L/I.</td></tr>
-              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold text-alert align-top">X · Conceptual gap / unfamiliar geometry</td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top">No meaningful route or requires a technique you do not know.</td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top">Leave unanswered and unflagged; do not revisit for full solving.</td></tr>
-              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold text-dilr align-top">T · Unsolved TITA</td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top">Type-in-the-answer question, incomplete solution.</td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top">In cleanup consider a reasoned estimate if penalty-free. T is an overlay, not a reason to spend extra solving time.</td></tr>
+              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold text-qa align-top"><div data-cell-value>L · Solvable but lengthy</div></td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top"><div data-cell-value>Clear method, more steps than R1 allows.</div></td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top"><div data-cell-value>Mark unanswered for review. R2 high priority.</div></td></tr>
+              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold text-qa align-top"><div data-cell-value>I · Calculation incomplete</div></td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top"><div data-cell-value>Known method and useful working already on paper.</div></td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top"><div data-cell-value>Mark unanswered for review. R2 high priority; finish first if near completion.</div></td></tr>
+              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold align-top"><div data-cell-value>U · Method uncertain</div></td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top"><div data-cell-value>Possible route, but no reliable setup.</div></td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top"><div data-cell-value>Low priority; mark only if there is a credible avenue. Revisit after L/I.</div></td></tr>
+              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold text-alert align-top"><div data-cell-value>X · Conceptual gap / unfamiliar geometry</div></td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top"><div data-cell-value>No meaningful route or requires a technique you do not know.</div></td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top"><div data-cell-value>Leave unanswered and unflagged; do not revisit for full solving.</div></td></tr>
+              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold text-dilr align-top"><div data-cell-value>T · Unsolved TITA</div></td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top"><div data-cell-value>Type-in-the-answer question, incomplete solution.</div></td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top"><div data-cell-value>In cleanup consider a reasoned estimate if penalty-free. T is an overlay, not a reason to spend extra solving time.</div></td></tr>
             </tbody>
           </table>
         </div>
@@ -1969,60 +1972,60 @@ input[type=checkbox]{flex-shrink:0}
             </thead>
             <tbody role="rowgroup" class="divide-y divide-hairline dark:divide-darkHairline">
               <tr role="row">
-                <td role="cell" data-cell-label="Tier" class="py-3 px-5 whitespace-nowrap">
+                <td role="cell" data-cell-label="Tier" class="py-3 px-5 whitespace-nowrap"><div data-cell-value>
                   <span class="inline-block font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-qa text-white">PRIORITY 1</span>
                   <span class="block text-[10px] text-muted dark:text-darkMuted mt-0.5">Non-negotiable</span>
-                </td>
-                <td role="cell" data-cell-label="Topics" class="py-3 px-4 font-medium">Arithmetic <span class="text-muted dark:text-darkMuted font-normal">(Ratios, %, PLD, Mixtures, Averages, TSD, T&amp;W, SI/CI)</span></td>
-                <td role="cell" data-cell-label="Typical Supply" class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap">7–9 Qs</td>
-                <td role="cell" data-cell-label="Solvable Pool" class="py-3 px-5 font-mono font-bold text-ink dark:text-darkInk whitespace-nowrap">5–7 Qs</td>
+                </div></td>
+                <td role="cell" data-cell-label="Topics" class="py-3 px-4 font-medium"><div data-cell-value>Arithmetic <span class="text-muted dark:text-darkMuted font-normal">(Ratios, %, PLD, Mixtures, Averages, TSD, T&amp;W, SI/CI)</span></div></td>
+                <td role="cell" data-cell-label="Typical Supply" class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap"><div data-cell-value>7–9 Qs</div></td>
+                <td role="cell" data-cell-label="Solvable Pool" class="py-3 px-5 font-mono font-bold text-ink dark:text-darkInk whitespace-nowrap"><div data-cell-value>5–7 Qs</div></td>
               </tr>
               <tr role="row">
-                <td role="cell" data-cell-label="Tier" class="py-3 px-5 whitespace-nowrap">
+                <td role="cell" data-cell-label="Tier" class="py-3 px-5 whitespace-nowrap"><div data-cell-value>
                   <span class="inline-block font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-qa/20 text-qa">PRIORITY 2</span>
                   <span class="block text-[10px] text-muted dark:text-darkMuted mt-0.5">Fast Tactical Wins</span>
-                </td>
-                <td role="cell" data-cell-label="Topics" class="py-3 px-4 font-medium">Logs &amp; Exponents, Number Theory <span class="text-muted dark:text-darkMuted font-normal">(especially factors/digits)</span>, Mensuration</td>
-                <td role="cell" data-cell-label="Typical Supply" class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap">4–6 Qs</td>
-                <td role="cell" data-cell-label="Solvable Pool" class="py-3 px-5 font-mono font-bold text-ink dark:text-darkInk whitespace-nowrap">3–4 Qs</td>
+                </div></td>
+                <td role="cell" data-cell-label="Topics" class="py-3 px-4 font-medium"><div data-cell-value>Logs &amp; Exponents, Number Theory <span class="text-muted dark:text-darkMuted font-normal">(especially factors/digits)</span>, Mensuration</div></td>
+                <td role="cell" data-cell-label="Typical Supply" class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap"><div data-cell-value>4–6 Qs</div></td>
+                <td role="cell" data-cell-label="Solvable Pool" class="py-3 px-5 font-mono font-bold text-ink dark:text-darkInk whitespace-nowrap"><div data-cell-value>3–4 Qs</div></td>
               </tr>
               <tr role="row">
-                <td role="cell" data-cell-label="Tier" class="py-3 px-5 whitespace-nowrap">
+                <td role="cell" data-cell-label="Tier" class="py-3 px-5 whitespace-nowrap"><div data-cell-value>
                   <span class="inline-block font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-dilr/15 text-dilr">PRIORITY 3</span>
                   <span class="block text-[10px] text-muted dark:text-darkMuted mt-0.5">The Buffer Bridge</span>
-                </td>
-                <td role="cell" data-cell-label="Topics" class="py-3 px-4 font-medium">Core Algebra <span class="text-muted dark:text-darkMuted font-normal">(Linear/Quadratic, Inequalities/Modulus, AP/GP)</span></td>
-                <td role="cell" data-cell-label="Typical Supply" class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap">3–5 Qs</td>
-                <td role="cell" data-cell-label="Solvable Pool" class="py-3 px-5 font-mono font-bold text-ink dark:text-darkInk whitespace-nowrap">2–4 Qs</td>
+                </div></td>
+                <td role="cell" data-cell-label="Topics" class="py-3 px-4 font-medium"><div data-cell-value>Core Algebra <span class="text-muted dark:text-darkMuted font-normal">(Linear/Quadratic, Inequalities/Modulus, AP/GP)</span></div></td>
+                <td role="cell" data-cell-label="Typical Supply" class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap"><div data-cell-value>3–5 Qs</div></td>
+                <td role="cell" data-cell-label="Solvable Pool" class="py-3 px-5 font-mono font-bold text-ink dark:text-darkInk whitespace-nowrap"><div data-cell-value>2–4 Qs</div></td>
               </tr>
               <tr role="row">
-                <td role="cell" data-cell-label="Tier" class="py-3 px-5 whitespace-nowrap">
+                <td role="cell" data-cell-label="Tier" class="py-3 px-5 whitespace-nowrap"><div data-cell-value>
                   <span class="inline-block font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline text-muted dark:text-darkMuted">SELECTIVE SKIM</span>
-                </td>
-                <td role="cell" data-cell-label="Topics" class="py-3 px-4 font-medium">Functions &amp; Maxima-Minima <span class="text-muted dark:text-darkMuted font-normal">(AM-GM, quadratic vertices, basic composite/GIF; skip deep graph transformations)</span></td>
-                <td role="cell" data-cell-label="Typical Supply" class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap">1–2 Qs</td>
-                <td role="cell" data-cell-label="Solvable Pool" class="py-3 px-5 font-mono font-semibold text-muted dark:text-darkMuted whitespace-nowrap">1 Q</td>
+                </div></td>
+                <td role="cell" data-cell-label="Topics" class="py-3 px-4 font-medium"><div data-cell-value>Functions &amp; Maxima-Minima <span class="text-muted dark:text-darkMuted font-normal">(AM-GM, quadratic vertices, basic composite/GIF; skip deep graph transformations)</span></div></td>
+                <td role="cell" data-cell-label="Typical Supply" class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap"><div data-cell-value>1–2 Qs</div></td>
+                <td role="cell" data-cell-label="Solvable Pool" class="py-3 px-5 font-mono font-semibold text-muted dark:text-darkMuted whitespace-nowrap"><div data-cell-value>1 Q</div></td>
               </tr>
               <tr role="row" class="bg-alert/[0.02] dark:bg-alert/[0.06]">
-                <td role="cell" data-cell-label="Tier" class="py-3 px-5 whitespace-nowrap align-top">
+                <td role="cell" data-cell-label="Tier" class="py-3 px-5 whitespace-nowrap align-top"><div data-cell-value>
                   <span class="inline-block font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-alert/10 text-alert">SKIP / BASELINE</span>
-                </td>
-                <td role="cell" data-cell-label="Topics" class="py-3 px-4">
+                </div></td>
+                <td role="cell" data-cell-label="Topics" class="py-3 px-4"><div data-cell-value>
                   <span class="font-medium text-muted dark:text-darkMuted block">Pure Geometry &amp; Combinatorics (P&amp;C)</span>
                   <span class="text-[11px] text-muted dark:text-darkMuted mt-1 block leading-relaxed">
                     On Geometry, rely strictly on existing baseline (basic triangle similarity, Pythagoras, circle basics) only if an obvious 60-second sitter shows up.
                   </span>
-                </td>
-                <td role="cell" data-cell-label="Typical Supply" class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap align-top">3–4 Qs</td>
-                <td role="cell" data-cell-label="Solvable Pool" class="py-3 px-5 font-mono text-muted dark:text-darkMuted whitespace-nowrap align-top">0–1 Q</td>
+                </div></td>
+                <td role="cell" data-cell-label="Typical Supply" class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap align-top"><div data-cell-value>3–4 Qs</div></td>
+                <td role="cell" data-cell-label="Solvable Pool" class="py-3 px-5 font-mono text-muted dark:text-darkMuted whitespace-nowrap align-top"><div data-cell-value>0–1 Q</div></td>
               </tr>
             </tbody>
             <tfoot>
               <tr role="row" class="bg-canvas dark:bg-darkCanvas border-t border-hairline dark:border-darkHairline font-mono text-[11px]">
-                <td role="cell" data-summary-cell colspan="3" class="py-3 px-5 text-muted dark:text-darkMuted">
+                <td role="cell" data-summary-cell colspan="3" class="py-3 px-5 text-muted dark:text-darkMuted"><div data-cell-value>
                   <strong class="text-ink dark:text-darkInk">Catch to Watch:</strong> Priority 1 + 2 = <strong class="text-ink dark:text-darkInk">8–11 Qs</strong> (too tight) &rarr; Adding Priority 3 Core Algebra expands the estimated pool:
-                </td>
-                <td role="cell" data-cell-label="Solvable Pool" class="py-3 px-5 font-bold text-qa whitespace-nowrap">10–15 estimated; aim 13–15</td>
+                </div></td>
+                <td role="cell" data-cell-label="Solvable Pool" class="py-3 px-5 font-bold text-qa whitespace-nowrap"><div data-cell-value>10–15 estimated; aim 13–15</div></td>
               </tr>
             </tfoot>
           </table>
@@ -2967,7 +2970,7 @@ input[type=checkbox]{flex-shrink:0}
               const tr=document.createElement('tr');
               tr.className='border-t border-hairline dark:border-darkHairline'; tr.setAttribute('role','row');
               for(const cell of [item.label,item.varc,item.dilr,item.qa,item.total,item.action]) {
-                const td=document.createElement('td'); td.className='px-2.5 py-2 align-top'; td.setAttribute('role','cell'); td.setAttribute('data-cell-label',['Scenario','VARC','DILR','QA','Total','Response'][tr.children.length]); td.textContent=cell;tr.append(td);
+                const td=document.createElement('td'); td.className='px-2.5 py-2 align-top'; td.setAttribute('role','cell'); td.setAttribute('data-cell-label',['Scenario','VARC','DILR','QA','Total','Response'][tr.children.length]); const value=document.createElement('div'); value.setAttribute('data-cell-value',''); value.textContent=cell; td.append(value); tr.append(td);
               }
               table.append(tr);
             }
