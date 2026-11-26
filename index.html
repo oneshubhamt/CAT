@@ -197,12 +197,12 @@
           <article class="border border-hairline dark:border-darkHairline border-t-4 border-t-dilr rounded-lg p-3 text-sm leading-relaxed">
             <h3 class="font-semibold text-dilr">DILR · 40m</h3><p class="mt-1 font-medium">One reliable set → two viable sets</p>
             <p class="mt-1 text-xs font-mono">0–4 scan · 4–18 set 1 · 18–32 set 2 · 32–39 optional · 39–40 audit</p>
-            <p class="mt-2 text-xs">Reassess 4–6m; switch by 6–7m if stalled. First failure: 11–25, 25–39. Second: 25–39. Check clues and totals.</p>
+            <p class="mt-2 text-xs">Prefer tight coded/elimination sets; avoid unpruned branches. Reassess 4–6m; switch by 6–7m if stalled. First failure: 11–25, 25–39. Second: 25–39. Check clues and totals.</p>
           </article>
           <article class="border border-hairline dark:border-darkHairline border-t-4 border-t-qa rounded-lg p-3 text-sm leading-relaxed">
             <h3 class="font-semibold text-qa">QA · 40m</h3><p class="mt-1 font-medium">11–12 correct as primary aim</p>
             <p class="mt-1 text-xs font-mono">0–22 sitters · 22–36 mediums · 36–40 cleanup</p>
-            <p class="mt-2 text-xs">Pen down on arithmetic. 45s ignition; 2.5m R1 cap unless finishing. Skip complex geometry. Audit requested value, unit, sign and format.</p>
+            <p class="mt-2 text-xs">Pen down on arithmetic. 45s ignition; 2.5m R1 cap unless finishing. R2: L/I first, U later, X leave. TITA cleanup. Audit requested value, unit, sign and format.</p>
           </article>
         </div>
         <p class="mt-3 text-xs font-medium">Save answers explicitly · protect TITA cleanup · reset between sections · never chase a score target. Check actual marking and section instructions.</p>
@@ -530,7 +530,7 @@
               <button type="button" data-accent="qa" data-timeline-detail="QA | Round 1 (0–22m | 7–8 attempted questions, flexible | Max 2.5m/Q): Sitters only — Arithmetic (pen-down), Logs/Exponents, Number Theory, Mensuration, direct AP/GP &amp; Linear/Quadratic. Skip complex pure geometry; allow direct mensuration or an obvious similarity/Pythagoras sitter." style="width: 55%" class="timeline-seg bg-qa hover:bg-qa/90 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
                 <span>Round 1: Sitters (7–8 Qs)</span><span class="text-[9px] opacity-85">0–22m</span>
               </button>
-              <button type="button" data-accent="qa" data-timeline-detail="QA | Round 2 (22–36m | 3–5 additional attempts as needed | Max 3.5m/Q): Marked-for-Review Algebra, lengthier Arithmetic, clean Functions. Pick highest confidence first." style="width: 35%" class="timeline-seg bg-qa/75 hover:bg-qa/65 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
+              <button type="button" data-accent="qa" data-timeline-detail="QA | Round 2 (22–36m | 3–5 additional attempts as needed | Max 3.5m/Q): Revisit L/I skips first (clear method or incomplete calculation), prioritising confidence and time to finish. U only after stronger opportunities." style="width: 35%" class="timeline-seg bg-qa/75 hover:bg-qa/65 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
                 <span>Round 2: Mediums (3–5 Qs as needed)</span><span class="text-[9px] opacity-85">22–36m</span>
               </button>
               <button type="button" data-accent="qa" data-timeline-detail="QA | Round 3 (36–40m | optional extra + TITA sweep): Protect saved answers and reasoned TITA entries; attempt an extra question only if time permits." style="width: 10%" class="timeline-seg bg-qa/25 hover:bg-qa/35 text-qa dark:text-amber-300 font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
@@ -1144,7 +1144,7 @@
             </li>
             <li class="flex gap-2">
               <span class="text-dilr font-bold shrink-0">+</span>
-              <span><strong class="text-ink dark:text-darkInk">Concrete anchor clues:</strong> Fixed numbers or exact positions (not purely relative).</span>
+              <span><strong class="text-ink dark:text-darkInk">Concrete or derivable anchors:</strong> Fixed numbers, exact positions, or a total/bound that quickly forces a value.</span>
             </li>
             <li class="flex gap-2">
               <span class="text-dilr font-bold shrink-0">+</span>
@@ -1188,6 +1188,40 @@
           </div>
         </div>
       </div>
+
+      <!-- region:dilr-personal-selection | Personalised four-minute set triage -->
+      <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6" aria-labelledby="dilr-personal-title">
+        <h3 id="dilr-personal-title" class="text-sm font-semibold text-dilr">Personal set-selection filter</h3>
+        <p class="mt-1 text-xs text-muted dark:text-darkMuted">Your stated preference is for constrained, coded-response reasoning rather than open positional casework or weak aggregate clues. Treat it as a starting hypothesis, not a proven advantage: choose the set with the best actual route to marks.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
+          <div class="rounded-lg border border-dilr/20 bg-dilr/8 dark:bg-dilr/15 p-3">
+            <h4 class="text-xs font-bold text-dilr">Prefer when the clues cooperate</h4>
+            <ul class="mt-2 space-y-1 text-xs leading-relaxed list-disc list-inside">
+              <li>Binary, yes/no or coded responses with clear meanings and restrictive totals.</li>
+              <li>Interdependent constraints that force elimination, chaining or a bounded case split.</li>
+              <li>Concrete placements, exact values or easily derivable anchors (totals, parity, bounds).</li>
+              <li>Intermediate states you can determine and verify without enumerating every possibility.</li>
+              <li>A central breakthrough you can plausibly reach, with linked or independently answerable questions.</li>
+            </ul>
+          </div>
+          <div class="rounded-lg border border-alert/20 bg-alert/8 dark:bg-alert/15 p-3">
+            <h4 class="text-xs font-bold text-alert">Deprioritise when the search space stays open</h4>
+            <ul class="mt-2 space-y-1 text-xs leading-relaxed list-disc list-inside">
+              <li>Positional arrangements with many independent choices and little pruning.</li>
+              <li>Weakly constrained aggregates without a useful total, bound or cross-link.</li>
+              <li>Calculation-heavy missing tables, especially with several unknowns per relation.</li>
+              <li>Exhaustive enumeration or several competing cases with no obvious elimination.</li>
+              <li>Do not reject a genre automatically: a tight arrangement or aggregate set may be easier than a poorly constrained coded set.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-3 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-3">
+          <h4 class="text-xs font-bold">During the 0–4 minute scan</h4>
+          <p class="mt-1 text-xs leading-relaxed">Scan every available set. For each, ask: <strong>Can I represent it?</strong> What is the first stated or derivable anchor? What deduction unlocks the central constraint? How many branches or calculations remain, and what questions pay off before a full solve?</p>
+          <p class="mt-2 text-xs leading-relaxed">Rank by credible time to reliable answers, not passage length, topic familiarity or raw constraint count. Use the personal preference as a tie-breaker; prefer a five-question set over a four-question set only when overall effort and risk are comparable. After a 4–6 minute attempt, reassess actual progress; switch by 6–7 minutes if stalled.</p>
+          <p class="mt-2 text-xs text-muted dark:text-darkMuted">Calibration: in the error log, record the set chosen, the reason, first useful deduction, time and independent correctness. Compare this with alternatives before strengthening or reversing your preference.</p>
+        </div>
+      </section>
 
       <!-- 3. Core Discipline Cards -->
       <div class="print-card grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1369,7 +1403,7 @@
                 <span>ROUND 2 (22–36m)</span>
                 <span>3–5 Qs as needed &middot; &le;3.5m/Q</span>
               </div>
-              <p class="text-muted dark:text-darkMuted leading-relaxed">Marked-for-Review Algebra, slightly lengthier Arithmetic, clean Functions. Highest confidence first.</p>
+              <p class="text-muted dark:text-darkMuted leading-relaxed">Revisit L/I skips (clear method or incomplete calculation) by confidence and time to finish. Consider U only after stronger opportunities.</p>
             </div>
             <div class="p-3 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
               <div class="flex items-center justify-between font-mono text-[11px] font-bold text-qa mb-1">
@@ -1381,6 +1415,25 @@
           </div>
         </div>
       </div>
+
+      <!-- region:qa-skip-routing | Explicit skip classifications -->
+      <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6" aria-labelledby="qa-skip-title">
+        <h3 id="qa-skip-title" class="text-sm font-semibold text-qa">QA skip routing · classify once, revisit selectively</h3>
+        <p class="mt-1 text-xs text-muted dark:text-darkMuted">Keep the rolling triage; no separate full-paper scan. Aim to give every question an initial assessment by the start of cleanup. Use question numbers on the rough sheet only if useful; the exam palette remains your navigation aid.</p>
+        <div class="overflow-x-auto mt-3">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead><tr class="text-muted dark:text-darkMuted"><th class="px-2.5 py-2">Skip class</th><th class="px-2.5 py-2">Signal</th><th class="px-2.5 py-2">Action</th></tr></thead>
+            <tbody>
+              <tr class="border-t border-hairline dark:border-darkHairline"><td class="px-2.5 py-2 font-semibold text-qa align-top">L · Solvable but lengthy</td><td class="px-2.5 py-2 align-top">Clear method, more steps than R1 allows.</td><td class="px-2.5 py-2 align-top">Mark unanswered for review. R2 high priority.</td></tr>
+              <tr class="border-t border-hairline dark:border-darkHairline"><td class="px-2.5 py-2 font-semibold text-qa align-top">I · Calculation incomplete</td><td class="px-2.5 py-2 align-top">Known method and useful working already on paper.</td><td class="px-2.5 py-2 align-top">Mark unanswered for review. R2 high priority; finish first if near completion.</td></tr>
+              <tr class="border-t border-hairline dark:border-darkHairline"><td class="px-2.5 py-2 font-semibold align-top">U · Method uncertain</td><td class="px-2.5 py-2 align-top">Possible route, but no reliable setup.</td><td class="px-2.5 py-2 align-top">Low priority; mark only if there is a credible avenue. Revisit after L/I.</td></tr>
+              <tr class="border-t border-hairline dark:border-darkHairline"><td class="px-2.5 py-2 font-semibold text-alert align-top">X · Conceptual gap / unfamiliar geometry</td><td class="px-2.5 py-2 align-top">No meaningful route or requires a technique you do not know.</td><td class="px-2.5 py-2 align-top">Leave unanswered and unflagged; do not revisit for full solving.</td></tr>
+              <tr class="border-t border-hairline dark:border-darkHairline"><td class="px-2.5 py-2 font-semibold text-dilr align-top">T · Unsolved TITA</td><td class="px-2.5 py-2 align-top">Type-in-the-answer question, incomplete solution.</td><td class="px-2.5 py-2 align-top">In cleanup consider a reasoned estimate if penalty-free. T is an overlay, not a reason to spend extra solving time.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="mt-3 text-xs leading-relaxed"><strong>Round 2:</strong> prioritise L/I by confidence and remaining minutes to finish; U only after stronger opportunities. <strong>Round 3:</strong> save/audit responses, protect TITA opportunities and attempt an extra question only if time remains. Clear uncertain saved MCQ responses before marking for review.</p>
+      </section>
 
       <!-- 2. 6 Mechanical Rules (Balanced 3x2 Desktop Grid Including Calculator Discipline) -->
       <div class="print-card">
@@ -1397,7 +1450,7 @@
               <h4 class="font-bold text-xs sm:text-sm">45s Ignition &amp; 2.5m Bail-Out</h4>
             </div>
             <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">
-              Must have an equation, ratio setup, or path on pad by <strong class="font-mono text-ink dark:text-darkInk">45s</strong> or leave. In R1, if not in final calculation step at <strong class="font-mono text-alert">2.5m</strong>, drop &amp; mark for review.
+              By <strong class="font-mono text-ink dark:text-darkInk">45s</strong>, identify a definite method, equation, ratio or conceptual route. If none, classify U/X and move on. In R1, reassess at <strong class="font-mono text-alert">2.5m</strong>; briefly extend only if completion is imminent. Mark L/I or genuinely viable U for review; leave dead skips unflagged.
             </p>
           </div>
 
@@ -1408,7 +1461,7 @@
               <h4 class="font-bold text-xs sm:text-sm">Cure the 4–5 Line Arithmetic Allergy</h4>
             </div>
             <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">
-              <strong class="text-ink dark:text-darkInk">"Pen-Down on Word One":</strong> Force yourself to read the <strong class="text-ink dark:text-darkInk">first 2 lines of every Arithmetic problem in Round 1</strong> before deciding to skip; dump ratios/timelines immediately on word one. Reframe length as a green flag &mdash; don't let 5–10s rapid cycling auto-reject Arithmetic.
+              <strong class="text-ink dark:text-darkInk">"Pen-Down on Word One":</strong> Force yourself to read the <strong class="text-ink dark:text-darkInk">first 2 lines of every Arithmetic problem in Round 1</strong> before deciding to skip; write meaningful variables, ratios, timelines and constraints as you read. Length alone is neither a green nor a red flag; do not auto-reject Arithmetic because it looks long.
             </p>
           </div>
 
