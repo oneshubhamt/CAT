@@ -222,7 +222,7 @@
           <!-- 3 Benchmark & Target Pills -->
           <div class="flex flex-wrap items-center gap-2">
             <div class="font-mono text-xs font-semibold text-ink dark:text-darkInk bg-ink/[0.06] dark:bg-darkInk/10 border border-ink/20 dark:border-darkInk/25 px-3 py-1.5 rounded-lg">
-              Combined planning range: <span data-plan="combined" class="text-dilr dark:text-emerald-300 font-bold">100–112 raw marks</span>
+              Illustrative combined range (before DILR/QA penalties): <span data-plan="combined" class="text-dilr dark:text-emerald-300 font-bold">100–112 raw marks</span>
             </div>
             <div class="font-mono text-xs text-muted dark:text-darkMuted bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline px-3 py-1.5 rounded-lg">
               Planning targets only. Raw marks are not scaled scores or percentile forecasts; recent-paper question counts are historical estimates.
@@ -1614,7 +1614,7 @@
       function planValues(mode) {
         const p = MODE_PLANS[mode] || MODE_PLANS.standard;
         const range = a => a.join('–');
-        return {...p,heading:p.heading+' ('+range(p.attempts)+' attempts)',attempts:range(p.attempts)+' attempts',varcMarks:range(p.marks)+' illustrative raw marks',combined:range(p.marks.map((v,i)=>v+SCORE_TARGETS.dilr[i]+SCORE_TARGETS.qa[i]))+' raw marks'};
+        return {...p,quick:VARC_ORDERS[mode]?.segments.map(seg=>seg.time+' '+seg.label).join(' · ') || p.quick,heading:p.heading+' ('+range(p.attempts)+' attempts)',attempts:range(p.attempts)+' attempts',varcMarks:range(p.marks)+' illustrative raw marks',combined:range(p.marks.map((v,i)=>v+SCORE_TARGETS.dilr[i]+SCORE_TARGETS.qa[i]))+' raw marks'};
       }
       function renderPlan(mode) {
         const values = planValues(mode);
