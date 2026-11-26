@@ -15,7 +15,8 @@ async function ready(page,url){
  await page.evaluate(()=>document.fonts.ready.then(()=>true));
 }
 async function section(page,tab){
- await top(page);await page.locator('#tab-'+tab).click();
+ await top(page);const target=page.locator('#tab-'+tab);
+ if(await page.evaluate(()=>navigator.maxTouchPoints>0))await target.tap();else await target.click();
  assert(await page.locator('#panel-'+tab).isVisible());
  assert.equal(await page.locator('#tab-'+tab).getAttribute('aria-selected'),'true');
  await top(page);
@@ -98,7 +99,7 @@ async function runScenario(browser,desc,origin){
  const action=label=>rec.actions.push(label);
  try{
   const hosted=desc.kind==='journey'&&!['portable-webkit','keyboard-resize'].includes(desc.id);
-  ctx=await browser.newContext({viewport:{width:desc.width,height:desc.height},hasTouch:desc.width<768||desc.height<500,deviceScaleFactor:1,offline:!hosted,acceptDownloads:true,reducedMotion:'reduce',timezoneId:'Asia/Kolkata',locale:'en-IN',colorScheme:'light'});
+  ctx=await browser.newContext({viewport:{width:desc.width,height:desc.height},hasTouch:desc.width<768||desc.height<500,isMobile:desc.engine!=='firefox'&&(desc.width<768||desc.height<500),deviceScaleFactor:1,offline:!hosted,acceptDownloads:true,reducedMotion:'reduce',timezoneId:'Asia/Kolkata',locale:'en-IN',colorScheme:'light'});
   await ctx.tracing.start({screenshots:true,snapshots:true,sources:false});tracing=true;
   if(hosted)await ctx.route(/^https?:\/\//,route=>new URL(route.request().url()).origin===origin?route.continue():route.abort());
   if(['recovery-journal','memory-only'].includes(desc.id)){
