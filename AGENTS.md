@@ -95,22 +95,61 @@ Run the dependency-free development test from repository root:
 ```sh
 node tools/build-offline-css.cjs --check
 node tests/smoke.cjs
+node tests/visual-contract.cjs
 ```
 
-This executes the actual inline application source with simulated DOM/storage APIs; it is not a browser compatibility or visual regression test. For UI/storage changes, additionally open `index.html` in a real browser: switch all three modes and tabs, toggle revision/theme, edit notes and checklist, add/edit/delete an error, reload, test IndexedDB failure/recovery, download/reopen HTML, and check print output. Test local file and hosted origins when possible. In a native browser with network disabled, open a fresh downloaded file, exercise responsive layout, dark mode, all tabs and export/reopen; verify that no requests are required.
+This executes the actual inline application source with simulated DOM/storage APIs; it is not a browser compatibility or visual regression test. For UI/storage changes, additionally open `index.html` in a real browser: switch all three modes and tabs, toggle revision/theme, edit notes and checklist, add/edit/delete an error, reload, test IndexedDB failure/recovery, and download/reopen HTML. Test local file and hosted origins when possible. In a native browser with network disabled, open a fresh downloaded file, exercise responsive layout, dark mode, all tabs and export/reopen; verify that no requests are required.
 
 Before committing, inspect the diff for unrelated content changes, syntax errors, duplicate IDs, schema/anchor changes and unintended personal data in the portable snapshot. Report any checks not actually run.
 
-## Mobile browser checks
+## Visual browser QA
 
-Keep the responsive overrides in `#cat-mobile-layout` rather than manually editing generated CSS. All four tabs must be immediately visible on a 320px phone. Controls have 44px targets; inputs use 16px on phones. The header's measured toolbar height allows the brand and actions to scroll away while the tab/status strip stays pinned; the active tab returns to the top. Dark-theme accent text is explicitly lightened for contrast. The six pacing bars reflow into readable phase tiles, and all four tables use labelled cell wrappers on mobile. Preserve the actual desktop table semantics and the data-cell-label/value hooks in both static markup and dynamic scenario rows. Do not hide document overflow to mask layout defects.
+Keep the responsive overrides in `#cat-mobile-layout`. At 320px all four tabs must fit, primary controls have 44px targets, and editable fields should use 16px on phones. Maintain the measured pinned navigation strip, light/dark contrast, responsive pacing tiles, labelled mobile table cells and readable disclosure content. Do not mask horizontal overflow or clipping with document-level overflow rules.
 
-Native screenshot suite (development-only dependencies):
+### Coverage policy
+
+The manifest in `tests/visual-matrix.cjs` is the source of truth. Run distinct, justified profiles instead of a Cartesian product of every device, theme, screen and state. All visual profiles exercise four tabs, all three VARC modes, the quick view, all seven strategy disclosures and each timeline accent. Deep profiles additionally capture all four expanded panels (full-page evidence), a scrolled viewport in each section and a mode toast. Each profile captures one assigned mode; the other modes still receive layout checks. Contrast is sampled on expanded content and the assigned revision mode, not repeated on every interaction.
+
+| Tier | Visual profiles | Stateful journeys | Extra responsive edges |
+| --- | ---: | ---: | --- |
+| Core | 8 (5 deep) | 4 | — |
+| Full | 17 (6 deep) | 6 | 10 sizes × 5 views |
+
+Core includes Chromium and WebKit, 320/390/430px phones, a 768px tablet, short landscape and desktop, with both themes and all screenshot modes represented on each engine. Full adds Firefox, 360/1024/1440px and further theme combinations. The separate layout-only boundary pass checks 639/640, 767/768, 1023/1024, 1279/1280px and landscape heights 499/501px. No routine duplicate screenshots at both edges; capture distinct failures instead. Profiles simulate viewports and touch, not certified physical devices.
+
+The four core state journeys cover normal hosted-origin IndexedDB, notes in all sections, checklist reset/mode reset, error-log validation/CRUD/review/filtering, cross-tab refresh, local-file WebKit export/reopen, journal fallback/retry and memory-only backup. Full adds keyboard/focus/live resize and durable Firefox. Use synthetic fixtures, a fresh browser context per scenario, an ephemeral loopback origin for native durable-storage checks, and a separate offline context to reopen each portable backup. Never use a user's personal export as input. Printing is intentionally excluded.
+
+### Run and inspect
 
 ```sh
-npm install --no-save playwright
-npx playwright install chromium webkit
+node tests/visual-contract.cjs
+npm install --no-save --package-lock=false playwright@1.56.1
+npx playwright install chromium webkit firefox
+node tests/mobile-browser.cjs --list
 node tests/mobile-browser.cjs
+CAT_TIER=full node tests/mobile-browser.cjs
+CAT_TIER=full CAT_ENGINE=chromium CAT_PROFILE=boundaries node tests/mobile-browser.cjs
+CAT_ENGINE=webkit CAT_PROFILE=w390-light node tests/mobile-browser.cjs
 ```
 
-The suite opens the actual local HTML offline at 320, 360, 390, 430, 768, 844 landscape and 1280 CSS-pixel widths in Chromium and WebKit. It exercises section navigation, all VARC modes, revision, dark mode, notes, error-log entry, and portable export/reopen; asserts page width, touch sizes, clipping and network independence; captures screenshots and a layout-report JSON under `artifacts/mobile/`. Review screenshot appearance in addition to numeric assertions. `CAT_ENGINE=chromium` or `webkit` restricts the engine. `CAT_SCREENSHOTS` overrides the artifact directory. Do not commit generated backups or screenshot output (they may include private notes). Report actual test results, not just the existence of a test suite.
+Set `CAT_SCREENSHOTS` to a fresh output directory if keeping previous runs. Default: `artifacts/mobile/`. Open the evidence gallery (`index.html`) to review full-resolution screenshots, actual scenario results, layout findings and links to failure traces. The JSON report lists the planned and attempted scenarios, browser versions, viewport, measurements, interaction coverage and evidence paths. Baseline screenshots suppress transient toasts; a dedicated toast state is captured on deep profiles. The runner continues across scenario failures, records geometry defects, deduplicates failure screenshots, and exits nonzero for failed or incomplete runs. Long panels use viewport strips if needed.
+
+Geometry checks detect document/control overflow, clipped content, wrong active tabs, empty rendered plan bindings, minimum primary touch sizes and pinned/landscape header errors. Estimated solid-background contrast, smaller secondary controls and intentionally narrow desktop timeline segments are reported as review warnings; do not equate them with a complete accessibility audit. Human review of screenshots is still necessary. Never weaken a failing geometric assertion merely to obtain a green result.
+
+### Regression comparisons
+
+After reviewing a successful run, keep its artifact as an approved reference. Use the optional comparison tool on two matching evidence directories from the same OS, architecture and browser version:
+
+```sh
+npm install --no-save --package-lock=false pngjs@7.0.0 pixelmatch@5.3.0
+node tests/visual-compare.cjs /path/to/approved /path/to/current
+node tests/visual-compare.cjs /path/to/approved /path/to/current --strict
+```
+
+The tool matches successful profile/state screenshots, reports changed dimensions, changed-pixel fractions, diff PNGs and unmatched states. The default changed-pixel review threshold is 0.5% (`CAT_DIFF_RATIO=0.005`); color differences use pixelmatch threshold 0.1 with antialiasing excluded. Strict mode fails for changes or missing coverage. Never auto-approve baselines or interpret pixel equality as usability. Compare equivalent runner/browser/font environments; expected content changes require review.
+
+### CI and ownership
+
+`.github/workflows/mobile-browser.yml` runs source checks once, then browser jobs in parallel. Relevant pushes to `working` run core; a commit message containing `[visual-full]` selects the full tier. Manual dispatch supports either tier when the workflow is available on the default branch. Superseded runs cancel. Each engine uploads its gallery, JSON, PNG evidence and failure traces even when a test fails. Review actual job results before calling any browser test passed. Keep the current single-file application independent of this development tooling. Do not commit generated screenshots, traces, personal backups or node_modules.
+
+Modules: `visual-matrix.cjs` (selection and coverage), `visual-contract.cjs` (coverage guards), `mobile-browser.cjs` (orchestration and isolation), `visual-audit.cjs` (measurements), `visual-screens.cjs` (screen/mode checks), `visual-journeys.cjs` (stateful flows), `visual-report.cjs` (gallery), `visual-compare.cjs` (optional reference comparison).
