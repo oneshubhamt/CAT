@@ -15,6 +15,7 @@ Search for these stable anchors rather than relying on line numbers.
 | HTML marker | Ownership |
 | --- | --- |
 | `region:design-tokens` / `#cat-offline-css`, `region:print-styles` | Embedded generated CSS, palette and print CSS |
+| `region:mobile-layout` / `#cat-mobile-layout` | Authored responsive layout, touch sizing, table cards and safe-area handling |
 | `region:portable-state` / `#embedded-user-state` | Portable JSON payload (empty in repository baseline) |
 | `region:toolbar` | Header controls, tabs, persistence status |
 | `region:overview`, `region:quick-revision` | Overview, clocks, scenarios, compact view, checklist |
@@ -86,3 +87,17 @@ node tests/smoke.cjs
 This executes the actual inline application source with simulated DOM/storage APIs; it is not a browser compatibility or visual regression test. For UI/storage changes, additionally open `index.html` in a real browser: switch all three modes and tabs, toggle revision/theme, edit notes and checklist, add/edit/delete an error, reload, test IndexedDB failure/recovery, download/reopen HTML, and check print output. Test local file and hosted origins when possible. In a native browser with network disabled, open a fresh downloaded file, exercise responsive layout, dark mode, all tabs and export/reopen; verify that no requests are required.
 
 Before committing, inspect the diff for unrelated content changes, syntax errors, duplicate IDs, schema/anchor changes and unintended personal data in the portable snapshot. Report any checks not actually run.
+
+## Mobile browser checks
+
+Keep the responsive overrides in `#cat-mobile-layout` rather than manually editing generated CSS. All four tabs must be immediately visible on a 320px phone. Controls have 44px targets; inputs use 16px on phones. The six pacing bars reflow into readable phase tiles, and all four tables use labelled cell wrappers on mobile. Preserve the actual desktop table semantics and the data-cell-label/value hooks in both static markup and dynamic scenario rows. Do not hide document overflow to mask layout defects.
+
+Native screenshot suite (development-only dependencies):
+
+```sh
+npm install --no-save playwright
+npx playwright install chromium webkit
+node tests/mobile-browser.cjs
+```
+
+The suite opens the actual local HTML offline at 320, 360, 390, 430, 768, 844 landscape and 1280 CSS-pixel widths in Chromium and WebKit. It exercises section navigation, all VARC modes, revision, dark mode, notes, error-log entry, and portable export/reopen; asserts page width, touch sizes, clipping and network independence; captures screenshots and a layout-report JSON under `artifacts/mobile/`. Review screenshot appearance in addition to numeric assertions. `CAT_ENGINE=chromium` or `webkit` restricts the engine. `CAT_SCREENSHOTS` overrides the artifact directory. Do not commit generated backups or screenshot output (they may include private notes). Report actual test results, not just the existence of a test suite.
