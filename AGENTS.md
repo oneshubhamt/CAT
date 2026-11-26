@@ -24,13 +24,14 @@ Search for these stable anchors rather than relying on line numbers.
 | `region:dilr-personal-selection`, `region:qa-skip-routing` | Personalised set triage and QA skip classes |
 | `region:rule-hierarchy`, `region:dilr-case-discipline` | Decision precedence and conditional-case safeguards |
 | `region:exam-logistics` | Dated, source-qualified exam logistics and optional online links |
+| `region:strategy-detail-*` / `data-strategy-detail` | Native expandable reading sections; main clocks, recovery and skip routing remain visible |
 | `#cat-app` | Entire application script |
 
 Inside `#cat-app`, each `<module:ID>` / `</module:ID>` comment pair encloses one module.
 
 | Module | Responsibility / public contract |
 | --- | --- |
-| `strategy` | Pure strategy data, mode definitions, derived clocks and score math: `validModes`, `orders`, `planValues(mode)`, `scenarioValues(mode)` |
+| `strategy` | Pure strategy data, mode definitions, derived clocks and score math: `validModes`, `orders`, `fixedClocks`, `fixedBars`, `checkpoints`, `planValues(mode)`, `scenarioValues(mode)` |
 | `schema` | Defaults, record validation, ordering, versioned snapshot encoding/decoding |
 | `record-model` | Private records and immutable state projection; per-record versioning, tombstones |
 | `persistence` | IndexedDB transport, bounded emergency journal, pending writes, recovery, lifecycle; `view()`, `setRecord()`, `loadState()`, `reconcileDatabase()`, `safeSnapshot()` |
@@ -39,7 +40,7 @@ Inside `#cat-app`, each `<module:ID>` / `</module:ID>` comment pair encloses one
 | `checklist` | Readiness items and reset |
 | `notes` | Note editing, autosave requests, note badges |
 | `error-log` | Error-log CRUD, form state, review and filtering |
-| `plan-view` | VARC mode selection; synchronize timelines, headings, targets, scenario table and revision view |
+| `plan-view` | VARC mode selection; synchronize all section clocks, recovery diagrams, shared checkpoint/score bindings, headings, scenario table and revision view |
 | `export` | Clone, sanitize, embed validated snapshot and prepare portable HTML download |
 | `bootstrap` | Composition root; creates modules, injects dependencies, hydrates, renders and binds once |
 
@@ -59,6 +60,8 @@ The application uses a classic script in a private IIFE, not global application 
 ## Important invariants
 
 - Canonical mode data: edit `MODES` inside strategy. Segment `start`/`end` are elapsed minutes; widths/time labels and compact clock derive from them. All modes cover 0–40 without gaps/overlaps. Review human-authored detail/caption/summary wording when changing timing. Use `data-plan` bindings for synchronized dynamic content.
+- Non-VARC strategy: `FIXED_CLOCKS` owns the DILR and QA phase boundaries and both DILR recovery examples; `fixedBars` projects the compact DILR overview bar (optional and audit phases combined). `CHECKPOINTS` owns DILR reassessment/switch and QA ignition/round checkpoints. `SCORE_TARGETS` owns primary DILR/QA correct-answer-derived marks. Use `data-plan` for text projections and `data-fixed-segment="section:index"` with `data-clock-label` / `data-clock-time` for the 24 fixed bar elements. `renderPlan` must fill these from the model. Review residual explanatory prose (such as the QA first-pass minute references and historical pattern) if timing changes. Do not reintroduce separate numeric UI constants.
+- Seven native `details[data-strategy-detail]` disclosures keep secondary techniques and reference tables compact. RC execution and QA mechanical rules start open, five supplementary sections start collapsed. Do not place the primary pacing, personalised DILR selection/recovery or QA skip routing inside collapsed sections. Disclosures are local view state, not a new persistence record. The screenshot suite opens the appropriate disclosures before inspecting their content. The theme toggle's stable accessible name is Dark mode, with pressed state synchronized on hydration and changes.
 - Record keys: `pref:theme`, `pref:varcOrder`, `check:<id>`, `note:<section>`, `error:<id>`. Record shape: `{key,value,time,seq,writer}`. Errors deleted with `value:null` tombstones. Ordering is time, sequence, writer.
 - IndexedDB: `cat99_playbook`, database version 1, store `records`, key path `key`. Portable snapshot: `{schemaVersion:2,records:[...]}`. No migration in this refactor. Schema changes require explicit review of validation, recovery and export compatibility.
 - LocalStorage is **only** a write-ahead emergency journal under `cat99_emergency_v2:` (64 KiB per journal). Journal keys are immutable generations; retire them only after durable transaction completion/reconciliation. Do not add full-state mirroring.
