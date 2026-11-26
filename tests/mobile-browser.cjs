@@ -66,6 +66,7 @@ async function main(){
          await page.locator('#btn-close-revision').click();
        }
        await section('varc');await checkLayout('varc');await snap('varc');
+       await page.locator('[data-decision-grid]').scrollIntoViewIfNeeded();await checkLayout('varc-decision');await snap('varc-decision');
        const disclosure=page.locator('[data-strategy-detail="va"]');
        assert.equal(await disclosure.evaluate(el=>el.open),false);
        await disclosure.locator('summary').click();
@@ -79,6 +80,8 @@ async function main(){
        await page.locator('#panel-varc [data-responsive-table]').scrollIntoViewIfNeeded();await checkLayout('varc-question-types');await snap('varc-question-types');
        await section('dilr');await checkLayout('dilr');await snap('dilr');
        await page.locator('#dilr-personal-title').scrollIntoViewIfNeeded();await snap('dilr-selection');
+       await page.locator('[data-selection-steps]').scrollIntoViewIfNeeded();await checkLayout('dilr-five-steps');await snap('dilr-five-steps');
+       assert.equal(await page.locator('[data-selection-steps] > li').count(),5);
        await page.locator('#dilr-recovery-title').scrollIntoViewIfNeeded();await snap('dilr-recovery');
        await section('qa');await checkLayout('qa');await snap('qa');
        await page.locator('#qa-skip-title').evaluate(el=>el.scrollIntoView({block:'start',behavior:'instant'}));
