@@ -508,6 +508,38 @@ input[type=checkbox]{flex-shrink:0}
     }
     @media screen and (max-height:500px) and (orientation:landscape){#playbook-header{position:relative;top:auto}#playbook-main :is(section,article,h3,summary,input,textarea,select,button){scroll-margin-top:12px}}
     @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,::before,::after{transition:none!important}}
+
+    /* Native disclosure sections: no persistence or new JS state required. */
+    @media screen {
+      [data-strategy-detail]{min-width:0}
+      [data-strategy-detail] > summary{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:52px;padding:14px 16px;cursor:pointer;list-style:none}
+      [data-strategy-detail] > summary::-webkit-details-marker{display:none}
+      [data-strategy-detail] > summary::after{content:"+";font-size:20px;line-height:1;flex-shrink:0;font-weight:500}
+      [data-strategy-detail][open] > summary::after{content:"−"}
+      [data-strategy-detail] > summary strong{display:block;font-size:15px;line-height:1.35}
+      [data-strategy-detail] > summary small{display:block;margin-top:3px;font-size:12px;line-height:1.4;color:#5F5F5A}
+      .dark [data-strategy-detail] > summary small{color:#A1A09A}
+      [data-strategy-detail] > [data-strategy-body]{min-width:0;padding:0 12px 12px}
+      [data-strategy-detail][open] > summary{border-bottom:1px solid #E5E4DF;margin-bottom:12px}
+      .dark [data-strategy-detail][open] > summary{border-color:#2D2D29}
+      [data-clock-time],[data-mobile-clock] > * > span:last-child{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.25;opacity:1}
+      [data-clock-label]{font-size:12px;line-height:1.25}
+      [data-mobile-clock]{height:60px}
+      #quick-revision [data-plan="quick"],#quick-revision [data-plan="dilrQuick"],#quick-revision [data-plan="qaQuick"]{font-size:14px;font-weight:600;line-height:1.65;font-variant-numeric:tabular-nums}
+      [data-plan^="dilrTime"],[data-plan^="qaTime"]{font-size:15px;font-weight:700;font-variant-numeric:tabular-nums}
+      [data-recovery-clock]{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));height:auto;gap:2px;overflow:visible}
+      [data-recovery-clock] > *{width:auto!important;min-height:42px;padding:4px;text-align:center}
+      [data-recovery-clock] [data-clock-time]{font-size:12px;overflow-wrap:anywhere}
+    }
+    @media screen and (max-width:767px){
+      [data-strategy-detail] > summary{padding:12px}
+      [data-strategy-detail] > [data-strategy-body]{padding:0 6px 8px}
+      [data-mobile-clock] > * > span:last-child,[data-clock-time]{font-size:15px!important;font-weight:700;line-height:1.35}
+      [data-mobile-clock] > *{min-height:64px}
+      [data-recovery-clock]{grid-template-columns:repeat(2,minmax(0,1fr))}
+      [data-recovery-clock] > *:last-child{grid-column:1/-1;min-height:36px}
+      [data-recovery-clock] [data-clock-time]{font-size:13px!important}
+    }
     @media print{[data-mobile-only]{display:none!important}}
   </style>
 
@@ -1305,7 +1337,11 @@ input[type=checkbox]{flex-shrink:0}
         </div>
       </div>
 
-      <!-- 2. RC Execution + Unified 45-Second Deadlock Grid -->
+      <!-- region:strategy-detail-rc -->
+      <details data-strategy-detail="rc" open class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl">
+        <summary><span><strong>Reading comprehension</strong><small>Structural reading, evidence checks and option elimination</small></span></summary>
+        <div data-strategy-body>
+          <!-- 2. RC Execution + Unified 45-Second Deadlock Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
         <!-- RC Execution Card (7 cols) -->
         <div class="print-card lg:col-span-7 bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6">
@@ -1414,8 +1450,14 @@ input[type=checkbox]{flex-shrink:0}
           <p class="mt-3 text-xs leading-relaxed text-muted dark:text-darkMuted">In cleanup, first save penalty-free TITA answers and any clearer opportunities. Revisit genuinely shortlisted MCQs only if time remains; if two options really are equally likely, the expected raw score is +1 (0.5 × 3 − 0.5 × 1). This is not a guarantee. If elimination is unreliable or sectional accuracy is at risk, leave blank. Clear any speculative saved MCQ before moving on unless deliberately committing to it.</p>
         </div>
       </div>
+        </div>
+      </details>
 
-      <!-- 3. The 4 VA Playbooks + Accuracy Reality Check -->
+      <!-- region:strategy-detail-va -->
+      <details data-strategy-detail="va" class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl">
+        <summary><span><strong>Verbal ability techniques</strong><small>Summary, completion, odd sentence and para jumbles</small></span></summary>
+        <div data-strategy-body>
+          <!-- 3. The 4 VA Playbooks + Accuracy Reality Check -->
       <div class="print-card space-y-3.5">
         <div class="flex items-center justify-between">
           <h3 class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">The 4 VA Playbooks</h3>
@@ -1517,8 +1559,14 @@ input[type=checkbox]{flex-shrink:0}
           </div>
         </div>
       </div>
+        </div>
+      </details>
 
-      <!-- 4. Compact VARC Pattern & Marking Matrix -->
+      <!-- region:strategy-detail-varc-pattern -->
+      <details data-strategy-detail="varc-pattern" class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl">
+        <summary><span><strong>Recent question pattern and marking</strong><small>Historical distribution and question types</small></span></summary>
+        <div data-strategy-body>
+          <!-- 4. Compact VARC Pattern & Marking Matrix -->
       <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl overflow-hidden">
         <div class="px-5 py-3.5 border-b border-hairline dark:border-darkHairline flex flex-wrap items-center justify-between gap-2">
           <h3 class="text-xs font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">CAT VARC Pattern &amp; Marking Matrix</h3>
@@ -1569,6 +1617,8 @@ input[type=checkbox]{flex-shrink:0}
           </table>
         </div>
       </div>
+        </div>
+      </details>
 
       <!-- Editable Personal Notes Drawer (VARC) -->
       <details class="print-card notes-drawer group bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl overflow-hidden">
@@ -1627,13 +1677,13 @@ input[type=checkbox]{flex-shrink:0}
           <!-- 4 Fixed Captions -->
           <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 text-xs">
             <div class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
-              <span class="font-mono font-bold text-dilr" data-plan="dilrTime0"></span> · Never start Set 1 blindly. Scan all available sets &amp; rank all sets by viability.
+              <span class="font-mono font-bold text-dilr" data-plan="dilrTime0"></span> · <span data-plan="dilrCaption0"></span>
             </div>
             <div class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
-              <span class="font-mono font-bold text-dilr" data-plan="dilrTime1"></span> · Crack Set 1; verify the model and answers before moving.
+              <span class="font-mono font-bold text-dilr" data-plan="dilrTime1"></span> · <span data-plan="dilrCaption1"></span>
             </div>
             <div class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
-              <span class="font-mono font-bold text-dilr" data-plan="dilrTime2"></span> · Crack Set 2 cleanly; run full clue back-check.
+              <span class="font-mono font-bold text-dilr" data-plan="dilrTime2"></span> · <span data-plan="dilrCaption2"></span>
             </div>
             <div class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
               <span class="font-mono font-bold text-dilr" data-plan="dilrTime3"></span> · <span data-plan="dilrCaption3"></span> Rebase after a switch.
@@ -1654,7 +1704,11 @@ input[type=checkbox]{flex-shrink:0}
         </div>
       </div>
 
-      <!-- 2. Two-Column Green Flags vs Red Flags -->
+      <!-- region:strategy-detail-dilr-flags -->
+      <details data-strategy-detail="dilr-flags" class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl">
+        <summary><span><strong>General set-selection flags</strong><small>Representation, anchors, casework and calculation burden</small></span></summary>
+        <div data-strategy-body>
+          <!-- 2. Two-Column Green Flags vs Red Flags -->
       <div class="print-card grid grid-cols-1 md:grid-cols-2 gap-4">
         <!-- Green Flags -->
         <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-l-4 border-l-dilr rounded-xl p-5">
@@ -1713,6 +1767,8 @@ input[type=checkbox]{flex-shrink:0}
           </div>
         </div>
       </div>
+        </div>
+      </details>
 
       <!-- region:dilr-personal-selection | Personalised four-minute set triage -->
       <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6" aria-labelledby="dilr-personal-title">
@@ -1816,7 +1872,11 @@ input[type=checkbox]{flex-shrink:0}
         <p class="mt-3 text-xs leading-relaxed text-muted dark:text-darkMuted"><strong class="text-ink dark:text-darkInk">Late failure / both stall:</strong> recalculate remaining minutes after reserving the last minute. Prefer independently answerable questions or a partly solved set with a credible breakthrough. If no complete set is feasible, protect reliable partial marks and reasoned TITA entries. Never invent a full solution to meet a target.</p>
       </section>
 
-      <!-- 4. Representation Checklist (5 Archetypes) -->
+      <!-- region:strategy-detail-dilr-representation -->
+      <details data-strategy-detail="dilr-representation" class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl">
+        <summary><span><strong>Representation reference</strong><small>Five recurring reasoning structures</small></span></summary>
+        <div data-strategy-body>
+          <!-- 4. Representation Checklist (5 Archetypes) -->
       <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6">
         <div class="flex items-center justify-between pb-3 border-b border-hairline dark:border-darkHairline">
           <h3 class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">Representation Checklist (Draw Container First)</h3>
@@ -1846,6 +1906,8 @@ input[type=checkbox]{flex-shrink:0}
           </div>
         </div>
       </div>
+        </div>
+      </details>
 
       <!-- 5. Editable Personal Notes Drawer (DILR) -->
       <details class="print-card notes-drawer group bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl overflow-hidden">
@@ -1909,21 +1971,21 @@ input[type=checkbox]{flex-shrink:0}
                 <span>ROUND 1 · <span data-plan="qaTime0"></span></span>
                 <span>7–8 attempts, flexible &middot; ~2.5m/Q</span>
               </div>
-              <p class="text-muted dark:text-darkMuted leading-relaxed">Sitters: Arithmetic, Logs/Exponents, Number Theory, Mensuration, direct arithmetic/geometric progressions &amp; Linear/Quadratic.</p>
+              <p class="text-muted dark:text-darkMuted leading-relaxed" data-plan="qaCaption0"></p>
             </div>
             <div class="p-3 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
               <div class="flex items-center justify-between font-mono text-[11px] font-bold text-qa mb-1">
                 <span>ROUND 2 · <span data-plan="qaTime1"></span></span>
                 <span>3–5 additional attempts as feasible &middot; ~3.5m/Q</span>
               </div>
-              <p class="text-muted dark:text-darkMuted leading-relaxed">If any questions are unseen, finish first-pass triage first. Then revisit L/I skips by confidence and time to finish; consider U only after stronger opportunities.</p>
+              <p class="text-muted dark:text-darkMuted leading-relaxed" data-plan="qaCaption1"></p>
             </div>
             <div class="p-3 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
               <div class="flex items-center justify-between font-mono text-[11px] font-bold text-qa mb-1">
                 <span>ROUND 3 · <span data-plan="qaTime2"></span></span>
                 <span>Optional extra + TITA sweep</span>
               </div>
-              <p class="text-muted dark:text-darkMuted leading-relaxed">Protect saved responses and enter reasoned TITA estimates if time permits; attempt an extra question only if there is time after cleanup.</p>
+              <p class="text-muted dark:text-darkMuted leading-relaxed" data-plan="qaCaption2"></p>
             </div>
           </div>
         </div>
@@ -1948,7 +2010,11 @@ input[type=checkbox]{flex-shrink:0}
         <p class="mt-3 text-xs leading-relaxed"><strong>Round 2:</strong> finish first-pass assessment of unseen questions, then prioritise L/I by confidence and remaining minutes to finish; U only after stronger opportunities. <strong>Round 3:</strong> save/audit responses, protect TITA opportunities and attempt an extra question only if time remains. Clear uncertain saved MCQ responses before marking for review.</p>
       </section>
 
-      <!-- 2. 6 Mechanical Rules (Balanced 3x2 Desktop Grid Including Calculator Discipline) -->
+      <!-- region:strategy-detail-qa-rules -->
+      <details data-strategy-detail="qa-rules" open class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl">
+        <summary><span><strong>Quantitative execution rules</strong><small>Ignition, arithmetic, geometry, algebra and verification</small></span></summary>
+        <div data-strategy-body>
+          <!-- 2. 6 Mechanical Rules (Balanced 3x2 Desktop Grid Including Calculator Discipline) -->
       <div class="print-card">
         <div class="flex items-center justify-between mb-3">
           <h3 class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">6 Mechanical Rules to Stop Time Leaks</h3>
@@ -2023,8 +2089,14 @@ input[type=checkbox]{flex-shrink:0}
           </div>
         </div>
       </div>
+        </div>
+      </details>
 
-      <!-- 3. Topic Revision Priority & Solvable Pool Table -->
+      <!-- region:strategy-detail-qa-priorities -->
+      <details data-strategy-detail="qa-priorities" class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl">
+        <summary><span><strong>Topic priorities and solvable pool</strong><small>Historical estimates and personal revision tiers</small></span></summary>
+        <div data-strategy-body>
+          <!-- 3. Topic Revision Priority & Solvable Pool Table -->
       <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl overflow-hidden">
         <div class="px-5 py-3.5 border-b border-hairline dark:border-darkHairline flex flex-wrap items-center justify-between gap-2">
           <h3 class="text-xs font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">Topic Revision Priority &amp; Solvable Pool</h3>
@@ -2103,6 +2175,8 @@ input[type=checkbox]{flex-shrink:0}
         <p class="px-5 py-3 text-xs text-muted dark:text-darkMuted border-t border-hairline dark:border-darkHairline">Historical revision reference (recent CAT papers, approximate): Geometry &amp; Mensuration around 2–3 questions; Modern Mathematics around 2–3 questions. Counts vary by slot and classification; these ranges overlap the priority table and must not be added to its totals or treated as a CAT 2026 forecast.</p>
         </div>
       </div>
+        </div>
+      </details>
 
       <!-- 4. Editable Personal Notes Drawer (QA) -->
       <details class="print-card notes-drawer group bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl overflow-hidden">
@@ -2221,7 +2295,7 @@ input[type=checkbox]{flex-shrink:0}
               "end": 22,
               "label": "Round 1 · Sitters",
               "quick": "sitters",
-              "caption": "Assess questions in sequence; choose clear methods, especially strong topics.",
+              "caption": "Assess questions in sequence; choose clear methods, especially arithmetic, logs/exponents, number theory, mensuration, arithmetic/geometric progressions and linear/quadratic equations.",
               "rule": "7–8 attempts, flexible; about 2.5m per question unless finishing."
             },
             {
@@ -2229,7 +2303,7 @@ input[type=checkbox]{flex-shrink:0}
               "end": 36,
               "label": "Round 2 · Mediums",
               "quick": "mediums",
-              "caption": "Assess unseen questions first, then revisit L/I, then viable U.",
+              "caption": "Assess unseen questions first, then revisit L/I by confidence and time to finish, then viable U after stronger opportunities.",
               "rule": "3–5 additional attempts as feasible; about 3.5m per question."
             },
             {
