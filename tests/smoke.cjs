@@ -22,6 +22,15 @@ async function runSmoke(html) {
   check(ids.length === new Set(ids).size, 'Unique HTML IDs');
   check(!/\b(?:import|export)\s+(?:\{|default|from)/.test(script), 'Classic single-file script');
   check(!html.includes('cat99_playbook_state_v1'), 'No legacy migration');
+  const offline = html.match(/<style id="cat-offline-css">([\s\S]*?)<\/style>/)?.[1];
+  check(Boolean(offline && offline.length > 1000), 'Embedded offline stylesheet exists');
+  check(!/<(?:script|link|img|iframe|source|video|audio)\b[^>]*(?:src|href)\s*=\s*["'][^"']+["']/i.test(html), 'No external runtime resource tags');
+  check(![...html.matchAll(/<style(?:\s[^>]*)?>([\s\S]*?)<\/style>/g)].some(m=>/@import\b|url\s*\(/i.test(m[1])), 'No CSS imports or asset URLs');
+  check(!/\b(?:fetch\s*\(|XMLHttpRequest\b|WebSocket\b|EventSource\b|sendBeacon\s*\()/i.test(script), 'No runtime network request code');
+  check(offline.includes('.dark .dark\\:bg-darkCanvas') && offline.includes('@media (min-width:768px)') && offline.includes('.lg\\:grid-cols-5'), 'Offline CSS includes theme, responsive and computed grid rules');
+  check(html.includes('region:dilr-personal-selection') && html.includes('Binary, yes/no or coded responses') && html.includes('personal preference as a tie-breaker'), 'Personal DILR triage is explicit and conditional');
+  check(html.includes('region:qa-skip-routing') && ['L · Solvable but lengthy','I · Calculation incomplete','U · Method uncertain','X · Conceptual gap','T · Unsolved TITA'].every(x=>html.includes(x)), 'Five QA skip classes present');
+  check(!html.includes('Reframe length as a green flag') && html.includes('leave dead skips unflagged'), 'QA routing no longer conflicts with mechanical rules');
   const initial = html.match(/<script id="embedded-user-state"[^>]*>([\s\S]*?)<\/script>/)[1].trim();
   check(JSON.parse(initial).schemaVersion === 2 && JSON.parse(initial).records.length === 0, 'Empty repository snapshot');
 
