@@ -673,7 +673,7 @@ input[type=checkbox]{flex-shrink:0}
             <p class="mt-2 text-xs">Pen down on arithmetic. 45s ignition; 2.5m R1 cap unless finishing. R2: L/I first, U later, X leave. TITA cleanup. Audit requested value, unit, sign and format.</p>
           </article>
         </div>
-        <p class="mt-3 text-xs font-medium">Save answers explicitly · protect TITA cleanup · reset between sections · never chase a score target. Check actual marking and section instructions.</p>
+        <p class="mt-3 text-xs font-medium">Rule hierarchy: official instructions and safeguards → adaptive checkpoints → default clocks → preferences. Save explicitly, protect cleanup, reset between sections; never chase a score target.</p>
       </section>
       <div id="overview-full" class="space-y-6">
       <!-- 1. Header KPI Strip -->
@@ -749,6 +749,31 @@ input[type=checkbox]{flex-shrink:0}
           <thead role="rowgroup"><tr role="row" class="font-mono text-muted dark:text-darkMuted"><th role="columnheader" scope="col" class="px-2.5 py-2">Scenario</th><th role="columnheader" scope="col" class="px-2.5 py-2">VARC</th><th role="columnheader" scope="col" class="px-2.5 py-2">DILR</th><th role="columnheader" scope="col" class="px-2.5 py-2">QA</th><th role="columnheader" scope="col" class="px-2.5 py-2">Total</th><th role="columnheader" scope="col" class="px-2.5 py-2">Response</th></tr></thead>
           <tbody role="rowgroup" id="scenario-rows"></tbody></table></div>
         <p class="mt-2 text-xs text-muted dark:text-darkMuted">Correct +3; wrong MCQ −1; wrong TITA 0 under the recent pattern. DILR and QA correct-answer targets exclude wrong-MCQ deductions. Use actual exam instructions if they differ.</p>
+      </section>
+
+      <!-- region:rule-hierarchy | Conflict resolution for exam-day decisions -->
+      <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6" aria-labelledby="rule-hierarchy-title">
+        <h3 id="rule-hierarchy-title" class="text-sm font-semibold uppercase tracking-wider">Rule hierarchy · which instruction wins?</h3>
+        <p class="mt-1 text-xs text-muted dark:text-darkMuted">Higher levels override lower ones. The playbook is a decision aid, not a rigid quota sheet.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3 text-xs leading-relaxed">
+          <article class="rounded-lg border border-hairline dark:border-darkHairline border-l-4 border-l-alert p-3">
+            <h4 class="font-semibold text-alert">1 · Non-negotiable safeguards</h4>
+            <p class="mt-1">Follow the official exam instructions, assigned time and invigilator directions. Save deliberately, check the asked value and answer format, clear unintentional MCQs, verify necessary premises, and protect a final response audit. Never let a score target justify violating these safeguards.</p>
+          </article>
+          <article class="rounded-lg border border-hairline dark:border-darkHairline border-l-4 border-l-dilr p-3">
+            <h4 class="font-semibold text-dilr">2 · Adaptive checkpoints</h4>
+            <p class="mt-1">VARC: 45–60s passage gate, 45s unresolved two-option deadlock. DILR: reassess 4–6m, switch by 6–7m if stalled. QA: 45s ignition, about 2.5m in R1 and 3.5m in R2. Continue briefly only for a credible imminent payoff; otherwise move on. Protect the remaining section time.</p>
+          </article>
+          <article class="rounded-lg border border-hairline dark:border-darkHairline border-l-4 border-l-varc p-3">
+            <h4 class="font-semibold text-varc">3 · Strong default execution plans</h4>
+            <p class="mt-1">Use the selected VARC mode, four-minute DILR scan, one reliable set then a second viable set, and QA rolling triage. The 40-minute clocks, attempt ranges and operating scenarios are planning guides; rebase them after a switch or unexpected difficulty. Never force completion.</p>
+          </article>
+          <article class="rounded-lg border border-hairline dark:border-darkHairline border-l-4 border-l-qa p-3">
+            <h4 class="font-semibold text-qa">4 · Personal preferences and tie-breakers</h4>
+            <p class="mt-1">Prefer coded or elimination-driven DILR only when equally viable; prefer your strongest QA topics, but take any obvious sitter. Prefer paper for simple calculation, calculator when faster or safer. Choose the fourth RC only under its specific trigger, not because a quota calls for it.</p>
+          </article>
+        </div>
+        <p class="mt-3 text-xs leading-relaxed"><strong>Conflict examples:</strong> a productive DILR breakthrough can override the nominal set duration, not the section deadline. An easy geometry sitter can override topic preference, not verification. A weak TITA or 50/50 MCQ must not displace a more reliable answer; use cleanup only after safer work. A poor earlier section never changes the next section's marking or clock.</p>
       </section>
 
       <!-- 2. The Mechanical Bail-Out & Verification Matrix -->
@@ -1033,7 +1058,7 @@ input[type=checkbox]{flex-shrink:0}
               <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-varc/10 text-varc font-semibold">Peak Simulation</span>
             </div>
             <p class="mt-2.5 text-xs text-muted dark:text-darkMuted leading-relaxed">
-              <strong class="text-ink dark:text-darkInk font-semibold">Final Full Mock #2</strong> at exact exam-slot timing + deep mistake audit (DILR root causes &amp; RC 2-option traps).
+              <strong class="text-ink dark:text-darkInk font-semibold">Optional final full mock</strong> at assigned slot time only if rested and useful; otherwise review earlier errors and rehearse the official interface. Verify admit card and travel arrangements today.
             </p>
           </div>
 
@@ -1044,7 +1069,7 @@ input[type=checkbox]{flex-shrink:0}
               <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-qa/10 text-qa font-semibold">Habit Imprinting</span>
             </div>
             <p class="mt-2.5 text-xs text-muted dark:text-darkMuted leading-relaxed">
-              Light habit imprinting only: timed <strong class="text-ink dark:text-darkInk font-medium">10 Arithmetic Qs in 22m</strong> (Pen-Down + Final-8-Words), <strong class="text-ink dark:text-darkInk font-medium">2 timed DILR sets (30m)</strong>, <strong class="text-ink dark:text-darkInk font-medium">1–2 RCs</strong> at <span class="font-mono">3:15</span> Pass 1 + <span class="font-mono text-alert font-semibold">45s</span> deadlock cap + full error-log skim.
+              Light habit imprinting: choose a short review of arithmetic (pen-down and answer audit), one familiar DILR set or a 1–2 RC drill. Review errors; do not stack all drills if tired or travelling. Finish travel and document preparation.
             </p>
           </div>
 
@@ -1055,11 +1080,64 @@ input[type=checkbox]{flex-shrink:0}
               <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-dilr/10 text-dilr font-semibold">Strict Taper</span>
             </div>
             <p class="mt-2.5 text-xs text-muted dark:text-darkMuted leading-relaxed">
-              <strong class="text-alert font-semibold">ZERO mocks or new hard sets.</strong> 30-min skim of this playbook &amp; error log only + <strong class="text-ink dark:text-darkInk font-medium">7.5+ hrs early sleep</strong>.
+              <strong class="text-alert font-semibold">No full mocks or new hard sets.</strong> Brief skim of this playbook and error log, verify documents and departure plan, and aim for adequate familiar sleep (about 7–9 hours).
             </p>
           </div>
         </div>
       </div>
+
+      <!-- region:exam-logistics | Current verification and preparation -->
+      <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6" aria-labelledby="logistics-title">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <h3 id="logistics-title" class="text-sm font-semibold uppercase tracking-wider">CAT 2026 · examination logistics</h3>
+          <span class="text-xs text-muted dark:text-darkMuted font-mono">Reviewed 26 Nov 2026</span>
+        </div>
+        <p class="mt-2 text-xs leading-relaxed"><strong>Sunday, 29 November 2026.</strong> IIM Indore's releases dated 26 July and 4 November announce three sessions and a standard 120-minute paper with 40 minutes per section, in VARC → DILR → QA order, without switching sections. Follow your approved accommodations and actual on-screen instructions if different. The question mix and marks shown elsewhere are planning assumptions, not a guaranteed blueprint.</p>
+        <div class="mt-3 p-3 rounded-lg border border-alert/30 bg-alert/5 dark:bg-alert/15">
+          <p class="text-xs leading-relaxed"><strong class="text-alert">Your admit card is authoritative:</strong> confirm the exact date, shift, centre address, reporting time and gate-closing time on your own card. The gate deadline is not the examination start. Aim to arrive by reporting time or earlier, not just before gate closure. Do not rely on admission after the stated gate deadline.</p>
+        </div>
+        <h4 class="mt-3 text-xs font-semibold">Reported standard slot schedule (IST; cross-check your card)</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mt-2 text-xs">
+          <article class="rounded-lg border border-hairline dark:border-darkHairline p-3"><h5 class="font-semibold">Slot 1 · Morning</h5><p class="mt-1">Report 07:00 · Gate 08:00</p><p class="mt-1 font-mono">08:30–10:30</p></article>
+          <article class="rounded-lg border border-hairline dark:border-darkHairline p-3"><h5 class="font-semibold">Slot 2 · Afternoon</h5><p class="mt-1">Report 11:00 · Gate 12:00</p><p class="mt-1 font-mono">12:30–14:30</p></article>
+          <article class="rounded-lg border border-hairline dark:border-darkHairline p-3"><h5 class="font-semibold">Slot 3 · Evening</h5><p class="mt-1">Report 15:00 · Gate 16:00</p><p class="mt-1 font-mono">16:30–18:30</p></article>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4 text-xs leading-relaxed">
+          <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
+            <h4 class="font-semibold">By Saturday, 28 November</h4>
+            <ul class="mt-2 list-disc list-inside space-y-1">
+              <li>Download the admit card from the official portal; print clearly. Check identity details, photo, signature and all special instructions. Attach the required photograph as directed; leave any invigilator-witnessed signature unsigned until asked.</li>
+              <li>Pack an accepted, original, valid photo ID listed on your card; required accommodation/medical documents and permissions if applicable. Check the card's permitted-items list, not a generic online checklist.</li>
+              <li>Verify the actual centre, entrance and route (visit if practical); plan transport, backup ride, parking/walking and queue time. Target arrival before reporting; departure = target arrival minus realistic journey time and contingency (for example, 30–60 minutes extra if traffic is uncertain).</li>
+              <li>Prepare simple permitted clothing, suitable for weather and security checks. Arrange storage for belongings outside the centre; do not assume a locker is available. Save a copy of this HTML offline for revision before entering, not for use in the exam.</li>
+            </ul>
+          </article>
+          <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
+            <h4 class="font-semibold">On Sunday · before leaving</h4>
+            <ul class="mt-2 list-disc list-inside space-y-1">
+              <li>Recheck portal updates, admit card, ID, route and the departure deadline. Allow extra time for security and identity checks; the 4 November release describes face matching and jammers at selected centres.</li>
+              <li>Keep sleep and meals familiar. Eat a light familiar meal sufficiently before reporting; hydrate normally, use the restroom before entry, avoid experimenting with caffeine or supplements. Do not presume food or water is permitted inside; follow the card and medical permissions.</li>
+              <li>Keep phones, smartwatches, electronics, personal calculators, notes, stationery and jewellery out of the exam room as instructed. Follow centre-specific clothing restrictions, including reported guidance on thick soles and large buttons. Ask officials about any required medical device or religious accommodation in advance.</li>
+              <li>Keep only authorised documents/items. Cooperate with checks and follow invigilator instructions; do not depend on phone reception or a last-minute digital document.</li>
+            </ul>
+          </article>
+          <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
+            <h4 class="font-semibold">At the workstation</h4>
+            <ul class="mt-2 list-disc list-inside space-y-1">
+              <li>Check identity, displayed section time, marking and response instructions. Confirm how to save, clear and review answers, enter type-in-the-answer responses (TITA), and use the provided calculator.</li>
+              <li>Use only authorised rough-work material supplied or permitted by the centre. Report a login, timer, mouse, calculator or display problem to the invigilator immediately; do not attempt to fix the workstation.</li>
+              <li>Expect no routine break; follow official emergency or accommodation procedures. Return supplied rough-work materials and leave only when instructed.</li>
+            </ul>
+          </article>
+          <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
+            <h4 class="font-semibold">Official mock and current instructions (online)</h4>
+            <p class="mt-1">Open <a class="underline font-semibold text-varc" href="https://iimcat.ac.in/" target="_blank" rel="noopener noreferrer">iimcat.ac.in — official CAT portal</a> for your admit card, latest notices, official mock, calculator guidance and helpdesk. Use the mock for interface practice, not prediction of question counts or difficulty.</p>
+            <p class="mt-2">Reported standard mock link: <a class="underline text-varc font-medium" href="https://cdn4.digialm.com//OnlineAssessment/index.html?32842@@M218" target="_blank" rel="noopener noreferrer">CAT 2026 interface mock</a>. Verify the link against the official portal first; use the appropriate accommodation-specific mock if needed. No login credentials should be shared outside the official portal.</p>
+            <p class="mt-2">Rehearse the palette, Save &amp; Next, Clear Response, Mark for Review, TITA keypad, calculator, section timer and transition once. Verify the actual instructions: an answered-and-reviewed question may be evaluated; an unintentional response must be cleared before moving on.</p>
+          </article>
+        </div>
+        <p class="mt-3 text-xs text-muted dark:text-darkMuted leading-relaxed">Source note: <a class="underline" href="https://futurecareerguidance.com/official-docs/cat-2026/cat-2026-press-release-26-07-2026.pdf" target="_blank" rel="noopener noreferrer">26 July IIM press release (mirror)</a>; <a class="underline" href="https://www.careerlauncher.com/blogs/wp-content/uploads/2026/11/9901914301.pdf" target="_blank" rel="noopener noreferrer">4 November IIM admit-card release (mirror)</a>; <a class="underline" href="https://www.careers360.com/mba/articles/cat-2026-exam-day-guidelines-documents-timings" target="_blank" rel="noopener noreferrer">Careers360, 24 November (reported timings and rules)</a>; <a class="underline" href="https://www.mbauniverse.com/cat/cat-mock-official" target="_blank" rel="noopener noreferrer">MBAUniverse (reported mock URL)</a>. The official portal returned an access error during this review and the direct mock could not be opened; the candidate's latest official instructions take precedence. Links require internet only when opened; this playbook remains offline.</p>
+      </section>
 
       <!-- 6. Pre-Exam Interactive Mental Reset Checklist -->
       <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6">
@@ -1119,7 +1197,7 @@ input[type=checkbox]{flex-shrink:0}
             <input type="checkbox" data-chk="chk-logistics" class="reset-chk mt-0.5 w-4 h-4 rounded accent-ink dark:accent-darkInk shrink-0 cursor-pointer" />
             <span class="text-xs leading-relaxed">
               <strong class="block text-ink dark:text-darkInk font-semibold">Exam-Day Readiness (Nov 29)</strong>
-              <span class="text-muted dark:text-darkMuted">Admit card + valid photo ID packed, slot timing confirmed, 7.5+ hrs sleep locked in.</span>
+              <span class="text-muted dark:text-darkMuted">Printed admit card with required photo, accepted original ID, centre/reporting/gate times checked, route and backup plan ready, permitted items verified, mock interface reviewed, sleep and meal plan set.</span>
             </span>
           </label>
         </div>
