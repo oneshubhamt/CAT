@@ -562,11 +562,18 @@ input[type=checkbox]{flex-shrink:0}
       [data-mobile-clock] > button:hover{box-shadow:inset 0 0 0 2px currentColor}
       [data-mobile-clock] > button:focus-visible{outline:2px solid currentColor;outline-offset:-3px}
       [data-recovery-clock] > .text-white{background-color:#0F766E}
-      #quick-revision [data-quick-phase]{display:inline-block;max-width:100%;vertical-align:top;margin-right:.25em}
+      #quick-revision [data-quick-phase]{display:inline-block;max-width:100%;vertical-align:top;margin:0 .4em 3px 0;padding:0 .35em;border-radius:3px;background-color:rgb(26 26 25 / .055)}
+      .dark #quick-revision [data-quick-phase]{background-color:rgb(243 242 238 / .065)}
       #quick-revision [data-quick-time]{white-space:nowrap}
+      #quick-revision [data-quick-separator]{display:none}
+      [data-kpi-cards] > div > div:first-child{flex-wrap:wrap}
+      [data-kpi-cards] > div > div:first-child > span:first-child{white-space:nowrap;flex-shrink:0;overflow-wrap:normal}
       [data-storage-help] > summary{cursor:pointer;min-height:44px;padding:10px 0;font-weight:600}
       [data-storage-help] p{margin:0 0 8px;max-width:75ch}
       #error-log-filter{min-height:44px}
+    }
+    @media screen and (min-width:768px) and (max-width:1023px){
+      [data-kpi-cards] > div > div:first-child{flex-direction:column;align-items:flex-start;gap:5px}
     }
     @media screen and (max-width:767px){
       [data-mobile-clock] > *{min-width:0}
@@ -801,7 +808,7 @@ input[type=checkbox]{flex-shrink:0}
         </div>
 
         <!-- 3 Section Target Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-5">
+        <div data-kpi-cards class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-5">
           <!-- VARC KPI -->
           <div class="rounded-xl p-4 bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-l-4 border-l-varc">
             <div class="flex items-center justify-between gap-2">
@@ -3383,7 +3390,12 @@ input[type=checkbox]{flex-shrink:0}
               const phase=document.createElement('span'), time=document.createElement('span'), space=part.indexOf(' ');
               phase.setAttribute('data-quick-phase','');time.setAttribute('data-quick-time','');
               time.textContent=part.slice(0,space);
-              phase.append(time,part.slice(space)+(i<parts.length-1?' · ':''));
+              phase.append(time,part.slice(space));
+              if(i<parts.length-1){
+                const separator=document.createElement('span');
+                separator.setAttribute('data-quick-separator','');separator.setAttribute('aria-hidden','true');separator.textContent=' · ';
+                phase.append(separator);
+              }
               return phase;
             }));
           });

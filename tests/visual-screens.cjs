@@ -4,6 +4,7 @@ const matrix=require('./visual-matrix.cjs');
 async function visual(api){
  const {page,desc,section,mode,top,disclosure,allDetails,bring,measure,snap,action}=api;
  await measure('overview-default');await snap('overview-default');
+ assert(await page.locator('[data-kpi-cards] > div > div:first-child > span:first-child').evaluateAll(els=>els.length===3&&els.every(e=>{const r=document.createRange();r.selectNodeContents(e);return r.getClientRects().length===1;})),'KPI section names never break across lines');
  assert.equal(await page.locator('[data-fixed-segment]').count(),24);
  assert.equal(await page.locator('[data-strategy-detail]').count(),7);
  assert(await page.locator('[data-fixed-segment]').evaluateAll(els=>els.every(e=>e.style.width&&/\d+–\d+m/.test(e.querySelector('[data-clock-time]')?.textContent||''))));
@@ -27,6 +28,7 @@ async function visual(api){
   assert.equal(await page.locator('#quick-revision [data-plan="dilrQuick"] [data-quick-time]').count(),5);
   assert.equal(await page.locator('#quick-revision [data-plan="qaQuick"] [data-quick-time]').count(),3);
   assert(await page.locator('#quick-revision [data-quick-time]').evaluateAll(els=>els.every(e=>/^\d+–\d+m$/.test(e.textContent)&&getComputedStyle(e).whiteSpace==='nowrap')));
+  assert(await page.locator('#quick-revision [data-quick-separator]').evaluateAll(els=>els.length>0&&els.every(e=>getComputedStyle(e).display==='none')),'Phase groups replace orphan-prone visible separators');
   await measure('quick-'+key,{contrast:key===desc.mode});
   if(key===desc.mode)await snap('quick-'+key,true);
   await page.locator('#btn-close-revision').click();
