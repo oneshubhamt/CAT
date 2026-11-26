@@ -7,7 +7,7 @@ const {runJourney}=require('./visual-journeys.cjs'),{visual,boundary}=require('.
 const input=path.resolve(__dirname,'../index.html'),output=path.resolve(process.env.CAT_SCREENSHOTS||path.join(__dirname,'../artifacts/mobile'));
 const tier=process.env.CAT_TIER||'core',plan=matrix.select(tier,process.env.CAT_ENGINE||'',process.env.CAT_PROFILE||'');
 const descriptors=[...plan.visual.map(p=>({...p,kind:'visual'})),...plan.stateful.map(p=>({...p,kind:'journey'})),...(plan.boundary?[{id:'boundaries',kind:'boundary',engine:'chromium',width:639,height:900,theme:'light',reason:'Both sides of responsive breakpoints and short landscape'}]:[])];
-const report={version:2,tier,commit:process.env.GITHUB_SHA||'local',startedAt:new Date().toISOString(),planned:descriptors,scenarios:[]};
+const report={version:2,tier,platform:process.platform,arch:process.arch,commit:process.env.GITHUB_SHA||'local',startedAt:new Date().toISOString(),planned:descriptors,scenarios:[]};
 const top=page=>page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));
 async function ready(page,url){
  await page.goto(url,{waitUntil:'load'});
