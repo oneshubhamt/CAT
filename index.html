@@ -2,7 +2,7 @@
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>CAT 99+ Exam-Day Playbook</title>
 
   <!-- region:design-tokens | Offline stylesheet and system font stack -->
@@ -401,6 +401,88 @@ input[type=checkbox]{flex-shrink:0}
 }
   </style>
 
+  <!-- region:mobile-layout | Authored responsive overrides; no generated utilities -->
+  <style id="cat-mobile-layout">
+    [data-mobile-only]{display:none}
+    #playbook-main,.tab-panel,.print-card,.grid > *,.flex > *{min-width:0}
+    .tab-panel{overflow-wrap:break-word}
+    #toolbar-actions button,#section-nav button,.varc-order-btn,#btn-close-revision{min-height:44px}
+    .notes-drawer summary{min-height:48px}
+    #error-log-list button,#btn-reset-checklist,#btn-retry-storage,#export-fallback{min-height:44px;display:inline-flex;align-items:center}
+    #error-log-form input,#error-log-form select,#error-log-form textarea,.notes-drawer textarea{max-width:100%;min-width:0}
+    #error-log-form input,#error-log-form select,#error-log-form button{min-height:44px}
+    .reset-chk{width:20px;height:20px}
+    #playbook-header{padding-top:env(safe-area-inset-top,0px)}
+    #playbook-main{padding-bottom:max(24px,env(safe-area-inset-bottom,0px))}
+    @media (max-width:767px) {
+      #playbook-header{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+      #playbook-header > div{padding-left:12px;padding-right:12px}
+      #toolbar-main{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;padding:10px 0 6px}
+      #toolbar-brand{gap:8px}
+      #toolbar-brand h1{font-size:15px;line-height:1.2}
+      #toolbar-brand p{font-size:10px;line-height:1.3}
+      #toolbar-actions{display:grid;grid-template-columns:1.6fr 1fr 1fr 44px;gap:6px;width:100%}
+      #toolbar-actions button{justify-content:center;padding:6px;white-space:nowrap;font-size:12px;line-height:1.2;width:100%}
+      #btn-theme{height:44px;width:44px}
+      #toolbar-actions svg{flex-shrink:0}
+      [data-mobile-only]{display:inline}
+      [data-desktop-only]{display:none}
+      #section-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px;overflow:visible}
+      #section-nav .tab-btn{padding:8px 3px;text-align:center;font-size:13px;line-height:1.2;min-height:44px}
+      #section-nav .tab-btn > span{margin-right:3px}
+      #toolbar-storage{font-size:11px;line-height:1.3;padding:4px 0;gap:4px}
+      #toolbar-storage > div:has(> [hidden]:first-child + [hidden]){display:none}
+      #playbook-main{padding:16px 12px 24px}
+      #playbook-main .text-xs{font-size:14px;line-height:1.52}
+      #playbook-main .text-sm{font-size:15px;line-height:1.45}
+      #playbook-main .text-\[11px\]{font-size:12px;line-height:1.45}
+      #playbook-main .text-\[10px\]{font-size:11px;line-height:1.4}
+      #playbook-main .text-\[9px\]{font-size:11px;line-height:1.4}
+      #playbook-main .print-card.p-5,#playbook-main .print-card.p-6{padding:14px}
+      #playbook-main .rounded-xl.p-5{padding:14px}
+      #playbook-main .space-y-6 > :not([hidden]) ~ :not([hidden]){margin-top:16px}
+      #playbook-main .flex.items-center.justify-between{flex-wrap:wrap;gap:6px}
+      #playbook-main .flex.items-center.justify-between > *{max-width:100%}
+      [data-mode-switch]{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));width:100%;gap:4px}
+      [data-mode-switch] .varc-order-btn{padding:6px 4px;white-space:normal;font-size:12px;line-height:1.25;text-align:center}
+      /* Proportional bars remain on large screens; mobile uses fully readable phase tiles. */
+      [data-mobile-clock]{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));height:auto!important;gap:2px;overflow:visible}
+      [data-mobile-clock] > *{width:auto!important;min-height:56px;padding:7px 4px!important;white-space:normal!important;overflow:visible!important;text-overflow:clip!important;text-align:center;font-size:12px!important;line-height:1.3!important}
+      [data-mobile-clock] > *:last-child:nth-child(odd){grid-column:1/-1}
+      [data-mobile-clock] span{white-space:normal!important;overflow:visible!important;text-overflow:clip!important}
+      #overview-timeline-readout{overflow-wrap:anywhere}
+      #quick-revision{padding:12px}
+      #quick-revision article{padding:12px}
+      #quick-revision h3{font-size:15px;line-height:1.3}
+      #quick-revision [data-plan="quick"]{font-size:13px;line-height:1.55}
+      #quick-revision-title{font-size:19px}
+      #btn-close-revision{flex-shrink:0}
+      /* Keep actual table semantics and the desktop representation, with visible mobile cell labels. */
+      [data-responsive-table]{display:block;width:100%;table-layout:auto}
+      [data-responsive-table] thead{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+      [data-responsive-table] tbody,[data-responsive-table] tfoot,[data-responsive-table] tr{display:block;width:100%}
+      [data-responsive-table] tr{padding:8px 0}
+      [data-responsive-table] td{display:grid;grid-template-columns:minmax(78px,35%) minmax(0,1fr);gap:8px;padding:7px 12px!important;white-space:normal!important;overflow-wrap:anywhere;align-items:start}
+      [data-responsive-table] td::before{content:attr(data-cell-label);font-size:11px;font-weight:600;color:#5F5F5A;line-height:1.45}
+      .dark [data-responsive-table] td::before{color:#A1A09A}
+      [data-responsive-table] td > *{grid-column:2;min-width:0}
+      [data-responsive-table] td[data-summary-cell]{display:block}
+      [data-responsive-table] td[data-summary-cell]::before{content:none}
+      [data-responsive-table] td:first-child{font-weight:600}
+      #error-log-form input,#error-log-form select,#error-log-form textarea,.notes-drawer textarea{font-size:16px;line-height:1.4;width:100%}
+      #error-log-form button{padding:10px 14px}
+      #error-log-form label{font-size:13px}
+      .notes-drawer summary{padding:12px 14px}
+      .notes-drawer textarea{min-height:140px}
+      .notes-drawer [data-note-status]{overflow-wrap:anywhere}
+      #error-log-list article{overflow-wrap:anywhere}
+      #error-log-list button{padding:0 6px}
+      #toast{max-width:calc(100vw - 24px);right:12px;bottom:max(12px,env(safe-area-inset-bottom,0px));white-space:normal}
+    }
+    @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,::before,::after{transition:none!important}}
+    @media print{[data-mobile-only]{display:none!important}}
+  </style>
+
   <!-- region:print-styles | Prints all four tabs -->
   <style>
     @media print {
@@ -440,11 +522,11 @@ input[type=checkbox]{flex-shrink:0}
   <!-- ===================================================================== -->
   <!-- region:toolbar | STICKY TOP NAVIGATION BAR -->
   <!-- ===================================================================== -->
-  <header class="no-print sticky top-0 z-40 bg-canvas/90 dark:bg-darkCanvas/90 backdrop-blur-md border-b border-hairline dark:border-darkHairline">
+  <header id="playbook-header" class="no-print sticky top-0 z-40 bg-canvas/90 dark:bg-darkCanvas/90 backdrop-blur-md border-b border-hairline dark:border-darkHairline">
     <div class="max-w-6xl mx-auto px-4 sm:px-6">
-      <div class="flex flex-wrap items-center justify-between gap-3 py-3">
+      <div id="toolbar-main" class="flex flex-wrap items-center justify-between gap-3 py-3">
         <!-- Brand Mark & Title -->
-        <div class="flex items-center gap-3">
+        <div id="toolbar-brand" class="flex items-center gap-3">
           <div class="w-8 h-8 rounded-lg bg-ink dark:bg-darkInk text-canvas dark:text-darkCanvas flex items-center justify-center font-mono text-xs font-bold tracking-tighter shrink-0">
             99+
           </div>
@@ -455,7 +537,7 @@ input[type=checkbox]{flex-shrink:0}
         </div>
 
         <!-- Action Utility Controls -->
-        <div class="flex items-center gap-1.5 sm:gap-2">
+        <div id="toolbar-actions" class="flex items-center gap-1.5 sm:gap-2">
           <button id="btn-quick-revision" type="button" aria-pressed="false" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium border border-hairline dark:border-darkHairline">60s revision</button>
           <!-- Download Updated HTML -->
           <button
@@ -481,7 +563,7 @@ input[type=checkbox]{flex-shrink:0}
             <svg class="w-3.5 h-3.5 text-muted dark:text-darkMuted" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z" />
             </svg>
-            <span class="hidden md:inline">Print / PDF</span>
+            <span class="hidden md:inline">Print / PDF</span><span data-mobile-only>PDF</span>
           </button>
 
           <!-- Light / Dark Mode Toggle -->
@@ -505,21 +587,21 @@ input[type=checkbox]{flex-shrink:0}
       </div>
 
       <!-- 4 Section Tabs -->
-      <nav aria-label="Playbook Sections" class="flex items-center gap-1 overflow-x-auto pb-0 -mb-px">
-        <button data-tab="overview" class="tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer">
-          <span class="font-mono text-[10px] opacity-50 mr-1.5 hidden sm:inline">01</span>Overview &amp; Clocks
+      <nav id="section-nav" role="tablist" aria-label="Playbook Sections" class="flex items-center gap-1 overflow-x-auto pb-0 -mb-px">
+        <button type="button" id="tab-overview" role="tab" aria-controls="panel-overview" aria-selected="true" tabindex="0" data-tab="overview" class="tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer">
+          <span class="font-mono text-[10px] opacity-50 mr-1.5 hidden sm:inline">01</span>Overview<span data-desktop-only> &amp; Clocks</span>
         </button>
-        <button data-tab="varc" class="tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer">
+        <button type="button" id="tab-varc" role="tab" aria-controls="panel-varc" aria-selected="false" tabindex="-1" data-tab="varc" class="tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer">
           <span class="inline-block w-2 h-2 rounded-full bg-varc mr-1.5 align-middle"></span>VARC
         </button>
-        <button data-tab="dilr" class="tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer">
+        <button type="button" id="tab-dilr" role="tab" aria-controls="panel-dilr" aria-selected="false" tabindex="-1" data-tab="dilr" class="tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer">
           <span class="inline-block w-2 h-2 rounded-full bg-dilr mr-1.5 align-middle"></span>DILR
         </button>
-        <button data-tab="qa" class="tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer">
+        <button type="button" id="tab-qa" role="tab" aria-controls="panel-qa" aria-selected="false" tabindex="-1" data-tab="qa" class="tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer">
           <span class="inline-block w-2 h-2 rounded-full bg-qa mr-1.5 align-middle"></span>QA
         </button>
       </nav>
-      <div class="flex flex-wrap items-center justify-between gap-2 py-1.5 text-[11px] text-muted dark:text-darkMuted border-t border-hairline dark:border-darkHairline">
+      <div id="toolbar-storage" class="flex flex-wrap items-center justify-between gap-2 py-1.5 text-[11px] text-muted dark:text-darkMuted border-t border-hairline dark:border-darkHairline">
         <span id="storage-status" role="status" aria-live="polite">Opening browser storage…</span>
         <div class="flex flex-wrap gap-3"><button id="btn-retry-storage" type="button" hidden class="underline">Retry IndexedDB</button><a id="export-fallback" hidden download="cat_99_exam_day_playbook.html" class="underline">Download prepared backup</a></div>
       </div>
@@ -529,12 +611,12 @@ input[type=checkbox]{flex-shrink:0}
   <!-- ===================================================================== -->
   <!-- MAIN PLAYBOOK CONTAINER                                               -->
   <!-- ===================================================================== -->
-  <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
+  <main id="playbook-main" class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
 
     <!-- =================================================================== -->
     <!-- region:overview | Overview and clocks -->
     <!-- =================================================================== -->
-    <section id="panel-overview" class="tab-panel space-y-6">
+    <section id="panel-overview" role="tabpanel" aria-labelledby="tab-overview" tabindex="0" class="tab-panel space-y-6">
       <div class="hidden print-show-heading pb-2 border-b border-hairline mb-4">
         <h2 class="text-xl font-bold">01. Overview &amp; Clocks — CAT 99+ Exam-Day Playbook</h2>
       </div>
@@ -634,9 +716,9 @@ input[type=checkbox]{flex-shrink:0}
       <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6">
         <h3 class="text-sm font-semibold uppercase tracking-wider">Operating scenarios · raw marks</h3>
         <p class="mt-1 text-xs text-muted dark:text-darkMuted">Illustrative planning outcomes, not guaranteed minimums, cutoffs or percentile forecasts. Adjust to difficulty without chasing losses.</p>
-        <div class="overflow-x-auto mt-3"><table class="w-full text-left text-xs border-collapse">
-          <thead><tr class="font-mono text-muted dark:text-darkMuted"><th class="px-2.5 py-2">Scenario</th><th class="px-2.5 py-2">VARC</th><th class="px-2.5 py-2">DILR</th><th class="px-2.5 py-2">QA</th><th class="px-2.5 py-2">Total</th><th class="px-2.5 py-2">Response</th></tr></thead>
-          <tbody id="scenario-rows"></tbody></table></div>
+        <div class="overflow-x-auto mt-3"><table data-responsive-table role="table" class="w-full text-left text-xs border-collapse">
+          <thead role="rowgroup"><tr role="row" class="font-mono text-muted dark:text-darkMuted"><th role="columnheader" scope="col" class="px-2.5 py-2">Scenario</th><th role="columnheader" scope="col" class="px-2.5 py-2">VARC</th><th role="columnheader" scope="col" class="px-2.5 py-2">DILR</th><th role="columnheader" scope="col" class="px-2.5 py-2">QA</th><th role="columnheader" scope="col" class="px-2.5 py-2">Total</th><th role="columnheader" scope="col" class="px-2.5 py-2">Response</th></tr></thead>
+          <tbody role="rowgroup" id="scenario-rows"></tbody></table></div>
         <p class="mt-2 text-xs text-muted dark:text-darkMuted">Correct +3; wrong MCQ −1; wrong TITA 0 under the recent pattern. DILR and QA correct-answer targets exclude wrong-MCQ deductions. Use actual exam instructions if they differ.</p>
       </section>
 
@@ -836,7 +918,7 @@ input[type=checkbox]{flex-shrink:0}
             <p class="text-xs text-muted dark:text-darkMuted mt-0.5">Click or tap any block to inspect the exact execution trigger.</p>
           </div>
           <!-- Synced 3-Mode VARC Clock Toggle -->
-          <div class="no-print inline-flex flex-wrap items-center rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-0.5 text-[11px] self-start md:self-auto">
+          <div data-mode-switch class="no-print inline-flex flex-wrap items-center rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-0.5 text-[11px] self-start md:self-auto">
             <button type="button" data-varc-order="standard" class="varc-order-btn px-2.5 py-1 rounded-md font-medium transition-colors cursor-pointer">Standard (3 RCs)</button>
             <button type="button" data-varc-order="split" class="varc-order-btn px-2.5 py-1 rounded-md font-medium transition-colors cursor-pointer">Anti-Fatigue Split</button>
             <button type="button" data-varc-order="readable" class="varc-order-btn px-2.5 py-1 rounded-md font-medium transition-colors cursor-pointer">Readable-Paper (4 RCs)</button>
@@ -850,7 +932,7 @@ input[type=checkbox]{flex-shrink:0}
               <span class="font-semibold text-varc">VARC <span class="varc-mode-label font-mono font-normal text-muted dark:text-darkMuted ml-1">(Standard · 3 RCs)</span></span>
               <span class="font-mono text-[11px] text-muted dark:text-darkMuted">00 &rarr; 40m</span>
             </div>
-            <div id="overview-varc-bar" class="flex w-full h-10 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
+            <div data-mobile-clock id="overview-varc-bar" class="flex w-full h-10 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
               <!-- Populated dynamically by JS to stay synced with 3-mode VARC toggle -->
             </div>
           </div>
@@ -861,7 +943,7 @@ input[type=checkbox]{flex-shrink:0}
               <span class="font-semibold text-dilr">DILR <span class="font-mono font-normal text-muted dark:text-darkMuted ml-1">(Scan &rarr; 2 Full + Set 3 Pick &amp; TITA Sweep)</span></span>
               <span class="font-mono text-[11px] text-muted dark:text-darkMuted">00 &rarr; 40m</span>
             </div>
-            <div class="flex w-full h-10 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
+            <div data-mobile-clock class="flex w-full h-10 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
               <button type="button" data-accent="dilr" data-timeline-detail="DILR | Min 0–4 (4m): Never start Set 1 blindly. Scan all available sets &amp; rank all sets by viability using Green/Red flags; pick a 5-Q set over an equal 4-Q set." style="width: 10%" class="timeline-seg bg-dilr/20 hover:bg-dilr/30 text-dilr dark:text-emerald-300 font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
                 <span>Scan</span><span class="text-[9px] opacity-80">0–4m</span>
               </button>
@@ -883,7 +965,7 @@ input[type=checkbox]{flex-shrink:0}
               <span class="font-semibold text-qa">QA <span class="font-mono font-normal text-muted dark:text-darkMuted ml-1">(Rolling 3-Round Triage)</span></span>
               <span class="font-mono text-[11px] text-muted dark:text-darkMuted">00 &rarr; 40m</span>
             </div>
-            <div class="flex w-full h-10 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
+            <div data-mobile-clock class="flex w-full h-10 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
               <button type="button" data-accent="qa" data-timeline-detail="QA | Round 1 (0–22m | 7–8 attempted questions, flexible | Max 2.5m/Q): Sitters only — Arithmetic (pen-down), Logs/Exponents, Number Theory, Mensuration, direct AP/GP &amp; Linear/Quadratic. Skip complex pure geometry; allow direct mensuration or an obvious similarity/Pythagoras sitter." style="width: 55%" class="timeline-seg bg-qa hover:bg-qa/90 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
                 <span>Round 1: Sitters (7–8 Qs)</span><span class="text-[9px] opacity-85">0–22m</span>
               </button>
@@ -1077,7 +1159,7 @@ input[type=checkbox]{flex-shrink:0}
     <!-- =================================================================== -->
     <!-- region:varc | VARC playbook -->
     <!-- =================================================================== -->
-    <section id="panel-varc" class="tab-panel hidden space-y-6">
+    <section id="panel-varc" role="tabpanel" aria-labelledby="tab-varc" tabindex="0" class="tab-panel hidden space-y-6">
       <div class="hidden print-show-heading pb-2 border-b border-varc/30 mb-4">
         <h2 class="text-xl font-bold text-varc">02. VARC — <span data-plan="heading">3 RCs + 8 VA strategy</span></h2>
       </div>
@@ -1091,7 +1173,7 @@ input[type=checkbox]{flex-shrink:0}
           </div>
 
           <!-- Synced 3-Mode Toggle: Standard / Anti-Fatigue Split / Readable-Paper (4 RCs) -->
-          <div class="no-print inline-flex flex-wrap items-center rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-1 text-xs self-start lg:self-auto">
+          <div data-mode-switch class="no-print inline-flex flex-wrap items-center rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-1 text-xs self-start lg:self-auto">
             <button type="button" data-varc-order="standard" class="varc-order-btn px-2.5 sm:px-3 py-1.5 rounded-md font-medium transition-colors cursor-pointer">
               Standard (3 RCs)
             </button>
@@ -1120,7 +1202,7 @@ input[type=checkbox]{flex-shrink:0}
             <span id="varc-order-title" class="font-semibold text-ink dark:text-darkInk">Standard (3 RCs): 3 RCs &rarr; 4 TITA VA &rarr; 4 MCQ VA &rarr; 1m Cleanup</span>
             <span id="varc-pool-badge" class="font-mono text-[11px] text-muted dark:text-darkMuted">20-Q Active Pool</span>
           </div>
-          <div id="varc-tab-bar" class="flex w-full h-12 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
+          <div data-mobile-clock id="varc-tab-bar" class="flex w-full h-12 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
             <!-- Populated dynamically by JS -->
           </div>
           <div id="varc-order-caption" class="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 text-xs">
@@ -1349,45 +1431,45 @@ input[type=checkbox]{flex-shrink:0}
           <span class="text-[11px] font-mono text-varc font-medium">Direct grammar &amp; standalone vocabulary remain absent &middot; RC &amp; VA are interspersed &middot; Attempt ALL 4 TITAs unconditionally</span>
         </div>
         <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs border-collapse">
-            <thead>
-              <tr class="bg-canvas dark:bg-darkCanvas border-b border-hairline dark:border-darkHairline font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">
-                <th class="py-2.5 px-5 font-semibold">Question Type</th>
-                <th class="py-2.5 px-4 font-semibold">Count</th>
-                <th class="py-2.5 px-4 font-semibold">Format &amp; Penalty</th>
-                <th class="py-2.5 px-5 font-semibold">Core Focus &amp; CAT 2025 Nuance</th>
+          <table data-responsive-table role="table" class="w-full text-left text-xs border-collapse">
+            <thead role="rowgroup">
+              <tr role="row" class="bg-canvas dark:bg-darkCanvas border-b border-hairline dark:border-darkHairline font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">
+                <th role="columnheader" scope="col" class="py-2.5 px-5 font-semibold">Question Type</th>
+                <th role="columnheader" scope="col" class="py-2.5 px-4 font-semibold">Count</th>
+                <th role="columnheader" scope="col" class="py-2.5 px-4 font-semibold">Format &amp; Penalty</th>
+                <th role="columnheader" scope="col" class="py-2.5 px-5 font-semibold">Core Focus &amp; CAT 2025 Nuance</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-hairline dark:divide-darkHairline">
-              <tr>
-                <td class="py-2.5 px-5 font-semibold whitespace-nowrap">Reading Comprehension</td>
-                <td class="py-2.5 px-4 font-mono whitespace-nowrap">16 (4&times;4)</td>
-                <td class="py-2.5 px-4 font-mono whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-alert/10 text-alert">MCQ (-1)</span></td>
-                <td class="py-2.5 px-5 text-muted dark:text-darkMuted">Inference, Main Idea, Tone, Assumption/Application. <strong class="text-ink dark:text-darkInk font-medium">CAT 2025 Slot 1 also tested contextual vocab-in-application inside an RC.</strong></td>
+            <tbody role="rowgroup" class="divide-y divide-hairline dark:divide-darkHairline">
+              <tr role="row">
+                <td role="cell" data-cell-label="Question Type" class="py-2.5 px-5 font-semibold whitespace-nowrap">Reading Comprehension</td>
+                <td role="cell" data-cell-label="Count" class="py-2.5 px-4 font-mono whitespace-nowrap">16 (4&times;4)</td>
+                <td role="cell" data-cell-label="Format &amp; Penalty" class="py-2.5 px-4 font-mono whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-alert/10 text-alert">MCQ (-1)</span></td>
+                <td role="cell" data-cell-label="Core Focus &amp; CAT 2025 Nuance" class="py-2.5 px-5 text-muted dark:text-darkMuted">Inference, Main Idea, Tone, Assumption/Application. <strong class="text-ink dark:text-darkInk font-medium">CAT 2025 Slot 1 also tested contextual vocab-in-application inside an RC.</strong></td>
               </tr>
-              <tr>
-                <td class="py-2.5 px-5 font-semibold whitespace-nowrap">Para Jumbles</td>
-                <td class="py-2.5 px-4 font-mono whitespace-nowrap">2</td>
-                <td class="py-2.5 px-4 font-mono whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-varc/10 text-varc">TITA (No -1)</span></td>
-                <td class="py-2.5 px-5 text-muted dark:text-darkMuted">Rearrange to coherent paragraph. <strong class="text-ink dark:text-darkInk font-medium">Returned in CAT 2025 after being dropped in CAT 2024.</strong></td>
+              <tr role="row">
+                <td role="cell" data-cell-label="Question Type" class="py-2.5 px-5 font-semibold whitespace-nowrap">Para Jumbles</td>
+                <td role="cell" data-cell-label="Count" class="py-2.5 px-4 font-mono whitespace-nowrap">2</td>
+                <td role="cell" data-cell-label="Format &amp; Penalty" class="py-2.5 px-4 font-mono whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-varc/10 text-varc">TITA (No -1)</span></td>
+                <td role="cell" data-cell-label="Core Focus &amp; CAT 2025 Nuance" class="py-2.5 px-5 text-muted dark:text-darkMuted">Rearrange to coherent paragraph. <strong class="text-ink dark:text-darkInk font-medium">Returned in CAT 2025 after being dropped in CAT 2024.</strong></td>
               </tr>
-              <tr>
-                <td class="py-2.5 px-5 font-semibold whitespace-nowrap">Odd Sentence Out</td>
-                <td class="py-2.5 px-4 font-mono whitespace-nowrap">2</td>
-                <td class="py-2.5 px-4 font-mono whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-varc/10 text-varc">TITA (No -1)</span></td>
-                <td class="py-2.5 px-5 text-muted dark:text-darkMuted">Identify the 1 sentence out of 5 that breaks the coherent paragraph.</td>
+              <tr role="row">
+                <td role="cell" data-cell-label="Question Type" class="py-2.5 px-5 font-semibold whitespace-nowrap">Odd Sentence Out</td>
+                <td role="cell" data-cell-label="Count" class="py-2.5 px-4 font-mono whitespace-nowrap">2</td>
+                <td role="cell" data-cell-label="Format &amp; Penalty" class="py-2.5 px-4 font-mono whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-varc/10 text-varc">TITA (No -1)</span></td>
+                <td role="cell" data-cell-label="Core Focus &amp; CAT 2025 Nuance" class="py-2.5 px-5 text-muted dark:text-darkMuted">Identify the 1 sentence out of 5 that breaks the coherent paragraph.</td>
               </tr>
-              <tr>
-                <td class="py-2.5 px-5 font-semibold whitespace-nowrap">Para Summary</td>
-                <td class="py-2.5 px-4 font-mono whitespace-nowrap">2</td>
-                <td class="py-2.5 px-4 font-mono whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-alert/10 text-alert">MCQ (-1)</span></td>
-                <td class="py-2.5 px-5 text-muted dark:text-darkMuted">Pick the option capturing central claim without distortion or omission.</td>
+              <tr role="row">
+                <td role="cell" data-cell-label="Question Type" class="py-2.5 px-5 font-semibold whitespace-nowrap">Para Summary</td>
+                <td role="cell" data-cell-label="Count" class="py-2.5 px-4 font-mono whitespace-nowrap">2</td>
+                <td role="cell" data-cell-label="Format &amp; Penalty" class="py-2.5 px-4 font-mono whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-alert/10 text-alert">MCQ (-1)</span></td>
+                <td role="cell" data-cell-label="Core Focus &amp; CAT 2025 Nuance" class="py-2.5 px-5 text-muted dark:text-darkMuted">Pick the option capturing central claim without distortion or omission.</td>
               </tr>
-              <tr>
-                <td class="py-2.5 px-5 font-semibold whitespace-nowrap">Para Completion</td>
-                <td class="py-2.5 px-4 font-mono whitespace-nowrap">2</td>
-                <td class="py-2.5 px-4 font-mono whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-alert/10 text-alert">MCQ (-1)</span></td>
-                <td class="py-2.5 px-5 text-muted dark:text-darkMuted">Place a full missing sentence (not just a phrase) into 1 of 4 numbered blanks.</td>
+              <tr role="row">
+                <td role="cell" data-cell-label="Question Type" class="py-2.5 px-5 font-semibold whitespace-nowrap">Para Completion</td>
+                <td role="cell" data-cell-label="Count" class="py-2.5 px-4 font-mono whitespace-nowrap">2</td>
+                <td role="cell" data-cell-label="Format &amp; Penalty" class="py-2.5 px-4 font-mono whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-alert/10 text-alert">MCQ (-1)</span></td>
+                <td role="cell" data-cell-label="Core Focus &amp; CAT 2025 Nuance" class="py-2.5 px-5 text-muted dark:text-darkMuted">Place a full missing sentence (not just a phrase) into 1 of 4 numbered blanks.</td>
               </tr>
             </tbody>
           </table>
@@ -1424,7 +1506,7 @@ input[type=checkbox]{flex-shrink:0}
     <!-- =================================================================== -->
     <!-- region:dilr | DILR playbook -->
     <!-- =================================================================== -->
-    <section id="panel-dilr" class="tab-panel hidden space-y-6">
+    <section id="panel-dilr" role="tabpanel" aria-labelledby="tab-dilr" tabindex="0" class="tab-panel hidden space-y-6">
       <div class="hidden print-show-heading pb-2 border-b border-dilr/30 mb-4">
         <h2 class="text-xl font-bold text-dilr">03. DILR — Breakthrough Playbook</h2>
       </div>
@@ -1441,7 +1523,7 @@ input[type=checkbox]{flex-shrink:0}
 
         <!-- 40-Min DILR Bar -->
         <div class="mt-4">
-          <div class="flex w-full h-12 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
+          <div data-mobile-clock class="flex w-full h-12 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
             <div style="width: 10%" class="bg-dilr/20 text-dilr dark:text-emerald-300 font-mono text-xs font-semibold flex flex-col items-center justify-center px-1 text-center">
               <span>Scan</span><span class="text-[10px] opacity-80">0–4m</span>
             </div>
@@ -1715,7 +1797,7 @@ input[type=checkbox]{flex-shrink:0}
     <!-- =================================================================== -->
     <!-- region:qa | QA playbook -->
     <!-- =================================================================== -->
-    <section id="panel-qa" class="tab-panel hidden space-y-6">
+    <section id="panel-qa" role="tabpanel" aria-labelledby="tab-qa" tabindex="0" class="tab-panel hidden space-y-6">
       <div class="hidden print-show-heading pb-2 border-b border-qa/30 mb-4">
         <h2 class="text-xl font-bold text-qa">04. QA — Rolling Triage &amp; 12-Attempt Playbook</h2>
       </div>
@@ -1735,7 +1817,7 @@ input[type=checkbox]{flex-shrink:0}
 
         <!-- 3-Round Triage Bar -->
         <div class="mt-4">
-          <div class="flex w-full h-12 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
+          <div data-mobile-clock class="flex w-full h-12 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
             <div style="width: 55%" class="bg-qa text-white font-mono text-xs font-semibold flex flex-col items-center justify-center px-2 text-center">
               <span>Round 1: Sitters (7–8 Qs)</span><span class="text-[10px] opacity-85">0–22m &middot; Max 2.5m/Q</span>
             </div>
@@ -1778,14 +1860,14 @@ input[type=checkbox]{flex-shrink:0}
         <h3 id="qa-skip-title" class="text-sm font-semibold text-qa">QA skip routing · classify once, revisit selectively</h3>
         <p class="mt-1 text-xs text-muted dark:text-darkMuted">Keep the rolling triage; no separate full-paper scan. Aim to give every question an initial assessment by the start of cleanup. Use question numbers on the rough sheet only if useful; the exam palette remains your navigation aid.</p>
         <div class="overflow-x-auto mt-3">
-          <table class="w-full text-left text-xs border-collapse">
-            <thead><tr class="text-muted dark:text-darkMuted"><th class="px-2.5 py-2">Skip class</th><th class="px-2.5 py-2">Signal</th><th class="px-2.5 py-2">Action</th></tr></thead>
-            <tbody>
-              <tr class="border-t border-hairline dark:border-darkHairline"><td class="px-2.5 py-2 font-semibold text-qa align-top">L · Solvable but lengthy</td><td class="px-2.5 py-2 align-top">Clear method, more steps than R1 allows.</td><td class="px-2.5 py-2 align-top">Mark unanswered for review. R2 high priority.</td></tr>
-              <tr class="border-t border-hairline dark:border-darkHairline"><td class="px-2.5 py-2 font-semibold text-qa align-top">I · Calculation incomplete</td><td class="px-2.5 py-2 align-top">Known method and useful working already on paper.</td><td class="px-2.5 py-2 align-top">Mark unanswered for review. R2 high priority; finish first if near completion.</td></tr>
-              <tr class="border-t border-hairline dark:border-darkHairline"><td class="px-2.5 py-2 font-semibold align-top">U · Method uncertain</td><td class="px-2.5 py-2 align-top">Possible route, but no reliable setup.</td><td class="px-2.5 py-2 align-top">Low priority; mark only if there is a credible avenue. Revisit after L/I.</td></tr>
-              <tr class="border-t border-hairline dark:border-darkHairline"><td class="px-2.5 py-2 font-semibold text-alert align-top">X · Conceptual gap / unfamiliar geometry</td><td class="px-2.5 py-2 align-top">No meaningful route or requires a technique you do not know.</td><td class="px-2.5 py-2 align-top">Leave unanswered and unflagged; do not revisit for full solving.</td></tr>
-              <tr class="border-t border-hairline dark:border-darkHairline"><td class="px-2.5 py-2 font-semibold text-dilr align-top">T · Unsolved TITA</td><td class="px-2.5 py-2 align-top">Type-in-the-answer question, incomplete solution.</td><td class="px-2.5 py-2 align-top">In cleanup consider a reasoned estimate if penalty-free. T is an overlay, not a reason to spend extra solving time.</td></tr>
+          <table data-responsive-table role="table" class="w-full text-left text-xs border-collapse">
+            <thead role="rowgroup"><tr role="row" class="text-muted dark:text-darkMuted"><th role="columnheader" scope="col" class="px-2.5 py-2">Skip class</th><th role="columnheader" scope="col" class="px-2.5 py-2">Signal</th><th role="columnheader" scope="col" class="px-2.5 py-2">Action</th></tr></thead>
+            <tbody role="rowgroup">
+              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold text-qa align-top">L · Solvable but lengthy</td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top">Clear method, more steps than R1 allows.</td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top">Mark unanswered for review. R2 high priority.</td></tr>
+              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold text-qa align-top">I · Calculation incomplete</td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top">Known method and useful working already on paper.</td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top">Mark unanswered for review. R2 high priority; finish first if near completion.</td></tr>
+              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold align-top">U · Method uncertain</td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top">Possible route, but no reliable setup.</td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top">Low priority; mark only if there is a credible avenue. Revisit after L/I.</td></tr>
+              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold text-alert align-top">X · Conceptual gap / unfamiliar geometry</td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top">No meaningful route or requires a technique you do not know.</td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top">Leave unanswered and unflagged; do not revisit for full solving.</td></tr>
+              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold text-dilr align-top">T · Unsolved TITA</td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top">Type-in-the-answer question, incomplete solution.</td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top">In cleanup consider a reasoned estimate if penalty-free. T is an overlay, not a reason to spend extra solving time.</td></tr>
             </tbody>
           </table>
         </div>
@@ -1876,71 +1958,71 @@ input[type=checkbox]{flex-shrink:0}
         </div>
 
         <div class="overflow-x-auto">
-          <table class="w-full text-left text-xs border-collapse">
-            <thead>
-              <tr class="bg-canvas dark:bg-darkCanvas border-b border-hairline dark:border-darkHairline font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">
-                <th class="py-2.5 px-5 font-semibold">Tier</th>
-                <th class="py-2.5 px-4 font-semibold">Topics</th>
-                <th class="py-2.5 px-4 font-semibold whitespace-nowrap">Typical Supply</th>
-                <th class="py-2.5 px-5 font-semibold whitespace-nowrap">Solvable Pool</th>
+          <table data-responsive-table role="table" class="w-full text-left text-xs border-collapse">
+            <thead role="rowgroup">
+              <tr role="row" class="bg-canvas dark:bg-darkCanvas border-b border-hairline dark:border-darkHairline font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">
+                <th role="columnheader" scope="col" class="py-2.5 px-5 font-semibold">Tier</th>
+                <th role="columnheader" scope="col" class="py-2.5 px-4 font-semibold">Topics</th>
+                <th role="columnheader" scope="col" class="py-2.5 px-4 font-semibold whitespace-nowrap">Typical Supply</th>
+                <th role="columnheader" scope="col" class="py-2.5 px-5 font-semibold whitespace-nowrap">Solvable Pool</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-hairline dark:divide-darkHairline">
-              <tr>
-                <td class="py-3 px-5 whitespace-nowrap">
+            <tbody role="rowgroup" class="divide-y divide-hairline dark:divide-darkHairline">
+              <tr role="row">
+                <td role="cell" data-cell-label="Tier" class="py-3 px-5 whitespace-nowrap">
                   <span class="inline-block font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-qa text-white">PRIORITY 1</span>
                   <span class="block text-[10px] text-muted dark:text-darkMuted mt-0.5">Non-negotiable</span>
                 </td>
-                <td class="py-3 px-4 font-medium">Arithmetic <span class="text-muted dark:text-darkMuted font-normal">(Ratios, %, PLD, Mixtures, Averages, TSD, T&amp;W, SI/CI)</span></td>
-                <td class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap">7–9 Qs</td>
-                <td class="py-3 px-5 font-mono font-bold text-ink dark:text-darkInk whitespace-nowrap">5–7 Qs</td>
+                <td role="cell" data-cell-label="Topics" class="py-3 px-4 font-medium">Arithmetic <span class="text-muted dark:text-darkMuted font-normal">(Ratios, %, PLD, Mixtures, Averages, TSD, T&amp;W, SI/CI)</span></td>
+                <td role="cell" data-cell-label="Typical Supply" class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap">7–9 Qs</td>
+                <td role="cell" data-cell-label="Solvable Pool" class="py-3 px-5 font-mono font-bold text-ink dark:text-darkInk whitespace-nowrap">5–7 Qs</td>
               </tr>
-              <tr>
-                <td class="py-3 px-5 whitespace-nowrap">
+              <tr role="row">
+                <td role="cell" data-cell-label="Tier" class="py-3 px-5 whitespace-nowrap">
                   <span class="inline-block font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-qa/20 text-qa">PRIORITY 2</span>
                   <span class="block text-[10px] text-muted dark:text-darkMuted mt-0.5">Fast Tactical Wins</span>
                 </td>
-                <td class="py-3 px-4 font-medium">Logs &amp; Exponents, Number Theory <span class="text-muted dark:text-darkMuted font-normal">(especially factors/digits)</span>, Mensuration</td>
-                <td class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap">4–6 Qs</td>
-                <td class="py-3 px-5 font-mono font-bold text-ink dark:text-darkInk whitespace-nowrap">3–4 Qs</td>
+                <td role="cell" data-cell-label="Topics" class="py-3 px-4 font-medium">Logs &amp; Exponents, Number Theory <span class="text-muted dark:text-darkMuted font-normal">(especially factors/digits)</span>, Mensuration</td>
+                <td role="cell" data-cell-label="Typical Supply" class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap">4–6 Qs</td>
+                <td role="cell" data-cell-label="Solvable Pool" class="py-3 px-5 font-mono font-bold text-ink dark:text-darkInk whitespace-nowrap">3–4 Qs</td>
               </tr>
-              <tr>
-                <td class="py-3 px-5 whitespace-nowrap">
+              <tr role="row">
+                <td role="cell" data-cell-label="Tier" class="py-3 px-5 whitespace-nowrap">
                   <span class="inline-block font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-dilr/15 text-dilr">PRIORITY 3</span>
                   <span class="block text-[10px] text-muted dark:text-darkMuted mt-0.5">The Buffer Bridge</span>
                 </td>
-                <td class="py-3 px-4 font-medium">Core Algebra <span class="text-muted dark:text-darkMuted font-normal">(Linear/Quadratic, Inequalities/Modulus, AP/GP)</span></td>
-                <td class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap">3–5 Qs</td>
-                <td class="py-3 px-5 font-mono font-bold text-ink dark:text-darkInk whitespace-nowrap">2–4 Qs</td>
+                <td role="cell" data-cell-label="Topics" class="py-3 px-4 font-medium">Core Algebra <span class="text-muted dark:text-darkMuted font-normal">(Linear/Quadratic, Inequalities/Modulus, AP/GP)</span></td>
+                <td role="cell" data-cell-label="Typical Supply" class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap">3–5 Qs</td>
+                <td role="cell" data-cell-label="Solvable Pool" class="py-3 px-5 font-mono font-bold text-ink dark:text-darkInk whitespace-nowrap">2–4 Qs</td>
               </tr>
-              <tr>
-                <td class="py-3 px-5 whitespace-nowrap">
+              <tr role="row">
+                <td role="cell" data-cell-label="Tier" class="py-3 px-5 whitespace-nowrap">
                   <span class="inline-block font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline text-muted dark:text-darkMuted">SELECTIVE SKIM</span>
                 </td>
-                <td class="py-3 px-4 font-medium">Functions &amp; Maxima-Minima <span class="text-muted dark:text-darkMuted font-normal">(AM-GM, quadratic vertices, basic composite/GIF; skip deep graph transformations)</span></td>
-                <td class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap">1–2 Qs</td>
-                <td class="py-3 px-5 font-mono font-semibold text-muted dark:text-darkMuted whitespace-nowrap">1 Q</td>
+                <td role="cell" data-cell-label="Topics" class="py-3 px-4 font-medium">Functions &amp; Maxima-Minima <span class="text-muted dark:text-darkMuted font-normal">(AM-GM, quadratic vertices, basic composite/GIF; skip deep graph transformations)</span></td>
+                <td role="cell" data-cell-label="Typical Supply" class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap">1–2 Qs</td>
+                <td role="cell" data-cell-label="Solvable Pool" class="py-3 px-5 font-mono font-semibold text-muted dark:text-darkMuted whitespace-nowrap">1 Q</td>
               </tr>
-              <tr class="bg-alert/[0.02] dark:bg-alert/[0.06]">
-                <td class="py-3 px-5 whitespace-nowrap align-top">
+              <tr role="row" class="bg-alert/[0.02] dark:bg-alert/[0.06]">
+                <td role="cell" data-cell-label="Tier" class="py-3 px-5 whitespace-nowrap align-top">
                   <span class="inline-block font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-alert/10 text-alert">SKIP / BASELINE</span>
                 </td>
-                <td class="py-3 px-4">
+                <td role="cell" data-cell-label="Topics" class="py-3 px-4">
                   <span class="font-medium text-muted dark:text-darkMuted block">Pure Geometry &amp; Combinatorics (P&amp;C)</span>
                   <span class="text-[11px] text-muted dark:text-darkMuted mt-1 block leading-relaxed">
                     On Geometry, rely strictly on existing baseline (basic triangle similarity, Pythagoras, circle basics) only if an obvious 60-second sitter shows up.
                   </span>
                 </td>
-                <td class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap align-top">3–4 Qs</td>
-                <td class="py-3 px-5 font-mono text-muted dark:text-darkMuted whitespace-nowrap align-top">0–1 Q</td>
+                <td role="cell" data-cell-label="Typical Supply" class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap align-top">3–4 Qs</td>
+                <td role="cell" data-cell-label="Solvable Pool" class="py-3 px-5 font-mono text-muted dark:text-darkMuted whitespace-nowrap align-top">0–1 Q</td>
               </tr>
             </tbody>
             <tfoot>
-              <tr class="bg-canvas dark:bg-darkCanvas border-t border-hairline dark:border-darkHairline font-mono text-[11px]">
-                <td colspan="3" class="py-3 px-5 text-muted dark:text-darkMuted">
+              <tr role="row" class="bg-canvas dark:bg-darkCanvas border-t border-hairline dark:border-darkHairline font-mono text-[11px]">
+                <td role="cell" data-summary-cell colspan="3" class="py-3 px-5 text-muted dark:text-darkMuted">
                   <strong class="text-ink dark:text-darkInk">Catch to Watch:</strong> Priority 1 + 2 = <strong class="text-ink dark:text-darkInk">8–11 Qs</strong> (too tight) &rarr; Adding Priority 3 Core Algebra expands the estimated pool:
                 </td>
-                <td class="py-3 px-5 font-bold text-qa whitespace-nowrap">10–15 estimated; aim 13–15</td>
+                <td role="cell" data-cell-label="Solvable Pool" class="py-3 px-5 font-bold text-qa whitespace-nowrap">10–15 estimated; aim 13–15</td>
               </tr>
             </tfoot>
           </table>
@@ -2654,9 +2736,10 @@ input[type=checkbox]{flex-shrink:0}
               'tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer ' +
               (isTarget ? accentMap[tabName] : inactiveClasses);
             btn.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+            btn.setAttribute('tabindex', isTarget ? '0' : '-1');
           });
 
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          window.scrollTo({ top: 0, behavior: 'auto' });
         }
         function bind() {
           document.getElementById("btn-quick-revision").addEventListener("click",()=>toggleRevision(!revisionOpen));
@@ -2665,6 +2748,13 @@ input[type=checkbox]{flex-shrink:0}
           document.querySelectorAll('.tab-btn').forEach((btn) => {
             btn.addEventListener('click', () => activateTab(btn.dataset.tab));
           });
+
+          const tabs = [...document.querySelectorAll('.tab-btn')];
+          tabs.forEach((tab, index) => tab.addEventListener('keydown', event => {
+            const next = {ArrowRight:(index+1)%tabs.length, ArrowLeft:(index+tabs.length-1)%tabs.length, Home:0, End:tabs.length-1}[event.key];
+            if (next === undefined) return;
+            event.preventDefault(); activateTab(tabs[next].dataset.tab); tabs[next].focus();
+          }));
 
           // Keyboard shortcuts 1–4 for instant tab switching (when not typing)
           document.addEventListener('keydown', (e) => {
@@ -2875,9 +2965,9 @@ input[type=checkbox]{flex-shrink:0}
             table.replaceChildren();
             for(const item of strategy.scenarioValues(mode)) {
               const tr=document.createElement('tr');
-              tr.className='border-t border-hairline dark:border-darkHairline';
+              tr.className='border-t border-hairline dark:border-darkHairline'; tr.setAttribute('role','row');
               for(const cell of [item.label,item.varc,item.dilr,item.qa,item.total,item.action]) {
-                const td=document.createElement('td'); td.className='px-2.5 py-2 align-top'; td.textContent=cell;tr.append(td);
+                const td=document.createElement('td'); td.className='px-2.5 py-2 align-top'; td.setAttribute('role','cell'); td.setAttribute('data-cell-label',['Scenario','VARC','DILR','QA','Total','Response'][tr.children.length]); td.textContent=cell;tr.append(td);
               }
               table.append(tr);
             }
