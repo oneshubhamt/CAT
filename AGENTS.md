@@ -3,8 +3,8 @@
 ## Working agreement
 
 - Make changes on `working`. Keep `main` stable until the owner explicitly requests propagation.
-- The deployable application is **one file: `index.html`**. No framework, build step, ES-module imports, external application JS/CSS files, server, or database service. Existing CDN Tailwind and Google Fonts remain; do not imply that the current file is fully offline.
-- `AGENTS.md` and `tests/` are development-only. Downloaded HTML must not depend on them.
+- The deployable application is **one file: `index.html`**. No framework, runtime build step, ES-module imports, external application JS/CSS files, server, database service, remote fonts or CDN requests. The embedded stylesheet and system font stack allow a downloaded HTML copy to open without internet. An uncached hosted URL still requires network access; this is not a service-worker PWA.
+- `AGENTS.md`, `tests/` and `tools/` are development-only. Downloaded HTML must not depend on them.
 - Keep strategic/content changes separate from structural refactors. Do not change exam rules, targets, dates or historical claims without explicit scope and evidence.
 - Do not add legacy-data migration unless requested. Preserve existing v2 record snapshots and the IndexedDB schema.
 
@@ -14,12 +14,13 @@ Search for these stable anchors rather than relying on line numbers.
 
 | HTML marker | Ownership |
 | --- | --- |
-| `region:design-tokens`, `region:print-styles` | Theme tokens and print CSS |
+| `region:design-tokens` / `#cat-offline-css`, `region:print-styles` | Embedded generated CSS, palette and print CSS |
 | `region:portable-state` / `#embedded-user-state` | Portable JSON payload (empty in repository baseline) |
 | `region:toolbar` | Header controls, tabs, persistence status |
 | `region:overview`, `region:quick-revision` | Overview, clocks, scenarios, compact view, checklist |
 | `region:error-log` | Error-log form and list |
 | `region:varc`, `region:dilr`, `region:qa` | Detailed strategy content |
+| `region:dilr-personal-selection`, `region:qa-skip-routing` | Personalised set triage and QA skip classes |
 | `#cat-app` | Entire application script |
 
 Inside `#cat-app`, each `<module:ID>` / `</module:ID>` comment pair encloses one module.
@@ -62,14 +63,26 @@ The application uses a classic script in a private IIFE, not global application 
 - Keep DOM IDs and data attributes stable across markup, renderers and export clone cleanup. If adding a persisted feature, update schema/model, UI, bootstrap and portable export as necessary.
 - Preserve download from a local file as well as hosted use. Browser storage can be unavailable or evicted; portable export remains the backup.
 
+## Offline CSS maintenance
+
+`tools/build-offline-css.cjs` emits the static stylesheet into `#cat-offline-css`. This small dependency-free compiler supports only the utility vocabulary actually used by the playbook; it is not Tailwind itself. Do not hand-edit the generated block. When adding styles, update the compiler's vocabulary or explicit dynamic-class manifest if necessary, regenerate and commit the HTML. Keep literal class attributes, mode-segment classes and dynamic DOM class changes covered. Do not introduce network-loaded assets or fonts. The existing print CSS remains a separate authored block.
+
+```sh
+node tools/build-offline-css.cjs
+node tools/build-offline-css.cjs --check
+```
+
+The runtime has no dependency on Node or the generator. Use a saved HTML file for offline travel; private browsing, origin-specific storage policies or browser eviction can still prevent persistence. Export a backup before travelling.
+
 ## Validation
 
 Run the dependency-free development test from repository root:
 
 ```sh
+node tools/build-offline-css.cjs --check
 node tests/smoke.cjs
 ```
 
-This executes the actual inline application source with simulated DOM/storage APIs; it is not a browser compatibility or visual regression test. For UI/storage changes, additionally open `index.html` in a real browser: switch all three modes and tabs, toggle revision/theme, edit notes and checklist, add/edit/delete an error, reload, test IndexedDB failure/recovery, download/reopen HTML, and check print output. Test local file and hosted origins when possible.
+This executes the actual inline application source with simulated DOM/storage APIs; it is not a browser compatibility or visual regression test. For UI/storage changes, additionally open `index.html` in a real browser: switch all three modes and tabs, toggle revision/theme, edit notes and checklist, add/edit/delete an error, reload, test IndexedDB failure/recovery, download/reopen HTML, and check print output. Test local file and hosted origins when possible. In a native browser with network disabled, open a fresh downloaded file, exercise responsive layout, dark mode, all tabs and export/reopen; verify that no requests are required.
 
 Before committing, inspect the diff for unrelated content changes, syntax errors, duplicate IDs, schema/anchor changes and unintended personal data in the portable snapshot. Report any checks not actually run.
