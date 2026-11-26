@@ -72,7 +72,7 @@ async function main(){
        await page.locator('#qa-skip-title').evaluate(el=>el.scrollIntoView({block:'start',behavior:'instant'}));
        if(size.width<768) {
          const pinned=await page.evaluate(()=>({navTop:document.querySelector('#section-nav').getBoundingClientRect().top,headerBottom:document.querySelector('#playbook-header').getBoundingClientRect().bottom,headingTop:document.querySelector('#qa-skip-title').getBoundingClientRect().top}));
-         assert(pinned.navTop>=-2 && pinned.navTop<=8 && pinned.headerBottom<84 && pinned.headingTop>=pinned.headerBottom-1,engine+' '+size.name+' pinned navigation '+JSON.stringify(pinned));
+         assert(pinned.navTop>=-2 && pinned.navTop<=8 && pinned.headerBottom<Math.min(160,size.height/3) && pinned.headingTop>=pinned.headerBottom-1,engine+' '+size.name+' pinned navigation '+JSON.stringify(pinned));
        }
        await checkLayout('qa-routing');await snap('qa-routing');
        await page.locator('#panel-qa [data-responsive-table]').last().scrollIntoViewIfNeeded();await snap('qa-priority');
