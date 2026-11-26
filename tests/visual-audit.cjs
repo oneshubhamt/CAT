@@ -35,6 +35,11 @@ async function audit(page,{pinned=false,contrast=true}={}){
    if(r.height<43.5||r.width<43.5)issue('error','target-size',e,{width:r.width,height:r.height});
    if(r.left< -1||r.right>width+1)issue('error','control-overflow',e,{left:r.left,right:r.right,width});
   }
+  for(const group of [nav,actions])for(let i=0;i<group.length;i++)for(let j=i+1;j<group.length;j++){
+   const x=rect(group[i]),y=rect(group[j]);
+   const overlapX=Math.min(x.right,y.right)-Math.max(x.left,y.left),overlapY=Math.min(x.bottom,y.bottom)-Math.max(x.top,y.top);
+   if(overlapX>2&&overlapY>2)issue('error','overlapping-controls',group[i],{other:describe(group[j]),overlapX,overlapY});
+  }
   if(nav.filter(e=>e.getAttribute('aria-selected')==='true').length!==1)issue('error','tab-selection',null,{});
   const header=rect(document.querySelector('#playbook-header'));
   const navRect=rect(document.querySelector('#section-nav'));
@@ -70,7 +75,7 @@ async function audit(page,{pinned=false,contrast=true}={}){
   function blend(f,b){return [0,1,2].map(i=>f[i]*f[3]+b[i]*(1-f[3])).concat(1);}
   function luminance(c){return c.slice(0,3).map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4).reduce((s,v,i)=>s+v*[.2126,.7152,.0722][i],0);}
   function bg(e){const layers=[];for(let n=e;n;n=n.parentElement){const cs=getComputedStyle(n);if(cs.backgroundImage!=='none'||Number(cs.opacity)<.99)return null;const c=rgb(cs.backgroundColor);if(!c)return null;layers.push(c);if(c[3]>=.999)break;}return layers.reverse().reduce((b,f)=>blend(f,b),[255,255,255,1]);}
-  const walker=document.createTreeWalker(document.querySelector('main'),NodeFilter.SHOW_TEXT);
+  const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
   let n,contrastChecked=0;
   while(contrast&&(n=walker.nextNode())){
    const e=n.parentElement;if(!n.textContent.trim()||!e||!visible(e)||e.closest('script,style,textarea,select,input,svg'))continue;
@@ -79,6 +84,13 @@ async function audit(page,{pinned=false,contrast=true}={}){
    const large=parseFloat(cs.fontSize)>=24||(parseFloat(cs.fontSize)>=18.66&&Number(cs.fontWeight)>=700),target=large?3:4.5;
    contrastChecked++;
    if(ratio<target-.05)issue('warning','contrast-estimate',e,{ratio:+ratio.toFixed(2),target});
+  }
+  // Detect nested ellipsis/hidden labels even when the phase container itself fits.
+  for(const e of [...document.querySelectorAll('[data-mobile-clock] > * > span,[data-recovery-clock] > * > span,#toolbar-actions button span,#section-nav button span')].filter(visible)){
+   if(e.clientWidth>0&&e.scrollWidth>e.clientWidth+3){
+    const phase=e.closest('[data-mobile-clock] > *');
+    issue(phase&&!mobile&&rect(phase).width<55?'warning':'error','clipped-label',e,{client:e.clientWidth,scroll:e.scrollWidth});
+   }
   }
   const allWarningCount=warnings.length;
   // Keep examples of each warning type, without allowing a long table to drown
