@@ -651,13 +651,13 @@ input[type=checkbox]{flex-shrink:0}
         <button type="button" id="tab-overview" role="tab" aria-controls="panel-overview" aria-selected="true" tabindex="0" data-tab="overview" class="tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer">
           <span class="font-mono text-[10px] opacity-50 mr-1.5 hidden sm:inline">01</span>Overview<span data-desktop-only> &amp; Clocks</span>
         </button>
-        <button type="button" id="tab-varc" role="tab" aria-controls="panel-varc" aria-selected="false" tabindex="-1" data-tab="varc" class="tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer">
+        <button type="button" id="tab-varc" role="tab" aria-controls="panel-varc" aria-label="Verbal Ability and Reading Comprehension (VARC)" aria-selected="false" tabindex="-1" data-tab="varc" class="tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer">
           <span class="inline-block w-2 h-2 rounded-full bg-varc mr-1.5 align-middle"></span>VARC
         </button>
-        <button type="button" id="tab-dilr" role="tab" aria-controls="panel-dilr" aria-selected="false" tabindex="-1" data-tab="dilr" class="tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer">
+        <button type="button" id="tab-dilr" role="tab" aria-controls="panel-dilr" aria-label="Data Interpretation and Logical Reasoning (DILR)" aria-selected="false" tabindex="-1" data-tab="dilr" class="tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer">
           <span class="inline-block w-2 h-2 rounded-full bg-dilr mr-1.5 align-middle"></span>DILR
         </button>
-        <button type="button" id="tab-qa" role="tab" aria-controls="panel-qa" aria-selected="false" tabindex="-1" data-tab="qa" class="tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer">
+        <button type="button" id="tab-qa" role="tab" aria-controls="panel-qa" aria-label="Quantitative Ability (QA)" aria-selected="false" tabindex="-1" data-tab="qa" class="tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer">
           <span class="inline-block w-2 h-2 rounded-full bg-qa mr-1.5 align-middle"></span>QA
         </button>
       </nav>
@@ -701,12 +701,13 @@ input[type=checkbox]{flex-shrink:0}
           <article class="border border-hairline dark:border-darkHairline border-t-4 border-t-qa rounded-lg p-3 text-sm leading-relaxed">
             <h3 class="font-semibold text-qa">QA · 40m</h3><p class="mt-1 font-medium"><span data-plan="qaCorrect"></span> as primary aim</p>
             <p class="mt-1 text-xs font-mono"><span data-plan="qaQuick"></span></p>
-            <p class="mt-2 text-xs">Pen down on arithmetic. <span data-plan="qaIgnition"></span> ignition; <span data-plan="qaRound1"></span> R1 checkpoint unless finishing. R2: unseen questions first, then L/I, U later, X leave. TITA cleanup. Audit requested value, unit, sign and format.</p>
+            <p class="mt-2 text-xs">Pen down on arithmetic. <span data-plan="qaIgnition"></span> ignition; <span data-plan="qaRound1"></span> R1 checkpoint unless finishing. R2: unseen first, then lengthy/incomplete (L/I); uncertain (U) later; conceptual gaps (X) leave. TITA cleanup. Audit requested value, unit, sign and format.</p>
           </article>
         </div>
         <p class="mt-3 text-xs font-medium">Rule hierarchy: official instructions and safeguards → adaptive checkpoints → default clocks → preferences. Save explicitly, protect cleanup, reset between sections; never chase a score target.</p>
       </section>
       <div id="overview-full" class="space-y-6">
+      <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">Common Admission Test (CAT) terminology: VARC — Verbal Ability and Reading Comprehension; DILR — Data Interpretation and Logical Reasoning; QA — Quantitative Ability; RC — Reading Comprehension; VA — Verbal Ability; MCQ — multiple-choice question; TITA — type-in-the-answer. R1/R2/R3 refer to the QA rounds.</p>
       <!-- 1. Header KPI Strip -->
       <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6">
         <div class="flex flex-col xl:flex-row xl:items-end justify-between gap-3 pb-5 border-b border-hairline dark:border-darkHairline">
@@ -782,7 +783,7 @@ input[type=checkbox]{flex-shrink:0}
         <p class="mt-2 text-xs text-muted dark:text-darkMuted">Correct +3; wrong MCQ −1; wrong TITA 0 under the recent pattern. DILR and QA correct-answer targets exclude wrong-MCQ deductions. Use actual exam instructions if they differ.</p>
       </section>
 
-      <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">Terminology: VARC — Verbal Ability and Reading Comprehension; DILR — Data Interpretation and Logical Reasoning; QA — Quantitative Ability; RC — Reading Comprehension; VA — Verbal Ability; MCQ — multiple-choice question; TITA — type-in-the-answer. R1/R2/R3 refer to the QA rounds.</p>
+      
 
       <!-- region:rule-hierarchy | Conflict resolution for exam-day decisions -->
       <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6" aria-labelledby="rule-hierarchy-title">
@@ -908,7 +909,7 @@ input[type=checkbox]{flex-shrink:0}
         <div class="flex flex-wrap items-center justify-between gap-2 pb-3.5 border-b border-hairline dark:border-darkHairline">
           <div>
             <h3 class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">Exam-Hall Transitions &amp; TCS iON Interface Discipline</h3>
-            <p class="text-xs text-muted dark:text-darkMuted mt-0.5">Protect marks between sections and eliminate UI/calculator leakage inside the test console.</p>
+            <p class="text-xs text-muted dark:text-darkMuted mt-0.5">Protect marks between sections and eliminate interface and calculator time loss inside the test console.</p>
           </div>
           <span class="font-mono text-[11px] px-2.5 py-1 rounded-md bg-ink/[0.06] dark:bg-darkInk/10 text-ink dark:text-darkInk font-semibold">Console Execution</span>
         </div>
@@ -1294,7 +1295,7 @@ input[type=checkbox]{flex-shrink:0}
       <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-t-4 border-t-varc rounded-xl p-5 sm:p-6">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-hairline dark:border-darkHairline">
           <div>
-            <span class="font-mono text-[11px] uppercase tracking-wider text-varc font-semibold">VARC &middot; recent pattern: 24 Qs &middot; 40 Mins</span>
+            <span class="font-mono text-[11px] uppercase tracking-wider text-varc font-semibold">Verbal Ability and Reading Comprehension (VARC) &middot; recent pattern: 24 questions / 40 minutes</span>
             <h2 class="text-xl sm:text-2xl font-bold tracking-tight mt-0.5"><span data-plan="heading">3 RCs + 8 VA strategy (17–18 attempts)</span></h2>
           </div>
 
@@ -1659,7 +1660,7 @@ input[type=checkbox]{flex-shrink:0}
       <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-t-4 border-t-dilr rounded-xl p-5 sm:p-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-hairline dark:border-darkHairline">
           <div>
-            <span class="font-mono text-[11px] uppercase tracking-wider text-dilr font-semibold">DILR &middot; recent pattern: 5 sets / 22 Qs &middot; 40 Mins</span>
+            <span class="font-mono text-[11px] uppercase tracking-wider text-dilr font-semibold">Data Interpretation and Logical Reasoning (DILR) &middot; recent pattern: 5 sets / 22 questions / 40 minutes</span>
             <h2 class="text-xl sm:text-2xl font-bold tracking-tight mt-0.5">One reliable set → two viable sets; optional extra questions</h2>
           </div>
           <span class="font-mono text-xs px-2.5 py-1 rounded-md bg-dilr/10 text-dilr font-semibold self-start sm:self-auto shrink-0">Target: <span data-plan="dilrCorrect"></span> = <span data-plan="dilrMarks"></span></span>
@@ -1763,7 +1764,7 @@ input[type=checkbox]{flex-shrink:0}
             </ul>
           </div>
           <div class="mt-4 p-2.5 rounded-lg bg-alert/5 dark:bg-alert/15 border border-alert/20 text-[11px] text-ink dark:text-darkInk">
-            <strong class="text-alert font-mono uppercase">Caution:</strong> Don't auto-pick missing-cell tables just because they <em>look</em> like DI.
+            <strong class="text-alert font-mono uppercase">Caution:</strong> Don't auto-pick missing-cell tables just because they <em>look</em> like data interpretation.
           </div>
         </div>
       </div>
@@ -1948,7 +1949,7 @@ input[type=checkbox]{flex-shrink:0}
       <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-t-4 border-t-qa rounded-xl p-5 sm:p-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-hairline dark:border-darkHairline">
           <div>
-            <span class="font-mono text-[11px] uppercase tracking-wider text-qa font-semibold">QA &middot; recent pattern: 22 Qs &middot; 40 Mins</span>
+            <span class="font-mono text-[11px] uppercase tracking-wider text-qa font-semibold">Quantitative Ability (QA) &middot; recent pattern: 22 questions / 40 minutes</span>
             <h2 class="text-xl sm:text-2xl font-bold tracking-tight mt-0.5">Build toward <span data-plan="qaCorrect"></span> answers (<span data-plan="qaMarks"></span>)</h2>
             <p class="mt-1.5 font-mono text-[11px] text-muted dark:text-darkMuted">
               Recent-paper estimates: Arithmetic 7–9 and Algebra 4–8 questions depending on slot and classification; Number System may offer additional opportunities. Verify actual counts and marking on exam day.
@@ -2145,7 +2146,7 @@ input[type=checkbox]{flex-shrink:0}
                 <td role="cell" data-cell-label="Tier" class="py-3 px-5 whitespace-nowrap"><div data-cell-value>
                   <span class="inline-block font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline text-muted dark:text-darkMuted">SELECTIVE SKIM</span>
                 </div></td>
-                <td role="cell" data-cell-label="Topics" class="py-3 px-4 font-medium"><div data-cell-value>Functions &amp; Maxima-Minima <span class="text-muted dark:text-darkMuted font-normal">(AM-GM, quadratic vertices, basic composite/GIF; skip deep graph transformations)</span></div></td>
+                <td role="cell" data-cell-label="Topics" class="py-3 px-4 font-medium"><div data-cell-value>Functions &amp; Maxima-Minima <span class="text-muted dark:text-darkMuted font-normal">(arithmetic–geometric mean inequality, quadratic vertices, basic composite and greatest-integer (floor) functions; defer deep graph transformations)</span></div></td>
                 <td role="cell" data-cell-label="Typical Supply" class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap"><div data-cell-value>1–2 Qs</div></td>
                 <td role="cell" data-cell-label="Solvable Pool" class="py-3 px-5 font-mono font-semibold text-muted dark:text-darkMuted whitespace-nowrap"><div data-cell-value>1 Q</div></td>
               </tr>
