@@ -1,140 +1,160 @@
-/* Native-browser mobile QA. Development only: npm install --no-save playwright
- * npx playwright install chromium webkit
- * node tests/mobile-browser.cjs
- * Screenshots and a JSON report go to artifacts/mobile/ (override with CAT_SCREENSHOTS).
- */
 'use strict';
-const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const path = require('node:path');
-const {pathToFileURL} = require('node:url');
-const {chromium, webkit} = require('playwright');
-const input = path.resolve(__dirname,'../index.html');
-const output = path.resolve(process.env.CAT_SCREENSHOTS || path.join(__dirname,'../artifacts/mobile'));
-const sizes = [{name:'compact',width:320,height:568},{name:'android',width:360,height:800},{name:'iphone',width:390,height:844},{name:'large-phone',width:430,height:932},{name:'tablet',width:768,height:1024},{name:'landscape',width:844,height:390},{name:'desktop',width:1280,height:900}];
-const report = [];
-fs.mkdirSync(output,{recursive:true});
-async function main(){
- for (const [engine, launcher] of [['chromium',chromium],['webkit',webkit]]) {
-   if(process.env.CAT_ENGINE && process.env.CAT_ENGINE!==engine)continue;
-   const browser=await launcher.launch({headless:true});
-   try {
-     for(const size of sizes){
-       const context=await browser.newContext({viewport:{width:size.width,height:size.height},hasTouch:size.name!=='desktop',deviceScaleFactor:1,offline:true,acceptDownloads:true,reducedMotion:'reduce'});
-       const page=await context.newPage();
-       const errors=[],requests=[];
-       page.on('pageerror',e=>errors.push(String(e)));
-       page.on('request',r=>{if(/^https?:/.test(r.url()))requests.push(r.url());});
-       await page.goto(pathToFileURL(input).href);
-       await page.waitForFunction(()=>!document.body.inert && document.querySelector('#storage-status')?.textContent!=='Opening browser storage…');
-       const checkLayout=async(label)=>{
-         const metrics=await page.evaluate(()=>{
-           const visible=e=>!!e.getClientRects().length && getComputedStyle(e).visibility!=='hidden';
-           const root=document.documentElement;
-           const header=document.querySelector('#playbook-header').getBoundingClientRect();
-           const nav=[...document.querySelectorAll('#section-nav .tab-btn')].map(el=>({width:el.getBoundingClientRect().width,height:el.getBoundingClientRect().height,right:el.getBoundingClientRect().right}));
-           const actions=[...document.querySelectorAll('#toolbar-actions button')].map(el=>({id:el.id,width:el.getBoundingClientRect().width,height:el.getBoundingClientRect().height,right:el.getBoundingClientRect().right}));
-           const clocks=[...document.querySelectorAll('[data-mobile-clock] > *')].filter(visible).map(el=>({height:el.getBoundingClientRect().height,clipped:el.scrollWidth>el.clientWidth+2 || el.scrollHeight>el.clientHeight+2}));
-           const clipped=[...document.querySelectorAll('main [data-cell-value],main .varc-order-btn,main textarea,main input:not([type=checkbox]),main select')].filter(visible).filter(el=>el.getBoundingClientRect().right>innerWidth+2).map(el=>el.outerHTML.slice(0,140));
-           return {width:innerWidth,scrollWidth:root.scrollWidth,headerHeight:header.height,nav,actions,clocks,clipped};
-         });
-         assert(metrics.scrollWidth<=metrics.width+2,engine+' '+size.name+' '+label+' page overflow '+JSON.stringify(metrics));
-         assert(metrics.nav.every(n=>n.height>=44 && n.right<=metrics.width+1),engine+' '+size.name+' tab targets');
-         assert(metrics.actions.every(n=>n.height>=44 && n.width>=44 && n.right<=metrics.width+1),engine+' '+size.name+' action targets');
-         if(size.width<768)assert(metrics.clocks.every(c=>c.height>=44&&!c.clipped),engine+' '+size.name+' clipped timeline '+JSON.stringify(metrics.clocks));
-         assert(!metrics.clipped.length,engine+' '+size.name+' '+label+' clipped controls '+metrics.clipped);
-         report.push({engine,viewport:size.name,view:label,...metrics});
-       };
-       const snap=async(label,fullPage=false)=>{
-         await page.screenshot({path:path.join(output,[engine,size.name,label].join('-')+'.png'),fullPage,animations:'disabled'});
-       };
-       const top=async()=>{await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));};
-       const section=async(tab)=>{await page.locator('#tab-'+tab).click();await page.waitForFunction(t=>!document.querySelector('#panel-'+t).classList.contains('hidden'),tab);await page.evaluate(()=>scrollTo(0,0));};
-       await checkLayout('overview');await snap('overview');
-       assert.equal(await page.locator('[data-fixed-segment]').count(),24);
-       const fixed=await page.locator('[data-fixed-segment]').evaluateAll(els=>els.map(el=>({key:el.dataset.fixedSegment,width:el.style.width,time:el.querySelector('[data-clock-time]')?.textContent})));
-       assert(fixed.every(el=>el.width && el.time && /\d+–\d+m/.test(el.time)),engine+' '+size.name+' populated fixed clocks');
-       assert.equal(await page.locator('#btn-theme').getAttribute('aria-pressed'),'false');
-       await page.locator('[data-table-kind="scenarios"]').evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));await snap('score-scenarios');await top();
-       for(const mode of ['standard','split','readable']){
-         await page.locator('#panel-overview [data-varc-order="'+mode+'"]').click();
-         assert.equal(await page.locator('#panel-varc [data-varc-order="'+mode+'"]').getAttribute('aria-pressed'),'true');
-         await checkLayout('overview-'+mode);
-         await top();
-         await page.locator('#btn-quick-revision').click();
-         await checkLayout('quick-'+mode);await snap('quick-'+mode);
-         await page.locator('#btn-close-revision').click();
-       }
-       await section('varc');await checkLayout('varc');await snap('varc');
-       await page.locator('[data-decision-grid]').scrollIntoViewIfNeeded();await checkLayout('varc-decision');await snap('varc-decision');
-       const disclosure=page.locator('[data-strategy-detail="va"]');
-       assert.equal(await disclosure.evaluate(el=>el.open),false);
-       await disclosure.locator('summary').click();
-       assert.equal(await disclosure.evaluate(el=>el.open),true);
-       await checkLayout('varc-va-expanded');await snap('varc-va-expanded');
-       await disclosure.locator('summary').click();
-       assert.equal(await disclosure.evaluate(el=>el.open),false);
-       await page.locator('#panel-varc [data-varc-order="split"]').click();
-       await checkLayout('varc-split');await snap('varc-split');
-       await page.locator('[data-strategy-detail="varc-pattern"] > summary').click();
-       await page.locator('#panel-varc [data-responsive-table]').scrollIntoViewIfNeeded();await checkLayout('varc-question-types');await snap('varc-question-types');
-       await section('dilr');await checkLayout('dilr');await snap('dilr');
-       await page.locator('#dilr-personal-title').scrollIntoViewIfNeeded();await snap('dilr-selection');
-       await page.locator('[data-selection-steps]').scrollIntoViewIfNeeded();await checkLayout('dilr-five-steps');await snap('dilr-five-steps');
-       assert.equal(await page.locator('[data-selection-steps] > li').count(),5);
-       await page.locator('#dilr-recovery-title').scrollIntoViewIfNeeded();await snap('dilr-recovery');
-       await section('qa');await checkLayout('qa');await snap('qa');
-       await page.locator('#qa-skip-title').evaluate(el=>el.scrollIntoView({block:'start',behavior:'instant'}));
-       if(size.width<768) {
-         const pinned=await page.evaluate(()=>({navTop:document.querySelector('#section-nav').getBoundingClientRect().top,headerBottom:document.querySelector('#playbook-header').getBoundingClientRect().bottom,headingTop:document.querySelector('#qa-skip-title').getBoundingClientRect().top}));
-         assert(pinned.navTop>=-2 && pinned.navTop<=8 && pinned.headerBottom<Math.min(160,size.height/3) && pinned.headingTop>=pinned.headerBottom-1,engine+' '+size.name+' pinned navigation '+JSON.stringify(pinned));
-       }
-       await checkLayout('qa-routing');await snap('qa-routing');
-       await page.locator('[data-strategy-detail="qa-priorities"] > summary').click();
-       await page.locator('#panel-qa [data-responsive-table]').last().scrollIntoViewIfNeeded();await checkLayout('qa-priority');await snap('qa-priority');
-       await page.locator('#panel-qa .notes-drawer summary').click();
-       await page.locator('textarea[data-note-key="qa"]').fill('Native mobile QA — notes survive reload. Units, domain, sign.');
-       await checkLayout('notes');await snap('notes');
-       await section('overview');
-       await page.locator('#error-log-title').scrollIntoViewIfNeeded();
-       await page.locator('#error-log-form [name="reference"]').fill('Mock 1');
-       await page.locator('#error-log-form [name="cause"]').fill('Misread a qualifier.');
-       await page.locator('#error-log-form [name="correction"]').fill('Verify scope.');
-       await checkLayout('error-form');await snap('error-form');
-       await page.locator('#error-log-submit').click();
-       assert.match(await page.locator('#error-log-count').textContent(),/1 entries/);
-       await snap('error-saved');
-       await top();
-       await page.locator('#btn-theme').click();
-       assert.equal(await page.locator('#btn-theme').getAttribute('aria-pressed'),'true');
-       await page.locator('#btn-quick-revision').click();
-       await checkLayout('dark-quick');await snap('dark-quick');
-       await page.locator('#btn-close-revision').click();
-       await section('qa');await checkLayout('dark-qa');await snap('dark-qa');
-       // Test true portable file export and reload once per engine, even if file-origin
-       // IndexedDB policies differ. No personal data is written to the repository.
-       if(size.name==='iphone'){
-         await top();
-         const [download]=await Promise.all([page.waitForEvent('download'),page.locator('#btn-export-html').click()]);
-         const backup=path.join(output,engine+'-portable-backup.html');
-         await download.saveAs(backup);
-         const backupPage=await context.newPage();
-         backupPage.on('pageerror',e=>errors.push(String(e)));
-         backupPage.on('request',r=>{if(/^https?:/.test(r.url()))requests.push(r.url());});
-         await backupPage.goto(pathToFileURL(backup).href);
-         await backupPage.waitForFunction(()=>!document.body.inert && document.querySelector('#storage-status')?.textContent!=='Opening browser storage…');
-         assert.equal(await backupPage.locator('textarea[data-note-key="qa"]').inputValue(),'Native mobile QA — notes survive reload. Units, domain, sign.');
-         assert.match(await backupPage.locator('#error-log-count').textContent(),/1 entries/);
-         assert.equal(await backupPage.locator('html').evaluate(el=>el.classList.contains('dark')),true);
-         await backupPage.screenshot({path:path.join(output,engine+'-portable-reopened.png'),animations:'disabled'});
-         await backupPage.close();
-       }
-       assert.deepEqual(requests,[],engine+' '+size.name+' offline network requests');
-       assert.deepEqual(errors,[],engine+' '+size.name+' browser exceptions');
-       console.log('PASS '+engine+' '+size.name);
-       await context.close();
-     }
-   } finally {await browser.close();}
+// Development-only runner. See tests/visual-matrix.cjs for the coverage policy.
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http');
+const {pathToFileURL}=require('node:url');
+const matrix=require('./visual-matrix.cjs'),{audit}=require('./visual-audit.cjs'),{writeReport}=require('./visual-report.cjs');
+const {runJourney}=require('./visual-journeys.cjs'),{visual,boundary}=require('./visual-screens.cjs');
+const input=path.resolve(__dirname,'../index.html'),output=path.resolve(process.env.CAT_SCREENSHOTS||path.join(__dirname,'../artifacts/mobile'));
+const tier=process.env.CAT_TIER||'core',plan=matrix.select(tier,process.env.CAT_ENGINE||'',process.env.CAT_PROFILE||'');
+const descriptors=[...plan.visual.map(p=>({...p,kind:'visual'})),...plan.stateful.map(p=>({...p,kind:'journey'})),...(plan.boundary?[{id:'boundaries',kind:'boundary',engine:'chromium',width:639,height:900,theme:'light',reason:'Both sides of responsive breakpoints and short landscape'}]:[])];
+const report={version:2,tier,commit:process.env.GITHUB_SHA||'local',startedAt:new Date().toISOString(),planned:descriptors,scenarios:[]};
+const top=page=>page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));
+async function ready(page,url){
+ await page.goto(url,{waitUntil:'load'});
+ await page.waitForFunction(()=>!document.body.inert&&document.querySelector('#storage-status')?.textContent!=='Opening browser storage…'&&!!document.querySelector('[data-fixed-segment] [data-clock-time]')?.textContent);
+ await page.evaluate(()=>document.fonts.ready.then(()=>true));
+}
+async function section(page,tab){
+ await top(page);await page.locator('#tab-'+tab).click();
+ assert(await page.locator('#panel-'+tab).isVisible());
+ assert.equal(await page.locator('#tab-'+tab).getAttribute('aria-selected'),'true');
+ await top(page);
+}
+async function theme(page,dark){
+ await top(page);const btn=page.locator('#btn-theme');
+ if((await btn.getAttribute('aria-pressed')==='true')!==dark)await btn.click();
+ assert.equal(await btn.getAttribute('aria-pressed'),String(dark));
+ assert.equal(await page.locator('html').evaluate(e=>e.classList.contains('dark')),dark);
+}
+async function mode(page,key,tab='overview'){
+ await page.locator('#panel-'+tab+' [data-varc-order="'+key+'"]').click();
+ for(const p of ['overview','varc'])assert.equal(await page.locator('#panel-'+p+' [data-varc-order="'+key+'"]').getAttribute('aria-pressed'),'true');
+ const expected={standard:4,split:5,readable:4}[key];
+ assert.equal(await page.locator('#overview-varc-bar > *').count(),expected);
+ assert.equal(await page.locator('#varc-tab-bar > *').count(),expected);
+}
+async function disclosure(locator,open){
+ if((await locator.evaluate(e=>e.open))!==open)await locator.locator(':scope > summary').click();
+ assert.equal(await locator.evaluate(e=>e.open),open);
+}
+async function allDetails(page,tab){
+ for(const item of await page.locator('#panel-'+tab+' [data-strategy-detail]').all())await disclosure(item,true);
+ if(tab==='overview')await disclosure(page.locator('[data-glossary]'),true);
+}
+async function bring(page,locator){
+ await locator.evaluate(el=>{
+  const header=document.querySelector('#playbook-header'),r=el.getBoundingClientRect();
+  const pinned=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--toolbar-pinned-height'))||72;
+  const offset=innerWidth<768?pinned+16:(getComputedStyle(header).position==='sticky'?header.offsetHeight+12:12);
+  scrollTo({top:Math.max(0,scrollY+r.top-offset),behavior:'instant'});
+ });
+}
+async function runScenario(browser,desc,origin){
+ const rec={...desc,status:'running',checks:[],evidence:[],actions:[],runtimeErrors:[],consoleErrors:[],networkRequests:[],failure:null,elapsedMs:0,browserVersion:browser.version()};
+ report.scenarios.push(rec);
+ const start=Date.now(),dir=path.join(output,desc.id);
+ fs.mkdirSync(dir,{recursive:true});let ctx,page,tracing=false;
+ const record=(kind,label,file)=>rec.evidence.push({kind,label,path:path.relative(output,file).split(path.sep).join('/')});
+ const captureEvents=(p,allowed)=>{
+  p.on('pageerror',e=>rec.runtimeErrors.push(String(e)));
+  p.on('console',msg=>{if(msg.type()==='error')rec.consoleErrors.push(msg.text());});
+  p.on('request',req=>{if(/^https?:/.test(req.url())&&(!allowed||new URL(req.url()).origin!==allowed))rec.networkRequests.push(req.url());});
+ };
+ const snap=async(label,full=false,source=page)=>{
+  const capture=async(name,whole)=>{
+   const file=path.join(dir,name+'.png');
+   await source.screenshot({path:file,fullPage:whole,animations:'disabled',caret:'hide',timeout:15000});
+   record('screenshot',name,file);
+  };
+  if(full){
+   await top(source);
+   const {height,vh}=await source.evaluate(()=>({height:document.documentElement.scrollHeight,vh:innerHeight}));
+   if(height>15000){
+    // Viewport strips with overlap for exceptionally long mobile panels.
+    const stride=Math.max(100,vh-220);
+    for(let y=0,i=1;y<height;y+=stride,i++){
+     const reached=await source.evaluate(y=>{scrollTo({top:y,behavior:'instant'});return scrollY;},y);
+     await capture(label+'-part-'+i,false);
+     if(reached+vh>=height-2)break;
+    }
+    await top(source);return;
+   }
+  }
+  await capture(label,full);
+ };
+ const measure=async(label,opts={},source=page)=>{
+  const result=await audit(source,opts);rec.checks.push({label,...result});
+  if(result.errors.length){await snap('failure-'+label,false,source).catch(()=>{});console.error(desc.id+' '+label+': '+result.errors.length+' layout errors');}
+ };
+ const action=label=>rec.actions.push(label);
+ try{
+  const hosted=desc.kind==='journey'&&!['portable-webkit','keyboard-resize'].includes(desc.id);
+  ctx=await browser.newContext({viewport:{width:desc.width,height:desc.height},hasTouch:desc.width<768||desc.height<500,deviceScaleFactor:1,offline:!hosted,acceptDownloads:true,reducedMotion:'reduce',timezoneId:'Asia/Kolkata',locale:'en-IN',colorScheme:'light'});
+  await ctx.tracing.start({screenshots:true,snapshots:true,sources:false});tracing=true;
+  if(hosted)await ctx.route(/^https?:\/\//,route=>new URL(route.request().url()).origin===origin?route.continue():route.abort());
+  if(['recovery-journal','memory-only'].includes(desc.id)){
+   await ctx.addInitScript(({both})=>{
+    const original=window.indexedDB;
+    window.__qaDenyIDB=both||sessionStorage.getItem('qa-allow-idb')!=='yes';
+    Object.defineProperty(window,'indexedDB',{configurable:true,get(){if(window.__qaDenyIDB)throw new DOMException('Synthetic storage denial','SecurityError');return original;}});
+    if(both)Object.defineProperty(window,'localStorage',{configurable:true,get(){throw new DOMException('Synthetic storage denial','SecurityError');}});
+   },{both:desc.id==='memory-only'});
+  }
+  page=await ctx.newPage();page.setDefaultTimeout(10000);captureEvents(page,hosted?origin:null);
+  if(desc.kind!=='journey')await page.clock.setFixedTime(new Date('2026-11-26T06:30:00Z'));
+  const url=hosted?origin+'/':pathToFileURL(input).href;
+  await ready(page,url);await theme(page,desc.theme==='dark');
+  const api={page,ctx,browser,desc,origin,url,dir,ready,top,section,theme,mode,disclosure,allDetails,bring,measure,snap,action,captureEvents};
+  await ({visual,boundary,journey:runJourney}[desc.kind])(api);
+  assert.deepEqual(rec.networkRequests,[],'Unexpected external network requests');
+  assert.deepEqual(rec.runtimeErrors,[],'Unhandled browser exceptions');
+  assert.deepEqual(rec.consoleErrors,[],'Unexpected browser console errors');
+  assert.equal(rec.checks.reduce((n,c)=>n+c.errors.length,0),0,'Native layout failures (see report)');
+  rec.status='passed';
+ }catch(e){
+  rec.status='failed';rec.failure=e.stack||String(e);console.error(desc.id+' FAILED: '+rec.failure);
+  if(page)await snap('failure-final').catch(()=>{});
+ }finally{
+  if(tracing&&ctx){
+   try{if(rec.status==='failed'){const file=path.join(dir,'trace.zip');await ctx.tracing.stop({path:file});record('trace','Failure trace',file);}else await ctx.tracing.stop();}catch(e){rec.failure=(rec.failure||'')+'\nTrace: '+String(e);rec.status='failed';}
+  }
+  if(ctx)await ctx.close().catch(()=>{});
+  rec.elapsedMs=Date.now()-start;
+  writeReport(output,report);
+  console.log(rec.status.toUpperCase()+' '+desc.id+' — '+rec.checks.length+' audits, '+rec.evidence.length+' evidence files');
  }
 }
-main().then(()=>{fs.writeFileSync(path.join(output,'layout-report.json'),JSON.stringify(report,null,2));console.log(report.length+' layout measurements; screenshots in '+output);}).catch(error=>{fs.writeFileSync(path.join(output,'layout-report.json'),JSON.stringify(report,null,2));console.error(error);process.exitCode=1;});
+async function main(){
+ const {chromium,webkit,firefox}=require('playwright');
+ fs.mkdirSync(output,{recursive:true});
+ const source=fs.readFileSync(input,'utf8');
+ const initial=source.match(/<script id="embedded-user-state"[^>]*>([\s\S]*?)<\/script>/);
+ assert(initial&&JSON.parse(initial[1]).records.length===0,'Refuse to test personal backup as repository input');
+ // Hosted journeys use an isolated ephemeral loopback origin; visual profiles
+ // use the real local file offline. No production data or external web services.
+ const server=http.createServer((req,res)=>{
+  if(req.url==='/favicon.ico'){res.writeHead(204);res.end();return;}
+  if(req.url!=='/'){res.writeHead(404);res.end();return;}
+  res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store'});res.end(source);
+ });
+ await new Promise((resolve,reject)=>{server.once('error',reject);server.listen(0,'127.0.0.1',resolve);});
+ const origin='http://127.0.0.1:'+server.address().port;
+ writeReport(output,report);
+ try{
+  for(const [name,launcher] of Object.entries({chromium,webkit,firefox})){
+   const cases=descriptors.filter(p=>p.engine===name);if(!cases.length)continue;
+   let browser;
+   try{browser=await launcher.launch({headless:true});}catch(e){
+    for(const desc of cases)report.scenarios.push({...desc,status:'failed',checks:[],evidence:[],actions:[],runtimeErrors:[],consoleErrors:[],networkRequests:[],elapsedMs:0,failure:'Browser launch: '+String(e)});
+    writeReport(output,report);continue;
+   }
+   try{for(const desc of cases)await runScenario(browser,desc,origin);}finally{await browser.close();}
+  }
+ }finally{await new Promise(resolve=>server.close(resolve));}
+ writeReport(output,report);
+ const failed=report.scenarios.filter(s=>s.status!=='passed').length;
+ console.log((report.scenarios.length-failed)+'/'+descriptors.length+' scenarios passed; evidence: '+output);
+ if(failed||report.scenarios.length!==descriptors.length)process.exitCode=1;
+}
+if(process.argv.includes('--list'))console.log(JSON.stringify(descriptors,null,2));
+else main().catch(e=>{console.error(e);process.exitCode=1;});
