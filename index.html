@@ -415,9 +415,25 @@ input[type=checkbox]{flex-shrink:0}
     #error-log-form input,#error-log-form select,#error-log-form button{min-height:44px}
     .reset-chk{width:20px;height:20px}
     #playbook-header{padding-top:env(safe-area-inset-top,0px)}
+    /* Accent text on dark surfaces needs lighter tones than the light-theme palette. */
+    @media screen {
+      .dark .text-varc{color:#A5B4FC}
+      .dark .text-dilr{color:#6EE7B7}
+      .dark .text-qa{color:#FCD34D}
+      .dark .text-alert{color:#FDA4AF}
+      .dark .border-t-varc{border-top-color:#A5B4FC}
+      .dark .border-t-dilr{border-top-color:#6EE7B7}
+      .dark .border-t-qa{border-top-color:#FCD34D}
+      .dark .border-t-alert{border-top-color:#FDA4AF}
+      .dark .border-l-varc{border-left-color:#A5B4FC}
+      .dark .border-l-dilr{border-left-color:#6EE7B7}
+      .dark .border-l-qa{border-left-color:#FCD34D}
+      .dark .border-l-alert{border-left-color:#FDA4AF}
+    }
     #playbook-main{padding-bottom:max(24px,env(safe-area-inset-bottom,0px))}
     @media screen and (max-width:767px) {
-      #playbook-header{padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+      /* Scroll the brand/actions out of view, then pin only tabs and storage status. */
+      #playbook-header{top:calc(-1 * var(--toolbar-main-height,0px));padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
       #playbook-header > div{padding-left:12px;padding-right:12px}
       #toolbar-main{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;padding:10px 0 6px}
       #toolbar-brand{gap:8px}
@@ -436,7 +452,7 @@ input[type=checkbox]{flex-shrink:0}
       #toolbar-storage > div:empty{display:none}
       #toolbar-storage > div:has(> [hidden]:first-child + [hidden]){display:none}
       #playbook-main{padding:16px 12px 24px}
-      #playbook-main :is(section,article,h3,summary,input,textarea,select,button){scroll-margin-top:180px}
+      #playbook-main :is(section,article,h3,summary,input,textarea,select,button){scroll-margin-top:84px}
       #playbook-main .text-xs{font-size:14px;line-height:1.52}
       #playbook-main .text-sm{font-size:15px;line-height:1.45}
       #playbook-main .text-\[11px\]{font-size:12px;line-height:1.45}
@@ -472,7 +488,15 @@ input[type=checkbox]{flex-shrink:0}
       [data-responsive-table] [data-cell-value]{grid-column:2;min-width:0;overflow-wrap:anywhere}
       [data-responsive-table] td[data-summary-cell]{display:block}
       [data-responsive-table] td[data-summary-cell]::before{content:none}
-      [data-responsive-table] td:first-child{font-weight:600}
+      [data-responsive-table] td:first-child{display:block;font-weight:600;padding-top:10px!important}
+      [data-responsive-table] td:first-child::before{content:none}
+      [data-responsive-table][data-table-kind="scenarios"] tr{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+      [data-table-kind="scenarios"] td:first-child,[data-table-kind="scenarios"] td:last-child{grid-column:1/-1}
+      [data-table-kind="scenarios"] td:not(:first-child):not(:last-child){display:flex;justify-content:space-between;align-items:baseline;gap:6px}
+      [data-table-kind="scenarios"] td:nth-child(5) [data-cell-value]{font-weight:700}
+      #overview-varc-bar > .text-white,#varc-tab-bar > .text-white{background-color:#3B5BDB}
+      [data-mobile-clock] > [data-accent="dilr"].text-white,#panel-dilr [data-mobile-clock] > .text-white{background-color:#0F766E}
+      [data-mobile-clock] > [data-accent="qa"].text-white,#panel-qa [data-mobile-clock] > .text-white{background-color:#B45309}
       #error-log-form input,#error-log-form select,#error-log-form textarea,.notes-drawer textarea{font-size:16px;line-height:1.4;width:100%}
       #error-log-form button{padding:10px 14px}
       #error-log-form label{font-size:13px}
@@ -483,7 +507,7 @@ input[type=checkbox]{flex-shrink:0}
       #error-log-list button{padding:0 6px}
       #toast{max-width:calc(100vw - 24px);right:12px;bottom:max(12px,env(safe-area-inset-bottom,0px));white-space:normal}
     }
-    @media screen and (max-height:500px) and (orientation:landscape){#playbook-header{position:relative}#playbook-main :is(section,article,h3,summary,input,textarea,select,button){scroll-margin-top:12px}}
+    @media screen and (max-height:500px) and (orientation:landscape){#playbook-header{position:relative;top:auto}#playbook-main :is(section,article,h3,summary,input,textarea,select,button){scroll-margin-top:12px}}
     @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,::before,::after{transition:none!important}}
     @media print{[data-mobile-only]{display:none!important}}
   </style>
@@ -721,7 +745,7 @@ input[type=checkbox]{flex-shrink:0}
       <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6">
         <h3 class="text-sm font-semibold uppercase tracking-wider">Operating scenarios · raw marks</h3>
         <p class="mt-1 text-xs text-muted dark:text-darkMuted">Illustrative planning outcomes, not guaranteed minimums, cutoffs or percentile forecasts. Adjust to difficulty without chasing losses.</p>
-        <div class="overflow-x-auto mt-3"><table data-responsive-table role="table" class="w-full text-left text-xs border-collapse">
+        <div class="overflow-x-auto mt-3"><table data-responsive-table data-table-kind="scenarios" role="table" class="w-full text-left text-xs border-collapse">
           <thead role="rowgroup"><tr role="row" class="font-mono text-muted dark:text-darkMuted"><th role="columnheader" scope="col" class="px-2.5 py-2">Scenario</th><th role="columnheader" scope="col" class="px-2.5 py-2">VARC</th><th role="columnheader" scope="col" class="px-2.5 py-2">DILR</th><th role="columnheader" scope="col" class="px-2.5 py-2">QA</th><th role="columnheader" scope="col" class="px-2.5 py-2">Total</th><th role="columnheader" scope="col" class="px-2.5 py-2">Response</th></tr></thead>
           <tbody role="rowgroup" id="scenario-rows"></tbody></table></div>
         <p class="mt-2 text-xs text-muted dark:text-darkMuted">Correct +3; wrong MCQ −1; wrong TITA 0 under the recent pattern. DILR and QA correct-answer targets exclude wrong-MCQ deductions. Use actual exam instructions if they differ.</p>
@@ -2753,6 +2777,20 @@ input[type=checkbox]{flex-shrink:0}
           document.querySelectorAll('.tab-btn').forEach((btn) => {
             btn.addEventListener('click', () => activateTab(btn.dataset.tab));
           });
+
+          // Keep only the navigation/status strip sticky on narrow screens.
+          // Use the measured height so browser zoom, safe areas and text wrapping do not hide tabs.
+          const header = document.getElementById('playbook-header');
+          const toolbarMain = document.getElementById('toolbar-main');
+          const measureToolbar = () => {
+            if (header?.style && toolbarMain) header.style.setProperty('--toolbar-main-height', toolbarMain.offsetHeight + 'px');
+          };
+          measureToolbar();
+          window.addEventListener('resize', measureToolbar);
+          if (typeof globalThis.ResizeObserver === 'function' && toolbarMain) {
+            const observer = new globalThis.ResizeObserver(measureToolbar);
+            observer.observe(toolbarMain);
+          }
 
           const tabs = [...document.querySelectorAll('.tab-btn')];
           tabs.forEach((tab, index) => tab.addEventListener('keydown', event => {
