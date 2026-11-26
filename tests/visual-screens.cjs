@@ -5,14 +5,19 @@ async function visual(api){
  const {page,desc,section,mode,top,disclosure,allDetails,bring,measure,snap,action}=api;
  await measure('overview-default');await snap('overview-default');
  assert.equal(await page.locator('[data-fixed-segment]').count(),24);
+ assert.equal(await page.locator('[data-strategy-detail]').count(),7);
  assert(await page.locator('[data-fixed-segment]').evaluateAll(els=>els.every(e=>e.style.width&&/\d+–\d+m/.test(e.querySelector('[data-clock-time]')?.textContent||''))));
  for(const key of matrix.modes){
   await section(page,'overview');await mode(page,key);
   await measure('overview-'+key,{contrast:false});
   for(const accent of ['varc','dilr','qa']){
-   const button=page.locator('#panel-overview .timeline-seg[data-accent="'+accent+'"]').first();
-   await button.click();
-   assert((await page.locator('#overview-timeline-readout').textContent()).includes(accent.toUpperCase()));
+   const group=page.locator('#panel-overview .timeline-seg[data-accent="'+accent+'"]');
+   const exhaustive=desc.id==='c1280-light'||desc.id==='w390-light';
+   for(const button of exhaustive?await group.all():[group.first()]){
+    const detail=await button.getAttribute('data-timeline-detail');assert(detail);
+    await button.click();
+    assert.equal((await page.locator('#overview-timeline-readout').textContent()).trim(),detail.trim());
+   }
   }
   if(key===desc.mode){await bring(page,page.locator('#overview-timeline-readout'));await snap('timeline-inspector-'+key);}
   await top(page);await page.locator('#btn-quick-revision').click();
@@ -24,7 +29,9 @@ async function visual(api){
   await section(page,'varc');await measure('varc-'+key,{contrast:false});
   if(key===desc.mode)await snap('varc-'+key);
  }
- await section(page,'overview');await mode(page,desc.mode);
+ // Change mode from the other tab too; this tests reverse synchronization.
+ await section(page,'varc');await mode(page,desc.mode,'varc');
+ await section(page,'overview');
  if(desc.depth==='deep'){await top(page);await snap('mode-toast');}
  for(const tab of matrix.tabs){
   await section(page,tab);
