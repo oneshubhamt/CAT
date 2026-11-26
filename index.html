@@ -1,0 +1,2115 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CAT 99+ Exam-Day Playbook</title>
+
+  <!-- Inter Font for Clean Swiss-Editorial Legibility -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Custom Swiss-Editorial Design Tokens -->
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            mono: ['ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'monospace'],
+          },
+          colors: {
+            canvas: '#FAF9F6',
+            surface: '#FFFFFF',
+            hairline: '#E5E4DF',
+            ink: '#1A1A19',
+            muted: '#5F5F5A',
+            darkCanvas: '#131312',
+            darkSurface: '#1C1C1A',
+            darkHairline: '#2D2D29',
+            darkInk: '#F3F2EE',
+            darkMuted: '#A1A09A',
+            varc: '#3B5BDB',
+            dilr: '#0F766E',
+            qa: '#B45309',
+            alert: '#BE123C',
+          }
+        }
+      }
+    };
+  </script>
+
+  <!-- Print Styles: Prints All 4 Tabs Cleanly With Zero UI Clutter -->
+  <style>
+    @media print {
+      body {
+        background: #FFFFFF !important;
+        color: #1A1A19 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .tab-panel {
+        display: block !important;
+        page-break-after: always;
+      }
+      .tab-panel:last-of-type {
+        page-break-after: auto;
+      }
+      .print-card {
+        break-inside: avoid;
+        box-shadow: none !important;
+      }
+      .print-show-heading {
+        display: block !important;
+      }
+    }
+  </style>
+
+  <!-- Embedded User State (Synced With localStorage & Exported Inside Downloaded HTML) -->
+  <script id="embedded-user-state" type="application/json">
+    {
+      "updatedAt": 0,
+      "theme": "light",
+      "varcOrder": "standard",
+      "checklist": {
+        "chk-bailout": false,
+        "chk-dilr-shield": false,
+        "chk-varc-gate": false,
+        "chk-qa-quarantine": false,
+        "chk-taper": false,
+        "chk-logistics": false
+      },
+      "notes": {
+        "overview": "",
+        "varc": "",
+        "dilr": "",
+        "qa": ""
+      }
+    }
+  </script>
+</head>
+<body class="bg-canvas text-ink dark:bg-darkCanvas dark:text-darkInk font-sans antialiased selection:bg-varc/15 selection:text-varc transition-colors duration-200 min-h-screen flex flex-col">
+
+  <!-- ===================================================================== -->
+  <!-- STICKY TOP NAVIGATION BAR                                             -->
+  <!-- ===================================================================== -->
+  <header class="no-print sticky top-0 z-40 bg-canvas/90 dark:bg-darkCanvas/90 backdrop-blur-md border-b border-hairline dark:border-darkHairline">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6">
+      <div class="flex flex-wrap items-center justify-between gap-3 py-3">
+        <!-- Brand Mark & Title -->
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-ink dark:bg-darkInk text-canvas dark:text-darkCanvas flex items-center justify-center font-mono text-xs font-bold tracking-tighter shrink-0">
+            99+
+          </div>
+          <div>
+            <h1 class="text-sm sm:text-base font-semibold tracking-tight leading-none">CAT 99+ Exam-Day Playbook</h1>
+            <p class="text-[11px] font-mono text-muted dark:text-darkMuted mt-1">NOV 29 &middot; MECHANICAL EXECUTION SHEET</p>
+          </div>
+        </div>
+
+        <!-- Action Utility Controls -->
+        <div class="flex items-center gap-1.5 sm:gap-2">
+          <!-- Download Updated HTML -->
+          <button
+            id="btn-export-html"
+            type="button"
+            title="Download this playbook as a standalone HTML file with all your notes, checklist, theme &amp; VARC mode saved inside"
+            class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline text-ink dark:text-darkInk hover:border-ink/40 dark:hover:border-darkInk/40 transition-colors cursor-pointer"
+          >
+            <svg class="w-3.5 h-3.5 text-muted dark:text-darkMuted" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V3" />
+            </svg>
+            <span class="hidden sm:inline">Download HTML</span>
+            <span class="sm:hidden">Save</span>
+          </button>
+
+          <!-- Print / Save PDF -->
+          <button
+            id="btn-print"
+            type="button"
+            title="Print or Save as PDF (includes all 4 sections)"
+            class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline text-ink dark:text-darkInk hover:border-ink/40 dark:hover:border-darkInk/40 transition-colors cursor-pointer"
+          >
+            <svg class="w-3.5 h-3.5 text-muted dark:text-darkMuted" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z" />
+            </svg>
+            <span class="hidden md:inline">Print / PDF</span>
+          </button>
+
+          <!-- Light / Dark Mode Toggle -->
+          <button
+            id="btn-theme"
+            type="button"
+            aria-label="Toggle Light and Dark Mode"
+            title="Toggle Light / Dark Mode"
+            class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline text-muted dark:text-darkMuted hover:text-ink dark:hover:text-darkInk transition-colors cursor-pointer"
+          >
+            <!-- Sun Icon (shown in dark mode) -->
+            <svg id="icon-sun" class="w-4 h-4 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m8.66-10h-1M4.34 12h-1m15.07-6.07l-.71.71M6.34 17.66l-.71.71m12.73 0l-.71-.71M6.34 6.34l-.71-.71M12 8a4 4 0 100 8 4 4 0 000-8z" />
+            </svg>
+            <!-- Moon Icon (shown in light mode) -->
+            <svg id="icon-moon" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- 4 Section Tabs -->
+      <nav aria-label="Playbook Sections" class="flex items-center gap-1 overflow-x-auto pb-0 -mb-px">
+        <button data-tab="overview" class="tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer">
+          <span class="font-mono text-[10px] opacity-50 mr-1.5 hidden sm:inline">01</span>Overview &amp; Clocks
+        </button>
+        <button data-tab="varc" class="tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer">
+          <span class="inline-block w-2 h-2 rounded-full bg-varc mr-1.5 align-middle"></span>VARC
+        </button>
+        <button data-tab="dilr" class="tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer">
+          <span class="inline-block w-2 h-2 rounded-full bg-dilr mr-1.5 align-middle"></span>DILR
+        </button>
+        <button data-tab="qa" class="tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer">
+          <span class="inline-block w-2 h-2 rounded-full bg-qa mr-1.5 align-middle"></span>QA
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===================================================================== -->
+  <!-- MAIN PLAYBOOK CONTAINER                                               -->
+  <!-- ===================================================================== -->
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
+
+    <!-- =================================================================== -->
+    <!-- TAB 1: OVERVIEW & CLOCKS                                            -->
+    <!-- =================================================================== -->
+    <section id="panel-overview" class="tab-panel space-y-6">
+      <div class="hidden print-show-heading pb-2 border-b border-hairline mb-4">
+        <h2 class="text-xl font-bold">01. Overview &amp; Clocks — CAT 99+ Exam-Day Playbook</h2>
+      </div>
+
+      <!-- 1. Header KPI Strip -->
+      <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6">
+        <div class="flex flex-col xl:flex-row xl:items-end justify-between gap-3 pb-5 border-b border-hairline dark:border-darkHairline">
+          <div>
+            <span class="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-muted dark:text-darkMuted">
+              <span class="w-1.5 h-1.5 rounded-full bg-ink dark:bg-darkInk"></span>
+              Master Calibration &middot; Sunday, Nov 29
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mt-1">Goal: 99+ Percentile</h2>
+          </div>
+
+          <!-- 3 Benchmark & Target Pills -->
+          <div class="flex flex-wrap items-center gap-2">
+            <div class="font-mono text-xs font-semibold text-ink dark:text-darkInk bg-ink/[0.06] dark:bg-darkInk/10 border border-ink/20 dark:border-darkInk/25 px-3 py-1.5 rounded-lg">
+              Combined Target: <span class="text-dilr dark:text-emerald-300 font-bold">~100–112 Raw Marks</span>
+            </div>
+            <div class="font-mono text-xs text-muted dark:text-darkMuted bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline px-3 py-1.5 rounded-lg">
+              CAT 2025 99%ile Benchmark: <span class="text-ink dark:text-darkInk font-semibold">~82–94 marks (~85 scaled)</span> &middot; <span class="text-dilr dark:text-emerald-300 font-semibold">~15-mark buffer</span>
+            </div>
+            <div class="font-mono text-xs text-muted dark:text-darkMuted bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline px-3 py-1.5 rounded-lg">
+              3 &times; 40m = <span class="text-ink dark:text-darkInk font-semibold">120 Mins</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 Section Target Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-5">
+          <!-- VARC KPI -->
+          <div class="rounded-xl p-4 bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-l-4 border-l-varc">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-xs font-semibold uppercase tracking-wider text-varc">VARC</span>
+              <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-varc/10 text-varc font-medium">~37–40 Marks</span>
+            </div>
+            <p class="mt-2.5 text-lg font-bold tracking-tight font-mono">17–18 Attempts</p>
+            <p class="mt-1 text-xs text-muted dark:text-darkMuted leading-relaxed">
+              <strong class="text-ink dark:text-darkInk font-medium">3 RCs + 8 VA</strong> (20-Q pool) at high accuracy. Never chase 20 attempts.
+            </p>
+          </div>
+
+          <!-- DILR KPI (Explicitly Shows ~30–36 Marks) -->
+          <div class="rounded-xl p-4 bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-l-4 border-l-dilr">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-xs font-semibold uppercase tracking-wider text-dilr">DILR</span>
+              <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-dilr/10 text-dilr font-medium">~30–36 Marks &middot; 98.5–99.5%ile</span>
+            </div>
+            <p class="mt-2.5 text-lg font-bold tracking-tight font-mono">10–13 Accurate Qs</p>
+            <p class="mt-1 text-xs text-muted dark:text-darkMuted leading-relaxed">
+              <strong class="text-ink dark:text-darkInk font-medium">2 Full Sets (100% acc)</strong> + Set 3 cherry-pick (standalone / TITA).
+            </p>
+          </div>
+
+          <!-- QA KPI -->
+          <div class="rounded-xl p-4 bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-l-4 border-l-qa">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-xs font-semibold uppercase tracking-wider text-qa">QA</span>
+              <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-qa/10 text-qa font-medium">33–36 Marks</span>
+            </div>
+            <p class="mt-2.5 text-lg font-bold tracking-tight font-mono">11–12 Clean Qs</p>
+            <p class="mt-1 text-xs text-muted dark:text-darkMuted leading-relaxed">
+              From a <strong class="text-ink dark:text-darkInk font-medium">13–15 Q solvable pool</strong> (Arithmetic + Priority 2 + Core Algebra).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. The Mechanical Bail-Out & Verification Matrix -->
+      <div class="print-card">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">The Mechanical Bail-Out &amp; Verification Matrix</h3>
+          <span class="font-mono text-[11px] text-alert font-medium">Zero Sunk-Cost Fallacy</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- VARC Matrix Card -->
+          <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-hairline dark:border-darkHairline">
+                <span class="font-semibold text-sm text-varc">VARC Rules</span>
+                <span class="font-mono text-[11px] text-muted dark:text-darkMuted">24 Qs &middot; 40m</span>
+              </div>
+              <dl class="mt-3.5 space-y-3 text-xs">
+                <div>
+                  <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Entry Gate</dt>
+                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">45–60s P1 check &rarr; kill 1 dense RC immediately</dd>
+                </div>
+                <div class="p-2.5 rounded-lg bg-alert/5 dark:bg-alert/15 border border-alert/20">
+                  <dt class="font-mono text-[10px] uppercase tracking-wider text-alert font-semibold">Hard Bail-Out</dt>
+                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">45s on 2-option deadlock &rarr; skip MCQ</dd>
+                </div>
+                <div>
+                  <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Time Cap</dt>
+                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium font-mono">2:00/Q max on VA</dd>
+                </div>
+                <div>
+                  <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Verification</dt>
+                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">4-Point Elimination Checklist (Extreme / Alien / Distortion-Tone / Half-Right)</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+
+          <!-- DILR Matrix Card -->
+          <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-hairline dark:border-darkHairline">
+                <span class="font-semibold text-sm text-dilr">DILR Rules</span>
+                <span class="font-mono text-[11px] text-muted dark:text-darkMuted">22 Qs &middot; 40m</span>
+              </div>
+              <dl class="mt-3.5 space-y-3 text-xs">
+                <div>
+                  <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Entry Gate</dt>
+                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">4-min full scan &amp; rank (Pick 1, 2, 3, Skip; prefer 5-Q over equal 4-Q)</dd>
+                </div>
+                <div class="p-2.5 rounded-lg bg-alert/5 dark:bg-alert/15 border border-alert/20">
+                  <dt class="font-mono text-[10px] uppercase tracking-wider text-alert font-semibold">Hard Bail-Out</dt>
+                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">6–7 min if &lt;40% grid filled or circular re-reading</dd>
+                </div>
+                <div>
+                  <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Pacing Cap</dt>
+                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium font-mono">14m/Set on Sets 1 &amp; 2 + final 30–45s TITA sweep</dd>
+                </div>
+                <div>
+                  <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Verification</dt>
+                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">20–60s clue back-check + explicit intermediate sums</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+
+          <!-- QA Matrix Card -->
+          <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-hairline dark:border-darkHairline">
+                <span class="font-semibold text-sm text-qa">QA Rules</span>
+                <span class="font-mono text-[11px] text-muted dark:text-darkMuted">22 Qs &middot; 40m</span>
+              </div>
+              <dl class="mt-3.5 space-y-3 text-xs">
+                <div>
+                  <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Entry Gate</dt>
+                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">45s Ignition Rule (equation / ratio / path on pad)</dd>
+                </div>
+                <div class="p-2.5 rounded-lg bg-alert/5 dark:bg-alert/15 border border-alert/20">
+                  <dt class="font-mono text-[10px] uppercase tracking-wider text-alert font-semibold">Hard Bail-Out</dt>
+                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">2.5m in Round 1 (unless in final calc step)</dd>
+                </div>
+                <div>
+                  <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Quarantine</dt>
+                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">Skip pure Geometry in 10s (Round 1 banned)</dd>
+                </div>
+                <div>
+                  <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Verification</dt>
+                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">15s "Final-8-Words" audit before Save &amp; Next</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. NEW: Exam-Hall Transitions & TCS iON Interface Discipline Card -->
+      <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6 space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-2 pb-3.5 border-b border-hairline dark:border-darkHairline">
+          <div>
+            <h3 class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">Exam-Hall Transitions &amp; TCS iON Interface Discipline</h3>
+            <p class="text-xs text-muted dark:text-darkMuted mt-0.5">Protect marks between sections and eliminate UI/calculator leakage inside the test console.</p>
+          </div>
+          <span class="font-mono text-[11px] px-2.5 py-1 rounded-md bg-ink/[0.06] dark:bg-darkInk/10 text-ink dark:text-darkInk font-semibold">Console Execution</span>
+        </div>
+
+        <!-- Part A: 10-Second Section-Switch Reset -->
+        <div class="rounded-xl bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-ink dark:text-darkInk">Part A &middot; The 10-Second Section-Switch Reset (VARC &rarr; DILR &rarr; QA)</h4>
+            <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-alert/10 text-alert font-semibold">Firewall Emotional Spillover</span>
+          </div>
+
+          <!-- Horizontal 4-Step Stepper Strip -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 text-xs">
+            <div class="p-2.5 rounded-lg bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline flex items-start gap-2">
+              <span class="font-mono text-[11px] font-bold text-ink dark:text-darkInk bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline w-5 h-5 rounded flex items-center justify-center shrink-0">1</span>
+              <span class="text-ink dark:text-darkInk font-medium leading-snug">Flush previous section completely</span>
+            </div>
+            <div class="p-2.5 rounded-lg bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline flex items-start gap-2">
+              <span class="font-mono text-[11px] font-bold text-ink dark:text-darkInk bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline w-5 h-5 rounded flex items-center justify-center shrink-0">2</span>
+              <span class="text-ink dark:text-darkInk font-medium leading-snug">Take 2 slow breaths during screen switch</span>
+            </div>
+            <div class="p-2.5 rounded-lg bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline flex items-start gap-2">
+              <span class="font-mono text-[11px] font-bold text-ink dark:text-darkInk bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline w-5 h-5 rounded flex items-center justify-center shrink-0">3</span>
+              <span class="text-ink dark:text-darkInk font-medium leading-snug">Flip to a clean scratchpad page</span>
+            </div>
+            <div class="p-2.5 rounded-lg bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline flex items-start gap-2">
+              <span class="font-mono text-[11px] font-bold text-ink dark:text-darkInk bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline w-5 h-5 rounded flex items-center justify-center shrink-0">4</span>
+              <span class="text-ink dark:text-darkInk font-medium leading-snug">Run next section's Entry Gate on autopilot</span>
+            </div>
+          </div>
+
+          <p class="mt-3 px-3 py-2 rounded-lg bg-alert/8 dark:bg-alert/15 border border-alert/25 text-xs text-ink dark:text-darkInk">
+            <strong class="font-mono text-[10px] uppercase tracking-wider text-alert mr-1.5">Firewall Rule:</strong>
+            DILR sits in the middle &mdash; a rough DILR must <strong>NEVER</strong> spill into QA Round 1 sitters.
+          </p>
+        </div>
+
+        <!-- Part B: TCS iON Question Palette & On-Screen Calculator Rules -->
+        <div>
+          <h4 class="text-xs font-bold uppercase tracking-wider text-muted dark:text-darkMuted mb-3">Part B &middot; TCS iON Question Palette &amp; On-Screen Calculator Rules</h4>
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+            <!-- Left: Question Palette & Marked for Review (7 cols) -->
+            <div class="md:col-span-7 rounded-xl bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline p-4">
+              <h5 class="text-xs font-bold text-ink dark:text-darkInk mb-2.5 flex items-center justify-between">
+                <span>Question Palette &amp; Marked for Review (3 Rules)</span>
+                <span class="font-mono text-[10px] text-alert font-semibold">Avoid Hidden -1s</span>
+              </h5>
+              <ol class="space-y-2 text-xs text-muted dark:text-darkMuted leading-relaxed">
+                <li class="flex gap-2">
+                  <span class="font-mono font-bold text-alert shrink-0">1.</span>
+                  <span>
+                    <strong class="text-ink dark:text-darkInk">Answered + Marked for Review (Purple + green dot) IS EVALUATED in CAT</strong> &mdash; never leave an uncertain <span class="font-mono text-alert">-1</span> MCQ guess this way; click <strong class="text-ink dark:text-darkInk">Clear Response</strong> first.
+                  </span>
+                </li>
+                <li class="flex gap-2">
+                  <span class="font-mono font-bold text-varc shrink-0">2.</span>
+                  <span>
+                    Reserve <strong class="text-ink dark:text-darkInk">Unanswered + Marked for Review (Purple)</strong> strictly for genuine Round 2 / cleanup targets (never for quarantined Geometry or dead skips).
+                  </span>
+                </li>
+                <li class="flex gap-2">
+                  <span class="font-mono font-bold text-dilr shrink-0">3.</span>
+                  <span>
+                    Use the <strong class="text-ink dark:text-darkInk">Question Paper / Palette</strong> in VARC to jump cleanly between RC blocks and VA TITAs without burning clicks.
+                  </span>
+                </li>
+              </ol>
+            </div>
+
+            <!-- Right: On-Screen Calculator Discipline (5 cols) -->
+            <div class="md:col-span-5 rounded-xl bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-l-4 border-l-qa p-4 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between gap-2 mb-2">
+                  <h5 class="text-xs font-bold text-qa uppercase tracking-wider">On-Screen Calculator Discipline</h5>
+                  <span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-qa/10 text-qa font-semibold">DILR &amp; QA</span>
+                </div>
+                <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">
+                  Use <strong class="text-ink dark:text-darkInk">paper for 2-digit math and ratios</strong>; touch the mouse-click calculator <strong class="text-ink dark:text-darkInk">ONLY for ugly 3-digit division or CI powers</strong>.
+                </p>
+              </div>
+              <p class="mt-3 pt-2.5 border-t border-hairline dark:border-darkHairline font-mono text-[11px] text-alert font-medium">
+                Clicking the calculator for routine additions quietly eats 2–3 minutes per section.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Stacked Interactive 40-Minute Visual Timelines -->
+      <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
+          <div>
+            <h3 class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">40-Minute Visual Pacing Clocks</h3>
+            <p class="text-xs text-muted dark:text-darkMuted mt-0.5">Click or tap any block to inspect the exact execution trigger.</p>
+          </div>
+          <!-- Synced 3-Mode VARC Clock Toggle -->
+          <div class="no-print inline-flex flex-wrap items-center rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-0.5 text-[11px] self-start md:self-auto">
+            <button type="button" data-varc-order="standard" class="varc-order-btn px-2.5 py-1 rounded-md font-medium transition-colors cursor-pointer">Standard (3 RCs)</button>
+            <button type="button" data-varc-order="split" class="varc-order-btn px-2.5 py-1 rounded-md font-medium transition-colors cursor-pointer">Anti-Fatigue Split</button>
+            <button type="button" data-varc-order="readable" class="varc-order-btn px-2.5 py-1 rounded-md font-medium transition-colors cursor-pointer">Readable-Paper (4 RCs)</button>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <!-- VARC Timeline Row -->
+          <div>
+            <div class="flex items-center justify-between text-xs mb-1.5">
+              <span class="font-semibold text-varc">VARC <span class="varc-mode-label font-mono font-normal text-muted dark:text-darkMuted ml-1">(Standard · 3 RCs)</span></span>
+              <span class="font-mono text-[11px] text-muted dark:text-darkMuted">00 &rarr; 40m</span>
+            </div>
+            <div id="overview-varc-bar" class="flex w-full h-10 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
+              <!-- Populated dynamically by JS to stay synced with 3-mode VARC toggle -->
+            </div>
+          </div>
+
+          <!-- DILR Timeline Row -->
+          <div>
+            <div class="flex items-center justify-between text-xs mb-1.5">
+              <span class="font-semibold text-dilr">DILR <span class="font-mono font-normal text-muted dark:text-darkMuted ml-1">(Scan &rarr; 2 Full + Set 3 Pick &amp; TITA Sweep)</span></span>
+              <span class="font-mono text-[11px] text-muted dark:text-darkMuted">00 &rarr; 40m</span>
+            </div>
+            <div class="flex w-full h-10 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
+              <button type="button" data-accent="dilr" data-timeline-detail="DILR | Min 0–4 (4m): Never start Set 1 blindly. Scan all 5 sets (three 4-Q + two 5-Q) &amp; rank Pick 1, 2, 3, Skip using Green/Red flags; pick a 5-Q set over an equal 4-Q set." style="width: 10%" class="timeline-seg bg-dilr/20 hover:bg-dilr/30 text-dilr dark:text-emerald-300 font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
+                <span>Scan</span><span class="text-[9px] opacity-80">0–4m</span>
+              </button>
+              <button type="button" data-accent="dilr" data-timeline-detail="DILR | Min 4–18 (14m): Solve Set 1 completely targeting 100% accuracy. Enforce 6–7 min bail-out &amp; 20–60s clue back-check." style="width: 35%" class="timeline-seg bg-dilr hover:bg-dilr/90 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
+                <span>Set 1 (100% Acc)</span><span class="text-[9px] opacity-85">4–18m</span>
+              </button>
+              <button type="button" data-accent="dilr" data-timeline-detail="DILR | Min 18–32 (14m): Solve Set 2 completely targeting 100% accuracy. Write intermediate sums explicitly; run full clue check." style="width: 35%" class="timeline-seg bg-dilr/80 hover:bg-dilr/70 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
+                <span>Set 2 (100% Acc)</span><span class="text-[9px] opacity-85">18–32m</span>
+              </button>
+              <button type="button" data-accent="dilr" data-timeline-detail="DILR | Min 32–40 (8m): Attack Set 3 — finish a quick 4-Q set OR cherry-pick 2–3 standalone/conditional Qs. Reserve final 30–45s to enter estimates in all blank DILR TITA boxes (~10–11 TITAs total, zero -1)." style="width: 20%" class="timeline-seg bg-dilr/40 hover:bg-dilr/50 text-ink dark:text-darkInk font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
+                <span>Set 3 + TITA</span><span class="text-[9px] opacity-80">32–40m</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- QA Timeline Row -->
+          <div>
+            <div class="flex items-center justify-between text-xs mb-1.5">
+              <span class="font-semibold text-qa">QA <span class="font-mono font-normal text-muted dark:text-darkMuted ml-1">(Rolling 3-Round Triage &middot; ~7–8 TITAs)</span></span>
+              <span class="font-mono text-[11px] text-muted dark:text-darkMuted">00 &rarr; 40m</span>
+            </div>
+            <div class="flex w-full h-10 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
+              <button type="button" data-accent="qa" data-timeline-detail="QA | Round 1 (0–22m | 7–8 Qs | Max 2.5m/Q): Sitters only — Arithmetic (pen-down), Logs/Exponents, Number Theory, Mensuration, direct AP/GP &amp; Linear/Quadratic. Pure Geometry BANNED." style="width: 55%" class="timeline-seg bg-qa hover:bg-qa/90 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
+                <span>Round 1: Sitters (7–8 Qs)</span><span class="text-[9px] opacity-85">0–22m</span>
+              </button>
+              <button type="button" data-accent="qa" data-timeline-detail="QA | Round 2 (22–36m | 4–5 Qs | Max 3.5m/Q): Marked-for-Review Algebra, lengthier Arithmetic, clean Functions. Pick highest confidence first." style="width: 35%" class="timeline-seg bg-qa/75 hover:bg-qa/65 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
+                <span>Round 2: Mediums (4–5 Qs)</span><span class="text-[9px] opacity-85">22–36m</span>
+              </button>
+              <button type="button" data-accent="qa" data-timeline-detail="QA | Round 3 (36–40m | 1–2 Qs + ~7–8 TITAs): Finish 1 leftover doable Q and enter an educated guess in EVERY empty TITA box (~7–8 TITAs in QA, zero -1)." style="width: 10%" class="timeline-seg bg-qa/25 hover:bg-qa/35 text-qa dark:text-amber-300 font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
+                <span>R3</span><span class="text-[9px] opacity-80">36–40m</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Timeline Inspector Readout -->
+        <div id="overview-timeline-readout" class="mt-4 px-3.5 py-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline text-xs text-muted dark:text-darkMuted font-mono flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-ink/40 dark:bg-darkInk/40 shrink-0"></span>
+          <span>Select any time segment above to inspect its exact clock rule.</span>
+        </div>
+      </div>
+
+      <!-- 5. UPDATED: Final 3-Day Calibration (Nov 26–28) -->
+      <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6">
+        <div class="flex flex-wrap items-center justify-between gap-2 pb-3.5 border-b border-hairline dark:border-darkHairline">
+          <div>
+            <h3 class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">Final 3-Day Calibration (Nov 26–28)</h3>
+            <p class="text-xs text-muted dark:text-darkMuted mt-0.5">No concept re-learning — peak calibration, habit imprinting, and strict taper into Sunday, Nov 29.</p>
+          </div>
+          <span class="font-mono text-[11px] px-2.5 py-1 rounded-md bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline text-ink dark:text-darkInk font-semibold">Sprint Countdown</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
+          <!-- Nov 26 (Today) -->
+          <div class="rounded-xl p-4 bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-t-4 border-t-varc">
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-mono text-xs font-bold text-varc">NOV 26 (TODAY)</span>
+              <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-varc/10 text-varc font-semibold">Peak Simulation</span>
+            </div>
+            <p class="mt-2.5 text-xs text-muted dark:text-darkMuted leading-relaxed">
+              <strong class="text-ink dark:text-darkInk font-semibold">Final Full Mock #2</strong> at exact exam-slot timing + deep mistake audit (DILR root causes &amp; RC 2-option traps).
+            </p>
+          </div>
+
+          <!-- Nov 27 (Tomorrow) -->
+          <div class="rounded-xl p-4 bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-t-4 border-t-qa">
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-mono text-xs font-bold text-qa">NOV 27 (TOMORROW)</span>
+              <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-qa/10 text-qa font-semibold">Habit Imprinting</span>
+            </div>
+            <p class="mt-2.5 text-xs text-muted dark:text-darkMuted leading-relaxed">
+              Light habit imprinting only: timed <strong class="text-ink dark:text-darkInk font-medium">10 Arithmetic Qs in 22m</strong> (Pen-Down + Final-8-Words), <strong class="text-ink dark:text-darkInk font-medium">2 timed DILR sets (30m)</strong>, <strong class="text-ink dark:text-darkInk font-medium">1–2 RCs</strong> at <span class="font-mono">3:15</span> Pass 1 + <span class="font-mono text-alert font-semibold">45s</span> deadlock cap + full error-log skim.
+            </p>
+          </div>
+
+          <!-- Nov 28 (Saturday) -->
+          <div class="rounded-xl p-4 bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-t-4 border-t-dilr">
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-mono text-xs font-bold text-dilr">NOV 28 (SATURDAY)</span>
+              <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-dilr/10 text-dilr font-semibold">Strict Taper</span>
+            </div>
+            <p class="mt-2.5 text-xs text-muted dark:text-darkMuted leading-relaxed">
+              <strong class="text-alert font-semibold">ZERO mocks or new hard sets.</strong> 30-min skim of this playbook &amp; error log only + light essay + <strong class="text-ink dark:text-darkInk font-medium">7.5+ hrs early sleep</strong>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Pre-Exam Interactive Mental Reset Checklist -->
+      <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6">
+        <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-hairline dark:border-darkHairline">
+          <div>
+            <h3 class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">Pre-Exam Mental Reset Checklist</h3>
+            <p class="text-xs text-muted dark:text-darkMuted mt-0.5">Persisted automatically in your browser &amp; included when you download HTML.</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span id="checklist-progress" class="font-mono text-xs font-semibold px-2.5 py-1 rounded-md bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">0 / 6 Ready</span>
+            <button id="btn-reset-checklist" type="button" class="no-print text-xs text-muted dark:text-darkMuted hover:text-alert transition-colors cursor-pointer">Reset</button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-4">
+          <label class="flex items-start gap-3 p-3 rounded-lg bg-canvas/60 dark:bg-darkCanvas/50 border border-hairline dark:border-darkHairline hover:border-ink/30 dark:hover:border-darkInk/30 transition-colors cursor-pointer">
+            <input type="checkbox" data-chk="chk-bailout" class="reset-chk mt-0.5 w-4 h-4 rounded accent-ink dark:accent-darkInk shrink-0 cursor-pointer" />
+            <span class="text-xs leading-relaxed">
+              <strong class="block text-ink dark:text-darkInk font-semibold">Internalize the 3 Bail-Out Clocks</strong>
+              <span class="text-muted dark:text-darkMuted">VARC <span class="font-mono">45s</span> deadlock &middot; DILR <span class="font-mono">6–7m</span> blank grid &middot; QA <span class="font-mono">45s</span> ignition / <span class="font-mono">2.5m</span> R1 cap.</span>
+            </span>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 rounded-lg bg-canvas/60 dark:bg-darkCanvas/50 border border-hairline dark:border-darkHairline hover:border-ink/30 dark:hover:border-darkInk/30 transition-colors cursor-pointer">
+            <input type="checkbox" data-chk="chk-varc-gate" class="reset-chk mt-0.5 w-4 h-4 rounded accent-varc shrink-0 cursor-pointer" />
+            <span class="text-xs leading-relaxed">
+              <strong class="block text-ink dark:text-darkInk font-semibold">Commit to 3 RCs + 8 VA (Zero Ego)</strong>
+              <span class="text-muted dark:text-darkMuted">Drop 1 dense RC on P1, attempt all 4 TITAs unconditionally, accept 3/4 per passage.</span>
+            </span>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 rounded-lg bg-canvas/60 dark:bg-darkCanvas/50 border border-hairline dark:border-darkHairline hover:border-ink/30 dark:hover:border-darkInk/30 transition-colors cursor-pointer">
+            <input type="checkbox" data-chk="chk-dilr-shield" class="reset-chk mt-0.5 w-4 h-4 rounded accent-dilr shrink-0 cursor-pointer" />
+            <span class="text-xs leading-relaxed">
+              <strong class="block text-ink dark:text-darkInk font-semibold">Lock DILR Accuracy Shield</strong>
+              <span class="text-muted dark:text-darkMuted">Full 4-min scan first; mandatory 20–60s clue back-check + written intermediate sums.</span>
+            </span>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 rounded-lg bg-canvas/60 dark:bg-darkCanvas/50 border border-hairline dark:border-darkHairline hover:border-ink/30 dark:hover:border-darkInk/30 transition-colors cursor-pointer">
+            <input type="checkbox" data-chk="chk-qa-quarantine" class="reset-chk mt-0.5 w-4 h-4 rounded accent-qa shrink-0 cursor-pointer" />
+            <span class="text-xs leading-relaxed">
+              <strong class="block text-ink dark:text-darkInk font-semibold">QA Pen-Down + Geometry Quarantine</strong>
+              <span class="text-muted dark:text-darkMuted">Write sentence 1 of Arithmetic immediately; skip pure Geometry in 10s; run Final-8-Words audit.</span>
+            </span>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 rounded-lg bg-canvas/60 dark:bg-darkCanvas/50 border border-hairline dark:border-darkHairline hover:border-ink/30 dark:hover:border-darkInk/30 transition-colors cursor-pointer">
+            <input type="checkbox" data-chk="chk-taper" class="reset-chk mt-0.5 w-4 h-4 rounded accent-ink dark:accent-darkInk shrink-0 cursor-pointer" />
+            <span class="text-xs leading-relaxed">
+              <strong class="block text-ink dark:text-darkInk font-semibold">Nov 28 Mental Taper</strong>
+              <span class="text-muted dark:text-darkMuted">Zero heavy mocks or new hard sets. 30-min skim of this playbook &amp; error log only.</span>
+            </span>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 rounded-lg bg-canvas/60 dark:bg-darkCanvas/50 border border-hairline dark:border-darkHairline hover:border-ink/30 dark:hover:border-darkInk/30 transition-colors cursor-pointer">
+            <input type="checkbox" data-chk="chk-logistics" class="reset-chk mt-0.5 w-4 h-4 rounded accent-ink dark:accent-darkInk shrink-0 cursor-pointer" />
+            <span class="text-xs leading-relaxed">
+              <strong class="block text-ink dark:text-darkInk font-semibold">Exam-Day Readiness (Nov 29)</strong>
+              <span class="text-muted dark:text-darkMuted">Admit card + valid photo ID packed, slot timing confirmed, 7.5+ hrs sleep locked in.</span>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Editable Personal Notes Drawer (Overview) -->
+      <details class="print-card notes-drawer group bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl overflow-hidden">
+        <summary class="flex items-center justify-between px-5 py-3.5 cursor-pointer list-none select-none hover:bg-canvas/60 dark:hover:bg-darkCanvas/40 transition-colors">
+          <div class="flex items-center gap-2.5">
+            <svg class="w-4 h-4 text-muted dark:text-darkMuted transition-transform group-open:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+            <span class="text-xs font-semibold uppercase tracking-wider text-ink dark:text-darkInk">Personal Notes &amp; Amendments — Overview</span>
+            <span data-note-badge="overview" class="hidden font-mono text-[10px] px-1.5 py-0.5 rounded bg-ink/10 dark:bg-darkInk/15 text-ink dark:text-darkInk">Saved</span>
+          </div>
+          <span class="no-print text-[11px] font-mono text-muted dark:text-darkMuted">Auto-saves locally</span>
+        </summary>
+        <div class="px-5 pb-5 pt-2 border-t border-hairline dark:border-darkHairline">
+          <textarea
+            data-note-key="overview"
+            rows="4"
+            placeholder="Add exam-day reminders, slot details, or personal tweaks to your clock splits..."
+            class="w-full rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-3 text-sm text-ink dark:text-darkInk placeholder:text-muted/60 focus:outline-none focus:border-ink dark:focus:border-darkInk transition-colors resize-y"
+          ></textarea>
+          <div class="no-print mt-2 flex items-center justify-between text-[11px] text-muted dark:text-darkMuted font-mono">
+            <span>Tip: Click "Download HTML" in the top bar to save these notes permanently inside the file.</span>
+            <span data-note-status="overview">Synced</span>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 2: VARC (3 RCs + 8 VA PLAYBOOK)                                 -->
+    <!-- =================================================================== -->
+    <section id="panel-varc" class="tab-panel hidden space-y-6">
+      <div class="hidden print-show-heading pb-2 border-b border-varc/30 mb-4">
+        <h2 class="text-xl font-bold text-varc">02. VARC — 3 RCs + 8 VA Playbook</h2>
+      </div>
+
+      <!-- 1. VARC Header & Interactive 3-Mode 40-Minute Clock Toggle -->
+      <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-t-4 border-t-varc rounded-xl p-5 sm:p-6">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-hairline dark:border-darkHairline">
+          <div>
+            <span class="font-mono text-[11px] uppercase tracking-wider text-varc font-semibold">VARC &middot; 24 Questions &middot; 40 Mins</span>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight mt-0.5">3 RCs + 8 VA Strategy (17–18 Attempts)</h2>
+          </div>
+
+          <!-- Synced 3-Mode Toggle: Standard / Anti-Fatigue Split / Readable-Paper (4 RCs) -->
+          <div class="no-print inline-flex flex-wrap items-center rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-1 text-xs self-start lg:self-auto">
+            <button type="button" data-varc-order="standard" class="varc-order-btn px-2.5 sm:px-3 py-1.5 rounded-md font-medium transition-colors cursor-pointer">
+              Standard (3 RCs)
+            </button>
+            <button type="button" data-varc-order="split" class="varc-order-btn px-2.5 sm:px-3 py-1.5 rounded-md font-medium transition-colors cursor-pointer">
+              Anti-Fatigue Split
+            </button>
+            <button type="button" data-varc-order="readable" class="varc-order-btn px-2.5 sm:px-3 py-1.5 rounded-md font-medium transition-colors cursor-pointer">
+              Readable-Paper (4 RCs)
+            </button>
+          </div>
+        </div>
+
+        <!-- Compact 99+ Score Math & Target Calibration Strip -->
+        <div class="mt-4 px-3.5 py-2.5 rounded-lg bg-varc/[0.05] dark:bg-varc/15 border border-varc/20 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs leading-relaxed">
+          <div>
+            <span class="font-mono text-[10px] uppercase tracking-wider font-bold text-varc mr-2">99+ Score Math &amp; Target Calibration</span>
+            <span class="text-muted dark:text-darkMuted">
+              <strong class="text-ink dark:text-darkInk font-semibold">Don't chase 20 attempts</strong> — pushing past natural speed flips 2–3 close MCQs (<span class="font-mono text-alert font-semibold">-4 mark swing/flip</span>).
+              <strong class="text-ink dark:text-darkInk font-semibold">17–18 attempts</strong> (13–14 correct, 2 TITA misses = <span class="font-mono">0</span>, 2 MCQ misses = <span class="font-mono">-2</span>) = <strong class="font-mono text-varc font-bold">37–40 marks</strong> without touching RC #4.
+            </span>
+          </div>
+        </div>
+
+        <!-- Dynamic 40-Min VARC Clock Bar -->
+        <div class="mt-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 text-xs mb-2">
+            <span id="varc-order-title" class="font-semibold text-ink dark:text-darkInk">Standard (3 RCs): 3 RCs &rarr; 4 TITA VA &rarr; 4 MCQ VA &rarr; 1m Cleanup</span>
+            <span id="varc-pool-badge" class="font-mono text-[11px] text-muted dark:text-darkMuted">20-Q Active Pool</span>
+          </div>
+          <div id="varc-tab-bar" class="flex w-full h-12 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
+            <!-- Populated dynamically by JS -->
+          </div>
+          <div id="varc-order-caption" class="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 text-xs">
+            <!-- Populated dynamically by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. RC Execution + Unified 45-Second Deadlock Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        <!-- RC Execution Card (7 cols) -->
+        <div class="print-card lg:col-span-7 bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6">
+          <div class="flex items-center justify-between pb-3 border-b border-hairline dark:border-darkHairline">
+            <h3 class="text-sm font-bold tracking-tight">RC: 3-Min Structural Read + Sniper Verification</h3>
+            <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-varc/10 text-varc font-medium">~8m / RC</span>
+          </div>
+
+          <!-- Compact 2-Column Callout: Why Neither Extreme Works -->
+          <div class="mt-4 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-3.5">
+            <p class="font-mono text-[10px] uppercase tracking-wider font-bold text-muted dark:text-darkMuted mb-2">Why Neither Extreme Works</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs leading-relaxed">
+              <div class="pl-2.5 border-l-2 border-alert/60">
+                <strong class="block text-ink dark:text-darkInk font-semibold">Avoid Fast Scan + Jump to Qs</strong>
+                <span class="text-muted dark:text-darkMuted">Leaves no author map &rarr; forces repeated full-paragraph re-reading.</span>
+              </div>
+              <div class="pl-2.5 border-l-2 border-alert/60">
+                <strong class="block text-ink dark:text-darkInk font-semibold">Avoid "Single Laser Read, Never Look Back"</strong>
+                <span class="text-muted dark:text-darkMuted">Unrealistic for CAT; traps hinge on single qualifiers (<span class="italic">mostly</span> vs. <span class="italic">solely</span>, <span class="italic">correlates</span> vs. <span class="italic">causes</span>).</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 space-y-4 text-xs sm:text-[13px] leading-relaxed">
+            <!-- Step 1: Rolling Elimination (Resolved Unified 4-RC Trigger) -->
+            <div class="flex gap-3">
+              <div class="font-mono text-[11px] font-bold text-varc bg-varc/10 w-6 h-6 rounded-md flex items-center justify-center shrink-0 mt-0.5">1</div>
+              <div>
+                <h4 class="font-semibold text-ink dark:text-darkInk">Rolling Elimination (45–60s P1 Gate &middot; 1 Kill Only)</h4>
+                <p class="text-muted dark:text-darkMuted mt-0.5">
+                  Never compare all 4 RCs upfront. Read P1 only: if dense literary criticism or un-summarizable in one plain line, <strong class="text-alert font-semibold">drop immediately (1 kill only)</strong>. <strong class="text-ink dark:text-darkInk font-medium">Unified 4-RC trigger:</strong> stay locked on 3 RCs + 8 VA &mdash; <strong class="text-varc">ONLY open RC #4 if you finish your first 3 RCs in &le;22 minutes</strong>.
+                </p>
+              </div>
+            </div>
+
+            <!-- Step 2: Pass 1 -->
+            <div class="flex gap-3">
+              <div class="font-mono text-[11px] font-bold text-varc bg-varc/10 w-6 h-6 rounded-md flex items-center justify-center shrink-0 mt-0.5">2</div>
+              <div>
+                <h4 class="font-semibold text-ink dark:text-darkInk">Pass 1 (<span class="font-mono">3:00–3:30</span>) — Architecture, Not Facts</h4>
+                <ul class="text-muted dark:text-darkMuted mt-1 space-y-1 list-disc list-inside">
+                  <li>Steady normal-to-brisk pace. <strong class="text-ink dark:text-darkInk font-medium">Strict No-Backtracking Rule</strong> on confusing lines.</li>
+                  <li>Tag each paragraph's role in <strong class="text-ink dark:text-darkInk font-medium">3–5 words</strong> <span class="italic">(Old view &rarr; Critique &rarr; Evidence &rarr; Caveat)</span>.</li>
+                  <li>Slow 10% at <strong class="text-ink dark:text-darkInk font-medium">pivot words</strong> (70%+ of Qs hinge here): <span class="font-mono text-[11px] text-varc">however, yet, ironically, although, despite, rather, paradoxically, admittedly, consequently</span>.</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Step 3: Answering -->
+            <div class="flex gap-3">
+              <div class="font-mono text-[11px] font-bold text-varc bg-varc/10 w-6 h-6 rounded-md flex items-center justify-center shrink-0 mt-0.5">3</div>
+              <div>
+                <h4 class="font-semibold text-ink dark:text-darkInk">Answering (<span class="font-mono">4:00–4:30</span>) — Split by Question Type</h4>
+                <ul class="text-muted dark:text-darkMuted mt-1 space-y-1 list-disc list-inside">
+                  <li><strong class="text-ink dark:text-darkInk font-medium">Global Qs</strong> (Main Idea / Tone / Purpose): <strong class="text-varc">ZERO re-reading</strong>; answer from mental map.</li>
+                  <li><strong class="text-ink dark:text-darkInk font-medium">Specific / Inference / EXCEPT:</strong> Sniper-jump to exact 3–4 line zone (<span class="font-mono">15–20s</span>).</li>
+                  <li>Never force 4/4 on a passage; <strong class="text-ink dark:text-darkInk font-medium">3/4 is optimal</strong> if one inference trap is nasty.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Unified 45-Second 2-Option Deadlock Card (5 cols — De-duplicated) -->
+        <div class="print-card lg:col-span-5 bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-hairline dark:border-darkHairline">
+              <h3 class="text-sm font-bold tracking-tight text-alert">45s Two-Option Deadlock</h3>
+              <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-alert/10 text-alert font-medium">4-Point Checklist</span>
+            </div>
+
+            <p class="mt-3 text-xs text-muted dark:text-darkMuted">
+              Run one unified 4-point elimination check when down to 2 options:
+            </p>
+
+            <!-- Unified 4-Point Elimination Checklist -->
+            <ol class="mt-3 space-y-2.5 text-xs leading-relaxed">
+              <li class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
+                <span class="font-mono font-bold text-alert mr-1.5">01</span>
+                <strong class="text-ink dark:text-darkInk">Extreme / Scope Shift:</strong>
+                <span class="text-muted dark:text-darkMuted"> Uses <span class="italic">only, always, never, solely, completely</span> when the author is cautious (<span class="italic">tends to, often, primarily</span>).</span>
+              </li>
+              <li class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
+                <span class="font-mono font-bold text-alert mr-1.5">02</span>
+                <strong class="text-ink dark:text-darkInk">True in Reality, Unsupported (Alien):</strong>
+                <span class="text-muted dark:text-darkMuted"> Smart real-world concept logically true outside, but absent from the text.</span>
+              </li>
+              <li class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
+                <span class="font-mono font-bold text-alert mr-1.5">03</span>
+                <strong class="text-ink dark:text-darkInk">Distortion / Tone &amp; Reversed Causality:</strong>
+                <span class="text-muted dark:text-darkMuted"> <span class="font-mono">correlates &ne; causes</span>; flips cause/effect; confuses critic vs. author; or mismatches tone (e.g., hostile/dismissive option when author is mildly skeptical).</span>
+              </li>
+              <li class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
+                <span class="font-mono font-bold text-alert mr-1.5">04</span>
+                <strong class="text-ink dark:text-darkInk">Half-Right Trap:</strong>
+                <span class="text-muted dark:text-darkMuted"> Verbatim first half from text + smuggled unsupported second half.</span>
+              </li>
+            </ol>
+          </div>
+
+          <div class="mt-4 p-3 rounded-lg bg-alert/8 dark:bg-alert/20 border border-alert/30 flex items-center justify-between gap-2">
+            <span class="text-xs font-semibold text-alert">Hard Bail-Out Rule</span>
+            <span class="font-mono text-xs font-bold text-ink dark:text-darkInk">Still 50/50 at 45s &rarr; Skip MCQ</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. The 4 VA Playbooks + Accuracy Reality Check -->
+      <div class="print-card space-y-3.5">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">The 4 VA Playbooks</h3>
+          <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-varc/10 text-varc font-medium">Hard Cap: ~2:00 / Q</span>
+        </div>
+
+        <!-- VA Accuracy Reality Check Strip -->
+        <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-4">
+          <div class="flex items-center justify-between gap-2 pb-2.5 border-b border-hairline dark:border-darkHairline">
+            <span class="text-xs font-bold uppercase tracking-wider text-varc">VA Accuracy Reality Check (True Ranking)</span>
+            <span class="font-mono text-[10px] text-muted dark:text-darkMuted">Calibrate Expectations</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-3 text-xs leading-relaxed">
+            <div class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
+              <span class="inline-block font-mono text-[10px] font-bold uppercase text-dilr mb-1">1. Highest Actual Accuracy</span>
+              <p class="text-muted dark:text-darkMuted">
+                <strong class="text-ink dark:text-darkInk">Para Summary &amp; Para Completion</strong> (MCQs) — Para Completion is underrated because <strong class="text-ink dark:text-darkInk">80%</strong> of the paragraph is already locked in order.
+              </p>
+            </div>
+            <div class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
+              <span class="inline-block font-mono text-[10px] font-bold uppercase text-varc mb-1">2. Best Risk-Adjusted ROI</span>
+              <p class="text-muted dark:text-darkMuted">
+                <strong class="text-ink dark:text-darkInk">Odd One Out</strong> (TITA, 0 penalty) — no exact sequence needed, just find the <strong class="text-ink dark:text-darkInk">1 scope-breaker</strong>.
+              </p>
+            </div>
+            <div class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
+              <span class="inline-block font-mono text-[10px] font-bold uppercase text-qa mb-1">3. Lowest Actual Accuracy (CAT Illusion)</span>
+              <p class="text-muted dark:text-darkMuted">
+                <strong class="text-ink dark:text-darkInk">Para Jumbles</strong> (TITA, 0 penalty) — all-or-nothing (flipping 1 pair like <span class="font-mono">2413</span> vs <span class="font-mono">2143</span> = <span class="font-mono">0</span>); attempt both as capped <span class="font-mono">2:00</span> bonus points.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2x2 VA Playbook Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Para Summary -->
+          <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5">
+            <div class="flex items-center justify-between gap-2 pb-2.5 border-b border-hairline dark:border-darkHairline">
+              <h4 class="font-bold text-sm">1. Para Summary</h4>
+              <div class="flex items-center gap-1.5 font-mono text-[10px]">
+                <span class="px-2 py-0.5 rounded bg-alert/10 text-alert font-semibold">MCQ -1</span>
+                <span class="px-2 py-0.5 rounded bg-dilr/10 text-dilr font-semibold">High Accuracy</span>
+              </div>
+            </div>
+            <ul class="mt-3 space-y-1.5 text-xs text-muted dark:text-darkMuted leading-relaxed">
+              <li><strong class="text-ink dark:text-darkInk">Method:</strong> State <span class="font-mono text-[11px]">Subject + Core Claim + Contrast/Condition</span> mentally before viewing options.</li>
+              <li><strong class="text-ink dark:text-darkInk">Trigger:</strong> Preserve <em>both sides</em> of any pivot word (<span class="italic">however, yet, although</span>).</li>
+              <li><strong class="text-ink dark:text-darkInk">Trap:</strong> Verbatim text recycling that zooms into an example, drops a qualifier, or sneaks in outside judgment.</li>
+            </ul>
+          </div>
+
+          <!-- Para Completion -->
+          <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5">
+            <div class="flex items-center justify-between gap-2 pb-2.5 border-b border-hairline dark:border-darkHairline">
+              <h4 class="font-bold text-sm">2. Para Completion</h4>
+              <div class="flex items-center gap-1.5 font-mono text-[10px]">
+                <span class="px-2 py-0.5 rounded bg-alert/10 text-alert font-semibold">MCQ -1</span>
+                <span class="px-2 py-0.5 rounded bg-dilr/10 text-dilr font-semibold">High Accuracy</span>
+              </div>
+            </div>
+            <ul class="mt-3 space-y-1.5 text-xs text-muted dark:text-darkMuted leading-relaxed">
+              <li><strong class="text-ink dark:text-darkInk">Method:</strong> Read the <strong>missing sentence FIRST</strong> for back-hooks (<span class="italic">this, such, they, however, instead</span>) &amp; forward threads.</li>
+              <li><strong class="text-ink dark:text-darkInk">Trigger:</strong> Spot the abrupt jump; apply the <strong class="text-varc">Double Handshake</strong>: <span class="font-mono text-[11px]">[Before] + [Insert] + [After]</span>.</li>
+              <li><strong class="text-ink dark:text-darkInk">Trap:</strong> Matching the line before the blank while breaking pronoun/logic flow with the line after.</li>
+            </ul>
+          </div>
+
+          <!-- Odd Sentence Out -->
+          <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5">
+            <div class="flex items-center justify-between gap-2 pb-2.5 border-b border-hairline dark:border-darkHairline">
+              <h4 class="font-bold text-sm">3. Odd Sentence Out</h4>
+              <div class="flex items-center gap-1.5 font-mono text-[10px]">
+                <span class="px-2 py-0.5 rounded bg-varc/10 text-varc font-semibold">TITA 0</span>
+                <span class="px-2 py-0.5 rounded bg-dilr/10 text-dilr font-semibold">Best Risk-Adjusted ROI</span>
+              </div>
+            </div>
+            <ul class="mt-3 space-y-1.5 text-xs text-muted dark:text-darkMuted leading-relaxed">
+              <li><strong class="text-ink dark:text-darkInk">Method:</strong> Build the <strong>4-sentence coherent paragraph</strong> first (find 3 sharing exact subject + angle).</li>
+              <li><strong class="text-ink dark:text-darkInk">Trigger:</strong> Separate <strong>Topic</strong> from <strong>Scope</strong>; sanity-check by sequencing the remaining 4 lines.</li>
+              <li><strong class="text-ink dark:text-darkInk">Trap:</strong> Lexical Decoys — shared buzzwords planted in the odd line to disguise a scope drift.</li>
+            </ul>
+          </div>
+
+          <!-- Para Jumbles -->
+          <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5">
+            <div class="flex items-center justify-between gap-2 pb-2.5 border-b border-hairline dark:border-darkHairline">
+              <h4 class="font-bold text-sm">4. Para Jumbles</h4>
+              <div class="flex items-center gap-1.5 font-mono text-[10px]">
+                <span class="px-2 py-0.5 rounded bg-varc/10 text-varc font-semibold">TITA 0</span>
+                <span class="px-2 py-0.5 rounded bg-qa/10 text-qa font-semibold">Capped Bonus</span>
+              </div>
+            </div>
+            <ul class="mt-3 space-y-1.5 text-xs text-muted dark:text-darkMuted leading-relaxed">
+              <li><strong class="text-ink dark:text-darkInk">Method:</strong> Don't hunt the opener first. Build <strong>Mandatory Pairs</strong> to cut 24 orders down to 2.</li>
+              <li><strong class="text-ink dark:text-darkInk">Triggers:</strong> <span class="font-mono text-[11px]">Noun &rarr; Pronoun</span>, <span class="font-mono text-[11px]">Cause &rarr; Effect</span>, <span class="font-mono text-[11px]">Claim &rarr; Contrast</span>, <span class="font-mono text-[11px]">General &rarr; Example</span>.</li>
+              <li><strong class="text-ink dark:text-darkInk">Cap:</strong> At <span class="font-mono text-alert font-semibold">2:00</span>, lock your best sequence, type it in, and walk away.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Compact VARC Pattern & Marking Matrix -->
+      <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl overflow-hidden">
+        <div class="px-5 py-3.5 border-b border-hairline dark:border-darkHairline flex flex-wrap items-center justify-between gap-2">
+          <h3 class="text-xs font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">CAT VARC Pattern &amp; Marking Matrix</h3>
+          <span class="text-[11px] font-mono text-varc font-medium">Direct grammar &amp; standalone vocabulary remain absent &middot; RC &amp; VA are interspersed &middot; Attempt ALL 4 TITAs unconditionally</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-canvas dark:bg-darkCanvas border-b border-hairline dark:border-darkHairline font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">
+                <th class="py-2.5 px-5 font-semibold">Question Type</th>
+                <th class="py-2.5 px-4 font-semibold">Count</th>
+                <th class="py-2.5 px-4 font-semibold">Format &amp; Penalty</th>
+                <th class="py-2.5 px-5 font-semibold">Core Focus &amp; CAT 2025 Nuance</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-hairline dark:divide-darkHairline">
+              <tr>
+                <td class="py-2.5 px-5 font-semibold whitespace-nowrap">Reading Comprehension</td>
+                <td class="py-2.5 px-4 font-mono whitespace-nowrap">16 (4&times;4)</td>
+                <td class="py-2.5 px-4 font-mono whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-alert/10 text-alert">MCQ (-1)</span></td>
+                <td class="py-2.5 px-5 text-muted dark:text-darkMuted">Inference, Main Idea, Tone, Assumption/Application. <strong class="text-ink dark:text-darkInk font-medium">CAT 2025 Slot 1 also tested contextual vocab-in-application inside an RC.</strong></td>
+              </tr>
+              <tr>
+                <td class="py-2.5 px-5 font-semibold whitespace-nowrap">Para Jumbles</td>
+                <td class="py-2.5 px-4 font-mono whitespace-nowrap">2</td>
+                <td class="py-2.5 px-4 font-mono whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-varc/10 text-varc">TITA (No -1)</span></td>
+                <td class="py-2.5 px-5 text-muted dark:text-darkMuted">Rearrange to coherent paragraph. <strong class="text-ink dark:text-darkInk font-medium">Returned in CAT 2025 after being dropped in CAT 2024.</strong></td>
+              </tr>
+              <tr>
+                <td class="py-2.5 px-5 font-semibold whitespace-nowrap">Odd Sentence Out</td>
+                <td class="py-2.5 px-4 font-mono whitespace-nowrap">2</td>
+                <td class="py-2.5 px-4 font-mono whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-varc/10 text-varc">TITA (No -1)</span></td>
+                <td class="py-2.5 px-5 text-muted dark:text-darkMuted">Identify the 1 sentence out of 5 that breaks the coherent paragraph.</td>
+              </tr>
+              <tr>
+                <td class="py-2.5 px-5 font-semibold whitespace-nowrap">Para Summary</td>
+                <td class="py-2.5 px-4 font-mono whitespace-nowrap">2</td>
+                <td class="py-2.5 px-4 font-mono whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-alert/10 text-alert">MCQ (-1)</span></td>
+                <td class="py-2.5 px-5 text-muted dark:text-darkMuted">Pick the option capturing central claim without distortion or omission.</td>
+              </tr>
+              <tr>
+                <td class="py-2.5 px-5 font-semibold whitespace-nowrap">Para Completion</td>
+                <td class="py-2.5 px-4 font-mono whitespace-nowrap">2</td>
+                <td class="py-2.5 px-4 font-mono whitespace-nowrap"><span class="px-1.5 py-0.5 rounded bg-alert/10 text-alert">MCQ (-1)</span></td>
+                <td class="py-2.5 px-5 text-muted dark:text-darkMuted">Place a full missing sentence (not just a phrase) into 1 of 4 numbered blanks.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Editable Personal Notes Drawer (VARC) -->
+      <details class="print-card notes-drawer group bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl overflow-hidden">
+        <summary class="flex items-center justify-between px-5 py-3.5 cursor-pointer list-none select-none hover:bg-canvas/60 dark:hover:bg-darkCanvas/40 transition-colors">
+          <div class="flex items-center gap-2.5">
+            <svg class="w-4 h-4 text-varc transition-transform group-open:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+            <span class="text-xs font-semibold uppercase tracking-wider text-ink dark:text-darkInk">Personal Notes &amp; Amendments — VARC</span>
+            <span data-note-badge="varc" class="hidden font-mono text-[10px] px-1.5 py-0.5 rounded bg-varc/10 text-varc">Saved</span>
+          </div>
+          <span class="no-print text-[11px] font-mono text-muted dark:text-darkMuted">Auto-saves locally</span>
+        </summary>
+        <div class="px-5 pb-5 pt-2 border-t border-hairline dark:border-darkHairline">
+          <textarea
+            data-note-key="varc"
+            rows="4"
+            placeholder="Log your recurring RC distractor traps, genres to skip on P1, or VA mock observations..."
+            class="w-full rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-3 text-sm text-ink dark:text-darkInk placeholder:text-muted/60 focus:outline-none focus:border-varc transition-colors resize-y"
+          ></textarea>
+          <div class="no-print mt-2 flex items-center justify-between text-[11px] text-muted dark:text-darkMuted font-mono">
+            <span>Edits persist automatically in localStorage.</span>
+            <span data-note-status="varc">Synced</span>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 3: DILR (BREAKTHROUGH PLAYBOOK)                                 -->
+    <!-- =================================================================== -->
+    <section id="panel-dilr" class="tab-panel hidden space-y-6">
+      <div class="hidden print-show-heading pb-2 border-b border-dilr/30 mb-4">
+        <h2 class="text-xl font-bold text-dilr">03. DILR — Breakthrough Playbook</h2>
+      </div>
+
+      <!-- 1. DILR Header & Visual 40-Minute Pacing Bar -->
+      <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-t-4 border-t-dilr rounded-xl p-5 sm:p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-hairline dark:border-darkHairline">
+          <div>
+            <span class="font-mono text-[11px] uppercase tracking-wider text-dilr font-semibold">DILR &middot; 5 Sets (Three 4-Q + Two 5-Q) / 22 Qs (~10–11 TITAs) &middot; 40 Mins</span>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight mt-0.5">2 Full Sets (100% Acc) + Set 3 Cherry-Pick</h2>
+          </div>
+          <span class="font-mono text-xs px-2.5 py-1 rounded-md bg-dilr/10 text-dilr font-semibold self-start sm:self-auto shrink-0">Target: 10–13 Accurate Qs (~30–36 Marks)</span>
+        </div>
+
+        <!-- 40-Min DILR Bar -->
+        <div class="mt-4">
+          <div class="flex w-full h-12 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
+            <div style="width: 10%" class="bg-dilr/20 text-dilr dark:text-emerald-300 font-mono text-xs font-semibold flex flex-col items-center justify-center px-1 text-center">
+              <span>Scan</span><span class="text-[10px] opacity-80">0–4m</span>
+            </div>
+            <div style="width: 35%" class="bg-dilr text-white font-mono text-xs font-semibold flex flex-col items-center justify-center px-2 text-center">
+              <span>Set 1 (100% Acc)</span><span class="text-[10px] opacity-85">4–18m (14m)</span>
+            </div>
+            <div style="width: 35%" class="bg-dilr/80 text-white font-mono text-xs font-semibold flex flex-col items-center justify-center px-2 text-center">
+              <span>Set 2 (100% Acc)</span><span class="text-[10px] opacity-85">18–32m (14m)</span>
+            </div>
+            <div style="width: 20%" class="bg-dilr/35 text-ink dark:text-darkInk font-mono text-xs font-semibold flex flex-col items-center justify-center px-1 text-center">
+              <span>Set 3 + TITA</span><span class="text-[10px] opacity-80">32–40m (8m)</span>
+            </div>
+          </div>
+
+          <!-- 4 Fixed Captions -->
+          <div class="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 text-xs">
+            <div class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
+              <span class="font-mono font-bold text-dilr">00–04m:</span> Never start Set 1 blindly. Scan all 5 sets &amp; rank Pick 1, 2, 3, Skip.
+            </div>
+            <div class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
+              <span class="font-mono font-bold text-dilr">04–18m:</span> Crack Set 1 cleanly; lock 100% accuracy before moving.
+            </div>
+            <div class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
+              <span class="font-mono font-bold text-dilr">18–32m:</span> Crack Set 2 cleanly; run full clue back-check.
+            </div>
+            <div class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
+              <span class="font-mono font-bold text-dilr">32–40m:</span> Finish quick 4-Q set OR cherry-pick 2–3 standalone/conditional Qs + final 30–45s TITA sweep on all blank TITA boxes.
+            </div>
+          </div>
+
+          <!-- Compact 2-Column Tactical Strip: 5-Q Set ROI + Calculator Discipline -->
+          <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2.5 text-xs">
+            <div class="p-3 rounded-lg bg-dilr/[0.06] dark:bg-dilr/15 border border-dilr/20 leading-relaxed">
+              <strong class="font-mono text-[10px] uppercase tracking-wider text-dilr block mb-0.5">5-Q Set ROI Tie-Breaker</strong>
+              <span class="text-muted dark:text-darkMuted">If a <strong class="text-ink dark:text-darkInk">5-Q set</strong> and a <strong class="text-ink dark:text-darkInk">4-Q set</strong> look equally clean in your 4-min scan, pick the 5-Q set first (<span class="font-mono text-dilr font-semibold">+3 extra marks</span> for the same setup effort).</span>
+            </div>
+            <div class="p-3 rounded-lg bg-qa/[0.06] dark:bg-qa/15 border border-qa/20 leading-relaxed">
+              <strong class="font-mono text-[10px] uppercase tracking-wider text-qa block mb-0.5">On-Screen Calculator Discipline</strong>
+              <span class="text-muted dark:text-darkMuted">Use <strong class="text-ink dark:text-darkInk">paper for 2-digit math &amp; ratios</strong>; touch the mouse-click calculator <strong class="text-ink dark:text-darkInk">ONLY for ugly 3-digit division</strong>.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Two-Column Green Flags vs Red Flags -->
+      <div class="print-card grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Green Flags -->
+        <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-l-4 border-l-dilr rounded-xl p-5">
+          <div class="flex items-center justify-between pb-3 border-b border-hairline dark:border-darkHairline">
+            <h3 class="text-sm font-bold text-dilr">Green Flags (Pick Early)</h3>
+            <span class="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-dilr/10 text-dilr font-semibold">Min 0–4 Scan</span>
+          </div>
+          <ul class="mt-3.5 space-y-2.5 text-xs leading-relaxed text-muted dark:text-darkMuted">
+            <li class="flex gap-2">
+              <span class="text-dilr font-bold shrink-0">+</span>
+              <span><strong class="text-ink dark:text-darkInk">Clear data structure:</strong> Obvious grid, matrix, Venn diagram, or timeline.</span>
+            </li>
+            <li class="flex gap-2">
+              <span class="text-dilr font-bold shrink-0">+</span>
+              <span><strong class="text-ink dark:text-darkInk">Concrete anchor clues:</strong> Fixed numbers or exact positions (not purely relative).</span>
+            </li>
+            <li class="flex gap-2">
+              <span class="text-dilr font-bold shrink-0">+</span>
+              <span><strong class="text-ink dark:text-darkInk">Favorable question stems:</strong> Exact values or conditional stems (<span class="font-mono text-[11px]">"If X = 5..."</span>).</span>
+            </li>
+            <li class="flex gap-2">
+              <span class="text-dilr font-bold shrink-0">+</span>
+              <span><strong class="text-ink dark:text-darkInk">Familiar archetypes:</strong> 2D/3D Tables, Tournaments, Venn, QBR, Linear/Circular.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Red Flags -->
+        <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-l-4 border-l-alert rounded-xl p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between pb-3 border-b border-hairline dark:border-darkHairline">
+              <h3 class="text-sm font-bold text-alert">Red Flags (Skip / Leave Last)</h3>
+              <span class="font-mono text-[10px] uppercase tracking-wider px-2 py-0.5 rounded bg-alert/10 text-alert font-semibold">Avoid Early</span>
+            </div>
+            <ul class="mt-3.5 space-y-2.5 text-xs leading-relaxed text-muted dark:text-darkMuted">
+              <li class="flex gap-2">
+                <span class="text-alert font-bold shrink-0">&times;</span>
+                <span><strong class="text-ink dark:text-darkInk">Wall of dense abstract text</strong> with zero numbers or anchors.</span>
+              </li>
+              <li class="flex gap-2">
+                <span class="text-alert font-bold shrink-0">&times;</span>
+                <span><strong class="text-ink dark:text-darkInk">Unbounded case explosion:</strong> 4+ early independent branches without elimination.</span>
+              </li>
+              <li class="flex gap-2">
+                <span class="text-alert font-bold shrink-0">&times;</span>
+                <span><strong class="text-ink dark:text-darkInk">Heavy messy arithmetic:</strong> Compound growth rates, ugly ratios, vague wording.</span>
+              </li>
+              <li class="flex gap-2">
+                <span class="text-alert font-bold shrink-0">&times;</span>
+                <span><strong class="text-ink dark:text-darkInk">Hostile stems:</strong> All <span class="font-mono text-[11px]">"Min/Max"</span> or <span class="font-mono text-[11px]">"CANNOT be true"</span> questions.</span>
+              </li>
+            </ul>
+          </div>
+          <div class="mt-4 p-2.5 rounded-lg bg-alert/5 dark:bg-alert/15 border border-alert/20 text-[11px] text-ink dark:text-darkInk">
+            <strong class="text-alert font-mono uppercase">Caution:</strong> Don't auto-pick missing-cell tables just because they <em>look</em> like DI.
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Core Discipline Cards -->
+      <div class="print-card grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- 6-Minute Bail-Out Rule -->
+        <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5">
+          <div class="flex items-center justify-between pb-3 border-b border-hairline dark:border-darkHairline">
+            <h3 class="text-sm font-bold text-alert">The 6-Minute Bail-Out Rule</h3>
+            <span class="font-mono text-xs font-bold text-alert">MIN 6–7 CHECKPOINT</span>
+          </div>
+          <div class="mt-3.5 space-y-2.5 text-xs leading-relaxed">
+            <p class="p-2.5 rounded-lg bg-dilr/8 dark:bg-dilr/15 border border-dilr/20">
+              <strong class="text-dilr font-mono uppercase text-[11px]">Stay only if:</strong>
+              <span class="text-ink dark:text-darkInk"> At least <strong>40–50%</strong> of your grid/structure is filled OR the central mathematical/logical constraint is unlocked.</span>
+            </p>
+            <p class="p-2.5 rounded-lg bg-alert/8 dark:bg-alert/15 border border-alert/20">
+              <strong class="text-alert font-mono uppercase text-[11px]">Bail immediately if:</strong>
+              <span class="text-ink dark:text-darkInk"> Your table is still mostly blank or you are stuck in circular re-reading. Sunk-cost fallacy is the #1 DILR killer.</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Mandatory Accuracy Shield -->
+        <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5">
+          <div class="flex items-center justify-between pb-3 border-b border-hairline dark:border-darkHairline">
+            <h3 class="text-sm font-bold text-dilr">Mandatory Accuracy Shield</h3>
+            <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-dilr/10 text-dilr font-semibold">ERROR-LOG TRIGGERS</span>
+          </div>
+          <ol class="mt-3.5 space-y-2.5 text-xs leading-relaxed">
+            <li class="flex gap-2.5">
+              <span class="font-mono font-bold text-dilr bg-dilr/10 w-5 h-5 rounded flex items-center justify-center shrink-0 mt-0.5">1</span>
+              <span>
+                <strong class="text-ink dark:text-darkInk">20–60s Clue Back-Check:</strong> Re-read <strong>EVERY numbered constraint</strong> top-to-bottom against your filled grid before marking a single answer.
+              </span>
+            </li>
+            <li class="flex gap-2.5">
+              <span class="font-mono font-bold text-dilr bg-dilr/10 w-5 h-5 rounded flex items-center justify-center shrink-0 mt-0.5">2</span>
+              <span>
+                <strong class="text-ink dark:text-darkInk">Explicit Intermediate Sums:</strong> Write every addition out on paper — never mental-total and drop 4 marks on a 10-unit slip.
+              </span>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 4. Representation Checklist (5 Archetypes) -->
+      <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6">
+        <div class="flex items-center justify-between pb-3 border-b border-hairline dark:border-darkHairline">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">Representation Checklist (Draw Container First)</h3>
+          <span class="font-mono text-[11px] text-dilr">5 High-Yield Archetypes</span>
+        </div>
+
+        <div class="mt-4 divide-y divide-hairline dark:divide-darkHairline">
+          <div class="py-3 first:pt-0 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 text-xs">
+            <span class="font-semibold text-ink dark:text-darkInk sm:w-52 shrink-0"><span class="font-mono text-dilr mr-2">01</span>Mapping / Distribution</span>
+            <span class="text-muted dark:text-darkMuted">Put the <strong class="text-ink dark:text-darkInk font-medium">fixed entity</strong> (Days, Ranks, Slots, Teams) on rows/columns; never map floating variables against floating variables.</span>
+          </div>
+          <div class="py-3 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 text-xs">
+            <span class="font-semibold text-ink dark:text-darkInk sm:w-52 shrink-0"><span class="font-mono text-dilr mr-2">02</span>Games &amp; Tournaments</span>
+            <span class="text-muted dark:text-darkMuted">Draw an <strong class="text-ink dark:text-darkInk font-medium">upper-triangle match matrix</strong> + Points summary; compute total matches = <span class="font-mono font-semibold text-dilr">n(n-1)/2</span> immediately.</span>
+          </div>
+          <div class="py-3 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 text-xs">
+            <span class="font-semibold text-ink dark:text-darkInk sm:w-52 shrink-0"><span class="font-mono text-dilr mr-2">03</span>Quant-Based Reasoning</span>
+            <span class="text-muted dark:text-darkMuted">Write <strong class="text-ink dark:text-darkInk font-medium">row/column total equations</strong> first; check parity (odd/even), divisibility, and min/max bounds.</span>
+          </div>
+          <div class="py-3 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 text-xs">
+            <span class="font-semibold text-ink dark:text-darkInk sm:w-52 shrink-0"><span class="font-mono text-dilr mr-2">04</span>Venn Diagrams</span>
+            <span class="text-muted dark:text-darkMuted">Label all <strong class="text-ink dark:text-darkInk font-medium">7 (or 15) atomic regions</strong> with variables (<span class="font-mono">a, b, c...</span>) before plugging in any clues.</span>
+          </div>
+          <div class="py-3 last:pb-0 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 text-xs">
+            <span class="font-semibold text-ink dark:text-darkInk sm:w-52 shrink-0"><span class="font-mono text-dilr mr-2">05</span>Routes &amp; Networks</span>
+            <span class="text-muted dark:text-darkMuted">Redraw messy diagrams cleanly with <strong class="text-ink dark:text-darkInk font-medium">directional arrows</strong> and explicit node capacities / costs.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Editable Personal Notes Drawer (DILR) -->
+      <details class="print-card notes-drawer group bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl overflow-hidden">
+        <summary class="flex items-center justify-between px-5 py-3.5 cursor-pointer list-none select-none hover:bg-canvas/60 dark:hover:bg-darkCanvas/40 transition-colors">
+          <div class="flex items-center gap-2.5">
+            <svg class="w-4 h-4 text-dilr transition-transform group-open:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+            <span class="text-xs font-semibold uppercase tracking-wider text-ink dark:text-darkInk">Personal Notes &amp; Amendments — DILR</span>
+            <span data-note-badge="dilr" class="hidden font-mono text-[10px] px-1.5 py-0.5 rounded bg-dilr/10 text-dilr">Saved</span>
+          </div>
+          <span class="no-print text-[11px] font-mono text-muted dark:text-darkMuted">Auto-saves locally</span>
+        </summary>
+        <div class="px-5 pb-5 pt-2 border-t border-hairline dark:border-darkHairline">
+          <textarea
+            data-note-key="dilr"
+            rows="4"
+            placeholder="Add personal set-selection lessons, tricky archetype setups, or recent mock error-log takeaways..."
+            class="w-full rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-3 text-sm text-ink dark:text-darkInk placeholder:text-muted/60 focus:outline-none focus:border-dilr transition-colors resize-y"
+          ></textarea>
+          <div class="no-print mt-2 flex items-center justify-between text-[11px] text-muted dark:text-darkMuted font-mono">
+            <span>Edits persist automatically in localStorage.</span>
+            <span data-note-status="dilr">Synced</span>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TAB 4: QA (8-10 -> 11-12 CLEAN ATTEMPTS)                            -->
+    <!-- =================================================================== -->
+    <section id="panel-qa" class="tab-panel hidden space-y-6">
+      <div class="hidden print-show-heading pb-2 border-b border-qa/30 mb-4">
+        <h2 class="text-xl font-bold text-qa">04. QA — Rolling Triage &amp; 12-Attempt Playbook</h2>
+      </div>
+
+      <!-- 1. QA Header & Visual 40-Minute Rolling Triage Bar -->
+      <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-t-4 border-t-qa rounded-xl p-5 sm:p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-hairline dark:border-darkHairline">
+          <div>
+            <span class="font-mono text-[11px] uppercase tracking-wider text-qa font-semibold">QA &middot; 22 Questions (~7–8 TITAs) &middot; 40 Mins</span>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight mt-0.5">8–10 &rarr; 11–12 Clean Attempts (33–36 Marks)</h2>
+            <p class="mt-1.5 font-mono text-[11px] text-muted dark:text-darkMuted">
+              CAT 2025 Weightage: <span class="text-ink dark:text-darkInk font-medium">Arithmetic (#1: 7–9 Qs) + Algebra (#2: 4–8 Qs) = 55%–70% of paper</span> &middot; Number System bumped to 3–4 Qs &middot; ~7–8 penalty-free TITAs.
+            </p>
+          </div>
+          <span class="font-mono text-xs px-2.5 py-1 rounded-md bg-qa/10 text-qa font-semibold self-start sm:self-auto shrink-0">No Full-Paper Upfront Scan</span>
+        </div>
+
+        <!-- 3-Round Triage Bar -->
+        <div class="mt-4">
+          <div class="flex w-full h-12 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
+            <div style="width: 55%" class="bg-qa text-white font-mono text-xs font-semibold flex flex-col items-center justify-center px-2 text-center">
+              <span>Round 1: Sitters (7–8 Qs)</span><span class="text-[10px] opacity-85">0–22m &middot; Max 2.5m/Q</span>
+            </div>
+            <div style="width: 35%" class="bg-qa/75 text-white font-mono text-xs font-semibold flex flex-col items-center justify-center px-2 text-center">
+              <span>Round 2: Mediums (4–5 Qs)</span><span class="text-[10px] opacity-85">22–36m &middot; Max 3.5m/Q</span>
+            </div>
+            <div style="width: 10%" class="bg-qa/25 text-qa dark:text-amber-300 font-mono text-xs font-semibold flex flex-col items-center justify-center px-1 text-center">
+              <span>R3</span><span class="text-[10px] opacity-80">36–40m</span>
+            </div>
+          </div>
+
+          <div class="mt-3 grid grid-cols-1 md:grid-cols-3 gap-2.5 text-xs">
+            <div class="p-3 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
+              <div class="flex items-center justify-between font-mono text-[11px] font-bold text-qa mb-1">
+                <span>ROUND 1 (0–22m)</span>
+                <span>7–8 Qs &middot; &le;2.5m/Q</span>
+              </div>
+              <p class="text-muted dark:text-darkMuted leading-relaxed">Sitters: Arithmetic, Logs/Exponents, Number Theory, Mensuration, direct AP/GP &amp; Linear/Quadratic.</p>
+            </div>
+            <div class="p-3 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
+              <div class="flex items-center justify-between font-mono text-[11px] font-bold text-qa mb-1">
+                <span>ROUND 2 (22–36m)</span>
+                <span>4–5 Qs &middot; &le;3.5m/Q</span>
+              </div>
+              <p class="text-muted dark:text-darkMuted leading-relaxed">Marked-for-Review Algebra, slightly lengthier Arithmetic, clean Functions. Highest confidence first.</p>
+            </div>
+            <div class="p-3 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
+              <div class="flex items-center justify-between font-mono text-[11px] font-bold text-qa mb-1">
+                <span>ROUND 3 (36–40m)</span>
+                <span>1–2 Qs + ~7–8 TITAs</span>
+              </div>
+              <p class="text-muted dark:text-darkMuted leading-relaxed">Leftover doable Qs + put an educated guess in <strong>EVERY empty TITA box</strong> (~7–8 TITAs total, zero <span class="font-mono">-1</span>).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. 6 Mechanical Rules (Balanced 3x2 Desktop Grid Including Calculator Discipline) -->
+      <div class="print-card">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">6 Mechanical Rules to Stop Time Leaks</h3>
+          <span class="font-mono text-[11px] text-qa font-medium">Execution Discipline</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Rule 1 -->
+          <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-t-2 border-t-alert rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="font-mono text-xs font-bold text-alert bg-alert/10 px-2 py-0.5 rounded">01</span>
+              <h4 class="font-bold text-xs sm:text-sm">45s Ignition &amp; 2.5m Bail-Out</h4>
+            </div>
+            <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">
+              Must have an equation, ratio setup, or path on pad by <strong class="font-mono text-ink dark:text-darkInk">45s</strong> or leave. In R1, if not in final calculation step at <strong class="font-mono text-alert">2.5m</strong>, drop &amp; mark for review.
+            </p>
+          </div>
+
+          <!-- Rule 2 -->
+          <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-t-2 border-t-qa rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="font-mono text-xs font-bold text-qa bg-qa/10 px-2 py-0.5 rounded">02</span>
+              <h4 class="font-bold text-xs sm:text-sm">Cure the 4–5 Line Arithmetic Allergy</h4>
+            </div>
+            <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">
+              <strong class="text-ink dark:text-darkInk">"Pen-Down on Word One":</strong> Force yourself to read the <strong class="text-ink dark:text-darkInk">first 2 lines of every Arithmetic problem in Round 1</strong> before deciding to skip; dump ratios/timelines immediately on word one. Reframe length as a green flag &mdash; don't let 5–10s rapid cycling auto-reject Arithmetic.
+            </p>
+          </div>
+
+          <!-- Rule 3 -->
+          <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-t-2 border-t-alert rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="font-mono text-xs font-bold text-alert bg-alert/10 px-2 py-0.5 rounded">03</span>
+              <h4 class="font-bold text-xs sm:text-sm">The Geometry Quarantine</h4>
+            </div>
+            <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">
+              <strong class="text-alert">Banned in R1:</strong> skip pure Geometry / circle theorems / angle chasing in <span class="font-mono">10s</span> without drawing. Allowed in R1: pure <strong>Mensuration</strong> or an obvious 2-step Pythagoras/similarity sitter.
+            </p>
+          </div>
+
+          <!-- Rule 4 -->
+          <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-t-2 border-t-qa rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="font-mono text-xs font-bold text-qa bg-qa/10 px-2 py-0.5 rounded">04</span>
+              <h4 class="font-bold text-xs sm:text-sm">Algebra Speed Discipline</h4>
+            </div>
+            <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">
+              Rely on muscle memory (AP/GP, Linear/Quadratics). Only use value plug-in (<span class="font-mono text-[11px]">n=1,2</span> or <span class="font-mono text-[11px]">x=0,1,-1</span>) if it clicks naturally within <span class="font-mono">15s</span> — don't force new habits last week.
+            </p>
+          </div>
+
+          <!-- Rule 5 -->
+          <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-t-2 border-t-dilr rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="font-mono text-xs font-bold text-dilr bg-dilr/10 px-2 py-0.5 rounded">05</span>
+              <h4 class="font-bold text-xs sm:text-sm">15-Second "Final-8-Words" Audit</h4>
+            </div>
+            <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">
+              Before clicking <strong class="text-ink dark:text-darkInk">Save &amp; Next</strong>, re-read <strong>ONLY the last 8–10 words</strong> of the prompt. Silly errors happen at the finish line — catch <span class="font-mono text-ink dark:text-darkInk">x</span> vs <span class="font-mono text-ink dark:text-darkInk">2x</span>, <em>"time taken by B alone"</em>, or <em>"% more than"</em> before losing 4 marks.
+            </p>
+          </div>
+
+          <!-- Rule 6 (NEW: On-Screen Calculator Discipline) -->
+          <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-t-2 border-t-qa rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-2">
+              <span class="font-mono text-xs font-bold text-qa bg-qa/10 px-2 py-0.5 rounded">06</span>
+              <h4 class="font-bold text-xs sm:text-sm">On-Screen Calculator Discipline</h4>
+            </div>
+            <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">
+              Use <strong class="text-ink dark:text-darkInk">paper for 2-digit math and ratios</strong>; touch the mouse-click calculator <strong class="text-ink dark:text-darkInk">ONLY for ugly 3-digit division or CI powers</strong>. Mouse-clicking routine math quietly eats <span class="font-mono text-alert font-semibold">2–3 minutes</span>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Topic Revision Priority & Solvable Pool Table -->
+      <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl overflow-hidden">
+        <div class="px-5 py-3.5 border-b border-hairline dark:border-darkHairline flex flex-wrap items-center justify-between gap-2">
+          <h3 class="text-xs font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">Topic Revision Priority &amp; Solvable Pool</h3>
+          <span class="font-mono text-[11px] text-qa font-semibold">Goal: 13–15 Q Solvable Pool &rarr; Guarantees 12 Attempts</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-canvas dark:bg-darkCanvas border-b border-hairline dark:border-darkHairline font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">
+                <th class="py-2.5 px-5 font-semibold">Tier</th>
+                <th class="py-2.5 px-4 font-semibold">Topics</th>
+                <th class="py-2.5 px-4 font-semibold whitespace-nowrap">Typical Supply</th>
+                <th class="py-2.5 px-5 font-semibold whitespace-nowrap">Solvable Pool</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-hairline dark:divide-darkHairline">
+              <tr>
+                <td class="py-3 px-5 whitespace-nowrap">
+                  <span class="inline-block font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-qa text-white">PRIORITY 1</span>
+                  <span class="block text-[10px] text-muted dark:text-darkMuted mt-0.5">Non-negotiable</span>
+                </td>
+                <td class="py-3 px-4 font-medium">Arithmetic <span class="text-muted dark:text-darkMuted font-normal">(Ratios, %, PLD, Mixtures, Averages, TSD, T&amp;W, SI/CI)</span></td>
+                <td class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap">7–9 Qs</td>
+                <td class="py-3 px-5 font-mono font-bold text-ink dark:text-darkInk whitespace-nowrap">5–7 Qs</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-5 whitespace-nowrap">
+                  <span class="inline-block font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-qa/20 text-qa">PRIORITY 2</span>
+                  <span class="block text-[10px] text-muted dark:text-darkMuted mt-0.5">Fast Tactical Wins</span>
+                </td>
+                <td class="py-3 px-4 font-medium">Logs &amp; Exponents, Number Theory <span class="text-muted dark:text-darkMuted font-normal">(especially factors/digits)</span>, Mensuration</td>
+                <td class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap">4–6 Qs</td>
+                <td class="py-3 px-5 font-mono font-bold text-ink dark:text-darkInk whitespace-nowrap">3–4 Qs</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-5 whitespace-nowrap">
+                  <span class="inline-block font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-dilr/15 text-dilr">PRIORITY 3</span>
+                  <span class="block text-[10px] text-muted dark:text-darkMuted mt-0.5">The Buffer Bridge</span>
+                </td>
+                <td class="py-3 px-4 font-medium">Core Algebra <span class="text-muted dark:text-darkMuted font-normal">(Linear/Quadratic, Inequalities/Modulus, AP/GP)</span></td>
+                <td class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap">3–5 Qs</td>
+                <td class="py-3 px-5 font-mono font-bold text-ink dark:text-darkInk whitespace-nowrap">2–4 Qs</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-5 whitespace-nowrap">
+                  <span class="inline-block font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline text-muted dark:text-darkMuted">SELECTIVE SKIM</span>
+                </td>
+                <td class="py-3 px-4 font-medium">Functions &amp; Maxima-Minima <span class="text-muted dark:text-darkMuted font-normal">(AM-GM, quadratic vertices, basic composite/GIF; skip deep graph transformations)</span></td>
+                <td class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap">1–2 Qs</td>
+                <td class="py-3 px-5 font-mono font-semibold text-muted dark:text-darkMuted whitespace-nowrap">1 Q</td>
+              </tr>
+              <tr class="bg-alert/[0.02] dark:bg-alert/[0.06]">
+                <td class="py-3 px-5 whitespace-nowrap align-top">
+                  <span class="inline-block font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-alert/10 text-alert">SKIP / BASELINE</span>
+                </td>
+                <td class="py-3 px-4">
+                  <span class="font-medium text-muted dark:text-darkMuted block">Pure Geometry &amp; Combinatorics (P&amp;C)</span>
+                  <span class="text-[11px] text-muted dark:text-darkMuted mt-1 block leading-relaxed">
+                    On Geometry, rely strictly on existing baseline (basic triangle similarity, Pythagoras, circle basics) only if an obvious 60-second sitter shows up.
+                  </span>
+                </td>
+                <td class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap align-top">3–4 Qs</td>
+                <td class="py-3 px-5 font-mono text-muted dark:text-darkMuted whitespace-nowrap align-top">0–1 Q</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="bg-canvas dark:bg-darkCanvas border-t border-hairline dark:border-darkHairline font-mono text-[11px]">
+                <td colspan="3" class="py-3 px-5 text-muted dark:text-darkMuted">
+                  <strong class="text-ink dark:text-darkInk">Catch to Watch:</strong> Priority 1 + 2 = <strong class="text-ink dark:text-darkInk">8–11 Qs</strong> (too tight) &rarr; Adding Priority 3 Core Algebra builds your safe cushion:
+                </td>
+                <td class="py-3 px-5 font-bold text-qa whitespace-nowrap">13–15 Q Pool</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- 4. Editable Personal Notes Drawer (QA) -->
+      <details class="print-card notes-drawer group bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl overflow-hidden">
+        <summary class="flex items-center justify-between px-5 py-3.5 cursor-pointer list-none select-none hover:bg-canvas/60 dark:hover:bg-darkCanvas/40 transition-colors">
+          <div class="flex items-center gap-2.5">
+            <svg class="w-4 h-4 text-qa transition-transform group-open:rotate-90" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+            <span class="text-xs font-semibold uppercase tracking-wider text-ink dark:text-darkInk">Personal Notes &amp; Amendments — QA</span>
+            <span data-note-badge="qa" class="hidden font-mono text-[10px] px-1.5 py-0.5 rounded bg-qa/10 text-qa">Saved</span>
+          </div>
+          <span class="no-print text-[11px] font-mono text-muted dark:text-darkMuted">Auto-saves locally</span>
+        </summary>
+        <div class="px-5 pb-5 pt-2 border-t border-hairline dark:border-darkHairline">
+          <textarea
+            data-note-key="qa"
+            rows="4"
+            placeholder="Jot down high-yield Arithmetic formulas, Mensuration shortcuts, or personal QA traps..."
+            class="w-full rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-3 text-sm text-ink dark:text-darkInk placeholder:text-muted/60 focus:outline-none focus:border-qa transition-colors resize-y"
+          ></textarea>
+          <div class="no-print mt-2 flex items-center justify-between text-[11px] text-muted dark:text-darkMuted font-mono">
+            <span>Edits persist automatically in localStorage.</span>
+            <span data-note-status="qa">Synced</span>
+          </div>
+        </div>
+      </details>
+    </section>
+
+  </main>
+
+  <!-- Minimal Editorial Footer -->
+  <footer class="no-print border-t border-hairline dark:border-darkHairline mt-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-mono text-muted dark:text-darkMuted">
+      <span>CAT 99+ EXAM-DAY PLAYBOOK &middot; KEYS [1–4] TO SWITCH TABS</span>
+      <span>ALL NOTES AUTO-SAVE LOCALLY &middot; EXPORT HTML TO KEEP AMENDMENTS PORTABLE</span>
+    </div>
+  </footer>
+
+  <!-- Subtle Floating Toast Notification (No alert/confirm) -->
+  <div
+    id="toast"
+    role="status"
+    aria-live="polite"
+    class="no-print fixed bottom-5 right-5 z-50 pointer-events-none opacity-0 translate-y-2 transition-all duration-200 px-3.5 py-2 rounded-lg bg-ink dark:bg-darkInk text-canvas dark:text-darkCanvas font-mono text-xs shadow-lg"
+  >
+    Saved
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- VANILLA JAVASCRIPT: TABS, CLOCKS, THEME, LOCALSTORAGE & HTML EXPORT   -->
+  <!-- ===================================================================== -->
+  <script>
+    (function () {
+      'use strict';
+
+      const STORAGE_KEY = 'cat99_playbook_state_v1';
+      const VALID_VARC_ORDERS = ['standard', 'split', 'readable'];
+
+      // 3-Mode VARC Clock Configurations (Standard / Anti-Fatigue Split / Readable-Paper 4-RC Backup)
+      const VARC_ORDERS = {
+        standard: {
+          label: '(Standard · 3 RCs)',
+          title: 'Standard (3 RCs): 3 RCs \u2192 4 TITA VA \u2192 4 MCQ VA \u2192 1m Cleanup',
+          poolBadge: '20-Q Active Pool · Target 17–18',
+          toast: 'VARC: Standard (3 RCs) active',
+          segments: [
+            {
+              width: 62.5,
+              label: '3 RCs (10–11 Qs)',
+              time: '0–25m',
+              classes: 'bg-varc hover:bg-varc/90 text-white',
+              detail: 'VARC | Min 0–25 (25m): Solve your best 3 RCs (~8m/RC + 1m P1 reject buffer) \u2192 10–11 Qs. 3:30 structural read + 4:30 Qs; skip any 50/50 deadlock at 45s.',
+              caption: '3 RCs (~8m each + 1m reject buffer) \u2192 10–11 Qs.'
+            },
+            {
+              width: 17.5,
+              label: '4 TITA VA',
+              time: '25–32m',
+              classes: 'bg-varc/75 hover:bg-varc/65 text-white',
+              detail: 'VARC | Min 25–32 (7m): 2 Para Jumbles + 2 Odd One Out (~1:45/Q). Zero negative marking \u2014 attempt all 4 unconditionally, cap at 2:00/Q.',
+              caption: '4 TITA VA (2 PJ + 2 Odd Out) \u2192 Attempt all 4 (no -1).'
+            },
+            {
+              width: 17.5,
+              label: '4 MCQ VA',
+              time: '32–39m',
+              classes: 'bg-varc/40 hover:bg-varc/50 text-ink dark:text-darkInk',
+              detail: 'VARC | Min 32–39 (7m): 2 Para Summary + 2 Para Completion (~1:45/Q). Target 3–4 clean Qs; skip if genuine coin flip.',
+              caption: '4 MCQ VA (2 Summary + 2 Completion) \u2192 3–4 clean Qs.'
+            },
+            {
+              width: 2.5,
+              label: '1m',
+              time: '39–40m',
+              classes: 'bg-varc/20 hover:bg-varc/30 text-varc dark:text-indigo-300',
+              detail: 'VARC | Min 39–40 (1m): Cleanup \u2014 confirm all 4 TITA boxes are filled; revisit 1 flagged MCQ if time permits.',
+              caption: 'Cleanup \u2192 confirm all 4 TITA entries saved.'
+            }
+          ]
+        },
+        split: {
+          label: '(Anti-Fatigue Split)',
+          title: 'Anti-Fatigue Split: 2 RCs (16m) \u2192 4 TITA VA (7m) \u2192 RC #3 (8m) \u2192 4 MCQ VA (8m) \u2192 1m Cleanup',
+          poolBadge: '20-Q Active Pool · Target 17–18',
+          toast: 'VARC: Anti-Fatigue Split active',
+          segments: [
+            {
+              width: 40,
+              label: '2 RCs',
+              time: '0–16m',
+              classes: 'bg-varc hover:bg-varc/90 text-white',
+              detail: 'VARC | Min 0–16 (16m): Solve your first 2 readable RCs (~8m each) while focus is sharpest. Enforce 45–60s P1 gate.',
+              caption: 'First 2 RCs (~8m each) \u2192 7–8 Qs.'
+            },
+            {
+              width: 17.5,
+              label: '4 TITA VA',
+              time: '16–23m',
+              classes: 'bg-varc/70 hover:bg-varc/60 text-white',
+              detail: 'VARC | Min 16–23 (7m): Palate cleanser \u2014 knock out 2 Para Jumbles + 2 Odd One Out (zero negative marking) before RC #3.',
+              caption: '4 TITA VA palate cleanser \u2192 all 4 locked early.'
+            },
+            {
+              width: 20,
+              label: 'RC #3',
+              time: '23–31m',
+              classes: 'bg-varc hover:bg-varc/90 text-white',
+              detail: 'VARC | Min 23–31 (8m): Return fresh for RC #3. 3:30 structural read + 4:30 Qs; don\'t force 4/4.',
+              caption: 'RC #3 with fresh eyes \u2192 3–4 Qs.'
+            },
+            {
+              width: 20,
+              label: '4 MCQ VA',
+              time: '31–39m',
+              classes: 'bg-varc/40 hover:bg-varc/50 text-ink dark:text-darkInk',
+              detail: 'VARC | Min 31–39 (8m): 2 Para Summary + 2 Para Completion (~2:00/Q). High-accuracy finish; skip coin flips.',
+              caption: '4 MCQ VA (Summary + Completion) \u2192 3–4 Qs.'
+            },
+            {
+              width: 2.5,
+              label: '1m',
+              time: '39–40m',
+              classes: 'bg-varc/20 hover:bg-varc/30 text-varc dark:text-indigo-300',
+              detail: 'VARC | Min 39–40 (1m): Cleanup \u2014 confirm all 4 TITAs are entered and revisit 1 flagged MCQ.',
+              caption: 'Final 1m TITA & flag audit.'
+            }
+          ]
+        },
+        readable: {
+          label: '(Readable-Paper · 4 RCs)',
+          title: 'Trigger: ONLY open RC #4 if you finish your first 3 RCs in \u226422 minutes (unusually light slot); otherwise stay locked on 3 RCs + 8 VA.',
+          poolBadge: 'Backup Plan · Target 18–19 Attempts',
+          toast: 'VARC: Readable-Paper (4 RCs) backup active',
+          segments: [
+            {
+              width: 75,
+              label: '4 RCs (~7.5m each · 13–14 Qs)',
+              time: '0–30m',
+              classes: 'bg-varc hover:bg-varc/90 text-white',
+              detail: 'VARC (Backup) | Min 0–30 (30m): Trigger: ONLY open RC #4 if you finish your first 3 RCs in \u226422 mins (unusually light slot); otherwise stay locked on 3 RCs + 8 VA. Pace ~7.5m/RC \u2192 13–14 Qs; bail at 45s on 50/50s.',
+              caption: 'ONLY open RC #4 if first 3 RCs finish in \u226422m (~7.5m/RC \u2192 13–14 Qs).'
+            },
+            {
+              width: 15,
+              label: '4 TITA VA',
+              time: '30–36m',
+              classes: 'bg-varc/75 hover:bg-varc/65 text-white',
+              detail: 'VARC (Backup) | Min 30–36 (6m): Hit all 4 TITA VA questions first (2 Para Jumbles + 2 Odd One Out \u2014 zero -1 penalty).',
+              caption: '4 TITA VA first (all 4, zero -1 penalty).'
+            },
+            {
+              width: 7.5,
+              label: 'MCQ',
+              time: '36–39m',
+              classes: 'bg-varc/40 hover:bg-varc/50 text-ink dark:text-darkInk',
+              detail: 'VARC (Backup) | Min 36–39 (3m): Pick 1–2 quick Para Summary / Para Completion MCQs for 18–19 total attempts.',
+              caption: '1–2 quick Summary/Completion MCQs (Target: 18–19 total).'
+            },
+            {
+              width: 2.5,
+              label: '1m',
+              time: '39–40m',
+              classes: 'bg-varc/20 hover:bg-varc/30 text-varc dark:text-indigo-300',
+              detail: 'VARC (Backup) | Min 39–40 (1m): Cleanup \u2014 confirm all 4 TITA boxes are filled and saved.',
+              caption: 'Cleanup \u2192 verify all 4 TITA boxes saved.'
+            }
+          ]
+        }
+      };
+
+      // Active state object
+      let state = {
+        updatedAt: 0,
+        theme: 'light',
+        varcOrder: 'standard',
+        checklist: {
+          'chk-bailout': false,
+          'chk-dilr-shield': false,
+          'chk-varc-gate': false,
+          'chk-qa-quarantine': false,
+          'chk-taper': false,
+          'chk-logistics': false
+        },
+        notes: {
+          overview: '',
+          varc: '',
+          dilr: '',
+          qa: ''
+        }
+      };
+
+      let toastTimer = null;
+
+      /**
+       * Show subtle non-blocking toast notification.
+       */
+      function showToast(message) {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+        toast.textContent = message;
+        toast.classList.remove('opacity-0', 'translate-y-2');
+        toast.classList.add('opacity-100', 'translate-y-0');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toast.classList.add('opacity-0', 'translate-y-2');
+          toast.classList.remove('opacity-100', 'translate-y-0');
+        }, 2200);
+      }
+
+      /**
+       * Load state by merging embedded HTML state with localStorage (newest timestamp wins).
+       */
+      function loadState() {
+        let embedded = null;
+        try {
+          const el = document.getElementById('embedded-user-state');
+          if (el && el.textContent.trim()) {
+            embedded = JSON.parse(el.textContent);
+          }
+        } catch (err) {
+          console.warn('Could not parse embedded state:', err);
+        }
+
+        let stored = null;
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            stored = JSON.parse(raw);
+          }
+        } catch (err) {
+          console.warn('localStorage unavailable:', err);
+        }
+
+        const source =
+          stored && embedded
+            ? (stored.updatedAt || 0) >= (embedded.updatedAt || 0)
+              ? stored
+              : embedded
+            : stored || embedded;
+
+        if (source) {
+          state = {
+            updatedAt: source.updatedAt || 0,
+            theme: source.theme === 'dark' ? 'dark' : 'light',
+            varcOrder: VALID_VARC_ORDERS.includes(source.varcOrder) ? source.varcOrder : 'standard',
+            checklist: Object.assign({}, state.checklist, source.checklist || {}),
+            notes: Object.assign({}, state.notes, source.notes || {})
+          };
+        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          state.theme = 'dark';
+        }
+      }
+
+      /**
+       * Persist state to localStorage and keep embedded JSON script synced.
+       */
+      function saveState() {
+        state.updatedAt = Date.now();
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (err) {
+          console.warn('Could not write to localStorage:', err);
+        }
+        const embeddedEl = document.getElementById('embedded-user-state');
+        if (embeddedEl) {
+          embeddedEl.textContent = '\n    ' + JSON.stringify(state, null, 2) + '\n  ';
+        }
+      }
+
+      /**
+       * Apply Light / Dark theme class and update toggle icon visibility.
+       */
+      function applyTheme(theme) {
+        const html = document.documentElement;
+        const iconSun = document.getElementById('icon-sun');
+        const iconMoon = document.getElementById('icon-moon');
+        if (theme === 'dark') {
+          html.classList.add('dark');
+          if (iconSun) iconSun.classList.remove('hidden');
+          if (iconMoon) iconMoon.classList.add('hidden');
+        } else {
+          html.classList.remove('dark');
+          if (iconSun) iconSun.classList.add('hidden');
+          if (iconMoon) iconMoon.classList.remove('hidden');
+        }
+      }
+
+      /**
+       * Switch active tab with crisp section-colored underline.
+       */
+      function activateTab(tabName) {
+        const accentMap = {
+          overview: 'border-ink dark:border-darkInk text-ink dark:text-darkInk',
+          varc: 'border-varc text-varc',
+          dilr: 'border-dilr text-dilr',
+          qa: 'border-qa text-qa'
+        };
+        const inactiveClasses = 'border-transparent text-muted dark:text-darkMuted hover:text-ink dark:hover:text-darkInk';
+
+        document.querySelectorAll('.tab-panel').forEach((panel) => {
+          panel.classList.toggle('hidden', panel.id !== 'panel-' + tabName);
+        });
+
+        document.querySelectorAll('.tab-btn').forEach((btn) => {
+          const isTarget = btn.dataset.tab === tabName;
+          btn.className =
+            'tab-btn group relative px-3.5 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap transition-colors border-b-2 cursor-pointer ' +
+            (isTarget ? accentMap[tabName] : inactiveClasses);
+          btn.setAttribute('aria-selected', isTarget ? 'true' : 'false');
+        });
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      /**
+       * Render VARC 40-minute timeline bars in BOTH Overview and VARC tab.
+       */
+      function renderVarcClock(orderKey) {
+        const config = VARC_ORDERS[orderKey] || VARC_ORDERS.standard;
+
+        // Sync toggle buttons across Overview and VARC tab
+        document.querySelectorAll('.varc-order-btn').forEach((btn) => {
+          const isSelected = btn.dataset.varcOrder === orderKey;
+          if (isSelected) {
+            btn.classList.add('bg-varc', 'text-white', 'shadow-sm');
+            btn.classList.remove('text-muted', 'dark:text-darkMuted', 'hover:text-ink', 'dark:hover:text-darkInk');
+          } else {
+            btn.classList.remove('bg-varc', 'text-white', 'shadow-sm');
+            btn.classList.add('text-muted', 'dark:text-darkMuted', 'hover:text-ink', 'dark:hover:text-darkInk');
+          }
+        });
+
+        // Update Overview mode label & bar
+        document.querySelectorAll('.varc-mode-label').forEach((el) => {
+          el.textContent = config.label;
+        });
+
+        const overviewBar = document.getElementById('overview-varc-bar');
+        if (overviewBar) {
+          overviewBar.innerHTML = config.segments
+            .map(
+              (seg) => `
+              <button
+                type="button"
+                data-accent="varc"
+                data-timeline-detail="${seg.detail.replace(/"/g, '&quot;')}"
+                style="width: ${seg.width}%"
+                class="timeline-seg ${seg.classes} font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate"
+              >
+                <span class="truncate max-w-full">${seg.label}</span>
+                <span class="text-[9px] opacity-85">${seg.time}</span>
+              </button>
+            `
+            )
+            .join('');
+        }
+
+        // Update VARC tab title, pool badge, bar, and caption cards
+        const varcTitle = document.getElementById('varc-order-title');
+        if (varcTitle) varcTitle.textContent = config.title;
+
+        const varcPoolBadge = document.getElementById('varc-pool-badge');
+        if (varcPoolBadge) varcPoolBadge.textContent = config.poolBadge;
+
+        const varcTabBar = document.getElementById('varc-tab-bar');
+        if (varcTabBar) {
+          varcTabBar.innerHTML = config.segments
+            .map(
+              (seg) => `
+              <div
+                style="width: ${seg.width}%"
+                title="${seg.detail.replace(/"/g, '&quot;')}"
+                class="${seg.classes} font-mono text-xs font-semibold flex flex-col items-center justify-center px-1 text-center truncate"
+              >
+                <span class="truncate max-w-full">${seg.label}</span>
+                <span class="text-[10px] opacity-85">${seg.time}</span>
+              </div>
+            `
+            )
+            .join('');
+        }
+
+        const varcCaption = document.getElementById('varc-order-caption');
+        if (varcCaption) {
+          const gridCols = config.segments.length === 5 ? 'lg:grid-cols-5' : 'lg:grid-cols-4';
+          varcCaption.className = `mt-3 grid grid-cols-1 sm:grid-cols-2 ${gridCols} gap-2.5 text-xs`;
+          varcCaption.innerHTML = config.segments
+            .map(
+              (seg) => `
+              <div class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
+                <span class="font-mono font-bold text-varc">${seg.time}:</span>
+                <span class="text-muted dark:text-darkMuted"> ${seg.caption}</span>
+              </div>
+            `
+            )
+            .join('');
+        }
+
+        bindOverviewTimelineSegments();
+      }
+
+      /**
+       * Bind interactive click readout for Overview 40-minute timeline bars.
+       */
+      function bindOverviewTimelineSegments() {
+        const readout = document.getElementById('overview-timeline-readout');
+        if (!readout) return;
+
+        const dotColorMap = {
+          varc: 'bg-varc',
+          dilr: 'bg-dilr',
+          qa: 'bg-qa'
+        };
+
+        document.querySelectorAll('#panel-overview .timeline-seg').forEach((seg) => {
+          seg.onclick = () => {
+            const detail = seg.getAttribute('data-timeline-detail');
+            if (!detail) return;
+            const accent = seg.getAttribute('data-accent') || 'varc';
+            const dotClass = dotColorMap[accent] || 'bg-varc';
+            readout.innerHTML = `<span class="w-2 h-2 rounded-full ${dotClass} shrink-0"></span><span class="text-ink dark:text-darkInk">${detail}</span>`;
+          };
+        });
+      }
+
+      /**
+       * Hydrate checklist checkboxes and update readiness counter.
+       */
+      function renderChecklist() {
+        const checkboxes = document.querySelectorAll('.reset-chk');
+        let checkedCount = 0;
+
+        checkboxes.forEach((chk) => {
+          const key = chk.dataset.chk;
+          const isChecked = Boolean(state.checklist[key]);
+          chk.checked = isChecked;
+          if (isChecked) checkedCount++;
+        });
+
+        const progressEl = document.getElementById('checklist-progress');
+        if (progressEl) {
+          progressEl.textContent = `${checkedCount} / ${checkboxes.length} Ready`;
+          if (checkedCount === checkboxes.length) {
+            progressEl.classList.add('text-dilr', 'border-dilr/40');
+          } else {
+            progressEl.classList.remove('text-dilr', 'border-dilr/40');
+          }
+        }
+      }
+
+      /**
+       * Hydrate personal notes textareas and "Saved" badges.
+       */
+      function renderNotes() {
+        document.querySelectorAll('textarea[data-note-key]').forEach((ta) => {
+          const key = ta.dataset.noteKey;
+          const val = state.notes[key] || '';
+          ta.value = val;
+          updateNoteBadge(key, val);
+        });
+      }
+
+      function updateNoteBadge(key, val) {
+        const badge = document.querySelector(`[data-note-badge="${key}"]`);
+        if (badge) {
+          badge.classList.toggle('hidden', !val.trim());
+        }
+      }
+
+      /**
+       * Export a clean, standalone copy of this HTML file with all current notes,
+       * checklist checked states, active theme, and active varcOrder embedded inside.
+       */
+      function exportUpdatedHtml() {
+        try {
+          saveState();
+
+          // Clone document so live DOM stays untouched
+          const clone = document.documentElement.cloneNode(true);
+
+          // Sync dark mode class on cloned root element
+          if (state.theme === 'dark') {
+            clone.classList.add('dark');
+          } else {
+            clone.classList.remove('dark');
+          }
+
+          // Write current textarea contents into cloned DOM
+          clone.querySelectorAll('textarea[data-note-key]').forEach((ta) => {
+            const key = ta.getAttribute('data-note-key');
+            ta.textContent = state.notes[key] || '';
+          });
+
+          // Write current checkbox checked attributes into cloned DOM
+          clone.querySelectorAll('input[data-chk]').forEach((chk) => {
+            const key = chk.getAttribute('data-chk');
+            if (state.checklist[key]) {
+              chk.setAttribute('checked', 'checked');
+            } else {
+              chk.removeAttribute('checked');
+            }
+          });
+
+          // Embed fresh JSON state (notes, checklist, theme, varcOrder, timestamp)
+          const embeddedClone = clone.querySelector('#embedded-user-state');
+          if (embeddedClone) {
+            embeddedClone.textContent = '\n    ' + JSON.stringify(state, null, 2) + '\n  ';
+          }
+
+          // Reset toast visibility in exported copy
+          const toastClone = clone.querySelector('#toast');
+          if (toastClone) {
+            toastClone.textContent = 'Saved';
+            toastClone.classList.add('opacity-0', 'translate-y-2');
+            toastClone.classList.remove('opacity-100', 'translate-y-0');
+          }
+
+          const htmlContent = '<!DOCTYPE html>\n' + clone.outerHTML;
+          const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+          const url = URL.createObjectURL(blob);
+
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'cat_99_exam_day_playbook.html';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+          showToast('Downloaded updated HTML with your notes');
+        } catch (err) {
+          console.error('Export failed:', err);
+          showToast('Export error — please try again');
+        }
+      }
+
+      /**
+       * Initialize application on DOM ready.
+       */
+      document.addEventListener('DOMContentLoaded', () => {
+        loadState();
+        applyTheme(state.theme);
+        activateTab('overview');
+        renderVarcClock(state.varcOrder);
+        renderChecklist();
+        renderNotes();
+
+        // Tab click listeners
+        document.querySelectorAll('.tab-btn').forEach((btn) => {
+          btn.addEventListener('click', () => activateTab(btn.dataset.tab));
+        });
+
+        // Keyboard shortcuts 1–4 for instant tab switching (when not typing)
+        document.addEventListener('keydown', (e) => {
+          const tag = (e.target && e.target.tagName) || '';
+          if (tag === 'TEXTAREA' || tag === 'INPUT' || e.metaKey || e.ctrlKey || e.altKey) return;
+          if (e.key === '1') activateTab('overview');
+          if (e.key === '2') activateTab('varc');
+          if (e.key === '3') activateTab('dilr');
+          if (e.key === '4') activateTab('qa');
+        });
+
+        // Light / Dark theme toggle
+        const btnTheme = document.getElementById('btn-theme');
+        if (btnTheme) {
+          btnTheme.addEventListener('click', () => {
+            state.theme = state.theme === 'dark' ? 'light' : 'dark';
+            applyTheme(state.theme);
+            saveState();
+          });
+        }
+
+        // Synced 3-Mode VARC Order Toggle (Overview & VARC tab)
+        document.querySelectorAll('.varc-order-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const nextOrder = btn.dataset.varcOrder;
+            if (!VALID_VARC_ORDERS.includes(nextOrder)) return;
+            state.varcOrder = nextOrder;
+            renderVarcClock(state.varcOrder);
+            saveState();
+            showToast(VARC_ORDERS[state.varcOrder].toast);
+          });
+        });
+
+        // Checklist persistence
+        document.querySelectorAll('.reset-chk').forEach((chk) => {
+          chk.addEventListener('change', () => {
+            state.checklist[chk.dataset.chk] = chk.checked;
+            renderChecklist();
+            saveState();
+          });
+        });
+
+        // Checklist reset button
+        const btnResetChecklist = document.getElementById('btn-reset-checklist');
+        if (btnResetChecklist) {
+          btnResetChecklist.addEventListener('click', () => {
+            Object.keys(state.checklist).forEach((k) => (state.checklist[k] = false));
+            renderChecklist();
+            saveState();
+            showToast('Checklist cleared');
+          });
+        }
+
+        // Personal Notes auto-save with debounce
+        let noteDebounce = null;
+        document.querySelectorAll('textarea[data-note-key]').forEach((ta) => {
+          ta.addEventListener('input', () => {
+            const key = ta.dataset.noteKey;
+            const statusEl = document.querySelector(`[data-note-status="${key}"]`);
+            if (statusEl) statusEl.textContent = 'Saving...';
+
+            state.notes[key] = ta.value;
+            updateNoteBadge(key, ta.value);
+
+            clearTimeout(noteDebounce);
+            noteDebounce = setTimeout(() => {
+              saveState();
+              if (statusEl) statusEl.textContent = 'Saved locally';
+            }, 300);
+          });
+        });
+
+        // Print / Save PDF (opens any non-empty notes drawers automatically)
+        const btnPrint = document.getElementById('btn-print');
+        if (btnPrint) {
+          btnPrint.addEventListener('click', () => {
+            document.querySelectorAll('.notes-drawer').forEach((drawer) => {
+              const ta = drawer.querySelector('textarea[data-note-key]');
+              if (ta && ta.value.trim()) {
+                drawer.setAttribute('open', 'open');
+              }
+            });
+            window.print();
+          });
+        }
+
+        // Download Updated HTML
+        const btnExport = document.getElementById('btn-export-html');
+        if (btnExport) {
+          btnExport.addEventListener('click', exportUpdatedHtml);
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
