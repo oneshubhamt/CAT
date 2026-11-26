@@ -3,7 +3,8 @@
 // Errors are deterministic geometric failures. Contrast/intentional desktop
 // mini-segment clipping are review warnings, not false claims of WCAG compliance.
 async function audit(page,{pinned=false,contrast=true}={}){
- return page.evaluate(({pinned,contrast})=>{
+ const expected=page.viewportSize();
+ return page.evaluate(({pinned,contrast,expected})=>{
   const rect=e=>e.getBoundingClientRect();
   const visible=e=>{
    if(!e.getClientRects().length||getComputedStyle(e).visibility==='hidden')return false;
@@ -22,6 +23,7 @@ async function audit(page,{pinned=false,contrast=true}={}){
    const key=severity+kind+item.element+JSON.stringify(detail);if(seen.has(key))return;seen.add(key);
    (severity==='error'?errors:warnings).push(item);
   };
+  if(expected&&width>expected.width+2)issue('error','expanded-layout-viewport',null,{expected:expected.width,actual:width});
   if(root.scrollWidth>width+2)issue('error','page-overflow',null,{scrollWidth:root.scrollWidth,width});
   const active=[...document.querySelectorAll('.tab-panel')].filter(visible);
   if(active.length!==1)issue('error','active-panel',null,{visible:active.length});
@@ -81,6 +83,6 @@ async function audit(page,{pinned=false,contrast=true}={}){
   const warningCounts={};for(const w of warnings)warningCounts[w.kind]=(warningCounts[w.kind]||0)+1;
   const kept={};const samples=warnings.filter(w=>(kept[w.kind]=(kept[w.kind]||0)+1)<=8);
   return {viewport:{width,height},scrollWidth:root.scrollWidth,scrollHeight:root.scrollHeight,header:{height:header.height,bottom:header.bottom,navTop:navRect.top},activePanel:active[0]?.id||null,elementsChecked:elements.length,contrastChecked,errors,warnings:samples,warningCounts,warningCount:allWarningCount};
- },{pinned,contrast});
+ },{pinned,contrast,expected});
 }
 module.exports={audit};
