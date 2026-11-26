@@ -51,6 +51,8 @@
         background: #FFFFFF !important;
         color: #1A1A19 !important;
       }
+      #quick-revision { display: none !important; }
+      #overview-full { display: block !important; }
       .no-print {
         display: none !important;
       }
@@ -223,7 +225,7 @@
               Combined planning range: <span data-plan="combined" class="text-dilr dark:text-emerald-300 font-bold">100–112 raw marks</span>
             </div>
             <div class="font-mono text-xs text-muted dark:text-darkMuted bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline px-3 py-1.5 rounded-lg">
-              Historical reference only: <span class="text-ink dark:text-darkInk font-semibold">CAT 2025 ~85 scaled marks at 99th percentile (indicative)</span>. Raw targets are not scaled-score forecasts.
+              Planning targets only. Raw marks are not scaled scores or percentile forecasts; recent-paper question counts are historical estimates.
             </div>
             <div class="font-mono text-xs text-muted dark:text-darkMuted bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline px-3 py-1.5 rounded-lg">
               3 &times; 40m = <span class="text-ink dark:text-darkInk font-semibold">120 Mins</span>
@@ -249,7 +251,7 @@
           <div class="rounded-xl p-4 bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-l-4 border-l-dilr">
             <div class="flex items-center justify-between gap-2">
               <span class="text-xs font-semibold uppercase tracking-wider text-dilr">DILR</span>
-              <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-dilr/10 text-dilr font-medium">30–36 raw marks</span>
+              <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-dilr/10 text-dilr font-medium">30–36 before penalties</span>
             </div>
             <p class="mt-2.5 text-lg font-bold tracking-tight font-mono">10–12 correct Qs</p>
             <p class="mt-1 text-xs text-muted dark:text-darkMuted leading-relaxed">
@@ -261,7 +263,7 @@
           <div class="rounded-xl p-4 bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-l-4 border-l-qa">
             <div class="flex items-center justify-between gap-2">
               <span class="text-xs font-semibold uppercase tracking-wider text-qa">QA</span>
-              <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-qa/10 text-qa font-medium">33–36 Marks</span>
+              <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-qa/10 text-qa font-medium">33–36 before penalties</span>
             </div>
             <p class="mt-2.5 text-lg font-bold tracking-tight font-mono">11–12 correct Qs</p>
             <p class="mt-1 text-xs text-muted dark:text-darkMuted leading-relaxed">
@@ -335,7 +337,7 @@
                 </div>
                 <div>
                   <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Pacing Cap</dt>
-                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium font-mono">14m/Set on Sets 1 &amp; 2 + final 30–45s TITA sweep</dd>
+                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium font-mono">14m/Set on Sets 1 &amp; 2 + final 1m save/TITA audit</dd>
                 </div>
                 <div>
                   <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Verification</dt>
@@ -512,7 +514,7 @@
               <button type="button" data-accent="dilr" data-timeline-detail="DILR | Min 18–32 (14m): Solve Set 2 completely targeting 100% accuracy. Write intermediate sums explicitly; run full clue check." style="width: 35%" class="timeline-seg bg-dilr/80 hover:bg-dilr/70 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
                 <span>Set 2</span><span class="text-[9px] opacity-85">18–32m</span>
               </button>
-              <button type="button" data-accent="dilr" data-timeline-detail="DILR | Min 32–40 (8m): Attack Set 3 — finish a quick 4-Q set OR cherry-pick 2–3 standalone/conditional Qs. Reserve final 30–45s to enter estimates in all blank DILR TITA boxes (~10–11 TITAs total, zero -1)." style="width: 20%" class="timeline-seg bg-dilr/40 hover:bg-dilr/50 text-ink dark:text-darkInk font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
+              <button type="button" data-accent="dilr" data-timeline-detail="DILR | 32–39: optional third-set opportunity or verified standalone/conditional questions. 39–40: save and TITA audit. Rebase these times after a set switch." style="width: 20%" class="timeline-seg bg-dilr/40 hover:bg-dilr/50 text-ink dark:text-darkInk font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
                 <span>Set 3 + TITA</span><span class="text-[9px] opacity-80">32–40m</span>
               </button>
             </div>
@@ -521,17 +523,17 @@
           <!-- QA Timeline Row -->
           <div>
             <div class="flex items-center justify-between text-xs mb-1.5">
-              <span class="font-semibold text-qa">QA <span class="font-mono font-normal text-muted dark:text-darkMuted ml-1">(Rolling 3-Round Triage &middot; ~7–8 TITAs)</span></span>
+              <span class="font-semibold text-qa">QA <span class="font-mono font-normal text-muted dark:text-darkMuted ml-1">(Rolling 3-Round Triage)</span></span>
               <span class="font-mono text-[11px] text-muted dark:text-darkMuted">00 &rarr; 40m</span>
             </div>
             <div class="flex w-full h-10 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
-              <button type="button" data-accent="qa" data-timeline-detail="QA | Round 1 (0–22m | 7–8 Qs | Max 2.5m/Q): Sitters only — Arithmetic (pen-down), Logs/Exponents, Number Theory, Mensuration, direct AP/GP &amp; Linear/Quadratic. Pure Geometry BANNED." style="width: 55%" class="timeline-seg bg-qa hover:bg-qa/90 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
+              <button type="button" data-accent="qa" data-timeline-detail="QA | Round 1 (0–22m | 7–8 attempted questions, flexible | Max 2.5m/Q): Sitters only — Arithmetic (pen-down), Logs/Exponents, Number Theory, Mensuration, direct AP/GP &amp; Linear/Quadratic. Skip complex pure geometry; allow direct mensuration or an obvious similarity/Pythagoras sitter." style="width: 55%" class="timeline-seg bg-qa hover:bg-qa/90 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
                 <span>Round 1: Sitters (7–8 Qs)</span><span class="text-[9px] opacity-85">0–22m</span>
               </button>
-              <button type="button" data-accent="qa" data-timeline-detail="QA | Round 2 (22–36m | 3–5 Qs as needed | Max 3.5m/Q): Marked-for-Review Algebra, lengthier Arithmetic, clean Functions. Pick highest confidence first." style="width: 35%" class="timeline-seg bg-qa/75 hover:bg-qa/65 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
+              <button type="button" data-accent="qa" data-timeline-detail="QA | Round 2 (22–36m | 3–5 additional attempts as needed | Max 3.5m/Q): Marked-for-Review Algebra, lengthier Arithmetic, clean Functions. Pick highest confidence first." style="width: 35%" class="timeline-seg bg-qa/75 hover:bg-qa/65 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
                 <span>Round 2: Mediums (3–5 Qs as needed)</span><span class="text-[9px] opacity-85">22–36m</span>
               </button>
-              <button type="button" data-accent="qa" data-timeline-detail="QA | Round 3 (36–40m | optional extra + TITA sweep): Finish 1 leftover doable Q and enter an educated guess in EVERY empty TITA box (~7–8 TITAs in QA, zero -1)." style="width: 10%" class="timeline-seg bg-qa/25 hover:bg-qa/35 text-qa dark:text-amber-300 font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
+              <button type="button" data-accent="qa" data-timeline-detail="QA | Round 3 (36–40m | optional extra + TITA sweep): Protect saved answers and reasoned TITA entries; attempt an extra question only if time permits." style="width: 10%" class="timeline-seg bg-qa/25 hover:bg-qa/35 text-qa dark:text-amber-300 font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
                 <span>R3</span><span class="text-[9px] opacity-80">36–40m</span>
               </button>
             </div>
@@ -609,7 +611,7 @@
             <input type="checkbox" data-chk="chk-bailout" class="reset-chk mt-0.5 w-4 h-4 rounded accent-ink dark:accent-darkInk shrink-0 cursor-pointer" />
             <span class="text-xs leading-relaxed">
               <strong class="block text-ink dark:text-darkInk font-semibold">Internalize the 3 Bail-Out Clocks</strong>
-              <span class="text-muted dark:text-darkMuted">VARC <span class="font-mono">45s</span> deadlock &middot; DILR <span class="font-mono">6–7m</span> blank grid &middot; QA <span class="font-mono">45s</span> ignition / <span class="font-mono">2.5m</span> R1 cap.</span>
+              <span class="text-muted dark:text-darkMuted">VARC <span class="font-mono">45s</span> deadlock &middot; DILR <span class="font-mono">6–7m</span> stalled without useful progress &middot; QA <span class="font-mono">45s</span> ignition / <span class="font-mono">2.5m</span> R1 cap.</span>
             </span>
           </label>
 
@@ -720,14 +722,14 @@
     <!-- =================================================================== -->
     <section id="panel-varc" class="tab-panel hidden space-y-6">
       <div class="hidden print-show-heading pb-2 border-b border-varc/30 mb-4">
-        <h2 class="text-xl font-bold text-varc">02. VARC — 3 RCs + 8 VA Playbook</h2>
+        <h2 class="text-xl font-bold text-varc">02. VARC — <span data-plan="heading">3 RCs + 8 VA strategy</span></h2>
       </div>
 
       <!-- 1. VARC Header & Interactive 3-Mode 40-Minute Clock Toggle -->
       <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-t-4 border-t-varc rounded-xl p-5 sm:p-6">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-hairline dark:border-darkHairline">
           <div>
-            <span class="font-mono text-[11px] uppercase tracking-wider text-varc font-semibold">VARC &middot; 24 Questions &middot; 40 Mins</span>
+            <span class="font-mono text-[11px] uppercase tracking-wider text-varc font-semibold">VARC &middot; recent pattern: 24 Qs &middot; 40 Mins</span>
             <h2 class="text-xl sm:text-2xl font-bold tracking-tight mt-0.5"><span data-plan="heading">3 RCs + 8 VA strategy (17–18 attempts)</span></h2>
           </div>
 
@@ -1074,7 +1076,7 @@
       <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-t-4 border-t-dilr rounded-xl p-5 sm:p-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-hairline dark:border-darkHairline">
           <div>
-            <span class="font-mono text-[11px] uppercase tracking-wider text-dilr font-semibold">DILR &middot; 5 Sets (Three 4-Q + Two 5-Q) / 22 Qs (~10–11 TITAs) &middot; 40 Mins</span>
+            <span class="font-mono text-[11px] uppercase tracking-wider text-dilr font-semibold">DILR &middot; recent pattern: 5 sets / 22 Qs &middot; 40 Mins</span>
             <h2 class="text-xl sm:text-2xl font-bold tracking-tight mt-0.5">2 full sets, checked + Set 3 Cherry-Pick</h2>
           </div>
           <span class="font-mono text-xs px-2.5 py-1 rounded-md bg-dilr/10 text-dilr font-semibold self-start sm:self-auto shrink-0">Target: 10–12 correct = 30–36 before penalties</span>
@@ -1109,7 +1111,7 @@
               <span class="font-mono font-bold text-dilr">18–32m:</span> Crack Set 2 cleanly; run full clue back-check.
             </div>
             <div class="p-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
-              <span class="font-mono font-bold text-dilr">32–40m:</span> Finish quick 4-Q set OR cherry-pick 2–3 standalone/conditional Qs + final 30–45s TITA sweep on all blank TITA boxes.
+              <span class="font-mono font-bold text-dilr">32–40m:</span> 32–39 optional third-set opportunity or verified partial questions; 39–40 save and TITA audit. Rebase after a switch.
             </div>
           </div>
 
@@ -1117,7 +1119,7 @@
           <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2.5 text-xs">
             <div class="p-3 rounded-lg bg-dilr/[0.06] dark:bg-dilr/15 border border-dilr/20 leading-relaxed">
               <strong class="font-mono text-[10px] uppercase tracking-wider text-dilr block mb-0.5">5-Q Set ROI Tie-Breaker</strong>
-              <span class="text-muted dark:text-darkMuted">If a <strong class="text-ink dark:text-darkInk">5-Q set</strong> and a <strong class="text-ink dark:text-darkInk">4-Q set</strong> look equally clean in your 4-min scan, pick the 5-Q set first (<span class="font-mono text-dilr font-semibold">+3 extra marks</span> for the same setup effort).</span>
+              <span class="text-muted dark:text-darkMuted">If a <strong class="text-ink dark:text-darkInk">5-Q set</strong> and a <strong class="text-ink dark:text-darkInk">4-Q set</strong> look equally clean in your 4-min scan, pick the 5-Q set first (<span class="font-mono text-dilr font-semibold">+3 extra marks</span> if the additional question is solved correctly for comparable overall effort).</span>
             </div>
             <div class="p-3 rounded-lg bg-qa/[0.06] dark:bg-qa/15 border border-qa/20 leading-relaxed">
               <strong class="font-mono text-[10px] uppercase tracking-wider text-qa block mb-0.5">On-Screen Calculator Discipline</strong>
@@ -1217,7 +1219,7 @@
             <li class="flex gap-2.5">
               <span class="font-mono font-bold text-dilr bg-dilr/10 w-5 h-5 rounded flex items-center justify-center shrink-0 mt-0.5">1</span>
               <span>
-                <strong class="text-ink dark:text-darkInk">20–60s Clue Back-Check:</strong> Re-read <strong>EVERY numbered constraint</strong> top-to-bottom against your filled grid before marking a single answer.
+                <strong class="text-ink dark:text-darkInk">20–60s Clue Back-Check:</strong> Check all relevant constraints against the model for a full set; for independent partial questions, verify the premises and answer without waiting for a complete grid.
               </span>
             </li>
             <li class="flex gap-2.5">
@@ -1255,7 +1257,7 @@
               <div class="bg-dilr/80 text-white flex items-center justify-center" style="width:35%">25–39</div>
               <div class="bg-dilr/20" style="width:2.5%"></div>
             </div>
-            <p class="mt-2 text-xs leading-relaxed">0–4 scan; 4–18 verified first set; 18–24/25 stalled second; 25–39 next viable set; 39–40 audit. Your completed first set is secure; do not chase the failed set.</p>
+            <p class="mt-2 text-xs leading-relaxed">0–4 scan; 4–18 verified first set; 18–24/25 stalled second; 25–39 next viable set; 39–40 audit. Preserve saved, verified first-set answers; do not chase the failed set.</p>
           </article>
         </div>
         <p class="mt-3 text-xs leading-relaxed text-muted dark:text-darkMuted"><strong class="text-ink dark:text-darkInk">Late failure / both stall:</strong> recalculate remaining minutes after reserving the last minute. Prefer independently answerable questions or a partly solved set with a credible breakthrough. If no complete set is feasible, protect reliable partial marks and reasoned TITA entries. Never invent a full solution to meet a target.</p>
@@ -1331,7 +1333,7 @@
       <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-t-4 border-t-qa rounded-xl p-5 sm:p-6">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-hairline dark:border-darkHairline">
           <div>
-            <span class="font-mono text-[11px] uppercase tracking-wider text-qa font-semibold">QA &middot; 22 Questions (~7–8 TITAs) &middot; 40 Mins</span>
+            <span class="font-mono text-[11px] uppercase tracking-wider text-qa font-semibold">QA &middot; recent pattern: 22 Qs &middot; 40 Mins</span>
             <h2 class="text-xl sm:text-2xl font-bold tracking-tight mt-0.5">8–10 &rarr; 11–12 correct answers (33–36 before penalties)</h2>
             <p class="mt-1.5 font-mono text-[11px] text-muted dark:text-darkMuted">
               Recent-paper estimates: Arithmetic 7–9 and Algebra 4–8 questions depending on slot and classification; Number System may offer additional opportunities. Verify actual counts and marking on exam day.
@@ -1439,7 +1441,7 @@
               <h4 class="font-bold text-xs sm:text-sm">15-Second "Final-8-Words" Audit</h4>
             </div>
             <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">
-              Before clicking <strong class="text-ink dark:text-darkInk">Save &amp; Next</strong>, re-read <strong>ONLY the last 8–10 words</strong> of the prompt. Silly errors happen at the finish line — catch <span class="font-mono text-ink dark:text-darkInk">x</span> vs <span class="font-mono text-ink dark:text-darkInk">2x</span>, <em>"time taken by B alone"</em>, or <em>"% more than"</em> before losing 4 marks.
+              Before clicking <strong class="text-ink dark:text-darkInk">Save &amp; Next</strong>, re-read the requested value (often the last 8–10 words), unit, sign, domain and answer format. Silly errors happen at the finish line — catch <span class="font-mono text-ink dark:text-darkInk">x</span> vs <span class="font-mono text-ink dark:text-darkInk">2x</span>, <em>"time taken by B alone"</em>, or <em>"% more than"</em> before losing 4 marks.
             </p>
           </div>
 
@@ -1605,8 +1607,8 @@
         {label:'Stretch',varc:44,dilr:39,qa:39,action:'Add only viable opportunities after primary work.'}
       ];
       const MODE_PLANS = {
-        standard:{heading:'3 RCs + 8 VA strategy',attempts:[17,18],marks:[37,40],summary:'3 RCs + 8 VA (20-question pool). Aim for 10–11 RC, 4 TITA VA and 3–4 MCQ VA.',gate:'45–60s P1 gate; default to three readable RCs. Consider the fourth only under the readable-paper trigger.',checkTitle:'Commit to Standard (3 RCs)',checkDetail:'Protect three readable RCs and all available TITA VA; do not force weak MCQs.',scoreExample:'Illustrative: 17–18 attempts, 13–14 correct, 2 wrong MCQs and 2 wrong TITAs = 37–40 raw marks (about 76–78% accuracy).',quick:'0–25 RCs · 25–32 TITA VA · 32–39 MCQ VA · 39–40 cleanup'},
-        split:{heading:'Anti-fatigue split (3 RCs + 8 VA)',attempts:[17,18],marks:[37,40],summary:'2 RCs → TITA VA → 1 RC → MCQ VA (20-question pool). Aim for 10–11 RC, 4 TITA VA and 3–4 MCQ VA.',gate:'45–60s P1 gate; use the initial 1m allowance and protect the early TITA block. Do not force a fourth RC.',checkTitle:'Commit to Anti-Fatigue Split',checkDetail:'2 RCs, TITA VA, 1 RC, MCQ VA; protect the cleanup minute.',scoreExample:'Illustrative: 17–18 attempts, 13–14 correct, 2 wrong MCQs and 2 wrong TITAs = 37–40 raw marks (about 76–78% accuracy).',quick:'0–17 two RCs · 17–24 TITA VA · 24–32 third RC · 32–39 MCQ VA · 39–40 cleanup'},
+        standard:{heading:'3 RCs + 8 VA strategy',attempts:[17,18],marks:[37,40],summary:'3 RCs + 8 VA (20-question pool). Aim for 10–11 RC, 4 TITA VA and 3–4 MCQ VA; 17–18 primary, 19 optional.',gate:'45–60s P1 gate; default to three readable RCs. Consider the fourth only under the readable-paper trigger.',checkTitle:'Commit to Standard (3 RCs)',checkDetail:'Protect three readable RCs and all available TITA VA; do not force weak MCQs.',scoreExample:'Illustrative: 17–18 attempts, 13–14 correct, 2 wrong MCQs and 2 wrong TITAs = 37–40 raw marks (about 76–78% accuracy).',quick:'0–25 RCs · 25–32 TITA VA · 32–39 MCQ VA · 39–40 cleanup'},
+        split:{heading:'Anti-fatigue split (3 RCs + 8 VA)',attempts:[17,18],marks:[37,40],summary:'2 RCs → TITA VA → 1 RC → MCQ VA (20-question pool). Aim for 10–11 RC, 4 TITA VA and 3–4 MCQ VA; 17–18 primary, 19 optional.',gate:'45–60s P1 gate; use the initial 1m allowance and protect the early TITA block. Do not force a fourth RC.',checkTitle:'Commit to Anti-Fatigue Split',checkDetail:'2 RCs, TITA VA, 1 RC, MCQ VA; protect the cleanup minute.',scoreExample:'Illustrative: 17–18 attempts, 13–14 correct, 2 wrong MCQs and 2 wrong TITAs = 37–40 raw marks (about 76–78% accuracy).',quick:'0–17 two RCs · 17–24 TITA VA · 24–32 third RC · 32–39 MCQ VA · 39–40 cleanup'},
         readable:{heading:'Readable-paper alternative (4 RCs + selective VA)',attempts:[18,20],marks:[40,43],summary:'4 RCs + selective VA (24-question potential pool). Aim for 13–14 RC, 4 TITA VA and 1–2 MCQ VA.',gate:'Use only if three RCs finish within 22 elapsed minutes and RC #4 is more attractive than remaining VA. Otherwise revert to Standard.',checkTitle:'Understand Readable-Paper trigger',checkDetail:'Fourth RC only if early and worthwhile; protect TITA VA and one-minute cleanup.',scoreExample:'Illustrative: 18–19 attempts, 14–15 correct, 2 wrong MCQs and 2 wrong TITAs = 40–43 raw marks. A 20th attempt is optional, not required.',quick:'0–30 four RCs (conditional) · 30–36 TITA VA · 36–39 selective MCQ VA · 39–40 cleanup'}
       };
       function planValues(mode) {
@@ -2243,6 +2245,8 @@
             .join('');
         }
 
+        const inspector = document.getElementById("overview-timeline-readout");
+        if (inspector) inspector.textContent = "Select any time segment above to inspect its exact clock rule.";
         bindOverviewTimelineSegments();
       }
 
