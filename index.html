@@ -13,7 +13,7 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Custom Swiss-Editorial Design Tokens -->
+  <!-- region:design-tokens | Custom Swiss-Editorial Design Tokens -->
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -44,7 +44,7 @@
     };
   </script>
 
-  <!-- Print Styles: Prints All 4 Tabs Cleanly With Zero UI Clutter -->
+  <!-- region:print-styles | Prints all four tabs -->
   <style>
     @media print {
       body {
@@ -73,7 +73,7 @@
     }
   </style>
 
-  <!-- Versioned portable record snapshot; browser persistence is handled by IndexedDB. -->
+  <!-- region:portable-state | Versioned portable record snapshot; browser persistence is handled by IndexedDB. -->
   <script id="embedded-user-state" type="application/json">
     {"schemaVersion":2,"records":[]}
   </script>
@@ -81,7 +81,7 @@
 <body class="bg-canvas text-ink dark:bg-darkCanvas dark:text-darkInk font-sans antialiased selection:bg-varc/15 selection:text-varc transition-colors duration-200 min-h-screen flex flex-col">
 
   <!-- ===================================================================== -->
-  <!-- STICKY TOP NAVIGATION BAR                                             -->
+  <!-- region:toolbar | STICKY TOP NAVIGATION BAR -->
   <!-- ===================================================================== -->
   <header class="no-print sticky top-0 z-40 bg-canvas/90 dark:bg-darkCanvas/90 backdrop-blur-md border-b border-hairline dark:border-darkHairline">
     <div class="max-w-6xl mx-auto px-4 sm:px-6">
@@ -175,14 +175,14 @@
   <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
 
     <!-- =================================================================== -->
-    <!-- TAB 1: OVERVIEW & CLOCKS                                            -->
+    <!-- region:overview | Overview and clocks -->
     <!-- =================================================================== -->
     <section id="panel-overview" class="tab-panel space-y-6">
       <div class="hidden print-show-heading pb-2 border-b border-hairline mb-4">
         <h2 class="text-xl font-bold">01. Overview &amp; Clocks — CAT 99+ Exam-Day Playbook</h2>
       </div>
 
-      <!-- Compact revision: same active VARC model as the detailed view -->
+      <!-- region:quick-revision | Same active VARC model as detailed view -->
       <section id="quick-revision" hidden class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-4 sm:p-6" aria-labelledby="quick-revision-title">
         <div class="flex items-center justify-between gap-3 mb-3">
           <div><h2 id="quick-revision-title" tabindex="-1" class="text-lg font-bold">60-second revision</h2><p class="text-xs text-muted dark:text-darkMuted">Recall the clock, the exit rule and the final verification. Not a countdown timer.</p></div>
@@ -657,7 +657,7 @@
         </div>
       </div>
 
-      <!-- Unified Error Log -->
+      <!-- region:error-log | Unified error log -->
       <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6" aria-labelledby="error-log-title">
         <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-hairline dark:border-darkHairline">
           <div><h3 id="error-log-title" class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">Daily Error Log</h3>
@@ -718,7 +718,7 @@
     </section>
 
     <!-- =================================================================== -->
-    <!-- TAB 2: VARC (3 RCs + 8 VA PLAYBOOK)                                 -->
+    <!-- region:varc | VARC playbook -->
     <!-- =================================================================== -->
     <section id="panel-varc" class="tab-panel hidden space-y-6">
       <div class="hidden print-show-heading pb-2 border-b border-varc/30 mb-4">
@@ -1065,7 +1065,7 @@
     </section>
 
     <!-- =================================================================== -->
-    <!-- TAB 3: DILR (BREAKTHROUGH PLAYBOOK)                                 -->
+    <!-- region:dilr | DILR playbook -->
     <!-- =================================================================== -->
     <section id="panel-dilr" class="tab-panel hidden space-y-6">
       <div class="hidden print-show-heading pb-2 border-b border-dilr/30 mb-4">
@@ -1322,7 +1322,7 @@
     </section>
 
     <!-- =================================================================== -->
-    <!-- TAB 4: QA (8-10 -> 11-12 CLEAN ATTEMPTS)                            -->
+    <!-- region:qa | QA playbook -->
     <!-- =================================================================== -->
     <section id="panel-qa" class="tab-panel hidden space-y-6">
       <div class="hidden print-show-heading pb-2 border-b border-qa/30 mb-4">
@@ -1604,164 +1604,257 @@
 
       // <module:strategy> Pure exam strategy, clocks and score derivation
       const strategy = (() => {
-        const VALID_VARC_ORDERS = ['standard', 'split', 'readable'];
-
-        // Common raw-score planning model; no predicted percentile or guaranteed floor.
-        const SCORE_TARGETS = {dilr:[30,36],qa:[33,36]};
-        const SCENARIOS = [
-          {label:'Minimum / recovery',varc:30,dilr:24,qa:24,action:'Protect attainable marks; do not compensate recklessly.'},
-          {label:'Primary',varc:38,dilr:30,qa:33,action:'Execute the selected pacing plan; two viable DILR sets.'},
-          {label:'Stretch',varc:44,dilr:39,qa:39,action:'Add only viable opportunities after primary work.'}
-        ];
-        const MODE_PLANS = {
-          standard:{heading:'3 RCs + 8 VA strategy',attempts:[17,18],marks:[37,40],summary:'3 RCs + 8 VA (20-question pool). Aim for 10–11 RC, 4 TITA VA and 3–4 MCQ VA; 17–18 primary, 19 optional.',gate:'45–60s P1 gate; default to three readable RCs. Consider the fourth only under the readable-paper trigger.',checkTitle:'Commit to Standard (3 RCs)',checkDetail:'Protect three readable RCs and all available TITA VA; do not force weak MCQs.',scoreExample:'Illustrative: 17–18 attempts, 13–14 correct, 2 wrong MCQs and 2 wrong TITAs = 37–40 raw marks (about 76–78% accuracy).',quick:'0–25 RCs · 25–32 TITA VA · 32–39 MCQ VA · 39–40 cleanup'},
-          split:{heading:'Anti-fatigue split (3 RCs + 8 VA)',attempts:[17,18],marks:[37,40],summary:'2 RCs → TITA VA → 1 RC → MCQ VA (20-question pool). Aim for 10–11 RC, 4 TITA VA and 3–4 MCQ VA; 17–18 primary, 19 optional.',gate:'45–60s P1 gate; use the initial 1m allowance and protect the early TITA block. Do not force a fourth RC.',checkTitle:'Commit to Anti-Fatigue Split',checkDetail:'2 RCs, TITA VA, 1 RC, MCQ VA; protect the cleanup minute.',scoreExample:'Illustrative: 17–18 attempts, 13–14 correct, 2 wrong MCQs and 2 wrong TITAs = 37–40 raw marks (about 76–78% accuracy).',quick:'0–17 two RCs · 17–24 TITA VA · 24–32 third RC · 32–39 MCQ VA · 39–40 cleanup'},
-          readable:{heading:'Readable-paper alternative (4 RCs + selective VA)',attempts:[18,20],marks:[40,43],summary:'4 RCs + selective VA (24-question potential pool). Aim for 13–14 RC, 4 TITA VA and 1–2 MCQ VA.',gate:'Use only if three RCs finish within 22 elapsed minutes and RC #4 is more attractive than remaining VA. Otherwise revert to Standard.',checkTitle:'Understand Readable-Paper trigger',checkDetail:'Fourth RC only if early and worthwhile; protect TITA VA and one-minute cleanup.',scoreExample:'Illustrative: 18–19 attempts, 14–15 correct, 2 wrong MCQs and 2 wrong TITAs = 40–43 raw marks. A 20th attempt is optional, not required.',quick:'0–30 four RCs (conditional) · 30–36 TITA VA · 36–39 selective MCQ VA · 39–40 cleanup'}
+        // Author each mode here. Minute boundaries derive the rendered bar widths.
+        const SCORE_TARGETS = {
+          "dilr": [
+            30,
+            36
+          ],
+          "qa": [
+            33,
+            36
+          ]
         };
-        function planValues(mode) {
-          const p = MODE_PLANS[mode] || MODE_PLANS.standard;
-          const range = a => a.join('–');
-          return {...p,quick:VARC_ORDERS[mode]?.segments.map(seg=>seg.time+' '+seg.label).join(' · ') || p.quick,heading:p.heading+' ('+range(p.attempts)+' attempts)',attempts:range(p.attempts)+' attempts',varcMarks:range(p.marks)+' illustrative raw marks',combined:range(p.marks.map((v,i)=>v+SCORE_TARGETS.dilr[i]+SCORE_TARGETS.qa[i]))+' raw marks'};
-        }
-
-        // 3-Mode VARC Clock Configurations (Standard / Anti-Fatigue Split / Readable-Paper 4-RC Backup)
-        const VARC_ORDERS = {
-          standard: {
-            label: '(Standard · 3 RCs)',
-            title: 'Standard (3 RCs): 3 RCs \u2192 4 TITA VA \u2192 4 MCQ VA \u2192 1m Cleanup',
-            poolBadge: '20-Q Active Pool · Target 17–18',
-            toast: 'VARC: Standard (3 RCs) active',
-            segments: [
+        const SCENARIOS = [
+          {
+            "label": "Minimum / recovery",
+            "varc": 30,
+            "dilr": 24,
+            "qa": 24,
+            "action": "Protect attainable marks; do not compensate recklessly."
+          },
+          {
+            "label": "Primary",
+            "varc": 38,
+            "dilr": 30,
+            "qa": 33,
+            "action": "Execute the selected pacing plan; two viable DILR sets."
+          },
+          {
+            "label": "Stretch",
+            "varc": 44,
+            "dilr": 39,
+            "qa": 39,
+            "action": "Add only viable opportunities after primary work."
+          }
+        ];
+        const MODES = {
+          "standard": {
+            "heading": "3 RCs + 8 VA strategy",
+            "attempts": [
+              17,
+              18
+            ],
+            "marks": [
+              37,
+              40
+            ],
+            "summary": "3 RCs + 8 VA (20-question pool). Aim for 10–11 RC, 4 TITA VA and 3–4 MCQ VA; 17–18 primary, 19 optional.",
+            "gate": "45–60s P1 gate; default to three readable RCs. Consider the fourth only under the readable-paper trigger.",
+            "checkTitle": "Commit to Standard (3 RCs)",
+            "checkDetail": "Protect three readable RCs and all available TITA VA; do not force weak MCQs.",
+            "scoreExample": "Illustrative: 17–18 attempts, 13–14 correct, 2 wrong MCQs and 2 wrong TITAs = 37–40 raw marks (about 76–78% accuracy).",
+            "pool": 20,
+            "label": "(Standard · 3 RCs)",
+            "title": "Standard (3 RCs): 3 RCs → 4 TITA VA → 4 MCQ VA → 1m Cleanup",
+            "toast": "VARC: Standard (3 RCs) active",
+            "segments": [
               {
-                width: 62.5,
-                label: '3 RCs (10–11 Qs)',
-                time: '0–25m',
-                classes: 'bg-varc hover:bg-varc/90 text-white',
-                detail: 'VARC | Min 0–25 (25m): Solve your best 3 RCs (~8m/RC + 1m P1 reject buffer) \u2192 10–11 Qs. 3:30 structural read + 4:30 Qs; flag unresolved MCQs unanswered at 45s.',
-                caption: '3 RCs (~8m each + 1m reject buffer) \u2192 10–11 Qs.'
+                "start": 0,
+                "end": 25,
+                "label": "3 RCs (10–11 Qs)",
+                "classes": "bg-varc hover:bg-varc/90 text-white",
+                "detail": "VARC | Min 0–25 (25m): Solve your best 3 RCs (~8m/RC + 1m P1 reject buffer) → 10–11 Qs. 3:30 structural read + 4:30 Qs; flag unresolved MCQs unanswered at 45s.",
+                "caption": "3 RCs (~8m each + 1m reject buffer) → 10–11 Qs."
               },
               {
-                width: 17.5,
-                label: '4 TITA VA',
-                time: '25–32m',
-                classes: 'bg-varc/75 hover:bg-varc/65 text-white',
-                detail: 'VARC | Min 25–32 (7m): 2 Para Jumbles + 2 Odd One Out (~1:45/Q). Zero negative marking \u2014 attempt all 4 unconditionally, cap at 2:00/Q.',
-                caption: '4 TITA VA (2 PJ + 2 Odd Out) \u2192 Attempt all 4 (no -1).'
+                "start": 25,
+                "end": 32,
+                "label": "4 TITA VA",
+                "classes": "bg-varc/75 hover:bg-varc/65 text-white",
+                "detail": "VARC | Min 25–32 (7m): 2 Para Jumbles + 2 Odd One Out (~1:45/Q). Zero negative marking — attempt all 4 unconditionally, cap at 2:00/Q.",
+                "caption": "4 TITA VA (2 PJ + 2 Odd Out) → Attempt all 4 (no -1)."
               },
               {
-                width: 17.5,
-                label: '4 MCQ VA',
-                time: '32–39m',
-                classes: 'bg-varc/40 hover:bg-varc/50 text-ink dark:text-darkInk',
-                detail: 'VARC | Min 32–39 (7m): 2 Para Summary + 2 Para Completion (~1:45/Q). Target 3–4 clean Qs; flag unresolved MCQs unanswered at 45s.',
-                caption: '4 MCQ VA (2 Summary + 2 Completion) \u2192 3–4 clean Qs.'
+                "start": 32,
+                "end": 39,
+                "label": "4 MCQ VA",
+                "classes": "bg-varc/40 hover:bg-varc/50 text-ink dark:text-darkInk",
+                "detail": "VARC | Min 32–39 (7m): 2 Para Summary + 2 Para Completion (~1:45/Q). Target 3–4 clean Qs; flag unresolved MCQs unanswered at 45s.",
+                "caption": "4 MCQ VA (2 Summary + 2 Completion) → 3–4 clean Qs."
               },
               {
-                width: 2.5,
-                label: '1m',
-                time: '39–40m',
-                classes: 'bg-varc/20 hover:bg-varc/30 text-varc dark:text-indigo-300',
-                detail: 'VARC | Min 39–40 (1m): Cleanup \u2014 confirm all 4 TITA boxes are filled; revisit a genuinely shortlisted MCQ only after clearer opportunities and TITA saves.',
-                caption: 'Cleanup \u2192 confirm all 4 TITA entries saved.'
+                "start": 39,
+                "end": 40,
+                "label": "1m",
+                "classes": "bg-varc/20 hover:bg-varc/30 text-varc dark:text-indigo-300",
+                "detail": "VARC | Min 39–40 (1m): Cleanup — confirm all 4 TITA boxes are filled; revisit a genuinely shortlisted MCQ only after clearer opportunities and TITA saves.",
+                "caption": "Cleanup → confirm all 4 TITA entries saved."
               }
             ]
           },
-          split: {
-            label: '(Anti-Fatigue Split)',
-            title: 'Anti-Fatigue Split: 2 RCs (17m, including gate) → TITA VA (7m) → RC #3 (8m) → MCQ VA (7m) → cleanup (1m)',
-            poolBadge: '20-Q Active Pool · Target 17–18',
-            toast: 'VARC: Anti-Fatigue Split active',
-            segments: [
+          "split": {
+            "heading": "Anti-fatigue split (3 RCs + 8 VA)",
+            "attempts": [
+              17,
+              18
+            ],
+            "marks": [
+              37,
+              40
+            ],
+            "summary": "2 RCs → TITA VA → 1 RC → MCQ VA (20-question pool). Aim for 10–11 RC, 4 TITA VA and 3–4 MCQ VA; 17–18 primary, 19 optional.",
+            "gate": "45–60s P1 gate; use the initial 1m allowance and protect the early TITA block. Do not force a fourth RC.",
+            "checkTitle": "Commit to Anti-Fatigue Split",
+            "checkDetail": "2 RCs, TITA VA, 1 RC, MCQ VA; protect the cleanup minute.",
+            "scoreExample": "Illustrative: 17–18 attempts, 13–14 correct, 2 wrong MCQs and 2 wrong TITAs = 37–40 raw marks (about 76–78% accuracy).",
+            "pool": 20,
+            "label": "(Anti-Fatigue Split)",
+            "title": "Anti-Fatigue Split: 2 RCs (17m, including gate) → TITA VA (7m) → RC #3 (8m) → MCQ VA (7m) → cleanup (1m)",
+            "toast": "VARC: Anti-Fatigue Split active",
+            "segments": [
               {
-                width: 42.5,
-                label: '2 RCs',
-                time: '0–17m',
-                classes: 'bg-varc hover:bg-varc/90 text-white',
-                detail: 'VARC | Min 0–17 (17m): Solve your first 2 readable RCs (~8m each plus 1m gate allowance) while focus is sharpest. Enforce 45–60s P1 gate.',
-                caption: 'First 2 RCs (~8m each + 1m gate) \u2192 6–8 Qs; aim for 10–11 across three RCs.'
+                "start": 0,
+                "end": 17,
+                "label": "2 RCs",
+                "classes": "bg-varc hover:bg-varc/90 text-white",
+                "detail": "VARC | Min 0–17 (17m): Solve your first 2 readable RCs (~8m each plus 1m gate allowance) while focus is sharpest. Enforce 45–60s P1 gate.",
+                "caption": "First 2 RCs (~8m each + 1m gate) → 6–8 Qs; aim for 10–11 across three RCs."
               },
               {
-                width: 17.5,
-                label: '4 TITA VA',
-                time: '17–24m',
-                classes: 'bg-varc/70 hover:bg-varc/60 text-white',
-                detail: 'VARC | Min 17–24 (7m): Palate cleanser \u2014 knock out 2 Para Jumbles + 2 Odd One Out (zero negative marking) before RC #3.',
-                caption: '4 TITA VA palate cleanser \u2192 all 4 locked early.'
+                "start": 17,
+                "end": 24,
+                "label": "4 TITA VA",
+                "classes": "bg-varc/70 hover:bg-varc/60 text-white",
+                "detail": "VARC | Min 17–24 (7m): Palate cleanser — knock out 2 Para Jumbles + 2 Odd One Out (zero negative marking) before RC #3.",
+                "caption": "4 TITA VA palate cleanser → all 4 locked early."
               },
               {
-                width: 20,
-                label: 'RC #3',
-                time: '24–32m',
-                classes: 'bg-varc hover:bg-varc/90 text-white',
-                detail: 'VARC | Min 24–32 (8m): Return fresh for RC #3. 3:30 structural read + 4:30 Qs; don\'t force 4/4.',
-                caption: 'RC #3 with fresh eyes \u2192 3–4 Qs.'
+                "start": 24,
+                "end": 32,
+                "label": "RC #3",
+                "classes": "bg-varc hover:bg-varc/90 text-white",
+                "detail": "VARC | Min 24–32 (8m): Return fresh for RC #3. 3:30 structural read + 4:30 Qs; don't force 4/4.",
+                "caption": "RC #3 with fresh eyes → 3–4 Qs."
               },
               {
-                width: 17.5,
-                label: '4 MCQ VA',
-                time: '32–39m',
-                classes: 'bg-varc/40 hover:bg-varc/50 text-ink dark:text-darkInk',
-                detail: 'VARC | Min 32–39 (7m): 2 Para Summary + 2 Para Completion (~1:45/Q). High-accuracy finish; flag unresolved MCQs unanswered at 45s.',
-                caption: '4 MCQ VA (Summary + Completion) \u2192 3–4 Qs.'
+                "start": 32,
+                "end": 39,
+                "label": "4 MCQ VA",
+                "classes": "bg-varc/40 hover:bg-varc/50 text-ink dark:text-darkInk",
+                "detail": "VARC | Min 32–39 (7m): 2 Para Summary + 2 Para Completion (~1:45/Q). High-accuracy finish; flag unresolved MCQs unanswered at 45s.",
+                "caption": "4 MCQ VA (Summary + Completion) → 3–4 Qs."
               },
               {
-                width: 2.5,
-                label: '1m',
-                time: '39–40m',
-                classes: 'bg-varc/20 hover:bg-varc/30 text-varc dark:text-indigo-300',
-                detail: 'VARC | Min 39–40 (1m): Cleanup \u2014 confirm all 4 TITAs are entered and revisit a genuinely shortlisted MCQ if time remains.',
-                caption: 'Final 1m TITA & flag audit.'
+                "start": 39,
+                "end": 40,
+                "label": "1m",
+                "classes": "bg-varc/20 hover:bg-varc/30 text-varc dark:text-indigo-300",
+                "detail": "VARC | Min 39–40 (1m): Cleanup — confirm all 4 TITAs are entered and revisit a genuinely shortlisted MCQ if time remains.",
+                "caption": "Final 1m TITA & flag audit."
               }
             ]
           },
-          readable: {
-            label: '(Readable-Paper · 4 RCs)',
-            title: 'Trigger: Open RC #4 only if the first three finish within 22 elapsed minutes and it offers better value than remaining VA; otherwise use Standard.',
-            poolBadge: '24-Q potential pool · target 18–20 attempts',
-            toast: 'VARC: Readable-Paper (4 RCs) backup active',
-            segments: [
+          "readable": {
+            "heading": "Readable-paper alternative (4 RCs + selective VA)",
+            "attempts": [
+              18,
+              20
+            ],
+            "marks": [
+              40,
+              43
+            ],
+            "summary": "4 RCs + selective VA (24-question potential pool). Aim for 13–14 RC, 4 TITA VA and 1–2 MCQ VA.",
+            "gate": "Use only if three RCs finish within 22 elapsed minutes and RC #4 is more attractive than remaining VA. Otherwise revert to Standard.",
+            "checkTitle": "Understand Readable-Paper trigger",
+            "checkDetail": "Fourth RC only if early and worthwhile; protect TITA VA and one-minute cleanup.",
+            "scoreExample": "Illustrative: 18–19 attempts, 14–15 correct, 2 wrong MCQs and 2 wrong TITAs = 40–43 raw marks. A 20th attempt is optional, not required.",
+            "pool": 24,
+            "label": "(Readable-Paper · 4 RCs)",
+            "title": "Trigger: Open RC #4 only if the first three finish within 22 elapsed minutes and it offers better value than remaining VA; otherwise use Standard.",
+            "toast": "VARC: Readable-Paper (4 RCs) backup active",
+            "segments": [
               {
-                width: 75,
-                label: '4 RCs (~7.5m each · 13–14 Qs)',
-                time: '0–30m',
-                classes: 'bg-varc hover:bg-varc/90 text-white',
-                detail: 'VARC (Backup) | Min 0–30 (30m): Trigger: first three RCs finished within 22 elapsed minutes and RC #4 is higher-value than remaining VA; otherwise use Standard. Pace ~7.5m/RC \u2192 13–14 Qs; flag unresolved MCQs unanswered at 45s.',
-                caption: 'Open RC #4 if first three finish within 22m and it beats remaining VA (~7.5m/RC \u2192 13–14 Qs).'
+                "start": 0,
+                "end": 30,
+                "label": "4 RCs (~7.5m each · 13–14 Qs)",
+                "classes": "bg-varc hover:bg-varc/90 text-white",
+                "detail": "VARC (Backup) | Min 0–30 (30m): Trigger: first three RCs finished within 22 elapsed minutes and RC #4 is higher-value than remaining VA; otherwise use Standard. Pace ~7.5m/RC → 13–14 Qs; flag unresolved MCQs unanswered at 45s.",
+                "caption": "Open RC #4 if first three finish within 22m and it beats remaining VA (~7.5m/RC → 13–14 Qs)."
               },
               {
-                width: 15,
-                label: '4 TITA VA',
-                time: '30–36m',
-                classes: 'bg-varc/75 hover:bg-varc/65 text-white',
-                detail: 'VARC (Backup) | Min 30–36 (6m): Hit all 4 TITA VA questions first (2 Para Jumbles + 2 Odd One Out \u2014 zero -1 penalty).',
-                caption: '4 TITA VA first (all 4, zero -1 penalty).'
+                "start": 30,
+                "end": 36,
+                "label": "4 TITA VA",
+                "classes": "bg-varc/75 hover:bg-varc/65 text-white",
+                "detail": "VARC (Backup) | Min 30–36 (6m): Hit all 4 TITA VA questions first (2 Para Jumbles + 2 Odd One Out — zero -1 penalty).",
+                "caption": "4 TITA VA first (all 4, zero -1 penalty)."
               },
               {
-                width: 7.5,
-                label: 'MCQ',
-                time: '36–39m',
-                classes: 'bg-varc/40 hover:bg-varc/50 text-ink dark:text-darkInk',
-                detail: 'VARC (Backup) | Min 36–39 (3m): Pick 1–2 quick Para Summary / Para Completion MCQs for 18–20 total attempts.',
-                caption: '1–2 quick Summary/Completion MCQs (Target: 18–20 total).'
+                "start": 36,
+                "end": 39,
+                "label": "MCQ",
+                "classes": "bg-varc/40 hover:bg-varc/50 text-ink dark:text-darkInk",
+                "detail": "VARC (Backup) | Min 36–39 (3m): Pick 1–2 quick Para Summary / Para Completion MCQs for 18–20 total attempts.",
+                "caption": "1–2 quick Summary/Completion MCQs (Target: 18–20 total)."
               },
               {
-                width: 2.5,
-                label: '1m',
-                time: '39–40m',
-                classes: 'bg-varc/20 hover:bg-varc/30 text-varc dark:text-indigo-300',
-                detail: 'VARC (Backup) | Min 39–40 (1m): Cleanup \u2014 confirm available TITA entries are saved, then consider genuinely shortlisted MCQs if time remains.',
-                caption: 'Cleanup \u2192 verify all 4 TITA boxes saved.'
+                "start": 39,
+                "end": 40,
+                "label": "1m",
+                "classes": "bg-varc/20 hover:bg-varc/30 text-varc dark:text-indigo-300",
+                "detail": "VARC (Backup) | Min 39–40 (1m): Cleanup — confirm available TITA entries are saved, then consider genuinely shortlisted MCQs if time remains.",
+                "caption": "Cleanup → verify all 4 TITA boxes saved."
               }
             ]
           }
         };
+
+        function deepFreeze(value) {
+          if (value && typeof value === 'object' && !Object.isFrozen(value)) {
+            Object.values(value).forEach(deepFreeze);
+            Object.freeze(value);
+          }
+          return value;
+        }
+        const validModes = Object.freeze(Object.keys(MODES));
+        const range = values => values.join('–');
+        const orders = deepFreeze(Object.fromEntries(validModes.map(key => {
+          const mode = MODES[key];
+          const {segments, label, title, toast} = mode;
+          return [key, {
+            label, title, toast,
+            poolBadge: key === 'readable'
+              ? mode.pool + '-Q potential pool · target ' + range(mode.attempts) + ' attempts'
+              : mode.pool + '-Q Active Pool · Target ' + range(mode.attempts),
+            segments: segments.map(({start, end, ...segment}) => ({
+              ...segment, width: (end - start) * 2.5, time: start + '–' + end + 'm'
+            }))
+          }];
+        })));
+        function planValues(key) {
+          const mode = validModes.includes(key) ? key : 'standard';
+          const p = MODES[mode];
+          return {
+            ...p,
+            quick: orders[mode].segments.map(seg => seg.time + ' ' + seg.label).join(' · '),
+            heading: p.heading + ' (' + range(p.attempts) + ' attempts)',
+            attempts: range(p.attempts) + ' attempts',
+            varcMarks: range(p.marks) + ' illustrative raw marks',
+            combined: range(p.marks.map((v,i) => v + SCORE_TARGETS.dilr[i] + SCORE_TARGETS.qa[i])) + ' raw marks'
+          };
+        }
         function scenarioValues(mode) {
           return SCENARIOS.map(item => {
             const varc = mode === 'readable' && item.label === 'Primary' ? 41 : item.varc;
             return {...item, varc, total: varc + item.dilr + item.qa};
           });
         }
-        return Object.freeze({validModes: VALID_VARC_ORDERS, orders: VARC_ORDERS, planValues, scenarioValues});
+        deepFreeze(MODES);
+        deepFreeze(SCORE_TARGETS);
+        deepFreeze(SCENARIOS);
+        return Object.freeze({validModes, orders, planValues, scenarioValues});
       })();
       // </module:strategy>
 
@@ -1833,19 +1926,34 @@
       // <module:record-model> Private state projection and per-record versioning
       function createRecordModel(schema, writer) {
 
-        const state = schema.initialState();
+        const defaults = schema.initialState();
+        let state = Object.freeze({
+          ...defaults,
+          checklist: Object.freeze(defaults.checklist),
+          notes: Object.freeze(defaults.notes),
+          errors: Object.freeze(defaults.errors)
+        });
         const records = new Map();
         let clock = 0, serial = 0;
         function applyRecord(r) {
           if (!schema.isValidRecord(r) || !schema.newer(r, records.get(r.key))) return false;
-          records.set(r.key, r);
+          // Immutable records and a copy-on-write projection prevent view-side mutations.
+          const value = r.value && typeof r.value === 'object'
+            ? Object.freeze({...r.value}) : r.value;
+          records.set(r.key, Object.freeze({...r, value}));
           clock = Math.max(clock, r.time);
-          if (r.key === 'pref:theme') state.theme = r.value;
-          else if (r.key === 'pref:varcOrder') state.varcOrder = r.value;
-          else if (r.key.startsWith('check:')) state.checklist[r.key.slice(6)] = r.value;
-          else if (r.key.startsWith('note:')) state.notes[r.key.slice(5)] = r.value;
-          else if (r.value === null) delete state.errors[r.key.slice(6)];
-          else state.errors[r.key.slice(6)] = r.value;
+          if (r.key === 'pref:theme') state = Object.freeze({...state, theme: value});
+          else if (r.key === 'pref:varcOrder') state = Object.freeze({...state, varcOrder: value});
+          else if (r.key.startsWith('check:')) {
+            state = Object.freeze({...state, checklist: Object.freeze({...state.checklist, [r.key.slice(6)]: value})});
+          } else if (r.key.startsWith('note:')) {
+            state = Object.freeze({...state, notes: Object.freeze({...state.notes, [r.key.slice(5)]: value})});
+          } else {
+            const errors = Object.assign(Object.create(null), state.errors);
+            if (value === null) delete errors[r.key.slice(6)];
+            else errors[r.key.slice(6)] = value;
+            state = Object.freeze({...state, errors: Object.freeze(errors)});
+          }
           return true;
         }
         function createRecord(key, value) {
@@ -1853,7 +1961,7 @@
           if (!schema.isValidRecord(r)) throw new Error('Invalid record: ' + key);
           return r;
         }
-        // The projection is read-only to callers; only applyRecord mutates it.
+        // A frozen projection is safe to read across feature boundaries; re-read after a write.
         function view() { return state; }
         function recordTime(key) { return records.get(key)?.time ?? 0; }
         function snapshot() { return schema.makeSnapshot(records.values()); }
@@ -1890,7 +1998,7 @@
               if (journalKey) localStorage.removeItem(journalKey);
               journalKey = journalRaw = null; journalOK = true; return true;
             }
-            const raw = JSON.stringify({schemaVersion:2, records:Array.from(pending.values())});
+            const raw = JSON.stringify(schema.makeSnapshot(pending.values()));
             if (raw.length * 2 > JOURNAL_LIMIT) throw new Error('Emergency journal limit exceeded');
             if (journalKey && raw === journalRaw && localStorage.getItem(journalKey) === raw) { journalOK = true; return true; }
             // Immutable journal keys: another tab may retire an old key without racing a new write to it.
