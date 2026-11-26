@@ -42,6 +42,9 @@ async function audit(page,{pinned=false,contrast=true}={}){
    if(navRect.top< -2||navRect.top>12||header.bottom>Math.min(160,height/3))issue('error','sticky-navigation',null,{navTop:navRect.top,headerBottom:header.bottom});
   }
   if(width>=height&&height<=500&&getComputedStyle(document.querySelector('#playbook-header')).position==='sticky')issue('error','landscape-sticky-header',null,{height});
+  for(const e of [...document.querySelectorAll('main [data-plan]')].filter(visible)){
+   if(!e.textContent.trim()||/^(undefined|null|NaN)$/.test(e.textContent.trim()))issue('error','empty-plan-binding',e,{key:e.dataset.plan});
+  }
   const selector='main .print-card,main [data-cell-value],main [data-strategy-body],main [data-selection-steps]>li,main [data-decision-grid]>div,main p,main li,main h2,main h3,main h4,main dd,main textarea,main input:not([type=checkbox]),main select,main button,main summary,main [data-mobile-clock]>* ,main [data-recovery-clock]>*';
   const elements=[...new Set(document.querySelectorAll(selector))].filter(visible);
   for(const e of elements){
