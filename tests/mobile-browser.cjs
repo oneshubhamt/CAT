@@ -53,7 +53,7 @@ async function runScenario(browser,desc,origin){
  const rec={...desc,status:'running',checks:[],evidence:[],actions:[],runtimeErrors:[],consoleErrors:[],networkRequests:[],failure:null,elapsedMs:0,browserVersion:browser.version()};
  report.scenarios.push(rec);
  const start=Date.now(),dir=path.join(output,desc.id);
- fs.mkdirSync(dir,{recursive:true});let ctx,page,tracing=false;
+ fs.mkdirSync(dir,{recursive:true});let ctx,page,tracing=false;const failureEvidence=new Set();
  const record=(kind,label,file)=>rec.evidence.push({kind,label,path:path.relative(output,file).split(path.sep).join('/')});
  const captureEvents=(p,allowed)=>{
   p.on('pageerror',e=>rec.runtimeErrors.push(String(e)));
@@ -63,7 +63,7 @@ async function runScenario(browser,desc,origin){
  const snap=async(label,full=false,source=page)=>{
   const capture=async(name,whole)=>{
    const file=path.join(dir,name+'.png');
-   await source.screenshot({path:file,fullPage:whole,animations:'disabled',caret:'hide',timeout:15000});
+   await source.screenshot({path:file,fullPage:whole,animations:'disabled',caret:'hide',style:name.includes('toast')?'':'#toast{visibility:hidden!important}',timeout:15000});
    record('screenshot',name,file);
   };
   if(full){
@@ -84,7 +84,16 @@ async function runScenario(browser,desc,origin){
  };
  const measure=async(label,opts={},source=page)=>{
   const result=await audit(source,opts);rec.checks.push({label,...result});
-  if(result.errors.length){await snap('failure-'+label,false,source).catch(()=>{});console.error(desc.id+' '+label+': '+result.errors.length+' layout errors');}
+  if(result.errors.length){
+   const first=result.errors.find(e=>!failureEvidence.has(e.kind+'|'+e.element));
+   for(const e of result.errors)failureEvidence.add(e.kind+'|'+e.element);
+   if(first){
+    const y=await source.evaluate(()=>scrollY);
+    try{if(first.top!==null)await source.evaluate(v=>scrollTo({top:Math.max(0,v-180),behavior:'instant'}),first.top);await snap('failure-'+label,false,source);}
+    catch{}finally{await source.evaluate(v=>scrollTo({top:v,behavior:'instant'}),y).catch(()=>{});}
+   }
+   console.error(desc.id+' '+label+': '+result.errors.length+' layout errors');
+  }
  };
  const action=label=>rec.actions.push(label);
  try{
