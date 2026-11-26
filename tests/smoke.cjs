@@ -118,7 +118,9 @@ async function runSmoke(html) {
   function makeNode(id='') {
     const handlers = new Map(), attrs = new Map(), classes = new Set();
     return {
-      id, dataset:{}, value:'', textContent:'', innerHTML:'', className:'', hidden:false,
+      id, dataset:{}, value:'', _textContent:'', innerHTML:'', className:'', hidden:false,
+      get textContent(){return this.children.length?this.children.map(n=>typeof n==='string'?n:n.textContent).join(''):this._textContent;},
+      set textContent(value){this._textContent=String(value);this.children=[];},
       checked:false, disabled:false, children:[], style:{setProperty(k,v){this[k]=v;}}, offsetHeight:0, selectionStart:0, selectionEnd:0,
       classList:{
         add(...c){c.forEach(x=>classes.add(x));},
@@ -133,7 +135,7 @@ async function runSmoke(html) {
       async emit(k,e={}){for(const f of handlers.get(k)||[]) await f({target:this,preventDefault(){},...e});},
       click(){return this.emit('click');},
       append(...nodes){this.children.push(...nodes);},
-      replaceChildren(...nodes){this.children=nodes;},
+      replaceChildren(...nodes){this._textContent='';this.children=nodes;},
       querySelectorAll(){return [];},
       querySelector(){return null;},
       focus(){},scrollIntoView(){},setSelectionRange(a,b){this.selectionStart=a;this.selectionEnd=b;}

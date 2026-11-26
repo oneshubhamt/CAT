@@ -23,6 +23,10 @@ async function visual(api){
   await top(page);await page.locator('#btn-quick-revision').click();
   assert(await page.locator('#quick-revision').isVisible());
   assert.equal(await page.locator('#overview-full').isVisible(),false);
+  assert.equal(await page.locator('#quick-revision [data-plan="quick"] [data-quick-time]').count(),key==='split'?5:4);
+  assert.equal(await page.locator('#quick-revision [data-plan="dilrQuick"] [data-quick-time]').count(),5);
+  assert.equal(await page.locator('#quick-revision [data-plan="qaQuick"] [data-quick-time]').count(),3);
+  assert(await page.locator('#quick-revision [data-quick-time]').evaluateAll(els=>els.every(e=>/^\d+–\d+m$/.test(e.textContent)&&getComputedStyle(e).whiteSpace==='nowrap')));
   await measure('quick-'+key,{contrast:key===desc.mode});
   if(key===desc.mode)await snap('quick-'+key,true);
   await page.locator('#btn-close-revision').click();
