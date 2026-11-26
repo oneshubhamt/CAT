@@ -31,6 +31,12 @@ async function runSmoke(html) {
   check(html.includes('region:dilr-personal-selection') && html.includes('Binary, yes/no or coded responses') && html.includes('personal preference as a tie-breaker'), 'Personal DILR triage is explicit and conditional');
   check(html.includes('region:qa-skip-routing') && ['L · Solvable but lengthy','I · Calculation incomplete','U · Method uncertain','X · Conceptual gap','T · Unsolved TITA'].every(x=>html.includes(x)), 'Five QA skip classes present');
   check(!html.includes('Reframe length as a green flag') && html.includes('leave dead skips unflagged'), 'QA routing no longer conflicts with mechanical rules');
+  check(html.includes('id="cat-mobile-layout"') && html.includes('viewport-fit=cover'), 'Authored mobile styles and safe-area viewport');
+  check((html.match(/<div data-mobile-clock\b/g)||[]).length===6 && (html.match(/<div data-mode-switch\b/g)||[]).length===2, 'All six pacing bars and both mode switches have responsive hooks');
+  check((html.match(/<table data-responsive-table\b/g)||[]).length===4 && html.includes('data-cell-label="Skip class"') && html.includes('data-cell-value'), 'All four tables support mobile row labels');
+  check(['overview','varc','dilr','qa'].every(key=>html.includes('id="tab-'+key+'" role="tab" aria-controls="panel-'+key+'"')), 'Tabs link to their accessible panels');
+  check(html.includes('ArrowRight:(index+1)%tabs.length') && html.includes("btn.setAttribute('tabindex', isTarget ? '0' : '-1')"), 'Roving tab keyboard navigation');
+  check(html.includes('min-height:44px;min-width:44px') && html.includes('font-size:16px;line-height:1.4;width:100%'), 'Touch sizes and mobile form zoom protection');
   const initial = html.match(/<script id="embedded-user-state"[^>]*>([\s\S]*?)<\/script>/)[1].trim();
   check(JSON.parse(initial).schemaVersion === 2 && JSON.parse(initial).records.length === 0, 'Empty repository snapshot');
 
