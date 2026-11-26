@@ -11,7 +11,7 @@ const report={version:2,tier,platform:process.platform,arch:process.arch,commit:
 const top=page=>page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));
 async function ready(page,url){
  await page.goto(url,{waitUntil:'load'});
- await page.waitForFunction(()=>!document.body.inert&&document.querySelector('#storage-status')?.textContent!=='Opening browser storage…'&&!!document.querySelector('[data-fixed-segment] [data-clock-time]')?.textContent);
+ await page.waitForFunction(()=>!document.body.inert&&document.querySelector('#storage-status')?.textContent!=='Loading…'&&!!document.querySelector('[data-fixed-segment] [data-clock-time]')?.textContent);
  await page.evaluate(()=>document.fonts.ready.then(()=>true));
 }
 async function section(page,tab){

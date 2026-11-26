@@ -40,6 +40,14 @@ async function audit(page,{pinned=false,contrast=true}={}){
    const overlapX=Math.min(x.right,y.right)-Math.max(x.left,y.left),overlapY=Math.min(x.bottom,y.bottom)-Math.max(x.top,y.top);
    if(overlapX>2&&overlapY>2)issue('error','overlapping-controls',group[i],{other:describe(group[j]),overlapX,overlapY});
   }
+  for(const group of [...document.querySelectorAll('[data-mode-switch]')].filter(visible)){
+   const buttons=[...group.querySelectorAll('button[data-varc-order]')],boxes=buttons.map(rect),container=rect(group);
+   if(boxes.length!==3||buttons.some(b=>!visible(b)))issue('error','mode-switch-count',group,{count:boxes.length});
+   else if(boxes.some((b,i)=>Math.abs(b.top-boxes[0].top)>1||Math.abs(b.bottom-boxes[0].bottom)>1||b.width<43.5||b.height<43.5||b.left<container.left-1||b.right>container.right+1||(i>0&&b.left<boxes[i-1].right-1)))issue('error','mode-switch-single-row',group,{buttons:boxes.map(b=>({x:b.x,y:b.y,width:b.width,height:b.height}))});
+   if(buttons.filter(b=>b.getAttribute('aria-pressed')==='true').length!==1)issue('error','mode-switch-selection',group,{});
+  }
+  const storageStatus=document.querySelector('#storage-status');
+  if(storageStatus?.textContent==='Saved'&&visible(storageStatus))issue('error','routine-save-status-visible',storageStatus,{});
   if(nav.filter(e=>e.getAttribute('aria-selected')==='true').length!==1)issue('error','tab-selection',null,{});
   const header=rect(document.querySelector('#playbook-header'));
   const navRect=rect(document.querySelector('#section-nav'));

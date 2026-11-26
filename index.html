@@ -407,6 +407,12 @@ input[type=checkbox]{flex-shrink:0}
     #playbook-main,.tab-panel,.print-card,.grid > *,.flex > *{min-width:0}
     .tab-panel{overflow-wrap:break-word}
     #toolbar-actions button,#section-nav button,.varc-order-btn,#btn-close-revision{min-height:44px;min-width:44px}
+    @media screen {
+      #toolbar-storage:has(> #storage-status[hidden]):has(#btn-retry-storage[hidden]):has(#export-fallback[hidden]){display:none}
+      #toolbar-storage > div:has(> [hidden]:first-child + [hidden]){display:none}
+      [data-mode-switch]{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));width:min(100%,440px);flex-shrink:0;align-items:stretch;gap:4px}
+      [data-mode-switch] .varc-order-btn{min-width:0;white-space:normal;text-align:center;line-height:1.3}
+    }
     #playbook-main :is(section,article,h3,summary,input,textarea,select,button){scroll-margin-top:110px}
     .notes-drawer summary{min-height:48px}
     #error-log-list button,#btn-reset-checklist,#btn-retry-storage,#export-fallback{min-height:44px;display:inline-flex;align-items:center}
@@ -737,8 +743,8 @@ input[type=checkbox]{flex-shrink:0}
         </button>
       </nav>
       <div id="toolbar-storage" class="flex flex-wrap items-center justify-between gap-2 py-1.5 text-[11px] text-muted dark:text-darkMuted border-t border-hairline dark:border-darkHairline">
-        <span id="storage-status" role="status" aria-live="polite">Opening browser storage…</span>
-        <div class="flex flex-wrap gap-3"><button id="btn-retry-storage" type="button" hidden class="underline">Retry saving</button><a id="export-fallback" hidden download="cat_99_exam_day_playbook.html" class="underline">Download prepared backup</a></div>
+        <span id="storage-status" role="status" aria-live="polite" hidden>Loading…</span>
+        <div class="flex flex-wrap gap-3"><button id="btn-retry-storage" type="button" hidden class="underline">Retry saving</button><a id="export-fallback" hidden download="cat_99_exam_day_playbook.html" class="underline">Download backup</a></div>
       </div>
     </div>
   </header>
@@ -1080,7 +1086,7 @@ input[type=checkbox]{flex-shrink:0}
             <p class="text-xs text-muted dark:text-darkMuted mt-0.5">Tap a phase for its instructions.</p>
           </div>
           <!-- Synced 3-Mode VARC Clock Toggle -->
-          <div data-mode-switch class="no-print inline-flex flex-wrap items-center rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-0.5 text-[11px] self-start md:self-auto">
+          <div data-mode-switch role="group" aria-label="VARC strategy" class="no-print inline-flex flex-wrap items-center rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-0.5 text-[11px] self-start md:self-auto">
             <button type="button" data-varc-order="standard" class="varc-order-btn px-2.5 py-1 rounded-md font-medium transition-colors cursor-pointer">Standard (3 RCs)</button>
             <button type="button" data-varc-order="split" class="varc-order-btn px-2.5 py-1 rounded-md font-medium transition-colors cursor-pointer">Anti-Fatigue Split</button>
             <button type="button" data-varc-order="readable" class="varc-order-btn px-2.5 py-1 rounded-md font-medium transition-colors cursor-pointer">Readable-Paper (4 RCs)</button>
@@ -1342,7 +1348,7 @@ input[type=checkbox]{flex-shrink:0}
             <span class="text-xs font-semibold uppercase tracking-wider text-ink dark:text-darkInk">Personal notes — Overview</span>
             <span data-note-badge="overview" class="hidden font-mono text-[10px] px-1.5 py-0.5 rounded bg-ink/10 dark:bg-darkInk/15 text-ink dark:text-darkInk">Has notes</span>
           </div>
-          <span class="no-print text-[11px] font-mono text-muted dark:text-darkMuted">Browser autosave</span>
+          <span class="no-print text-[11px] font-mono text-muted dark:text-darkMuted">Autosaves</span>
         </summary>
         <div class="px-5 pb-5 pt-2 border-t border-hairline dark:border-darkHairline">
           <textarea
@@ -1352,8 +1358,8 @@ input[type=checkbox]{flex-shrink:0}
             class="w-full rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-3 text-sm text-ink dark:text-darkInk placeholder:text-muted/60 focus:outline-none focus:border-ink dark:focus:border-darkInk transition-colors resize-y"
           ></textarea>
           <div class="no-print mt-2 flex items-center justify-between text-[11px] text-muted dark:text-darkMuted font-mono">
-            <span>Download HTML to keep a copy of your notes.</span>
-            <span data-note-status="overview">Loading storage…</span>
+            <span>Download HTML for a backup.</span>
+            <span data-note-status="overview">Loading…</span>
           </div>
         </div>
       </details>
@@ -1377,7 +1383,7 @@ input[type=checkbox]{flex-shrink:0}
           </div>
 
           <!-- Synced 3-Mode Toggle: Standard / Anti-Fatigue Split / Readable-Paper (4 RCs) -->
-          <div data-mode-switch class="no-print inline-flex flex-wrap items-center rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-1 text-xs self-start lg:self-auto">
+          <div data-mode-switch role="group" aria-label="VARC strategy" class="no-print inline-flex flex-wrap items-center rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-1 text-xs self-start lg:self-auto">
             <button type="button" data-varc-order="standard" class="varc-order-btn px-2.5 sm:px-3 py-1.5 rounded-md font-medium transition-colors cursor-pointer">
               Standard (3 RCs)
             </button>
@@ -1708,7 +1714,7 @@ input[type=checkbox]{flex-shrink:0}
             <span class="text-xs font-semibold uppercase tracking-wider text-ink dark:text-darkInk">Personal notes — VARC</span>
             <span data-note-badge="varc" class="hidden font-mono text-[10px] px-1.5 py-0.5 rounded bg-varc/10 text-varc">Has notes</span>
           </div>
-          <span class="no-print text-[11px] font-mono text-muted dark:text-darkMuted">Browser autosave</span>
+          <span class="no-print text-[11px] font-mono text-muted dark:text-darkMuted">Autosaves</span>
         </summary>
         <div class="px-5 pb-5 pt-2 border-t border-hairline dark:border-darkHairline">
           <textarea
@@ -1718,8 +1724,8 @@ input[type=checkbox]{flex-shrink:0}
             class="w-full rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-3 text-sm text-ink dark:text-darkInk placeholder:text-muted/60 focus:outline-none focus:border-varc transition-colors resize-y"
           ></textarea>
           <div class="no-print mt-2 flex items-center justify-between text-[11px] text-muted dark:text-darkMuted font-mono">
-            <span>Notes save in your browser. Download HTML for a backup.</span>
-            <span data-note-status="varc">Loading storage…</span>
+            <span>Download HTML for a backup.</span>
+            <span data-note-status="varc">Loading…</span>
           </div>
         </div>
       </details>
@@ -1997,7 +2003,7 @@ input[type=checkbox]{flex-shrink:0}
             <span class="text-xs font-semibold uppercase tracking-wider text-ink dark:text-darkInk">Personal notes — DILR</span>
             <span data-note-badge="dilr" class="hidden font-mono text-[10px] px-1.5 py-0.5 rounded bg-dilr/10 text-dilr">Has notes</span>
           </div>
-          <span class="no-print text-[11px] font-mono text-muted dark:text-darkMuted">Browser autosave</span>
+          <span class="no-print text-[11px] font-mono text-muted dark:text-darkMuted">Autosaves</span>
         </summary>
         <div class="px-5 pb-5 pt-2 border-t border-hairline dark:border-darkHairline">
           <textarea
@@ -2007,8 +2013,8 @@ input[type=checkbox]{flex-shrink:0}
             class="w-full rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-3 text-sm text-ink dark:text-darkInk placeholder:text-muted/60 focus:outline-none focus:border-dilr transition-colors resize-y"
           ></textarea>
           <div class="no-print mt-2 flex items-center justify-between text-[11px] text-muted dark:text-darkMuted font-mono">
-            <span>Notes save in your browser. Download HTML for a backup.</span>
-            <span data-note-status="dilr">Loading storage…</span>
+            <span>Download HTML for a backup.</span>
+            <span data-note-status="dilr">Loading…</span>
           </div>
         </div>
       </details>
@@ -2266,7 +2272,7 @@ input[type=checkbox]{flex-shrink:0}
             <span class="text-xs font-semibold uppercase tracking-wider text-ink dark:text-darkInk">Personal notes — QA</span>
             <span data-note-badge="qa" class="hidden font-mono text-[10px] px-1.5 py-0.5 rounded bg-qa/10 text-qa">Has notes</span>
           </div>
-          <span class="no-print text-[11px] font-mono text-muted dark:text-darkMuted">Browser autosave</span>
+          <span class="no-print text-[11px] font-mono text-muted dark:text-darkMuted">Autosaves</span>
         </summary>
         <div class="px-5 pb-5 pt-2 border-t border-hairline dark:border-darkHairline">
           <textarea
@@ -2276,8 +2282,8 @@ input[type=checkbox]{flex-shrink:0}
             class="w-full rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-3 text-sm text-ink dark:text-darkInk placeholder:text-muted/60 focus:outline-none focus:border-qa transition-colors resize-y"
           ></textarea>
           <div class="no-print mt-2 flex items-center justify-between text-[11px] text-muted dark:text-darkMuted font-mono">
-            <span>Notes save in your browser. Download HTML for a backup.</span>
-            <span data-note-status="qa">Loading storage…</span>
+            <span>Download HTML for a backup.</span>
+            <span data-note-status="qa">Loading…</span>
           </div>
         </div>
       </details>
@@ -2974,17 +2980,17 @@ input[type=checkbox]{flex-shrink:0}
             let changed = false;
             for (const r of winners) changed = mergeDurable(r) || changed;
             for (const r of batch) if (pending.get(r.key) === r) pending.delete(r.key);
-            if (changed) { onReconcile('A newer saved record was reconciled'); }
+            if (changed) { onReconcile('Updated from another tab'); }
             for (const item of recoveredKeys) {
               try { if (localStorage.getItem(item.key) === item.raw) localStorage.removeItem(item.key); } catch {}
             }
             recoveredKeys = [];
             writeJournal();
-            reportStorage(pending.size ? (journalOK ? 'Saving to IndexedDB…' : 'Saving — emergency journal unavailable') : 'Saved to IndexedDB');
+            reportStorage(pending.size ? (journalOK ? 'Saving…' : 'Saving — keep this page open') : 'Saved');
           } catch (err) {
             console.warn('IndexedDB write failed:', err);
             closeDatabase(); writeJournal();
-            reportStorage(journalOK ? 'Temporary recovery only — export HTML for backup' : 'Unsaved in memory — export HTML now');
+            reportStorage(journalOK ? 'Temporary save only — download HTML for a backup' : 'Not saved — download HTML now');
           } finally {
             saving = false;
             if (db && pending.size) scheduleSave(0);
@@ -3000,15 +3006,15 @@ input[type=checkbox]{flex-shrink:0}
           const r = model.createRecord(key, value);
           stage(r);
           writeJournal(); // synchronous before deferred IndexedDB write
-          reportStorage(db ? (journalOK ? 'Saving to IndexedDB…' : 'Saving — emergency journal unavailable') :
-            (journalOK ? 'Temporary recovery only — export HTML for backup' : 'Unsaved in memory — export HTML now'));
+          reportStorage(db ? (journalOK ? 'Saving…' : 'Saving — keep this page open') :
+            (journalOK ? 'Temporary save only — download HTML for a backup' : 'Not saved — download HTML now'));
           if (db) scheduleSave(delay);
         }
         async function loadState() {
           try {
             db = await openDatabase();
-            db.onversionchange = () => { closeDatabase(); writeJournal(); reportStorage('Storage changed — reload or export HTML'); };
-            db.onclose = () => { db = null; reportStorage('Storage closed — reload or export HTML'); };
+            db.onversionchange = () => { closeDatabase(); writeJournal(); reportStorage('Saving interrupted — reload or download HTML'); };
+            db.onclose = () => { db = null; reportStorage('Saving interrupted — reload or download HTML'); };
             (await readDatabase()).forEach(mergeDurable);
           } catch (err) { console.warn('IndexedDB unavailable:', err); closeDatabase(); }
           try { readSnapshot(readEmbedded()).forEach(stage); }
@@ -3017,8 +3023,8 @@ input[type=checkbox]{flex-shrink:0}
           if (pending.size || journalKey) writeJournal();
           if (db) {
             await flushPending();
-            if (db && !pending.size) reportStorage('Saved to IndexedDB');
-          } else reportStorage(journalOK ? 'IndexedDB unavailable — temporary recovery; export HTML' : 'Storage unavailable — export HTML now');
+            if (db && !pending.size) reportStorage('Saved');
+          } else reportStorage(journalOK ? 'Temporary save only — download HTML for a backup' : 'Saving unavailable — download HTML now');
         }
         async function reconcileDatabase() {
           if (!db) return false;
@@ -3070,7 +3076,11 @@ input[type=checkbox]{flex-shrink:0}
         }
         function reportStorage(message, available) {
           const el = document.getElementById('storage-status');
-          if (el) el.textContent = message;
+          if (el) {
+            el.textContent = message;
+            // Routine autosave must not occupy the navigation strip.
+            el.hidden = available && (message === 'Saved' || message === 'Saving…');
+          }
           const retry = document.getElementById('btn-retry-storage');
           if (retry) retry.hidden = available;
           document.querySelectorAll('[data-note-status]').forEach(el => { el.textContent = message; });
@@ -3604,9 +3614,10 @@ input[type=checkbox]{flex-shrink:0}
             clone.querySelector('#export-fallback').removeAttribute('href');
             clone.querySelector('#error-log-submit').textContent = 'Add error';
             clone.querySelector('#error-log-cancel').hidden = true;
-            clone.querySelector('#storage-status').textContent = 'Opening browser storage…';
+            clone.querySelector('#storage-status').textContent = 'Loading…';
+            clone.querySelector('#storage-status').hidden = true;
             clone.querySelector('#btn-retry-storage').hidden = true;
-            clone.querySelectorAll('[data-note-status]').forEach(el => { el.textContent = 'Loading storage…'; });
+            clone.querySelectorAll('[data-note-status]').forEach(el => { el.textContent = 'Loading…'; });
             // Reset toast visibility in exported copy
             const toastClone = clone.querySelector('#toast');
             if (toastClone) {
@@ -3622,7 +3633,7 @@ input[type=checkbox]{flex-shrink:0}
             const fallback = document.getElementById('export-fallback');
             fallback.href = exportUrl; fallback.hidden = false;
             fallback.click();
-            showToast(refreshed ? 'Backup ready — use the download link if needed' : 'Backup ready; could not refresh browser storage');
+            showToast(refreshed ? 'Backup ready — use the download link if needed' : 'Backup ready — latest saved changes could not be checked');
           } catch (err) {
             console.error('Export failed:', err);
             showToast('Export error — please try again');
@@ -3673,7 +3684,7 @@ input[type=checkbox]{flex-shrink:0}
           try { await storage.loadState(); }
           catch (err) {
             console.error('Storage startup failed:', err);
-            feedback.reportStorage('Could not open storage — download a backup', storage.isOpen());
+            feedback.reportStorage('Saving unavailable — download HTML now', storage.isOpen());
           } finally { document.body.inert = false; }
 
           shell.activateTab('overview');
@@ -3690,7 +3701,7 @@ input[type=checkbox]{flex-shrink:0}
             if (storage.isOpen() || storage.isSaving()) return;
             const button = document.getElementById('btn-retry-storage');
             button.disabled = true;
-            feedback.reportStorage('Retrying storage…', false);
+            feedback.reportStorage('Retrying…', false);
             try { await storage.loadState(); refreshFromRecords(); }
             finally { button.disabled = false; }
           });

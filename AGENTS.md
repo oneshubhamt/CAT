@@ -86,7 +86,7 @@ node tools/build-offline-css.cjs
 node tools/build-offline-css.cjs --check
 ```
 
-Keep error-list filtering independent of the edit form, and preserve it through cancel/save/delete. Single-character tab shortcuts must be scoped to focused tabs; Arrow/Home/End remain supported. Timeline labels must fit without truncation, including short phases. Keep storage guidance consistent with per-record last-write-wins and snapshot reconciliation.
+Keep all three VARC strategy controls in a single row at every supported viewport in both locations; the native audit checks their bounds and selected state. Healthy autosave must not occupy the sticky header; only show actionable saving warnings, retry or backup controls. Use plain-language feedback; storage-engine terminology belongs in developer diagnostics. Keep error-list filtering independent of the edit form, and preserve it through cancel/save/delete. Single-character tab shortcuts must be scoped to focused tabs; Arrow/Home/End remain supported. Timeline labels must fit without truncation, including short phases. Keep storage guidance consistent with per-record last-write-wins and snapshot reconciliation.
 
 The runtime has no dependency on Node or the generator. Use a saved HTML file for offline travel; private browsing, origin-specific storage policies or browser eviction can still prevent persistence. Export a backup before travelling.
 

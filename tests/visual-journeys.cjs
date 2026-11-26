@@ -5,7 +5,11 @@ const {tabs}=require('./visual-matrix.cjs');
 const fixture='Synthetic QA note — check <value> & units.\nLiteral '+ '<'+'/script> must remain text. '+('Longword'.repeat(18))+'\nSecond line.';
 async function runJourney(api){
  const {page,ctx,browser,desc,origin,url,dir,ready,top,section,theme,mode,disclosure,allDetails,bring,measure,snap,action,captureEvents}=api;
- const saved=async(p)=>p.waitForFunction(()=>document.querySelector('#storage-status')?.textContent==='Saved to IndexedDB',null,{timeout:12000});
+ const saved=async(p)=>{
+  await p.waitForFunction(()=>document.querySelector('#storage-status')?.textContent==='Saved',null,{timeout:12000});
+  assert.equal(await p.locator('#storage-status').isVisible(),false,'Routine save status is not visible in the header');
+  if(!await p.locator('#export-fallback').isVisible())assert.equal(await p.locator('#toolbar-storage').isVisible(),false,'Healthy saves do not occupy the header');
+ };
  async function add(p,sectionName,reference,long=false){
   const f=p.locator('#error-log-form');
   await f.locator('[name=date]').fill('2026-11-26');
@@ -75,12 +79,14 @@ async function runJourney(api){
  }
  if(['recovery-journal','memory-only'].includes(desc.id)){
   const both=desc.id==='memory-only';
-  await page.waitForFunction(b=>b?/Storage unavailable|Unsaved in memory/i.test(document.querySelector('#storage-status').textContent):/temporary recovery/i.test(document.querySelector('#storage-status').textContent),both);
+  await page.waitForFunction(b=>b?/Saving unavailable|Not saved/i.test(document.querySelector('#storage-status').textContent):/temporary save only/i.test(document.querySelector('#storage-status').textContent),both);
   await measure('storage-denied');await snap('storage-denied');
   await note(page,'qa',fixture);await top(page);
-  await page.waitForFunction(b=>b?/unsaved|unavailable/i.test(document.querySelector('#storage-status').textContent):/temporary recovery/i.test(document.querySelector('#storage-status').textContent),both);
+  await page.waitForFunction(b=>b?/Not saved|unavailable/i.test(document.querySelector('#storage-status').textContent):/temporary save only/i.test(document.querySelector('#storage-status').textContent),both);
   await measure('pending-note');await snap('pending-note');
-  if(both)assert.match(await page.locator('#storage-status').textContent(),/unsaved in memory/i);
+  assert(await page.locator('#storage-status').isVisible(),'A saving failure must remain visible');
+  assert(await page.locator('#btn-retry-storage').isVisible(),'Retry remains available');
+  if(both)assert.match(await page.locator('#storage-status').textContent(),/not saved/i);
   else assert(await page.evaluate(()=>Array.from({length:localStorage.length},(_,i)=>localStorage.key(i)).some(k=>k?.startsWith('cat99_emergency_v2:'))),'Emergency recovery journal exists');
   if(!both){
    await page.evaluate(()=>{sessionStorage.setItem('qa-allow-idb','yes');window.__qaDenyIDB=false;});
