@@ -599,7 +599,7 @@ input[type=checkbox]{flex-shrink:0}
           <button
             id="btn-theme"
             type="button"
-            aria-label="Toggle Light and Dark Mode"
+            aria-label="Dark mode" aria-pressed="false"
             title="Toggle Light / Dark Mode"
             class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline text-muted dark:text-darkMuted hover:text-ink dark:hover:text-darkInk transition-colors cursor-pointer"
           >
@@ -660,12 +660,12 @@ input[type=checkbox]{flex-shrink:0}
           <article class="border border-hairline dark:border-darkHairline border-t-4 border-t-varc rounded-lg p-3 text-sm leading-relaxed">
             <h3 class="font-semibold text-varc">VARC · 40m</h3><p class="mt-1 font-medium" data-plan="attempts">17–18 attempts</p>
             <p class="mt-1 text-xs font-mono" data-plan="quick">0–25 RCs · 25–32 TITA · 32–39 MCQ · 39–40 cleanup</p>
-            <p class="mt-2 text-xs" data-plan="gate">45–60s P1 gate.</p><p class="mt-2 text-xs">Map argument, verify scope/tone. 45s deadlock → flag unanswered; cleanup only if genuinely shortlisted after safer work.</p>
+            <p class="mt-2 text-xs" data-plan="gate">45–60s first-paragraph gate.</p><p class="mt-2 text-xs">Map argument, verify scope/tone. 45s deadlock → flag unanswered; cleanup only if genuinely shortlisted after safer work.</p>
           </article>
           <article class="border border-hairline dark:border-darkHairline border-t-4 border-t-dilr rounded-lg p-3 text-sm leading-relaxed">
             <h3 class="font-semibold text-dilr">DILR · 40m</h3><p class="mt-1 font-medium">One reliable set → two viable sets</p>
             <p class="mt-1 text-xs font-mono">0–4 scan · 4–18 set 1 · 18–32 set 2 · 32–39 optional · 39–40 audit</p>
-            <p class="mt-2 text-xs">Prefer tight coded/elimination sets; avoid unpruned branches. Reassess 4–6m; switch by 6–7m if stalled. First failure: 11–25, 25–39. Second: 25–39. Check clues and totals.</p>
+            <p class="mt-2 text-xs">Prefer tight coded/elimination sets as a tie-breaker only; rank by actual solvability and avoid unpruned branches. Reassess 4–6m; switch by 6–7m if stalled. First failure: 11–25, 25–39. Second: 25–39. Check clues and totals.</p>
           </article>
           <article class="border border-hairline dark:border-darkHairline border-t-4 border-t-qa rounded-lg p-3 text-sm leading-relaxed">
             <h3 class="font-semibold text-qa">QA · 40m</h3><p class="mt-1 font-medium">11–12 correct as primary aim</p>
@@ -796,7 +796,7 @@ input[type=checkbox]{flex-shrink:0}
               <dl class="mt-3.5 space-y-3 text-xs">
                 <div>
                   <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Entry Gate</dt>
-                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium"><span data-plan="gate">45–60s P1 check; move on if comprehension stalls.</span></dd>
+                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium"><span data-plan="gate">45–60s first-paragraph check; move on if comprehension stalls.</span></dd>
                 </div>
                 <div class="p-2.5 rounded-lg bg-alert/5 dark:bg-alert/15 border border-alert/20">
                   <dt class="font-mono text-[10px] uppercase tracking-wider text-alert font-semibold">Adaptive checkpoint</dt>
@@ -1022,7 +1022,7 @@ input[type=checkbox]{flex-shrink:0}
               <span class="font-mono text-[11px] text-muted dark:text-darkMuted">00 &rarr; 40m</span>
             </div>
             <div data-mobile-clock class="flex w-full h-10 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
-              <button type="button" data-accent="qa" data-timeline-detail="QA | Round 1 (0–22m | 7–8 attempted questions, flexible | ~2.5m/Q checkpoint): Sitters only — Arithmetic (pen-down), Logs/Exponents, Number Theory, Mensuration, direct AP/GP &amp; Linear/Quadratic. Defer complex geometry; allow direct mensuration or an obvious geometry sitter." style="width: 55%" class="timeline-seg bg-qa hover:bg-qa/90 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
+              <button type="button" data-accent="qa" data-timeline-detail="QA | Round 1 (0–22m | 7–8 attempted questions, flexible | ~2.5m/Q checkpoint): Sitters only — Arithmetic (pen-down), Logs/Exponents, Number Theory, Mensuration, direct arithmetic/geometric progressions &amp; Linear/Quadratic. Defer complex geometry; allow direct mensuration or an obvious geometry sitter." style="width: 55%" class="timeline-seg bg-qa hover:bg-qa/90 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
                 <span>Round 1: Sitters (7–8 Qs)</span><span class="text-[9px] opacity-85">0–22m</span>
               </button>
               <button type="button" data-accent="qa" data-timeline-detail="QA | Round 2 (22–36m | 3–5 additional attempts as needed | ~3.5m/Q checkpoint): Complete initial assessment of unseen questions first; then revisit L/I by confidence and time to finish. U only after stronger opportunities." style="width: 35%" class="timeline-seg bg-qa/75 hover:bg-qa/65 text-white font-mono text-[11px] font-semibold flex flex-col items-center justify-center px-1 transition-colors cursor-pointer truncate">
@@ -1298,7 +1298,7 @@ input[type=checkbox]{flex-shrink:0}
         <!-- Compact 99+ Score Math & Target Calibration Strip -->
         <div class="mt-4 px-3.5 py-2.5 rounded-lg bg-varc/[0.05] dark:bg-varc/15 border border-varc/20 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs leading-relaxed">
           <div>
-            <span class="font-mono text-[10px] uppercase tracking-wider font-bold text-varc mr-2">99+ Score Math &amp; Target Calibration</span>
+            <span class="font-mono text-[10px] uppercase tracking-wider font-bold text-varc mr-2">Illustrative score calculation</span>
             <span class="text-muted dark:text-darkMuted">
               <span data-plan="scoreExample">Illustrative: 17–18 attempts, 13–14 correct, 2 wrong MCQs and 2 wrong TITAs = 37–40 raw marks.</span> Each correct-to-wrong MCQ swing costs 4 marks. Accuracy first; do not force attempts.
             </span>
@@ -1349,9 +1349,9 @@ input[type=checkbox]{flex-shrink:0}
             <div class="flex gap-3">
               <div class="font-mono text-[11px] font-bold text-varc bg-varc/10 w-6 h-6 rounded-md flex items-center justify-center shrink-0 mt-0.5">1</div>
               <div>
-                <h4 class="font-semibold text-ink dark:text-darkInk">Rolling Elimination (45–60s P1 Gate)</h4>
+                <h4 class="font-semibold text-ink dark:text-darkInk">Rolling Elimination (45–60s First-Paragraph Gate)</h4>
                 <p class="text-muted dark:text-darkMuted mt-0.5">
-                  Do not compare every passage upfront. Judge P1 by comprehension, not topic. If you cannot state its point after 45–60 seconds, move on; reject more than one if necessary. <span data-plan="gate">Default to three readable passages.</span> If two passages fail the gate, protect the most readable remaining RCs and shift freed time to viable VA; do not force a third or fourth passage to meet a target.
+                  Do not compare every passage upfront. Judge the first paragraph by comprehension, not topic. If you cannot state its point after 45–60 seconds, move on; reject more than one if necessary. <span data-plan="gate">Default to three readable passages.</span> If two passages fail the gate, protect the most readable remaining RCs and shift freed time to viable VA; do not force a third or fourth passage to meet a target.
                 </p>
               </div>
             </div>
@@ -1434,7 +1434,7 @@ input[type=checkbox]{flex-shrink:0}
       <div class="print-card space-y-3.5">
         <div class="flex items-center justify-between">
           <h3 class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">The 4 VA Playbooks</h3>
-          <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-varc/10 text-varc font-medium">Hard Cap: ~2:00 / Q</span>
+          <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-varc/10 text-varc font-medium">Checkpoint: ~2:00 / question</span>
         </div>
 
         <!-- VA Accuracy Reality Check Strip -->
@@ -1505,7 +1505,7 @@ input[type=checkbox]{flex-shrink:0}
               <h4 class="font-bold text-sm">3. Odd Sentence Out</h4>
               <div class="flex items-center gap-1.5 font-mono text-[10px]">
                 <span class="px-2 py-0.5 rounded bg-varc/10 text-varc font-semibold">TITA 0</span>
-                <span class="px-2 py-0.5 rounded bg-dilr/10 text-dilr font-semibold">Best Risk-Adjusted ROI</span>
+                <span class="px-2 py-0.5 rounded bg-dilr/10 text-dilr font-semibold">Penalty-free opportunity</span>
               </div>
             </div>
             <ul class="mt-3 space-y-1.5 text-xs text-muted dark:text-darkMuted leading-relaxed">
@@ -1521,13 +1521,13 @@ input[type=checkbox]{flex-shrink:0}
               <h4 class="font-bold text-sm">4. Para Jumbles</h4>
               <div class="flex items-center gap-1.5 font-mono text-[10px]">
                 <span class="px-2 py-0.5 rounded bg-varc/10 text-varc font-semibold">TITA 0</span>
-                <span class="px-2 py-0.5 rounded bg-qa/10 text-qa font-semibold">Capped Bonus</span>
+                <span class="px-2 py-0.5 rounded bg-qa/10 text-qa font-semibold">Time checkpoint</span>
               </div>
             </div>
             <ul class="mt-3 space-y-1.5 text-xs text-muted dark:text-darkMuted leading-relaxed">
               <li><strong class="text-ink dark:text-darkInk">Method:</strong> Don't hunt the opener first. Build <strong>Mandatory Pairs</strong> to narrow the plausible sequences.</li>
               <li><strong class="text-ink dark:text-darkInk">Triggers:</strong> <span class="font-mono text-[11px]">Noun &rarr; Pronoun</span>, <span class="font-mono text-[11px]">Cause &rarr; Effect</span>, <span class="font-mono text-[11px]">Claim &rarr; Contrast</span>, <span class="font-mono text-[11px]">General &rarr; Example</span>, <span class="font-mono text-[11px]">Full form &rarr; Acronym</span>, <span class="font-mono text-[11px]">Earlier &rarr; Later</span> (chronology). Test each pair against the whole paragraph.</li>
-              <li><strong class="text-ink dark:text-darkInk">Cap:</strong> At <span class="font-mono text-alert font-semibold">2:00</span>, lock your best sequence, type it in, and walk away.</li>
+              <li><strong class="text-ink dark:text-darkInk">Checkpoint:</strong> Around <span class="font-mono text-alert font-semibold">2:00</span>, move on if stalled. Save a defensible sequence if actual marking is penalty-free; otherwise judge confidence and opportunity cost. Revisit a reasonable estimate only in cleanup after stronger opportunities.</li>
             </ul>
           </div>
         </div>
@@ -1601,7 +1601,7 @@ input[type=checkbox]{flex-shrink:0}
           <textarea
             data-note-key="varc"
             rows="4"
-            placeholder="Log your recurring RC distractor traps, genres to skip on P1, or VA mock observations..."
+            placeholder="Log your recurring RC distractor traps, passages to defer at the first-paragraph gate, or VA mock observations..."
             class="w-full rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-3 text-sm text-ink dark:text-darkInk placeholder:text-muted/60 focus:outline-none focus:border-varc transition-colors resize-y"
           ></textarea>
           <div class="no-print mt-2 flex items-center justify-between text-[11px] text-muted dark:text-darkMuted font-mono">
@@ -1666,7 +1666,7 @@ input[type=checkbox]{flex-shrink:0}
           <!-- Compact 2-Column Tactical Strip: 5-Q Set ROI + Calculator Discipline -->
           <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-2.5 text-xs">
             <div class="p-3 rounded-lg bg-dilr/[0.06] dark:bg-dilr/15 border border-dilr/20 leading-relaxed">
-              <strong class="font-mono text-[10px] uppercase tracking-wider text-dilr block mb-0.5">5-Q Set ROI Tie-Breaker</strong>
+              <strong class="font-mono text-[10px] uppercase tracking-wider text-dilr block mb-0.5">Five-question set payoff tie-breaker</strong>
               <span class="text-muted dark:text-darkMuted">If a <strong class="text-ink dark:text-darkInk">5-Q set</strong> and a <strong class="text-ink dark:text-darkInk">4-Q set</strong> look equally clean in your 4-min scan, pick the 5-Q set first (<span class="font-mono text-dilr font-semibold">+3 extra marks</span> if the additional question is solved correctly for comparable overall effort).</span>
             </div>
             <div class="p-3 rounded-lg bg-qa/[0.06] dark:bg-qa/15 border border-qa/20 leading-relaxed">
@@ -1700,7 +1700,7 @@ input[type=checkbox]{flex-shrink:0}
             </li>
             <li class="flex gap-2">
               <span class="text-dilr font-bold shrink-0">+</span>
-              <span><strong class="text-ink dark:text-darkInk">Familiar archetypes:</strong> 2D/3D Tables, Tournaments, Venn, QBR, Linear/Circular, and bar/line charts combined with logical constraints.</span>
+              <span><strong class="text-ink dark:text-darkInk">Familiar archetypes:</strong> 2D/3D Tables, Tournaments, Venn, quantitative reasoning, linear/circular arrangements, and bar/line charts combined with logical constraints.</span>
             </li>
           </ul>
         </div>
@@ -1950,7 +1950,7 @@ input[type=checkbox]{flex-shrink:0}
                 <span>ROUND 1 (0–22m)</span>
                 <span>7–8 attempts, flexible &middot; ~2.5m/Q</span>
               </div>
-              <p class="text-muted dark:text-darkMuted leading-relaxed">Sitters: Arithmetic, Logs/Exponents, Number Theory, Mensuration, direct AP/GP &amp; Linear/Quadratic.</p>
+              <p class="text-muted dark:text-darkMuted leading-relaxed">Sitters: Arithmetic, Logs/Exponents, Number Theory, Mensuration, direct arithmetic/geometric progressions &amp; Linear/Quadratic.</p>
             </div>
             <div class="p-3 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline">
               <div class="flex items-center justify-between font-mono text-[11px] font-bold text-qa mb-1">
@@ -2037,7 +2037,7 @@ input[type=checkbox]{flex-shrink:0}
               <h4 class="font-bold text-xs sm:text-sm">Algebra Speed Discipline</h4>
             </div>
             <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">
-              Rely on muscle memory (AP/GP, Linear/Quadratics). Only use value plug-in (<span class="font-mono text-[11px]">n=1,2</span> or <span class="font-mono text-[11px]">x=0,1,-1</span>) or test option boundaries in inequalities (respect the domain and strict/non-strict endpoints), if the technique clicks naturally within <span class="font-mono">15s</span> — don't force new habits last week.
+              Rely on muscle memory (arithmetic/geometric progressions, Linear/Quadratics). Only use value plug-in (<span class="font-mono text-[11px]">n=1,2</span> or <span class="font-mono text-[11px]">x=0,1,-1</span>) or test option boundaries in inequalities (respect the domain and strict/non-strict endpoints), if the technique clicks naturally within <span class="font-mono">15s</span> — don't force new habits last week.
             </p>
           </div>
 
@@ -2088,7 +2088,7 @@ input[type=checkbox]{flex-shrink:0}
                   <span class="inline-block font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-qa text-white">PRIORITY 1</span>
                   <span class="block text-[10px] text-muted dark:text-darkMuted mt-0.5">Non-negotiable</span>
                 </div></td>
-                <td role="cell" data-cell-label="Topics" class="py-3 px-4 font-medium"><div data-cell-value>Arithmetic <span class="text-muted dark:text-darkMuted font-normal">(Ratios, %, PLD, Mixtures, Averages, TSD, T&amp;W, SI/CI)</span></div></td>
+                <td role="cell" data-cell-label="Topics" class="py-3 px-4 font-medium"><div data-cell-value>Arithmetic <span class="text-muted dark:text-darkMuted font-normal">(Ratios, percentages, profit/loss/discount, mixtures, averages, time/speed/distance, time/work, simple/compound interest)</span></div></td>
                 <td role="cell" data-cell-label="Typical Supply" class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap"><div data-cell-value>7–9 Qs</div></td>
                 <td role="cell" data-cell-label="Solvable Pool" class="py-3 px-5 font-mono font-bold text-ink dark:text-darkInk whitespace-nowrap"><div data-cell-value>5–7 Qs</div></td>
               </tr>
@@ -2106,7 +2106,7 @@ input[type=checkbox]{flex-shrink:0}
                   <span class="inline-block font-mono text-[10px] font-bold px-2 py-0.5 rounded bg-dilr/15 text-dilr">PRIORITY 3</span>
                   <span class="block text-[10px] text-muted dark:text-darkMuted mt-0.5">The Buffer Bridge</span>
                 </div></td>
-                <td role="cell" data-cell-label="Topics" class="py-3 px-4 font-medium"><div data-cell-value>Core Algebra <span class="text-muted dark:text-darkMuted font-normal">(Linear/Quadratic, Inequalities/Modulus, AP/GP)</span></div></td>
+                <td role="cell" data-cell-label="Topics" class="py-3 px-4 font-medium"><div data-cell-value>Core Algebra <span class="text-muted dark:text-darkMuted font-normal">(Linear/Quadratic, Inequalities/Modulus, arithmetic/geometric progressions)</span></div></td>
                 <td role="cell" data-cell-label="Typical Supply" class="py-3 px-4 font-mono text-muted dark:text-darkMuted whitespace-nowrap"><div data-cell-value>3–5 Qs</div></td>
                 <td role="cell" data-cell-label="Solvable Pool" class="py-3 px-5 font-mono font-bold text-ink dark:text-darkInk whitespace-nowrap"><div data-cell-value>2–4 Qs</div></td>
               </tr>
@@ -2257,7 +2257,7 @@ input[type=checkbox]{flex-shrink:0}
               40
             ],
             "summary": "3 RCs + 8 VA (20-question pool). Aim for 10–11 RC, 4 TITA VA and 3–4 MCQ VA; 17–18 primary, 19 optional.",
-            "gate": "45–60s P1 gate; default to three readable RCs. Consider the fourth only under the readable-paper trigger.",
+            "gate": "45–60s first-paragraph gate; default to three readable RCs. Consider the fourth only under the readable-paper trigger.",
             "checkTitle": "Commit to Standard (3 RCs)",
             "checkDetail": "Protect three readable RCs and all available TITA VA; do not force weak MCQs.",
             "scoreExample": "Illustrative: 17–18 attempts, 13–14 correct, 2 wrong MCQs and 2 wrong TITAs = 37–40 raw marks (about 76–78% accuracy).",
@@ -2271,7 +2271,7 @@ input[type=checkbox]{flex-shrink:0}
                 "end": 25,
                 "label": "3 RCs (10–11 Qs)",
                 "classes": "bg-varc hover:bg-varc/90 text-white",
-                "detail": "VARC | Min 0–25 (25m): Solve your best 3 RCs (~8m/RC + 1m P1 reject buffer) → 10–11 Qs. 3:30 structural read + 4:30 Qs; flag unresolved MCQs unanswered at 45s.",
+                "detail": "VARC | Min 0–25 (25m): Solve your best 3 RCs (~8m/RC + 1m passage-rejection buffer) → 10–11 Qs. 3:30 structural read + 4:30 Qs; flag unresolved MCQs unanswered at 45s.",
                 "caption": "3 RCs (~8m each + 1m reject buffer) → 10–11 Qs."
               },
               {
@@ -2280,7 +2280,7 @@ input[type=checkbox]{flex-shrink:0}
                 "label": "4 TITA VA",
                 "classes": "bg-varc/75 hover:bg-varc/65 text-white",
                 "detail": "VARC | Min 25–32 (7m): 2 Para Jumbles + 2 Odd One Out (~1:45/Q). Under recent marking, wrong TITA answers have no penalty. Prioritise these questions; move on around 2:00/Q if stalled and reserve reasonable estimates for cleanup.",
-                "caption": "4 TITA VA (2 PJ + 2 Odd Out) → Prioritise available TITA (no -1 under recent marking)."
+                "caption": "4 TITA VA (2 Para Jumbles + 2 Odd One Out) → Prioritise available TITA (no -1 under recent marking)."
               },
               {
                 "start": 32,
@@ -2311,7 +2311,7 @@ input[type=checkbox]{flex-shrink:0}
               40
             ],
             "summary": "2 RCs → TITA VA → 1 RC → MCQ VA (20-question pool). Aim for 10–11 RC, 4 TITA VA and 3–4 MCQ VA; 17–18 primary, 19 optional.",
-            "gate": "45–60s P1 gate; use the initial 1m allowance and protect the early TITA block. Do not force a fourth RC.",
+            "gate": "45–60s first-paragraph gate; use the initial 1m allowance and protect the early TITA block. Do not force a fourth RC.",
             "checkTitle": "Commit to Anti-Fatigue Split",
             "checkDetail": "2 RCs, TITA VA, 1 RC, MCQ VA; protect the cleanup minute.",
             "scoreExample": "Illustrative: 17–18 attempts, 13–14 correct, 2 wrong MCQs and 2 wrong TITAs = 37–40 raw marks (about 76–78% accuracy).",
@@ -2325,7 +2325,7 @@ input[type=checkbox]{flex-shrink:0}
                 "end": 17,
                 "label": "2 RCs",
                 "classes": "bg-varc hover:bg-varc/90 text-white",
-                "detail": "VARC | Min 0–17 (17m): Solve your first 2 readable RCs (~8m each plus 1m gate allowance) while focus is sharpest. Enforce 45–60s P1 gate.",
+                "detail": "VARC | Min 0–17 (17m): Solve your first 2 readable RCs (~8m each plus 1m gate allowance) while focus is sharpest. Enforce 45–60s first-paragraph gate.",
                 "caption": "First 2 RCs (~8m each + 1m gate) → 6–8 attempts; aim for 10–11 across three RCs."
               },
               {
@@ -2808,6 +2808,7 @@ input[type=checkbox]{flex-shrink:0}
           const html = document.documentElement;
           const iconSun = document.getElementById('icon-sun');
           const iconMoon = document.getElementById('icon-moon');
+          document.getElementById('btn-theme')?.setAttribute('aria-pressed', String(theme === 'dark'));
           if (theme === 'dark') {
             html.classList.add('dark');
             if (iconSun) iconSun.classList.remove('hidden');
