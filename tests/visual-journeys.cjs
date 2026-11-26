@@ -24,7 +24,7 @@ async function runJourney(api){
   const drawer=p.locator('#panel-'+tab+' .notes-drawer');
   await disclosure(drawer,true);await drawer.locator('textarea').fill(value);
  }
- async function exportAndReopen(expected){
+ async function exportAndReopen(expected,expectedErrors=0){
   await top(page);
   const download=page.waitForEvent('download',{timeout:15000});
   await page.locator('#btn-export-html').click();
@@ -35,8 +35,10 @@ async function runJourney(api){
    const raw=fs.readFileSync(file,'utf8'),match=raw.match(/<script id="embedded-user-state"[^>]*>([\s\S]*?)<\/script>/);
    assert(match,'Portable snapshot exists');
    const snapshot=JSON.parse(match[1]);assert.equal(snapshot.schemaVersion,2);
+   const errorRecords=snapshot.records.filter(r=>r.key.startsWith('error:')&&r.value!==null);
+   assert.equal(errorRecords.length,expectedErrors,'Expected saved error records in export');
    for(const [key,value] of Object.entries(expected))assert.deepEqual(snapshot.records.find(r=>r.key===key)?.value,value,'Exported '+key);
-   fresh=await browser.newContext({viewport:{width:desc.width,height:desc.height},offline:true,acceptDownloads:true,reducedMotion:'reduce'});
+   fresh=await browser.newContext({viewport:{width:desc.width,height:desc.height},hasTouch:desc.width<768,isMobile:desc.engine!=='firefox'&&desc.width<768,deviceScaleFactor:1,offline:true,acceptDownloads:true,reducedMotion:'reduce',locale:'en-IN',timezoneId:'Asia/Kolkata'});
    const copy=await fresh.newPage();captureEvents(copy,null);await ready(copy,pathToFileURL(file).href);
    assert.equal(await copy.locator('#btn-quick-revision').getAttribute('aria-pressed'),'false');
    assert.equal(await copy.locator('#panel-overview').isVisible(),true);
@@ -46,7 +48,8 @@ async function runJourney(api){
     if(key==='pref:varcOrder')assert.equal(await copy.locator('#panel-overview [data-varc-order="'+value+'"]').getAttribute('aria-pressed'),'true');
     if(key.startsWith('check:'))assert.equal(await copy.locator('[data-chk="'+key.slice(6)+'"]').isChecked(),value);
    }
-   assert.equal(await copy.locator('#error-log-list article').count(),snapshot.records.filter(r=>r.key.startsWith('error:')&&r.value!==null).length);
+   assert.equal(await copy.locator('#error-log-list article').count(),errorRecords.length);
+   for(const record of errorRecords){const value=record.value;const cards=await copy.locator('#error-log-list article').allTextContents();assert(cards.some(c=>c.includes(value.reference)&&c.includes(value.cause)&&c.includes(value.correction)),'Error content restored');}
    await measure('portable-reopened',{},copy);await snap('portable-reopened',false,copy);
    action('Portable snapshot parsed and reopened in a fresh offline context');
   }finally{if(fresh)await fresh.close();fs.rmSync(file,{force:true});}
@@ -76,9 +79,12 @@ async function runJourney(api){
   await note(page,'qa',fixture);await top(page);
   await page.waitForFunction(b=>b?/unsaved|unavailable/i.test(document.querySelector('#storage-status').textContent):/temporary recovery/i.test(document.querySelector('#storage-status').textContent),both);
   await measure('pending-note');await snap('pending-note');
+  if(both)assert.match(await page.locator('#storage-status').textContent(),/unsaved in memory/i);
+  else assert(await page.evaluate(()=>Object.keys(localStorage).some(k=>k.startsWith('cat99_emergency_v2:'))),'Emergency recovery journal exists');
   if(!both){
    await page.evaluate(()=>{sessionStorage.setItem('qa-allow-idb','yes');window.__qaDenyIDB=false;});
    await page.locator('#btn-retry-storage').click();await saved(page);
+    assert.equal(await page.evaluate(()=>Object.keys(localStorage).filter(k=>k.startsWith('cat99_emergency_v2:')).length),0,'Durable commit retires emergency journal');
    await measure('recovered');await snap('recovered');
    await ready(page,url);assert.equal(await page.locator('textarea[data-note-key="qa"]').inputValue(),fixture);
    action('Journal recovery persisted through reload');
@@ -89,7 +95,7 @@ async function runJourney(api){
   await note(page,'qa',fixture);await section(page,'overview');await mode(page,'readable');await add(page,'QA','Synthetic portable error');
   await page.locator('[data-chk="chk-logistics"]').check();
   await measure('portable-populated');await snap('portable-populated');
-  await exportAndReopen({'note:qa':fixture,'pref:varcOrder':'readable','pref:theme':'dark','check:chk-logistics':true});return;
+  await exportAndReopen({'note:qa':fixture,'pref:varcOrder':'readable','pref:theme':'dark','check:chk-logistics':true},1);return;
  }
  await saved(page);
  await section(page,'overview');await bring(page,page.locator('#error-log-title'));await measure('empty-error-log');await snap('empty-error-log');
@@ -133,7 +139,7 @@ async function runJourney(api){
  await top(page);page.once('dialog',d=>d.dismiss());await page.locator('#btn-export-html').click();
  assert.equal(await page.locator('#export-fallback').isVisible(),false);
  await page.locator('[name=cause]').fill('');
- await exportAndReopen({...values,'pref:theme':'dark','pref:varcOrder':'split','check:chk-logistics':true});
+ await exportAndReopen({...values,'pref:theme':'dark','pref:varcOrder':'split','check:chk-logistics':true},2);
  action('CRUD, validation, filters, confirmations, checklist reset, all notes, reload, cross-tab and export');
 }
 module.exports={runJourney};
