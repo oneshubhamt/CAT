@@ -22,6 +22,8 @@ Search for these stable anchors rather than relying on line numbers.
 | `region:error-log` | Error-log form and list |
 | `region:varc`, `region:dilr`, `region:qa` | Detailed strategy content |
 | `region:dilr-personal-selection`, `region:qa-skip-routing` | Personalised set triage and QA skip classes |
+| `region:rule-hierarchy`, `region:dilr-case-discipline` | Decision precedence and conditional-case safeguards |
+| `region:exam-logistics` | Dated, source-qualified exam logistics and optional online links |
 | `#cat-app` | Entire application script |
 
 Inside `#cat-app`, each `<module:ID>` / `</module:ID>` comment pair encloses one module.
@@ -63,6 +65,10 @@ The application uses a classic script in a private IIFE, not global application 
 - Preserve data on failed transactions; never claim an IndexedDB save until confirmed. Keep snapshot escaping of less-than characters and record validation. Do not render personal content through innerHTML.
 - Keep DOM IDs and data attributes stable across markup, renderers and export clone cleanup. If adding a persisted feature, update schema/model, UI, bootstrap and portable export as necessary.
 - Preserve download from a local file as well as hosted use. Browser storage can be unavailable or evicted; portable export remains the backup.
+
+## Strategy and logistics maintenance
+
+The four-level hierarchy is authoritative within the playbook: official instructions/safeguards > adaptive checkpoints > default plans > preferences. Keep the quick revision, matrix, clocks, mode configuration, detailed section cards and readiness checklist consistent. Never turn timing targets or TITA availability into unconditional quotas. QA rolling triage gives unseen questions an initial assessment before lower-value revisits; DILR preserves master facts separately from hypothetical questions. Verify the official CAT portal and current candidate instructions before changing dated logistics. The 26 November 2026 review used mirrored IIM releases and qualified secondary reporting because the portal and direct mock were not accessible through the research environment. Do not promote reported details to official verification. Personal admit-card instructions control. Ordinary user-activated source links are allowed; they must not create automatic network requests or runtime dependencies.
 
 ## Offline CSS maintenance
 
