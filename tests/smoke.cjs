@@ -53,6 +53,11 @@ async function runSmoke(html) {
   check((html.match(/<details data-strategy-detail="/g)||[]).length===7 && (html.match(/<details data-strategy-detail="[^"]+" open/g)||[]).length===2, 'Seven native disclosures, two core sections open by default');
   check(html.includes('aria-label="Dark mode" aria-pressed="false"'), 'Stable theme toggle label and initial pressed state');
   check(html.includes('[data-clock-time]') && html.includes('font-variant-numeric:tabular-nums') && html.includes('font-size:15px!important'), 'Prominent numeric timing labels');
+  check((html.match(/<ol data-selection-steps><li>/g)||[]).length===1 && ['Model','Starting fact','Key deduction','Work left','Payoff'].every(label=>html.includes('<strong>'+label+'</strong>')), 'DILR five-step selection guide');
+  check(html.includes('data-decision-grid') && html.includes('If time remains, consider an answer. Expected +1') && html.includes('Weak elimination?'), 'MCQ cleanup decision paths and expected score');
+  check((html.match(/<ul[^>]*data-read-steps/g)||[]).length>=5 && html.includes('data-glossary'), 'Scannable action lists and expandable glossary');
+  check(html.includes('grid-template-columns:minmax(0,1fr)') && html.includes('[data-selection-steps],[data-decision-grid]'), 'Reading grids collapse on mobile');
+  check(!/Sniper Verification|Palate cleanser|Architecture, Not Facts|burning clicks|inference trap is nasty|Arithmetic Allergy|Mandatory Accuracy Shield/.test(html.replace(/<!--[\s\S]*?-->/g,'')), 'Inflated terminology removed from visible guidance');
   const initial = html.match(/<script id="embedded-user-state"[^>]*>([\s\S]*?)<\/script>/)[1].trim();
   check(JSON.parse(initial).schemaVersion === 2 && JSON.parse(initial).records.length === 0, 'Empty repository snapshot');
 
