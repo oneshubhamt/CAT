@@ -71,27 +71,9 @@
     }
   </style>
 
-  <!-- Embedded User State (Synced With localStorage & Exported Inside Downloaded HTML) -->
+  <!-- Versioned portable record snapshot; browser persistence is handled by IndexedDB. -->
   <script id="embedded-user-state" type="application/json">
-    {
-      "updatedAt": 0,
-      "theme": "light",
-      "varcOrder": "standard",
-      "checklist": {
-        "chk-bailout": false,
-        "chk-dilr-shield": false,
-        "chk-varc-gate": false,
-        "chk-qa-quarantine": false,
-        "chk-taper": false,
-        "chk-logistics": false
-      },
-      "notes": {
-        "overview": "",
-        "varc": "",
-        "dilr": "",
-        "qa": ""
-      }
-    }
+    {"schemaVersion":2,"records":[]}
   </script>
 </head>
 <body class="bg-canvas text-ink dark:bg-darkCanvas dark:text-darkInk font-sans antialiased selection:bg-varc/15 selection:text-varc transition-colors duration-200 min-h-screen flex flex-col">
@@ -632,6 +614,38 @@
         </div>
       </div>
 
+      <!-- Unified Error Log -->
+      <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6" aria-labelledby="error-log-title">
+        <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-hairline dark:border-darkHairline">
+          <div><h3 id="error-log-title" class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">Daily Error Log</h3>
+          <p class="text-xs text-muted dark:text-darkMuted mt-1">Record the root cause, not just the wrong answer. Review the corrective action before the next attempt.</p></div>
+          <span id="error-log-count" class="font-mono text-xs" aria-live="polite">0 entries</span>
+        </div>
+        <form id="error-log-form" class="no-print mt-4 space-y-3 text-xs">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <label class="flex flex-col gap-1 font-medium">Date<input required type="date" name="date" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"></label>
+            <label class="flex flex-col gap-1 font-medium">Section<select name="section" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"><option>VARC</option><option>DILR</option><option>QA</option></select></label>
+            <label class="flex flex-col gap-1 font-medium">Error type<select name="category" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"><option>Selection</option><option>Time management</option><option>Comprehension</option><option>Representation</option><option>Deduction / elimination</option><option>Arithmetic / execution</option><option>Verification</option><option>Interface</option><option>Other</option></select></label>
+          </div>
+          <label class="flex flex-col gap-1 font-medium">Mock / passage / set / question reference<input name="reference" maxlength="200" placeholder="e.g. Mock 2, RC 3, Q12" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"></label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <label class="flex flex-col gap-1 font-medium">What went wrong and why?<textarea required name="cause" maxlength="2000" rows="3" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2 resize-y" placeholder="e.g. Confused critic's view with author's."></textarea></label>
+            <label class="flex flex-col gap-1 font-medium">Correction / next recall target<textarea required name="correction" maxlength="2000" rows="3" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2 resize-y" placeholder="e.g. Verify who holds each view."></textarea></label>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <label class="flex flex-col gap-1 font-medium">Marks lost (optional)<input type="number" min="0" max="300" step="1" name="marks" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"></label>
+            <label class="flex flex-col gap-1 font-medium">Minutes lost (optional)<input type="number" min="0" max="120" step="0.5" name="minutes" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"></label>
+            <label class="flex flex-col gap-1 font-medium">Review status<select name="status" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"><option value="open">Open</option><option value="reviewed">Reviewed</option></select></label>
+          </div>
+          <div class="flex flex-wrap items-center gap-3">
+            <button id="error-log-submit" type="submit" class="rounded-md bg-ink dark:bg-darkInk text-canvas dark:text-darkCanvas px-3 py-2 font-semibold">Add error</button>
+            <button id="error-log-cancel" type="button" hidden class="underline text-muted dark:text-darkMuted">Cancel edit</button>
+            <label class="ml-auto flex items-center gap-2">Filter<select id="error-log-filter" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"><option value="all">All sections</option><option>VARC</option><option>DILR</option><option>QA</option></select></label>
+          </div>
+        </form>
+        <div id="error-log-list" class="mt-4 space-y-3 text-xs"></div>
+      </section>
+
       <!-- Editable Personal Notes Drawer (Overview) -->
       <details class="print-card notes-drawer group bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl overflow-hidden">
         <summary class="flex items-center justify-between px-5 py-3.5 cursor-pointer list-none select-none hover:bg-canvas/60 dark:hover:bg-darkCanvas/40 transition-colors">
@@ -640,9 +654,9 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
             </svg>
             <span class="text-xs font-semibold uppercase tracking-wider text-ink dark:text-darkInk">Personal Notes &amp; Amendments — Overview</span>
-            <span data-note-badge="overview" class="hidden font-mono text-[10px] px-1.5 py-0.5 rounded bg-ink/10 dark:bg-darkInk/15 text-ink dark:text-darkInk">Saved</span>
+            <span data-note-badge="overview" class="hidden font-mono text-[10px] px-1.5 py-0.5 rounded bg-ink/10 dark:bg-darkInk/15 text-ink dark:text-darkInk">Has notes</span>
           </div>
-          <span class="no-print text-[11px] font-mono text-muted dark:text-darkMuted">Auto-saves locally</span>
+          <span class="no-print text-[11px] font-mono text-muted dark:text-darkMuted">Browser autosave</span>
         </summary>
         <div class="px-5 pb-5 pt-2 border-t border-hairline dark:border-darkHairline">
           <textarea
@@ -653,7 +667,7 @@
           ></textarea>
           <div class="no-print mt-2 flex items-center justify-between text-[11px] text-muted dark:text-darkMuted font-mono">
             <span>Tip: Click "Download HTML" in the top bar to save these notes permanently inside the file.</span>
-            <span data-note-status="overview">Synced</span>
+            <span data-note-status="overview">Loading storage…</span>
           </div>
         </div>
       </details>
@@ -987,9 +1001,9 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
             </svg>
             <span class="text-xs font-semibold uppercase tracking-wider text-ink dark:text-darkInk">Personal Notes &amp; Amendments — VARC</span>
-            <span data-note-badge="varc" class="hidden font-mono text-[10px] px-1.5 py-0.5 rounded bg-varc/10 text-varc">Saved</span>
+            <span data-note-badge="varc" class="hidden font-mono text-[10px] px-1.5 py-0.5 rounded bg-varc/10 text-varc">Has notes</span>
           </div>
-          <span class="no-print text-[11px] font-mono text-muted dark:text-darkMuted">Auto-saves locally</span>
+          <span class="no-print text-[11px] font-mono text-muted dark:text-darkMuted">Browser autosave</span>
         </summary>
         <div class="px-5 pb-5 pt-2 border-t border-hairline dark:border-darkHairline">
           <textarea
@@ -999,8 +1013,8 @@
             class="w-full rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-3 text-sm text-ink dark:text-darkInk placeholder:text-muted/60 focus:outline-none focus:border-varc transition-colors resize-y"
           ></textarea>
           <div class="no-print mt-2 flex items-center justify-between text-[11px] text-muted dark:text-darkMuted font-mono">
-            <span>Edits persist automatically in localStorage.</span>
-            <span data-note-status="varc">Synced</span>
+            <span>Edits save to IndexedDB; export HTML for a portable backup.</span>
+            <span data-note-status="varc">Loading storage…</span>
           </div>
         </div>
       </details>
@@ -1213,9 +1227,9 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
             </svg>
             <span class="text-xs font-semibold uppercase tracking-wider text-ink dark:text-darkInk">Personal Notes &amp; Amendments — DILR</span>
-            <span data-note-badge="dilr" class="hidden font-mono text-[10px] px-1.5 py-0.5 rounded bg-dilr/10 text-dilr">Saved</span>
+            <span data-note-badge="dilr" class="hidden font-mono text-[10px] px-1.5 py-0.5 rounded bg-dilr/10 text-dilr">Has notes</span>
           </div>
-          <span class="no-print text-[11px] font-mono text-muted dark:text-darkMuted">Auto-saves locally</span>
+          <span class="no-print text-[11px] font-mono text-muted dark:text-darkMuted">Browser autosave</span>
         </summary>
         <div class="px-5 pb-5 pt-2 border-t border-hairline dark:border-darkHairline">
           <textarea
@@ -1225,8 +1239,8 @@
             class="w-full rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-3 text-sm text-ink dark:text-darkInk placeholder:text-muted/60 focus:outline-none focus:border-dilr transition-colors resize-y"
           ></textarea>
           <div class="no-print mt-2 flex items-center justify-between text-[11px] text-muted dark:text-darkMuted font-mono">
-            <span>Edits persist automatically in localStorage.</span>
-            <span data-note-status="dilr">Synced</span>
+            <span>Edits save to IndexedDB; export HTML for a portable backup.</span>
+            <span data-note-status="dilr">Loading storage…</span>
           </div>
         </div>
       </details>
@@ -1457,9 +1471,9 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
             </svg>
             <span class="text-xs font-semibold uppercase tracking-wider text-ink dark:text-darkInk">Personal Notes &amp; Amendments — QA</span>
-            <span data-note-badge="qa" class="hidden font-mono text-[10px] px-1.5 py-0.5 rounded bg-qa/10 text-qa">Saved</span>
+            <span data-note-badge="qa" class="hidden font-mono text-[10px] px-1.5 py-0.5 rounded bg-qa/10 text-qa">Has notes</span>
           </div>
-          <span class="no-print text-[11px] font-mono text-muted dark:text-darkMuted">Auto-saves locally</span>
+          <span class="no-print text-[11px] font-mono text-muted dark:text-darkMuted">Browser autosave</span>
         </summary>
         <div class="px-5 pb-5 pt-2 border-t border-hairline dark:border-darkHairline">
           <textarea
@@ -1469,8 +1483,8 @@
             class="w-full rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-3 text-sm text-ink dark:text-darkInk placeholder:text-muted/60 focus:outline-none focus:border-qa transition-colors resize-y"
           ></textarea>
           <div class="no-print mt-2 flex items-center justify-between text-[11px] text-muted dark:text-darkMuted font-mono">
-            <span>Edits persist automatically in localStorage.</span>
-            <span data-note-status="qa">Synced</span>
+            <span>Edits save to IndexedDB; export HTML for a portable backup.</span>
+            <span data-note-status="qa">Loading storage…</span>
           </div>
         </div>
       </details>
@@ -1482,7 +1496,7 @@
   <footer class="no-print border-t border-hairline dark:border-darkHairline mt-8">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-mono text-muted dark:text-darkMuted">
       <span>CAT 99+ EXAM-DAY PLAYBOOK &middot; KEYS [1–4] TO SWITCH TABS</span>
-      <span>ALL NOTES AUTO-SAVE LOCALLY &middot; EXPORT HTML TO KEEP AMENDMENTS PORTABLE</span>
+      <span id="storage-status" role="status" aria-live="polite">Opening browser storage…</span><span>EXPORT HTML TO KEEP AMENDMENTS PORTABLE</span>
     </div>
   </footer>
 
@@ -1497,13 +1511,17 @@
   </div>
 
   <!-- ===================================================================== -->
-  <!-- VANILLA JAVASCRIPT: TABS, CLOCKS, THEME, LOCALSTORAGE & HTML EXPORT   -->
+  <!-- VANILLA JAVASCRIPT: TABS, CLOCKS, INDEXEDDB & HTML EXPORT   -->
   <!-- ===================================================================== -->
   <script>
     (function () {
       'use strict';
 
-      const STORAGE_KEY = 'cat99_playbook_state_v1';
+      const DB_NAME = 'cat99_playbook';
+      const DB_VERSION = 1;
+      const STORE = 'records';
+      const JOURNAL_PREFIX = 'cat99_emergency_v2:';
+      const JOURNAL_LIMIT = 64 * 1024;
       const VALID_VARC_ORDERS = ['standard', 'split', 'readable'];
 
       // 3-Mode VARC Clock Configurations (Standard / Anti-Fatigue Split / Readable-Paper 4-RC Backup)
@@ -1640,7 +1658,6 @@
 
       // Active state object
       let state = {
-        updatedAt: 0,
         theme: 'light',
         varcOrder: 'standard',
         checklist: {
@@ -1656,7 +1673,8 @@
           varc: '',
           dilr: '',
           qa: ''
-        }
+        },
+        errors: Object.create(null)
       };
 
       let toastTimer = null;
@@ -1677,64 +1695,269 @@
         }, 2200);
       }
 
-      /**
-       * Load state by merging embedded HTML state with localStorage (newest timestamp wins).
-       */
-      function loadState() {
-        let embedded = null;
+      // Versioned, independently mergeable records. No legacy migration.
+      const uid = () => globalThis.crypto?.randomUUID?.() || Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
+      const writer = uid(), journalKey = JOURNAL_PREFIX + writer;
+      const records = new Map(), pending = new Map();
+      const sections = ['VARC', 'DILR', 'QA'];
+      const categories = ['Selection', 'Time management', 'Comprehension', 'Representation', 'Deduction / elimination', 'Arithmetic / execution', 'Verification', 'Interface', 'Other'];
+      const noteKeys = Object.keys(state.notes), checklistKeys = Object.keys(state.checklist);
+      let db = null, clock = 0, serial = 0, saving = false, saveTimer = null;
+      let recoveredKeys = [], journalOK = true, editingError = null;
+
+      function isValidRecord(r) {
+        if (!r || typeof r.key !== 'string' || !Number.isSafeInteger(r.time) || r.time < 0 ||
+            !Number.isSafeInteger(r.seq) || r.seq < 0 || typeof r.writer !== 'string' || r.writer.length > 100) return false;
+        const v = r.value;
+        if (r.key === 'pref:theme') return v === 'light' || v === 'dark';
+        if (r.key === 'pref:varcOrder') return VALID_VARC_ORDERS.includes(v);
+        if (r.key.startsWith('check:')) return checklistKeys.includes(r.key.slice(6)) && typeof v === 'boolean';
+        if (r.key.startsWith('note:')) return noteKeys.includes(r.key.slice(5)) && typeof v === 'string';
+        if (!/^error:[a-zA-Z0-9-]{1,100}$/.test(r.key)) return false;
+        if (v === null) return true; // Tombstone prevents deleted entries resurfacing from older exports.
+        return !!(v && typeof v.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v.date) && sections.includes(v.section) &&
+          categories.includes(v.category) && ['open','reviewed'].includes(v.status) &&
+          typeof v.reference === 'string' && v.reference.length <= 200 &&
+          typeof v.cause === 'string' && v.cause.trim() && v.cause.length <= 2000 &&
+          typeof v.correction === 'string' && v.correction.trim() && v.correction.length <= 2000 &&
+          (v.marks === null || Number.isFinite(v.marks) && v.marks >= 0 && v.marks <= 300) &&
+          (v.minutes === null || Number.isFinite(v.minutes) && v.minutes >= 0 && v.minutes <= 120));
+      }
+      function newer(a, b) {
+        if (!b) return true;
+        if (a.time !== b.time) return a.time > b.time;
+        if (a.seq !== b.seq) return a.seq > b.seq;
+        return a.writer > b.writer;
+      }
+      function applyRecord(r) {
+        if (!isValidRecord(r) || !newer(r, records.get(r.key))) return false;
+        records.set(r.key, r);
+        clock = Math.max(clock, r.time);
+        if (r.key === 'pref:theme') state.theme = r.value;
+        else if (r.key === 'pref:varcOrder') state.varcOrder = r.value;
+        else if (r.key.startsWith('check:')) state.checklist[r.key.slice(6)] = r.value;
+        else if (r.key.startsWith('note:')) state.notes[r.key.slice(5)] = r.value;
+        else if (r.value === null) delete state.errors[r.key.slice(6)];
+        else state.errors[r.key.slice(6)] = r.value;
+        return true;
+      }
+      function snapshot() { return {schemaVersion: 2, records: Array.from(records.values())}; }
+      function safeSnapshot() { return JSON.stringify(snapshot()).replace(/</g, '\\u003c'); }
+      function readSnapshot(raw) {
+        const parsed = JSON.parse(raw);
+        if (!parsed || parsed.schemaVersion !== 2 || !Array.isArray(parsed.records) || !parsed.records.every(isValidRecord))
+          throw new Error('Invalid record snapshot');
+        return parsed.records;
+      }
+      function reportStorage(message) {
+        const el = document.getElementById('storage-status');
+        if (el) el.textContent = message;
+        document.querySelectorAll('[data-note-status]').forEach(el => { el.textContent = message; });
+      }
+      // Journal holds only dirty records and is removed after durable transaction completion.
+      // Per-page keys avoid concurrent tabs erasing one another's uncommitted edits.
+      function writeJournal() {
         try {
-          const el = document.getElementById('embedded-user-state');
-          if (el && el.textContent.trim()) {
-            embedded = JSON.parse(el.textContent);
-          }
-        } catch (err) {
-          console.warn('Could not parse embedded state:', err);
-        }
-
-        let stored = null;
+          if (!pending.size) { localStorage.removeItem(journalKey); journalOK = true; return true; }
+          const raw = JSON.stringify({schemaVersion:2, records:Array.from(pending.values())});
+          if (raw.length * 2 > JOURNAL_LIMIT) throw new Error('Emergency journal limit exceeded');
+          localStorage.setItem(journalKey, raw);
+          journalOK = true; return true;
+        } catch (err) { journalOK = false; console.warn('Emergency journal unavailable:', err); return false; }
+      }
+      function stage(r) { if (applyRecord(r)) pending.set(r.key, r); }
+      function recoverJournals() {
         try {
-          const raw = localStorage.getItem(STORAGE_KEY);
-          if (raw) {
-            stored = JSON.parse(raw);
+          const keys = [];
+          for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith(JOURNAL_PREFIX)) keys.push(key);
           }
+          for (const key of keys) {
+            try {
+              const raw = localStorage.getItem(key);
+              if (!raw || raw.length * 2 > JOURNAL_LIMIT) continue;
+              readSnapshot(raw).forEach(stage);
+              recoveredKeys.push({key, raw});
+            } catch (err) { console.warn('Unreadable recovery journal retained:', err); }
+          }
+        } catch (err) { console.warn('Journal recovery unavailable:', err); }
+      }
+      function openDatabase() {
+        return new Promise((resolve, reject) => {
+          let settled = false;
+          const timer = setTimeout(() => { settled = true; reject(new Error('IndexedDB open timeout')); }, 2500);
+          const finish = (fn, value) => { if (!settled) { settled = true; clearTimeout(timer); fn(value); } };
+          try {
+            const req = globalThis.indexedDB.open(DB_NAME, DB_VERSION);
+            req.onupgradeneeded = () => {
+              if (!req.result.objectStoreNames.contains(STORE)) req.result.createObjectStore(STORE, {keyPath:'key'});
+            };
+            req.onerror = () => finish(reject, req.error);
+            req.onblocked = () => finish(reject, new Error('IndexedDB upgrade blocked'));
+            req.onsuccess = () => {
+              if (settled) { req.result.close(); return; }
+              finish(resolve, req.result);
+            };
+          } catch (err) { finish(reject, err); }
+        });
+      }
+      function readDatabase() {
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(STORE, 'readonly'), req = tx.objectStore(STORE).getAll();
+          const timer = setTimeout(() => { try { tx.abort(); } catch {} reject(new Error('Read timed out')); }, 2500);
+          tx.oncomplete = () => { clearTimeout(timer); resolve(req.result); };
+          tx.onabort = tx.onerror = () => { clearTimeout(timer); reject(tx.error || req.error || new Error('Read failed')); };
+        });
+      }
+      // Atomic compare-and-write prevents stale records overwriting newer edits.
+      function writeDatabase(batch) {
+        return new Promise((resolve, reject) => {
+          const tx = db.transaction(STORE, 'readwrite'), store = tx.objectStore(STORE), winners = [];
+          const timer = setTimeout(() => { try { tx.abort(); } catch {} reject(new Error('Write timed out')); }, 4000);
+          tx.oncomplete = () => { clearTimeout(timer); resolve(winners); };
+          tx.onabort = tx.onerror = () => { clearTimeout(timer); reject(tx.error || new Error('Write failed')); };
+          for (const r of batch) {
+            const req = store.get(r.key);
+            req.onsuccess = () => {
+              if (!isValidRecord(req.result) || newer(r, req.result)) { store.put(r); winners.push(r); }
+              else winners.push(req.result);
+            };
+          }
+        });
+      }
+      function closeDatabase() { if (db) db.close(); db = null; }
+      async function flushPending() {
+        if (saving || !db || !pending.size && !recoveredKeys.length) return;
+        saving = true;
+        const batch = Array.from(pending.values());
+        try {
+          const winners = batch.length ? await writeDatabase(batch) : [];
+          let changed = false;
+          for (const r of winners) changed = applyRecord(r) || changed;
+          for (const r of batch) if (pending.get(r.key) === r) pending.delete(r.key);
+          if (changed) refreshFromRecords();
+          for (const item of recoveredKeys) {
+            try { if (localStorage.getItem(item.key) === item.raw) localStorage.removeItem(item.key); } catch {}
+          }
+          recoveredKeys = [];
+          writeJournal();
+          reportStorage(pending.size ? 'Saving to IndexedDB…' : 'Saved to IndexedDB');
         } catch (err) {
-          console.warn('localStorage unavailable:', err);
-        }
-
-        const source =
-          stored && embedded
-            ? (stored.updatedAt || 0) >= (embedded.updatedAt || 0)
-              ? stored
-              : embedded
-            : stored || embedded;
-
-        if (source) {
-          state = {
-            updatedAt: source.updatedAt || 0,
-            theme: source.theme === 'dark' ? 'dark' : 'light',
-            varcOrder: VALID_VARC_ORDERS.includes(source.varcOrder) ? source.varcOrder : 'standard',
-            checklist: Object.assign({}, state.checklist, source.checklist || {}),
-            notes: Object.assign({}, state.notes, source.notes || {})
-          };
-        } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          state.theme = 'dark';
+          console.warn('IndexedDB write failed:', err);
+          closeDatabase(); writeJournal();
+          reportStorage(journalOK ? 'Temporary recovery only — export HTML for backup' : 'Unsaved in memory — export HTML now');
+        } finally {
+          saving = false;
+          if (db && pending.size) scheduleSave(0);
         }
       }
-
-      /**
-       * Persist state to localStorage and keep embedded JSON script synced.
-       */
-      function saveState() {
-        state.updatedAt = Date.now();
+      function scheduleSave(delay = 0) {
+        clearTimeout(saveTimer); saveTimer = setTimeout(flushPending, delay);
+      }
+      function setRecord(key, value, delay = 0) {
+        const r = {key, value, time: Math.max(Date.now(), clock + 1), seq: ++serial, writer};
+        if (!isValidRecord(r)) throw new Error('Invalid record: ' + key);
+        stage(r);
+        writeJournal(); // synchronous before deferred IndexedDB write
+        reportStorage(db ? (journalOK ? 'Saving to IndexedDB…' : 'Saving — emergency journal unavailable') :
+          (journalOK ? 'Temporary recovery only — export HTML for backup' : 'Unsaved in memory — export HTML now'));
+        if (db) scheduleSave(delay);
+      }
+      async function loadState() {
         try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        } catch (err) {
-          console.warn('Could not write to localStorage:', err);
+          db = await openDatabase();
+          db.onversionchange = () => { closeDatabase(); writeJournal(); reportStorage('Storage changed — reload or export HTML'); };
+          db.onclose = () => { db = null; reportStorage('Storage closed — reload or export HTML'); };
+          (await readDatabase()).forEach(applyRecord);
+        } catch (err) { console.warn('IndexedDB unavailable:', err); closeDatabase(); }
+        try { readSnapshot(document.getElementById('embedded-user-state').textContent).forEach(stage); }
+        catch (err) { console.warn('Embedded recovery snapshot unavailable:', err); }
+        recoverJournals();
+        if (pending.size) writeJournal();
+        if (db) {
+          await flushPending();
+          if (db && !pending.size) reportStorage('Saved to IndexedDB');
+        } else reportStorage(journalOK ? 'IndexedDB unavailable — temporary recovery; export HTML' : 'Storage unavailable — export HTML now');
+      }
+      function refreshFromRecords() {
+        applyTheme(state.theme); renderVarcClock(state.varcOrder); renderChecklist(); renderNotes(); renderErrorLog();
+      }
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden' && pending.size) { writeJournal(); flushPending(); }
+      });
+      window.addEventListener('pagehide', () => { if (pending.size) { writeJournal(); flushPending(); } });
+      window.addEventListener('beforeunload', event => {
+        if (pending.size && !journalOK) { event.preventDefault(); event.returnValue = ''; }
+      });
+
+      function localDate() {
+        const d = new Date();
+        return [d.getFullYear(), String(d.getMonth()+1).padStart(2,'0'), String(d.getDate()).padStart(2,'0')].join('-');
+      }
+      function resetErrorForm() {
+        const form = document.getElementById('error-log-form');
+        editingError = null; form.reset(); form.elements.date.value = localDate();
+        document.getElementById('error-log-submit').textContent = 'Add error';
+        document.getElementById('error-log-cancel').hidden = true;
+      }
+      function renderErrorLog() {
+        const list = document.getElementById('error-log-list');
+        const filter = document.getElementById('error-log-filter').value;
+        const all = Object.entries(state.errors);
+        document.getElementById('error-log-count').textContent = all.length + ' entries · ' + all.filter(([,e]) => e.status === 'open').length + ' open';
+        list.replaceChildren();
+        const shown = all.filter(([,e]) => filter === 'all' || e.section === filter).sort((a,b) => b[1].date.localeCompare(a[1].date) || records.get('error:'+b[0]).time - records.get('error:'+a[0]).time);
+        if (!shown.length) { const p = document.createElement('p'); p.textContent = 'No entries in this view.'; p.className = 'text-muted dark:text-darkMuted'; list.append(p); }
+        for (const [id,e] of shown) {
+          const card = document.createElement('article');
+          card.className = 'border border-hairline dark:border-darkHairline rounded-lg p-3 space-y-2 break-inside-avoid';
+          const add = (tag, value, cls) => { const el = document.createElement(tag); el.textContent = value; el.className = cls; card.append(el); return el; };
+          add('h4', [e.date, e.section, e.category, e.status === 'open' ? 'Open' : 'Reviewed'].join(' · '), 'font-semibold');
+          if (e.reference) add('p', e.reference, 'text-muted dark:text-darkMuted break-words');
+          add('p', 'Root cause: ' + e.cause, 'whitespace-pre-wrap break-words');
+          add('p', 'Correction / recall: ' + e.correction, 'whitespace-pre-wrap break-words font-medium');
+          if (e.marks !== null || e.minutes !== null) add('p', [e.marks === null ? '' : e.marks+' marks lost', e.minutes === null ? '' : e.minutes+' min lost'].filter(Boolean).join(' · '), 'text-muted dark:text-darkMuted');
+          const actions = add('div', '', 'no-print flex flex-wrap gap-4');
+          const button = (label, fn) => { const b = document.createElement('button'); b.type = 'button'; b.textContent = label; b.className = 'underline font-medium'; b.addEventListener('click',fn); actions.append(b); };
+          button('Edit', () => {
+            editingError = id;
+            const form = document.getElementById('error-log-form');
+            for (const [key,val] of Object.entries(e)) form.elements.namedItem(key).value = val ?? '';
+            document.getElementById('error-log-submit').textContent = 'Save edit';
+            document.getElementById('error-log-cancel').hidden = false;
+            form.scrollIntoView({block:'center'}); form.elements.cause.focus();
+          });
+          button(e.status === 'open' ? 'Mark reviewed' : 'Reopen', () => {
+            setRecord('error:'+id, {...e,status:e.status === 'open' ? 'reviewed' : 'open'});
+            if (editingError === id) resetErrorForm();
+            renderErrorLog();
+          });
+          button('Delete', () => {
+            if (!window.confirm('Delete this error-log entry?')) return;
+            setRecord('error:'+id,null);
+            if (editingError === id) resetErrorForm();
+            renderErrorLog();
+          });
+          list.append(card);
         }
-        const embeddedEl = document.getElementById('embedded-user-state');
-        if (embeddedEl) {
-          embeddedEl.textContent = '\n    ' + JSON.stringify(state, null, 2) + '\n  ';
-        }
+      }
+      function bindErrorLog() {
+        const form = document.getElementById('error-log-form');
+        resetErrorForm();
+        form.addEventListener('submit', e => {
+          e.preventDefault();
+          const value = Object.fromEntries(new FormData(form));
+          for (const key of ['cause','correction','reference']) value[key] = value[key].trim();
+          for (const key of ['marks','minutes']) value[key] = value[key] === '' ? null : Number(value[key]);
+          const id = editingError || uid();
+          try { setRecord('error:'+id,value); }
+          catch (err) { showToast('Check required error-log fields'); return; }
+          resetErrorForm(); renderErrorLog();
+        });
+        document.getElementById('error-log-cancel').addEventListener('click',resetErrorForm);
+        document.getElementById('error-log-filter').addEventListener('change',renderErrorLog);
+        renderErrorLog();
       }
 
       /**
@@ -1943,8 +2166,6 @@
        */
       function exportUpdatedHtml() {
         try {
-          saveState();
-
           // Clone document so live DOM stays untouched
           const clone = document.documentElement.cloneNode(true);
 
@@ -1974,9 +2195,17 @@
           // Embed fresh JSON state (notes, checklist, theme, varcOrder, timestamp)
           const embeddedClone = clone.querySelector('#embedded-user-state');
           if (embeddedClone) {
-            embeddedClone.textContent = '\n    ' + JSON.stringify(state, null, 2) + '\n  ';
+            embeddedClone.textContent = '\n    ' + safeSnapshot() + '\n  ';
           }
 
+          // Derived log UI is reconstructed from the portable records on startup.
+          clone.querySelector('#error-log-list').replaceChildren();
+          clone.querySelector('#error-log-count').textContent = 'Loading…';
+          clone.querySelector('#error-log-form').reset();
+          clone.querySelector('#error-log-submit').textContent = 'Add error';
+          clone.querySelector('#error-log-cancel').hidden = true;
+          clone.querySelector('#storage-status').textContent = 'Opening browser storage…';
+          clone.querySelectorAll('[data-note-status]').forEach(el => { el.textContent = 'Loading storage…'; });
           // Reset toast visibility in exported copy
           const toastClone = clone.querySelector('#toast');
           if (toastClone) {
@@ -1997,7 +2226,7 @@
           document.body.removeChild(a);
           setTimeout(() => URL.revokeObjectURL(url), 1000);
 
-          showToast('Downloaded updated HTML with your notes');
+          showToast('Downloaded HTML with notes, checklist and error log');
         } catch (err) {
           console.error('Export failed:', err);
           showToast('Export error — please try again');
@@ -2007,13 +2236,16 @@
       /**
        * Initialize application on DOM ready.
        */
-      document.addEventListener('DOMContentLoaded', () => {
-        loadState();
+      document.addEventListener('DOMContentLoaded', async () => {
+        document.body.inert = true;
+        await loadState();
+        document.body.inert = false;
         applyTheme(state.theme);
         activateTab('overview');
         renderVarcClock(state.varcOrder);
         renderChecklist();
         renderNotes();
+        bindErrorLog();
 
         // Tab click listeners
         document.querySelectorAll('.tab-btn').forEach((btn) => {
@@ -2023,7 +2255,7 @@
         // Keyboard shortcuts 1–4 for instant tab switching (when not typing)
         document.addEventListener('keydown', (e) => {
           const tag = (e.target && e.target.tagName) || '';
-          if (tag === 'TEXTAREA' || tag === 'INPUT' || e.metaKey || e.ctrlKey || e.altKey) return;
+          if (tag === 'TEXTAREA' || tag === 'INPUT' || tag === 'SELECT' || e.metaKey || e.ctrlKey || e.altKey) return;
           if (e.key === '1') activateTab('overview');
           if (e.key === '2') activateTab('varc');
           if (e.key === '3') activateTab('dilr');
@@ -2034,9 +2266,8 @@
         const btnTheme = document.getElementById('btn-theme');
         if (btnTheme) {
           btnTheme.addEventListener('click', () => {
-            state.theme = state.theme === 'dark' ? 'light' : 'dark';
+            setRecord('pref:theme', state.theme === 'dark' ? 'light' : 'dark');
             applyTheme(state.theme);
-            saveState();
           });
         }
 
@@ -2045,9 +2276,8 @@
           btn.addEventListener('click', () => {
             const nextOrder = btn.dataset.varcOrder;
             if (!VALID_VARC_ORDERS.includes(nextOrder)) return;
-            state.varcOrder = nextOrder;
+            setRecord('pref:varcOrder', nextOrder);
             renderVarcClock(state.varcOrder);
-            saveState();
             showToast(VARC_ORDERS[state.varcOrder].toast);
           });
         });
@@ -2055,9 +2285,8 @@
         // Checklist persistence
         document.querySelectorAll('.reset-chk').forEach((chk) => {
           chk.addEventListener('change', () => {
-            state.checklist[chk.dataset.chk] = chk.checked;
+            setRecord('check:' + chk.dataset.chk, chk.checked);
             renderChecklist();
-            saveState();
           });
         });
 
@@ -2065,29 +2294,18 @@
         const btnResetChecklist = document.getElementById('btn-reset-checklist');
         if (btnResetChecklist) {
           btnResetChecklist.addEventListener('click', () => {
-            Object.keys(state.checklist).forEach((k) => (state.checklist[k] = false));
+            Object.keys(state.checklist).forEach(k => setRecord('check:' + k, false));
             renderChecklist();
-            saveState();
             showToast('Checklist cleared');
           });
         }
 
-        // Personal Notes auto-save with debounce
-        let noteDebounce = null;
-        document.querySelectorAll('textarea[data-note-key]').forEach((ta) => {
+        // Notes: journal immediately; coalesce durable writes while typing.
+        document.querySelectorAll('textarea[data-note-key]').forEach(ta => {
           ta.addEventListener('input', () => {
             const key = ta.dataset.noteKey;
-            const statusEl = document.querySelector(`[data-note-status="${key}"]`);
-            if (statusEl) statusEl.textContent = 'Saving...';
-
-            state.notes[key] = ta.value;
+            setRecord('note:' + key, ta.value, 200);
             updateNoteBadge(key, ta.value);
-
-            clearTimeout(noteDebounce);
-            noteDebounce = setTimeout(() => {
-              saveState();
-              if (statusEl) statusEl.textContent = 'Saved locally';
-            }, 300);
           });
         });
 
