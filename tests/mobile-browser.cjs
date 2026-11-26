@@ -51,6 +51,10 @@ async function main(){
        const top=async()=>{await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));};
        const section=async(tab)=>{await page.locator('#tab-'+tab).click();await page.waitForFunction(t=>!document.querySelector('#panel-'+t).classList.contains('hidden'),tab);await page.evaluate(()=>scrollTo(0,0));};
        await checkLayout('overview');await snap('overview');
+       assert.equal(await page.locator('[data-fixed-segment]').count(),24);
+       const fixed=await page.locator('[data-fixed-segment]').evaluateAll(els=>els.map(el=>({key:el.dataset.fixedSegment,width:el.style.width,time:el.querySelector('[data-clock-time]')?.textContent})));
+       assert(fixed.every(el=>el.width && el.time && /\d+–\d+m/.test(el.time)),engine+' '+size.name+' populated fixed clocks');
+       assert.equal(await page.locator('#btn-theme').getAttribute('aria-pressed'),'false');
        await page.locator('[data-table-kind="scenarios"]').evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));await snap('score-scenarios');await top();
        for(const mode of ['standard','split','readable']){
          await page.locator('#panel-overview [data-varc-order="'+mode+'"]').click();
@@ -62,9 +66,17 @@ async function main(){
          await page.locator('#btn-close-revision').click();
        }
        await section('varc');await checkLayout('varc');await snap('varc');
+       const disclosure=page.locator('[data-strategy-detail="va"]');
+       assert.equal(await disclosure.evaluate(el=>el.open),false);
+       await disclosure.locator('summary').click();
+       assert.equal(await disclosure.evaluate(el=>el.open),true);
+       await checkLayout('varc-va-expanded');await snap('varc-va-expanded');
+       await disclosure.locator('summary').click();
+       assert.equal(await disclosure.evaluate(el=>el.open),false);
        await page.locator('#panel-varc [data-varc-order="split"]').click();
        await checkLayout('varc-split');await snap('varc-split');
-       await page.locator('#panel-varc [data-responsive-table]').scrollIntoViewIfNeeded();await snap('varc-question-types');
+       await page.locator('[data-strategy-detail="varc-pattern"] > summary').click();
+       await page.locator('#panel-varc [data-responsive-table]').scrollIntoViewIfNeeded();await checkLayout('varc-question-types');await snap('varc-question-types');
        await section('dilr');await checkLayout('dilr');await snap('dilr');
        await page.locator('#dilr-personal-title').scrollIntoViewIfNeeded();await snap('dilr-selection');
        await page.locator('#dilr-recovery-title').scrollIntoViewIfNeeded();await snap('dilr-recovery');
@@ -75,7 +87,8 @@ async function main(){
          assert(pinned.navTop>=-2 && pinned.navTop<=8 && pinned.headerBottom<Math.min(160,size.height/3) && pinned.headingTop>=pinned.headerBottom-1,engine+' '+size.name+' pinned navigation '+JSON.stringify(pinned));
        }
        await checkLayout('qa-routing');await snap('qa-routing');
-       await page.locator('#panel-qa [data-responsive-table]').last().scrollIntoViewIfNeeded();await snap('qa-priority');
+       await page.locator('[data-strategy-detail="qa-priorities"] > summary').click();
+       await page.locator('#panel-qa [data-responsive-table]').last().scrollIntoViewIfNeeded();await checkLayout('qa-priority');await snap('qa-priority');
        await page.locator('#panel-qa .notes-drawer summary').click();
        await page.locator('textarea[data-note-key="qa"]').fill('Native mobile QA — notes survive reload. Units, domain, sign.');
        await checkLayout('notes');await snap('notes');
@@ -90,6 +103,7 @@ async function main(){
        await snap('error-saved');
        await top();
        await page.locator('#btn-theme').click();
+       assert.equal(await page.locator('#btn-theme').getAttribute('aria-pressed'),'true');
        await page.locator('#btn-quick-revision').click();
        await checkLayout('dark-quick');await snap('dark-quick');
        await page.locator('#btn-close-revision').click();
