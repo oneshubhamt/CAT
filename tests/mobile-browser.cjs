@@ -1,6 +1,6 @@
 'use strict';
 // Development-only runner. See tests/visual-matrix.cjs for the coverage policy.
-const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http');
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),http=require('node:http'),crypto=require('node:crypto');
 const {pathToFileURL}=require('node:url');
 const matrix=require('./visual-matrix.cjs'),{audit}=require('./visual-audit.cjs'),{writeReport}=require('./visual-report.cjs');
 const {runJourney}=require('./visual-journeys.cjs'),{visual,boundary}=require('./visual-screens.cjs');
@@ -105,7 +105,8 @@ async function runScenario(browser,desc,origin){
   if(['recovery-journal','memory-only'].includes(desc.id)){
    await ctx.addInitScript(({both})=>{
     const original=window.indexedDB;
-    window.__qaDenyIDB=both||sessionStorage.getItem('qa-allow-idb')!=='yes';
+    let allowed=false;try{allowed=sessionStorage.getItem('qa-allow-idb')==='yes';}catch{}
+    window.__qaDenyIDB=both||!allowed;
     Object.defineProperty(window,'indexedDB',{configurable:true,get(){if(window.__qaDenyIDB)throw new DOMException('Synthetic storage denial','SecurityError');return original;}});
     if(both)Object.defineProperty(window,'localStorage',{configurable:true,get(){throw new DOMException('Synthetic storage denial','SecurityError');}});
    },{both:desc.id==='memory-only'});
@@ -138,6 +139,7 @@ async function main(){
  const {chromium,webkit,firefox}=require('playwright');
  fs.mkdirSync(output,{recursive:true});
  const source=fs.readFileSync(input,'utf8');
+ report.sourceSha256=crypto.createHash('sha256').update(source,'utf8').digest('hex');
  const initial=source.match(/<script id="embedded-user-state"[^>]*>([\s\S]*?)<\/script>/);
  assert(initial&&JSON.parse(initial[1]).records.length===0,'Refuse to test personal backup as repository input');
  // Hosted journeys use an isolated ephemeral loopback origin; visual profiles
