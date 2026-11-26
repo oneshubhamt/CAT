@@ -452,7 +452,7 @@ input[type=checkbox]{flex-shrink:0}
       #toolbar-storage > div:empty{display:none}
       #toolbar-storage > div:has(> [hidden]:first-child + [hidden]){display:none}
       #playbook-main{padding:16px 12px 24px}
-      #playbook-main :is(section,article,h3,summary,input,textarea,select,button){scroll-margin-top:84px}
+      #playbook-main :is(section,article,h3,summary,input,textarea,select,button){scroll-margin-top:calc(var(--toolbar-pinned-height,72px) + 12px)}
       #playbook-main .text-xs{font-size:14px;line-height:1.52}
       #playbook-main .text-sm{font-size:15px;line-height:1.45}
       #playbook-main .text-\[11px\]{font-size:12px;line-height:1.45}
@@ -2783,13 +2783,17 @@ input[type=checkbox]{flex-shrink:0}
           const header = document.getElementById('playbook-header');
           const toolbarMain = document.getElementById('toolbar-main');
           const measureToolbar = () => {
-            if (header?.style && toolbarMain) header.style.setProperty('--toolbar-main-height', toolbarMain.offsetHeight + 'px');
+            if (header?.style && toolbarMain) {
+              header.style.setProperty('--toolbar-main-height', toolbarMain.offsetHeight + 'px');
+              document.documentElement.style?.setProperty('--toolbar-pinned-height', Math.max(0,header.offsetHeight-toolbarMain.offsetHeight)+'px');
+            }
           };
           measureToolbar();
           window.addEventListener('resize', measureToolbar);
           if (typeof globalThis.ResizeObserver === 'function' && toolbarMain) {
             const observer = new globalThis.ResizeObserver(measureToolbar);
             observer.observe(toolbarMain);
+            if (header) observer.observe(header);
           }
 
           const tabs = [...document.querySelectorAll('.tab-btn')];
