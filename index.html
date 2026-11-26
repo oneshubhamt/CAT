@@ -162,7 +162,7 @@
       </nav>
       <div class="flex flex-wrap items-center justify-between gap-2 py-1.5 text-[11px] text-muted dark:text-darkMuted border-t border-hairline dark:border-darkHairline">
         <span id="storage-status" role="status" aria-live="polite">Opening browser storage…</span>
-        <button id="btn-retry-storage" type="button" hidden class="underline">Retry IndexedDB</button>
+        <div class="flex flex-wrap gap-3"><button id="btn-retry-storage" type="button" hidden class="underline">Retry IndexedDB</button><a id="export-fallback" hidden download="cat_99_exam_day_playbook.html" class="underline">Download prepared backup</a></div>
       </div>
     </div>
   </header>
@@ -1805,13 +1805,14 @@
 
       // Versioned, independently mergeable records. No legacy migration.
       const uid = () => globalThis.crypto?.randomUUID?.() || Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
-      const writer = uid(), journalKey = JOURNAL_PREFIX + writer;
+      const writer = uid();
+      let journalKey = null, journalRaw = null, journalSerial = 0;
       const records = new Map(), pending = new Map();
       const sections = ['VARC', 'DILR', 'QA'];
       const categories = ['Selection', 'Time management', 'Comprehension', 'Representation', 'Deduction / elimination', 'Arithmetic / execution', 'Verification', 'Interface', 'Other'];
       const noteKeys = Object.keys(state.notes), checklistKeys = Object.keys(state.checklist);
       let db = null, clock = 0, serial = 0, saving = false, saveTimer = null;
-      let recoveredKeys = [], journalOK = true, editingError = null;
+      let recoveredKeys = [], journalOK = true, editingError = null, exporting = false, exportUrl = null;
 
       function isValidRecord(r) {
         if (!r || typeof r.key !== 'string' || !Number.isSafeInteger(r.time) || r.time < 0 ||
@@ -1853,7 +1854,7 @@
       function safeSnapshot() { return JSON.stringify(snapshot()).replace(/</g, '\\u003c'); }
       function readSnapshot(raw) {
         const parsed = JSON.parse(raw);
-        if (!parsed || parsed.schemaVersion !== 2 || !Array.isArray(parsed.records) || !parsed.records.every(isValidRecord))
+        if (!parsed || parsed.schemaVersion !== 2 || !Array.isArray(parsed.records) || !parsed.records.every(isValidRecord) || new Set(parsed.records.map(r=>r.key)).size !== parsed.records.length)
           throw new Error('Invalid record snapshot');
         return parsed.records;
       }
@@ -1868,14 +1869,29 @@
       // Per-page keys avoid concurrent tabs erasing one another's uncommitted edits.
       function writeJournal() {
         try {
-          if (!pending.size) { localStorage.removeItem(journalKey); journalOK = true; return true; }
+          if (!pending.size) {
+            if (journalKey) localStorage.removeItem(journalKey);
+            journalKey = journalRaw = null; journalOK = true; return true;
+          }
           const raw = JSON.stringify({schemaVersion:2, records:Array.from(pending.values())});
           if (raw.length * 2 > JOURNAL_LIMIT) throw new Error('Emergency journal limit exceeded');
-          localStorage.setItem(journalKey, raw);
-          journalOK = true; return true;
+          if (journalKey && raw === journalRaw && localStorage.getItem(journalKey) === raw) { journalOK = true; return true; }
+          // Immutable journal keys: another tab may retire an old key without racing a new write to it.
+          const nextKey = JOURNAL_PREFIX + writer + ':' + (++journalSerial);
+          localStorage.setItem(nextKey, raw);
+          const previous = journalKey;
+          journalKey = nextKey; journalRaw = raw; journalOK = true;
+          if (previous) { try { localStorage.removeItem(previous); } catch {} }
+          return true;
         } catch (err) { journalOK = false; console.warn('Emergency journal unavailable:', err); return false; }
       }
       function stage(r) { if (applyRecord(r)) pending.set(r.key, r); }
+      function mergeDurable(r) {
+        if (!isValidRecord(r)) return false;
+        const dirty = pending.get(r.key);
+        if (dirty && !newer(dirty,r)) pending.delete(r.key);
+        return applyRecord(r);
+      }
       function recoverJournals() {
         try {
           const keys = [];
@@ -1888,7 +1904,7 @@
               const raw = localStorage.getItem(key);
               if (!raw || raw.length * 2 > JOURNAL_LIMIT) continue;
               readSnapshot(raw).forEach(stage);
-              recoveredKeys.push({key, raw});
+              if (!recoveredKeys.some(item=>item.key===key)) recoveredKeys.push({key, raw});
             } catch (err) { console.warn('Unreadable recovery journal retained:', err); }
           }
         } catch (err) { journalOK = false; console.warn('Journal recovery unavailable:', err); }
@@ -1944,15 +1960,15 @@
         try {
           const winners = batch.length ? await writeDatabase(batch) : [];
           let changed = false;
-          for (const r of winners) changed = applyRecord(r) || changed;
+          for (const r of winners) changed = mergeDurable(r) || changed;
           for (const r of batch) if (pending.get(r.key) === r) pending.delete(r.key);
-          if (changed) refreshFromRecords();
+          if (changed) { refreshFromRecords(); showToast('A newer saved record was reconciled'); }
           for (const item of recoveredKeys) {
             try { if (localStorage.getItem(item.key) === item.raw) localStorage.removeItem(item.key); } catch {}
           }
           recoveredKeys = [];
           writeJournal();
-          reportStorage(pending.size ? 'Saving to IndexedDB…' : 'Saved to IndexedDB');
+          reportStorage(pending.size ? (journalOK ? 'Saving to IndexedDB…' : 'Saving — emergency journal unavailable') : 'Saved to IndexedDB');
         } catch (err) {
           console.warn('IndexedDB write failed:', err);
           closeDatabase(); writeJournal();
@@ -1963,7 +1979,10 @@
         }
       }
       function scheduleSave(delay = 0) {
-        clearTimeout(saveTimer); saveTimer = setTimeout(flushPending, delay);
+        // Throttle rather than sliding debounce: continuous typing cannot indefinitely postpone saving.
+        if (saveTimer !== null && delay > 0) return;
+        clearTimeout(saveTimer);
+        saveTimer = setTimeout(() => { saveTimer = null; flushPending(); }, delay);
       }
       function setRecord(key, value, delay = 0) {
         const r = {key, value, time: Math.max(Date.now(), clock + 1), seq: ++serial, writer};
@@ -1979,12 +1998,12 @@
           db = await openDatabase();
           db.onversionchange = () => { closeDatabase(); writeJournal(); reportStorage('Storage changed — reload or export HTML'); };
           db.onclose = () => { db = null; reportStorage('Storage closed — reload or export HTML'); };
-          (await readDatabase()).forEach(applyRecord);
+          (await readDatabase()).forEach(mergeDurable);
         } catch (err) { console.warn('IndexedDB unavailable:', err); closeDatabase(); }
         try { readSnapshot(document.getElementById('embedded-user-state').textContent).forEach(stage); }
         catch (err) { console.warn('Embedded recovery snapshot unavailable:', err); }
         recoverJournals();
-        if (pending.size) writeJournal();
+        if (pending.size || journalKey) writeJournal();
         if (db) {
           await flushPending();
           if (db && !pending.size) reportStorage('Saved to IndexedDB');
@@ -1994,7 +2013,8 @@
         if (!db) return false;
         try {
           let changed = false;
-          for (const r of await readDatabase()) changed = applyRecord(r) || changed;
+          for (const r of await readDatabase()) changed = mergeDurable(r) || changed;
+          if (pending.size || journalKey) writeJournal();
           if (changed) refreshFromRecords();
           return true;
         } catch (err) {
@@ -2282,7 +2302,12 @@
         document.querySelectorAll('textarea[data-note-key]').forEach((ta) => {
           const key = ta.dataset.noteKey;
           const val = state.notes[key] || '';
-          ta.value = val;
+          if (ta.value !== val) {
+            const focused = document.activeElement === ta;
+            const start = ta.selectionStart, end = ta.selectionEnd;
+            ta.value = val;
+            if (focused) { ta.setSelectionRange(Math.min(start,val.length),Math.min(end,val.length)); showToast('Newer saved note reconciled from another tab'); }
+          }
           updateNoteBadge(key, val);
         });
       }
@@ -2299,8 +2324,18 @@
        * checklist checked states, active theme, and active varcOrder embedded inside.
        */
       async function exportUpdatedHtml() {
+        if (exporting) return;
+        const exportButton = document.getElementById('btn-export-html');
+        const errorForm = document.getElementById('error-log-form');
+        if ((errorForm.elements.cause.value.trim() || errorForm.elements.correction.value.trim() || errorForm.elements.reference.value.trim()) && !window.confirm('An error-log draft has not been submitted. Export saved records without this draft?')) return;
+        exporting = true; exportButton.disabled = true;
         try {
-          const refreshed = !db || await reconcileDatabase();
+          // Capture any live textarea edits before the asynchronous database read.
+          document.querySelectorAll('textarea[data-note-key]').forEach(ta=>{
+            const key=ta.dataset.noteKey; if(ta.value!==state.notes[key]) setRecord('note:'+key,ta.value);
+          });
+          const refreshed = !!db && await reconcileDatabase();
+          const portable = safeSnapshot(); readSnapshot(portable);
           // Clone document so live DOM stays untouched
           const clone = document.documentElement.cloneNode(true);
 
@@ -2311,11 +2346,10 @@
             clone.classList.remove('dark');
           }
 
-          // Write current textarea contents into cloned DOM
-          clone.querySelectorAll('textarea[data-note-key]').forEach((ta) => {
-            const key = ta.getAttribute('data-note-key');
-            ta.textContent = state.notes[key] || '';
-          });
+          // Store personal text only once, in the validated escaped snapshot.
+          clone.querySelectorAll('textarea[data-note-key]').forEach(ta=>{ ta.value = ''; ta.textContent = ''; });
+          clone.querySelector('#btn-export-html').disabled = false;
+          clone.querySelector('#btn-retry-storage').disabled = false;
 
           // Write current checkbox checked attributes into cloned DOM
           clone.querySelectorAll('input[data-chk]').forEach((chk) => {
@@ -2330,7 +2364,7 @@
           // Embed fresh JSON state (notes, checklist, theme, varcOrder, timestamp)
           const embeddedClone = clone.querySelector('#embedded-user-state');
           if (embeddedClone) {
-            embeddedClone.textContent = '\n    ' + safeSnapshot() + '\n  ';
+            embeddedClone.textContent = '\n    ' + portable + '\n  ';
           }
 
           clone.querySelector("#quick-revision").hidden = true;
@@ -2339,7 +2373,13 @@
           // Derived log UI is reconstructed from the portable records on startup.
           clone.querySelector('#error-log-list').replaceChildren();
           clone.querySelector('#error-log-count').textContent = 'Loading…';
-          clone.querySelector('#error-log-form').reset();
+          const cloneForm = clone.querySelector('#error-log-form');
+          cloneForm.reset();
+          cloneForm.querySelectorAll('textarea').forEach(ta=>{ta.value='';ta.textContent='';});
+          cloneForm.querySelectorAll('input').forEach(input=>{input.value='';input.removeAttribute('value');});
+          cloneForm.querySelectorAll('option').forEach(option=>option.removeAttribute('selected'));
+          clone.querySelector('#export-fallback').hidden = true;
+          clone.querySelector('#export-fallback').removeAttribute('href');
           clone.querySelector('#error-log-submit').textContent = 'Add error';
           clone.querySelector('#error-log-cancel').hidden = true;
           clone.querySelector('#storage-status').textContent = 'Opening browser storage…';
@@ -2355,21 +2395,16 @@
 
           const htmlContent = '<!DOCTYPE html>\n' + clone.outerHTML;
           const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
-          const url = URL.createObjectURL(blob);
-
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'cat_99_exam_day_playbook.html';
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          setTimeout(() => URL.revokeObjectURL(url), 1000);
-
-          showToast(refreshed ? 'Downloaded HTML with notes, checklist and error log' : 'Downloaded current view; other tabs could not be refreshed');
+          if (exportUrl) URL.revokeObjectURL(exportUrl);
+          exportUrl = URL.createObjectURL(blob);
+          const fallback = document.getElementById('export-fallback');
+          fallback.href = exportUrl; fallback.hidden = false;
+          fallback.click();
+          showToast(refreshed ? 'HTML backup prepared — use link if download did not start' : 'Current records exported; IndexedDB refresh unavailable');
         } catch (err) {
           console.error('Export failed:', err);
           showToast('Export error — please try again');
-        }
+        } finally { exporting = false; exportButton.disabled = false; }
       }
 
       /**
@@ -2377,8 +2412,9 @@
        */
       document.addEventListener('DOMContentLoaded', async () => {
         document.body.inert = true;
-        await loadState();
-        document.body.inert = false;
+        try { await loadState(); }
+        catch (err) { console.error('Storage startup failed:',err); reportStorage('Storage startup failed — export current records'); }
+        finally { document.body.inert = false; }
         applyTheme(state.theme);
         activateTab('overview');
         renderVarcClock(state.varcOrder);
@@ -2397,6 +2433,7 @@
           finally { button.disabled = false; }
         });
         window.addEventListener('focus', () => { if (db) reconcileDatabase(); });
+        window.addEventListener('pagehide',event=>{ if(!event.persisted && exportUrl) { URL.revokeObjectURL(exportUrl); exportUrl=null; } });
 
         // Tab click listeners
         document.querySelectorAll('.tab-btn').forEach((btn) => {
