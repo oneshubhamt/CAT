@@ -101,7 +101,7 @@
           <button
             id="btn-export-html"
             type="button"
-            title="Download this playbook as a standalone HTML file with all your notes, checklist, theme &amp; VARC mode saved inside"
+            title="Download this playbook with notes, checklist, error log, theme &amp; VARC mode embedded"
             class="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline text-ink dark:text-darkInk hover:border-ink/40 dark:hover:border-darkInk/40 transition-colors cursor-pointer"
           >
             <svg class="w-3.5 h-3.5 text-muted dark:text-darkMuted" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -159,6 +159,10 @@
           <span class="inline-block w-2 h-2 rounded-full bg-qa mr-1.5 align-middle"></span>QA
         </button>
       </nav>
+      <div class="flex flex-wrap items-center justify-between gap-2 py-1.5 text-[11px] text-muted dark:text-darkMuted border-t border-hairline dark:border-darkHairline">
+        <span id="storage-status" role="status" aria-live="polite">Opening browser storage…</span>
+        <button id="btn-retry-storage" type="button" hidden class="underline">Retry IndexedDB</button>
+      </div>
     </div>
   </header>
 
@@ -1496,7 +1500,7 @@
   <footer class="no-print border-t border-hairline dark:border-darkHairline mt-8">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-mono text-muted dark:text-darkMuted">
       <span>CAT 99+ EXAM-DAY PLAYBOOK &middot; KEYS [1–4] TO SWITCH TABS</span>
-      <span id="storage-status" role="status" aria-live="polite">Opening browser storage…</span><span>EXPORT HTML TO KEEP AMENDMENTS PORTABLE</span>
+      <span>EXPORT HTML TO KEEP AMENDMENTS PORTABLE</span>
     </div>
   </footer>
 
@@ -1715,7 +1719,7 @@
         if (r.key.startsWith('note:')) return noteKeys.includes(r.key.slice(5)) && typeof v === 'string';
         if (!/^error:[a-zA-Z0-9-]{1,100}$/.test(r.key)) return false;
         if (v === null) return true; // Tombstone prevents deleted entries resurfacing from older exports.
-        return !!(v && typeof v.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v.date) && sections.includes(v.section) &&
+        return !!(v && Object.keys(v).length === 9 && typeof v.date === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v.date) && sections.includes(v.section) &&
           categories.includes(v.category) && ['open','reviewed'].includes(v.status) &&
           typeof v.reference === 'string' && v.reference.length <= 200 &&
           typeof v.cause === 'string' && v.cause.trim() && v.cause.length <= 2000 &&
@@ -1752,6 +1756,8 @@
       function reportStorage(message) {
         const el = document.getElementById('storage-status');
         if (el) el.textContent = message;
+        const retry = document.getElementById('btn-retry-storage');
+        if (retry) retry.hidden = !!db;
         document.querySelectorAll('[data-note-status]').forEach(el => { el.textContent = message; });
       }
       // Journal holds only dirty records and is removed after durable transaction completion.
@@ -1781,7 +1787,7 @@
               recoveredKeys.push({key, raw});
             } catch (err) { console.warn('Unreadable recovery journal retained:', err); }
           }
-        } catch (err) { console.warn('Journal recovery unavailable:', err); }
+        } catch (err) { journalOK = false; console.warn('Journal recovery unavailable:', err); }
       }
       function openDatabase() {
         return new Promise((resolve, reject) => {
@@ -1879,6 +1885,18 @@
           await flushPending();
           if (db && !pending.size) reportStorage('Saved to IndexedDB');
         } else reportStorage(journalOK ? 'IndexedDB unavailable — temporary recovery; export HTML' : 'Storage unavailable — export HTML now');
+      }
+      async function reconcileDatabase() {
+        if (!db) return false;
+        try {
+          let changed = false;
+          for (const r of await readDatabase()) changed = applyRecord(r) || changed;
+          if (changed) refreshFromRecords();
+          return true;
+        } catch (err) {
+          console.warn('Could not refresh IndexedDB:', err);
+          return false;
+        }
       }
       function refreshFromRecords() {
         applyTheme(state.theme); renderVarcClock(state.varcOrder); renderChecklist(); renderNotes(); renderErrorLog();
@@ -2164,8 +2182,9 @@
        * Export a clean, standalone copy of this HTML file with all current notes,
        * checklist checked states, active theme, and active varcOrder embedded inside.
        */
-      function exportUpdatedHtml() {
+      async function exportUpdatedHtml() {
         try {
+          const refreshed = !db || await reconcileDatabase();
           // Clone document so live DOM stays untouched
           const clone = document.documentElement.cloneNode(true);
 
@@ -2205,6 +2224,7 @@
           clone.querySelector('#error-log-submit').textContent = 'Add error';
           clone.querySelector('#error-log-cancel').hidden = true;
           clone.querySelector('#storage-status').textContent = 'Opening browser storage…';
+          clone.querySelector('#btn-retry-storage').hidden = true;
           clone.querySelectorAll('[data-note-status]').forEach(el => { el.textContent = 'Loading storage…'; });
           // Reset toast visibility in exported copy
           const toastClone = clone.querySelector('#toast');
@@ -2226,7 +2246,7 @@
           document.body.removeChild(a);
           setTimeout(() => URL.revokeObjectURL(url), 1000);
 
-          showToast('Downloaded HTML with notes, checklist and error log');
+          showToast(refreshed ? 'Downloaded HTML with notes, checklist and error log' : 'Downloaded current view; other tabs could not be refreshed');
         } catch (err) {
           console.error('Export failed:', err);
           showToast('Export error — please try again');
@@ -2246,6 +2266,15 @@
         renderChecklist();
         renderNotes();
         bindErrorLog();
+        document.getElementById('btn-retry-storage').addEventListener('click', async () => {
+          if (db || saving) return;
+          const button = document.getElementById('btn-retry-storage');
+          button.disabled = true;
+          reportStorage('Retrying IndexedDB…');
+          try { await loadState(); refreshFromRecords(); }
+          finally { button.disabled = false; }
+        });
+        window.addEventListener('focus', () => { if (db) reconcileDatabase(); });
 
         // Tab click listeners
         document.querySelectorAll('.tab-btn').forEach((btn) => {
