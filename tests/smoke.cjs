@@ -41,7 +41,7 @@ async function runSmoke(html) {
   check(!/attempt all 4 unconditionally|ONLY for ugly 3-digit division|skip pure Geometry in 10s|Banned in R1:|Write every addition out on paper/i.test(html), 'Contradictory absolute strategy rules removed');
   check(html.includes('combine premises across paragraphs') && html.includes('If two passages fail the gate'), 'VARC cross-paragraph inference and multiple rejection recovery');
   check(html.includes('region:dilr-case-discipline') && html.includes('separate temporary copy') && html.includes('the value agrees across all valid cases'), 'DILR hypothetical separation and answer determinacy');
-  check(html.includes('At minute 22, if questions remain unseen') && html.includes('unseen → lengthy/incomplete (L/I) → uncertain (U)') && html.includes('actual method, not topic alone'), 'QA first-pass and skip-routing alignment');
+  check(html.includes('At minute <span data-plan="qaFirstEnd"></span>, if questions remain unseen') && html.includes('By minute <span data-plan="qaSecondEnd"></span>') && html.includes('unseen → lengthy/incomplete (L/I) → uncertain (U)') && html.includes('actual method, not topic alone'), 'QA first-pass and skip-routing alignment');
   check(html.includes('region:exam-logistics') && html.includes('Your admit card is authoritative') && html.includes('Reviewed 26 Nov 2026'), 'Dated logistics with admit-card precedence');
   check(['Report 07:00 · Gate 08:00','Report 11:00 · Gate 12:00','Report 15:00 · Gate 16:00','08:30–10:30','12:30–14:30','16:30–18:30'].every(x=>html.includes(x)), 'Reported three-shift timing table');
   check(html.includes('https://iimcat.ac.in/') && html.includes('32842@@M218') && html.includes('direct mock could not be opened'), 'Official portal and qualified reported mock link');
@@ -217,6 +217,7 @@ async function runSmoke(html) {
   check(fixed.dilrQuick==='0–4m scan · 4–18m set 1 · 18–32m set 2 · 32–39m optional · 39–40m audit','DILR compact schedule derived');
   check(fixed.qaQuick==='0–22m sitters · 22–36m mediums · 36–40m cleanup','QA compact schedule derived');
   check(fixed.dilrCorrect==='10–12 correct' && fixed.qaCorrect==='11–12 correct' && fixed.dilrMarks==='30–36 before penalties' && fixed.qaMarks==='33–36 before penalties','Non-VARC scores and correct counts share source');
+  check(fixed.qaFirstEnd==='22' && fixed.qaSecondEnd==='36','Shared QA round boundaries rendered in guidance');
   check(fixed.dilrSwitch==='6–7m' && fixed.qaIgnition==='45s' && fixed.qaRound1==='2.5m' && fixed.qaRound2==='3.5m','Shared adaptive checkpoint values');
   check(strategy.fixedBars.dilr[3].start===32 && strategy.fixedBars.dilr[3].end===40 && fixed.dilrRecoveryQuick.includes('11–25m, 25–39m'),'Combined DILR bar and recovery projection');
   check(strategy.scenarioValues('standard').map(s=>s.total).join()==='78,101,122','Standard scenario totals');
