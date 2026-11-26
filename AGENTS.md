@@ -90,7 +90,7 @@ Before committing, inspect the diff for unrelated content changes, syntax errors
 
 ## Mobile browser checks
 
-Keep the responsive overrides in `#cat-mobile-layout` rather than manually editing generated CSS. All four tabs must be immediately visible on a 320px phone. Controls have 44px targets; inputs use 16px on phones. The six pacing bars reflow into readable phase tiles, and all four tables use labelled cell wrappers on mobile. Preserve the actual desktop table semantics and the data-cell-label/value hooks in both static markup and dynamic scenario rows. Do not hide document overflow to mask layout defects.
+Keep the responsive overrides in `#cat-mobile-layout` rather than manually editing generated CSS. All four tabs must be immediately visible on a 320px phone. Controls have 44px targets; inputs use 16px on phones. The header's measured toolbar height allows the brand and actions to scroll away while the tab/status strip stays pinned; the active tab returns to the top. Dark-theme accent text is explicitly lightened for contrast. The six pacing bars reflow into readable phase tiles, and all four tables use labelled cell wrappers on mobile. Preserve the actual desktop table semantics and the data-cell-label/value hooks in both static markup and dynamic scenario rows. Do not hide document overflow to mask layout defects.
 
 Native screenshot suite (development-only dependencies):
 
