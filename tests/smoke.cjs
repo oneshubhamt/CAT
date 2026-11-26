@@ -37,6 +37,17 @@ async function runSmoke(html) {
   check(['overview','varc','dilr','qa'].every(key=>html.includes('id="tab-'+key+'" role="tab" aria-controls="panel-'+key+'"')), 'Tabs link to their accessible panels');
   check(html.includes('ArrowRight:(index+1)%tabs.length') && html.includes("btn.setAttribute('tabindex', isTarget ? '0' : '-1')"), 'Roving tab keyboard navigation');
   check(html.includes('min-height:44px;min-width:44px') && html.includes('font-size:16px;line-height:1.4;width:100%'), 'Touch sizes and mobile form zoom protection');
+  check(html.includes('region:rule-hierarchy') && ['1 · Non-negotiable safeguards','2 · Adaptive checkpoints','3 · Strong default execution plans','4 · Personal preferences and tie-breakers'].every(x=>html.includes(x)), 'Four ordered rule levels');
+  check(!/attempt all 4 unconditionally|ONLY for ugly 3-digit division|skip pure Geometry in 10s|Banned in R1:|Write every addition out on paper/i.test(html), 'Contradictory absolute strategy rules removed');
+  check(html.includes('combine premises across paragraphs') && html.includes('If two passages fail the gate'), 'VARC cross-paragraph inference and multiple rejection recovery');
+  check(html.includes('region:dilr-case-discipline') && html.includes('separate temporary copy') && html.includes('uniqueness of the requested answer across surviving cases'), 'DILR hypothetical separation and answer determinacy');
+  check(html.includes('At minute 22, if questions remain unseen') && html.includes('R2: unseen questions first') && html.includes('actual method, not topic alone'), 'QA first-pass and skip-routing alignment');
+  check(html.includes('region:exam-logistics') && html.includes('Your admit card is authoritative') && html.includes('Reviewed 26 Nov 2026'), 'Dated logistics with admit-card precedence');
+  check(['Report 07:00 · Gate 08:00','Report 11:00 · Gate 12:00','Report 15:00 · Gate 16:00','08:30–10:30','12:30–14:30','16:30–18:30'].every(x=>html.includes(x)), 'Reported three-shift timing table');
+  check(html.includes('https://iimcat.ac.in/') && html.includes('32842@@M218') && html.includes('direct mock could not be opened'), 'Official portal and qualified reported mock link');
+  check(html.includes('departure = target arrival minus realistic journey time and contingency') && html.includes('accepted, original, valid photo ID') && html.includes('do not assume a locker is available'), 'Travel, identity and belongings contingency');
+  check(html.includes('Report a login, timer, mouse, calculator or display problem to the invigilator immediately') && html.includes('Use only authorised rough-work material'), 'Exam-hall fault handling and authorised materials');
+  check(html.includes('4 November IIM admit-card release (mirror)') && html.includes('reported timings and rules') && html.includes('Links require internet only when opened'), 'Logistics provenance and offline link boundary');
   const initial = html.match(/<script id="embedded-user-state"[^>]*>([\s\S]*?)<\/script>/)[1].trim();
   check(JSON.parse(initial).schemaVersion === 2 && JSON.parse(initial).records.length === 0, 'Empty repository snapshot');
 
