@@ -39,7 +39,7 @@ async function disclosure(locator,open){
  assert.equal(await locator.evaluate(e=>e.open),open);
 }
 async function allDetails(page,tab){
- for(const item of await page.locator('#panel-'+tab+' [data-strategy-detail]').all())await disclosure(item,true);
+ for(const item of await page.locator('#panel-'+tab+' :is([data-strategy-detail],[data-overview-detail])').all())await disclosure(item,true);
  if(tab==='overview')await disclosure(page.locator('[data-glossary]'),true);
 }
 async function bring(page,locator){

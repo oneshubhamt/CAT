@@ -11,6 +11,7 @@ async function runJourney(api){
   if(!await p.locator('#export-fallback').isVisible())assert.equal(await p.locator('#toolbar-storage').isVisible(),false,'Healthy saves do not occupy the header');
  };
  async function add(p,sectionName,reference,long=false){
+  await disclosure(p.locator('details:has(> #error-log-title)'),true);
   const f=p.locator('#error-log-form');
   await f.locator('[name=date]').fill('2026-11-26');
   await f.locator('[name=section]').selectOption(sectionName);
@@ -105,7 +106,7 @@ async function runJourney(api){
   await exportAndReopen({'note:qa':fixture,'pref:varcOrder':'readable','pref:theme':'dark','check:chk-logistics':true},1);return;
  }
  await saved(page);
- await section(page,'overview');await bring(page,page.locator('#error-log-title'));await measure('empty-error-log');await snap('empty-error-log');
+ await section(page,'overview');await disclosure(page.locator('details:has(> #error-log-title)'),true);await bring(page,page.locator('#error-log-title'));await measure('empty-error-log');await snap('empty-error-log');
  await page.locator('#error-log-submit').click();assert.equal(await page.locator('#error-log-list article').count(),0);
  await add(page,'VARC','Synthetic RC error',true);await add(page,'DILR','Synthetic set error');await add(page,'QA','Synthetic QA error');
  assert.equal(await page.locator('#error-log-list article').count(),3);
@@ -142,6 +143,7 @@ async function runJourney(api){
  await page.waitForFunction(()=>document.querySelector('textarea[data-note-key="varc"]').value==='Newer synthetic note from tab B');
  values['note:varc']='Newer synthetic note from tab B';await other.close();
  await measure('after-reload');await snap('after-reload');
+ await disclosure(page.locator('details:has(> #error-log-title)'),true);
  await page.locator('[name=cause]').fill('Unsaved synthetic draft');
  await top(page);page.once('dialog',d=>d.dismiss());await page.locator('#btn-export-html').click();
  assert.equal(await page.locator('#export-fallback').isVisible(),false);

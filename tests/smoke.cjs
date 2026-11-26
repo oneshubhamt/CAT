@@ -41,7 +41,7 @@ async function runSmoke(html) {
   check(!/attempt all 4 unconditionally|ONLY for ugly 3-digit division|skip pure Geometry in 10s|Banned in R1:|Write every addition out on paper/i.test(html), 'Contradictory absolute strategy rules removed');
   check(html.includes('combine premises across paragraphs') && html.includes('If two passages fail the gate'), 'VARC cross-paragraph inference and multiple rejection recovery');
   check(html.includes('region:dilr-case-discipline') && html.includes('separate temporary copy') && html.includes('the value agrees across all valid cases'), 'DILR hypothetical separation and answer determinacy');
-  check(html.includes('At minute <span data-plan="qaFirstEnd"></span>, if questions remain unseen') && html.includes('By minute <span data-plan="qaSecondEnd"></span>') && html.includes('unseen → lengthy/incomplete (L/I) → uncertain (U)') && html.includes('actual method, not topic alone'), 'QA first-pass and skip-routing alignment');
+  check(html.includes('At minute <span data-plan="qaFirstEnd"></span>, if questions remain unseen') && html.includes('By minute <span data-plan="qaSecondEnd"></span>') && html.includes('See what’s left, then finish questions with a clear method.') && html.includes('actual method, not topic alone'), 'QA first-pass and skip-routing alignment');
   check(html.includes('region:exam-logistics') && html.includes('Your admit card is authoritative') && html.includes('Reviewed 26 Nov 2026'), 'Dated logistics with admit-card precedence');
   check(['Report 07:00 · Gate 08:00','Report 11:00 · Gate 12:00','Report 15:00 · Gate 16:00','08:30–10:30','12:30–14:30','16:30–18:30'].every(x=>html.includes(x)), 'Reported three-shift timing table');
   check(html.includes('https://iimcat.ac.in/') && html.includes('32842@@M218') && html.includes('direct mock could not be opened'), 'Official portal and qualified reported mock link');
@@ -208,7 +208,7 @@ async function runSmoke(html) {
     check(elapsed===40 && width===100,mode+' 40-minute clock');
     const p=strategy.planValues(mode);
     check(p.quick===strategy.orders[mode].segments.map(s=>s.time+' '+s.label).join(' · '),mode+' derived revision clock');
-    check(p.combined===(mode==='readable'?'103–115 raw marks':'100–112 raw marks'),mode+' combined score math');
+    check(['Available TITA','Selected VA MCQs'].every(label=>strategy.orders[mode].segments.some(s=>s.label===label)),mode+' adapts VA phases to the paper');
   }
   for(const [name,segments] of Object.entries(strategy.fixedClocks)){
     let elapsed=0;
@@ -221,7 +221,8 @@ async function runSmoke(html) {
   check(fixed.dilrCorrect==='10–12 correct' && fixed.qaCorrect==='11–12 correct' && fixed.dilrMarks==='30–36 before penalties' && fixed.qaMarks==='33–36 before penalties','Non-VARC scores and correct counts share source');
   check(fixed.qaFirstEnd==='22' && fixed.qaSecondEnd==='36','Shared QA round boundaries rendered in guidance');
   check(fixed.dilrSwitch==='6–7m' && fixed.qaIgnition==='45s' && fixed.qaRound1==='2.5m' && fixed.qaRound2==='3.5m','Shared adaptive checkpoint values');
-  check(strategy.fixedBars.dilr[3].start===32 && strategy.fixedBars.dilr[3].end===40 && fixed.dilrRecoveryQuick.includes('11–25m, 25–39m'),'Combined DILR bar and recovery projection');
+  check(strategy.fixedBars.dilr[3].start===32 && strategy.fixedBars.dilr[3].end===40 && fixed.firstRecovery.includes('11–25m next set') && fixed.secondRecovery.includes('25–39m next set'),'Combined DILR bar and recovery projection');
+  check(html.includes('(11 × 3) − (2 × 1) = <strong>31 raw marks</strong>') && !html.includes('data-plan="combined"'),'Worked example reports net marks');
   check(strategy.scenarioValues('standard').map(s=>s.total).join()==='78,101,122','Standard scenario totals');
   check(strategy.scenarioValues('readable').map(s=>s.total).join()==='78,104,122','Readable scenario totals');
   check(Object.isFrozen(strategy.orders.standard.segments[0]),'Strategy output immutable');

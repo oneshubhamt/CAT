@@ -55,7 +55,6 @@ input[type=checkbox]{flex-shrink:0}
 .grid{display:grid}
 .grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}
 .grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
-.h-1\.5{height:0.375rem}
 .h-10{height:2.5rem}
 .h-12{height:3rem}
 .h-2{height:0.5rem}
@@ -113,7 +112,6 @@ input[type=checkbox]{flex-shrink:0}
 .space-y-3 > :not([hidden]) ~ :not([hidden]){margin-top:0.75rem}
 .space-y-3\.5 > :not([hidden]) ~ :not([hidden]){margin-top:0.875rem}
 .space-y-4 > :not([hidden]) ~ :not([hidden]){margin-top:1rem}
-.space-y-5 > :not([hidden]) ~ :not([hidden]){margin-top:1.25rem}
 .space-y-6 > :not([hidden]) ~ :not([hidden]){margin-top:1.5rem}
 .sticky{position:sticky}
 .text-2xl{font-size:1.5rem;line-height:2rem}
@@ -138,7 +136,6 @@ input[type=checkbox]{flex-shrink:0}
 .truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .underline{text-decoration-line:underline}
 .uppercase{text-transform:uppercase}
-.w-1\.5{width:0.375rem}
 .w-2{width:0.5rem}
 .w-3\.5{width:0.875rem}
 .w-4{width:1rem}
@@ -176,7 +173,6 @@ input[type=checkbox]{flex-shrink:0}
 .bg-ink{background-color:#1A1A19}
 .bg-ink\/10{background-color:rgb(26 26 25 / 0.1)}
 .bg-ink\/40{background-color:rgb(26 26 25 / 0.4)}
-.bg-ink\/\[0\.06\]{background-color:rgb(26 26 25 / 0.06)}
 .bg-qa{background-color:#B45309}
 .bg-qa\/10{background-color:rgb(180 83 9 / 0.1)}
 .bg-qa\/20{background-color:rgb(180 83 9 / 0.2)}
@@ -201,7 +197,6 @@ input[type=checkbox]{flex-shrink:0}
 .border-dilr\/40{border-color:rgb(15 118 110 / 0.4)}
 .border-hairline{border-color:#E5E4DF}
 .border-ink{border-color:#1A1A19}
-.border-ink\/20{border-color:rgb(26 26 25 / 0.2)}
 .border-qa{border-color:#B45309}
 .border-qa\/20{border-color:rgb(180 83 9 / 0.2)}
 .border-qa\/30{border-color:rgb(180 83 9 / 0.3)}
@@ -268,7 +263,6 @@ input[type=checkbox]{flex-shrink:0}
 .pb-2{padding-bottom:0.5rem}
 .pb-2\.5{padding-bottom:0.625rem}
 .pb-3{padding-bottom:0.75rem}
-.pb-3\.5{padding-bottom:0.875rem}
 .pb-4{padding-bottom:1rem}
 .pb-5{padding-bottom:1.25rem}
 .pl-2\.5{padding-left:0.625rem}
@@ -276,7 +270,6 @@ input[type=checkbox]{flex-shrink:0}
 .pt-2\.5{padding-top:0.625rem}
 .pt-3{padding-top:0.75rem}
 .pt-4{padding-top:1rem}
-.pt-5{padding-top:1.25rem}
 .border-l-alert{border-left-color:#BE123C}
 .border-l-dilr{border-left-color:#0F766E}
 .border-l-qa{border-left-color:#B45309}
@@ -328,7 +321,6 @@ input[type=checkbox]{flex-shrink:0}
 .dark .dark\:bg-darkCanvas\/90{background-color:rgb(19 19 18 / 0.9)}
 .dark .dark\:bg-darkHairline{background-color:#2D2D29}
 .dark .dark\:bg-darkInk{background-color:#F3F2EE}
-.dark .dark\:bg-darkInk\/10{background-color:rgb(243 242 238 / 0.1)}
 .dark .dark\:bg-darkInk\/15{background-color:rgb(243 242 238 / 0.15)}
 .dark .dark\:bg-darkInk\/40{background-color:rgb(243 242 238 / 0.4)}
 .dark .dark\:bg-darkSurface{background-color:#1C1C1A}
@@ -337,7 +329,6 @@ input[type=checkbox]{flex-shrink:0}
 .dark .dark\:bg-varc\/15{background-color:rgb(59 91 219 / 0.15)}
 .dark .dark\:border-darkHairline{border-color:#2D2D29}
 .dark .dark\:border-darkInk{border-color:#F3F2EE}
-.dark .dark\:border-darkInk\/25{border-color:rgb(243 242 238 / 0.25)}
 .dark .dark\:divide-darkHairline > :not([hidden]) ~ :not([hidden]){border-color:#2D2D29}
 .dark .dark\:text-amber-300{color:#FCD34D}
 .dark .dark\:text-darkCanvas{color:#131312}
@@ -393,10 +384,6 @@ input[type=checkbox]{flex-shrink:0}
 .lg\:grid-cols-5{grid-template-columns:repeat(5,minmax(0,1fr))}
 .lg\:items-center{align-items:center}
 .lg\:self-auto{align-self:auto}
-}
-@media (min-width:1280px){
-.xl\:flex-row{flex-direction:row}
-.xl\:items-end{align-items:flex-end}
 }
   </style>
 
@@ -572,14 +559,20 @@ input[type=checkbox]{flex-shrink:0}
       .dark #quick-revision [data-quick-phase]{background-color:rgb(243 242 238 / .065)}
       #quick-revision [data-quick-time]{white-space:nowrap}
       #quick-revision [data-quick-separator]{display:none}
-      [data-kpi-cards] > div > div:first-child{flex-wrap:wrap}
-      [data-kpi-cards] > div > div:first-child > span:first-child{white-space:nowrap;flex-shrink:0;overflow-wrap:normal}
+      [data-plan-header]{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px 12px;margin-bottom:14px}
+      [data-plan-header] a{display:inline-flex;align-items:center;min-height:44px}
+      [data-kpi-cards] article > p + p{margin-top:6px}
+      [data-kpi-cards] article > p:nth-child(4){border-top:1px solid #E5E4DF;margin-top:10px;padding-top:8px}
+      .dark [data-kpi-cards] article > p:nth-child(4){border-color:#2D2D29}
+      [data-overview-reference] > details + details{border-top:1px solid #E5E4DF}
+      .dark [data-overview-reference] > details + details{border-color:#2D2D29}
+      [data-overview-detail] > summary{padding:13px 16px;min-height:48px;font-size:15px;font-weight:600;cursor:pointer}
+      [data-overview-detail] > summary::marker{color:#5F5F5A}
+      .dark [data-overview-detail] > summary::marker{color:#A1A09A}
+      [data-overview-body]{padding:0 16px 16px}
       [data-storage-help] > summary{cursor:pointer;min-height:44px;padding:10px 0;font-weight:600}
       [data-storage-help] p{margin:0 0 8px;max-width:75ch}
       #error-log-filter{min-height:44px}
-    }
-    @media screen and (min-width:768px) and (max-width:1023px){
-      [data-kpi-cards] > div > div:first-child{flex-direction:column;align-items:flex-start;gap:5px}
     }
     @media screen and (max-width:767px){
       [data-mobile-clock] > *{min-width:0}
@@ -777,313 +770,56 @@ input[type=checkbox]{flex-shrink:0}
           <article class="border border-hairline dark:border-darkHairline border-t-4 border-t-dilr rounded-lg p-3 text-sm leading-relaxed">
             <h3 class="font-semibold text-dilr">DILR · 40m</h3><p class="mt-1 font-medium">One reliable set → two viable sets</p>
             <p class="mt-1 text-xs font-mono"><span data-plan="dilrQuick"></span></p>
-            <ul class="mt-2 text-xs" data-read-steps><li><strong>Choose:</strong> tight coded sets as a tie-breaker only; rank by actual solvability.</li><li><strong>Move on:</strong> reassess <span data-plan="dilrReassess"></span>; switch by <span data-plan="dilrSwitch"></span> if stalled.</li><li><strong>Recover:</strong> <span data-plan="dilrRecoveryQuick"></span></li><li><strong>Check:</strong> clues, totals and the asked value.</li></ul>
+            <ul class="mt-2 text-xs" data-read-steps><li><strong>Choose:</strong> tight coded sets as a tie-breaker only; rank by actual solvability.</li><li>If you still have no useful deduction after <span data-plan="dilrSwitch"></span> on the set, save verified answers and switch.</li><li>Keep the final minute to check saved answers.</li></ul>
           </article>
           <article class="border border-hairline dark:border-darkHairline border-t-4 border-t-qa rounded-lg p-3 text-sm leading-relaxed">
             <h3 class="font-semibold text-qa">QA · 40m</h3><p class="mt-1 font-medium"><span data-plan="qaCorrect"></span> as primary aim</p>
             <p class="mt-1 text-xs font-mono"><span data-plan="qaQuick"></span></p>
-            <ul class="mt-2 text-xs" data-read-steps><li><strong>Start:</strong> write useful arithmetic steps. Find a method by <span data-plan="qaIgnition"></span>.</li><li><strong>Move on:</strong> <span data-plan="qaRound1"></span> R1 checkpoint unless finishing.</li><li><strong>R2:</strong> unseen → lengthy/incomplete (L/I) → uncertain (U); skip gaps (X).</li><li><strong>Check:</strong> value, unit, sign, domain, format. TITA in cleanup.</li></ul>
+            <ul class="mt-2 text-xs" data-read-steps><li><strong>Start:</strong> write useful arithmetic steps. Find a method by <span data-plan="qaIgnition"></span>.</li><li><strong>Move on:</strong> <span data-plan="qaRound1"></span> R1 checkpoint unless finishing.</li><li><strong>Round 2:</strong> See what’s left, then finish questions with a clear method.</li><li><strong>Check:</strong> value, unit, sign, domain, format. Check saved answers before using cleanup time for TITA.</li></ul>
           </article>
         </div>
         <p class="mt-3 text-xs font-medium">Priority: exam rules and safety → time checks → pacing plan → preferences. Save answers, protect cleanup and reset between sections.</p>
       </section>
       <div id="overview-full" class="space-y-6">
-      <!-- 1. Header KPI Strip -->
-      <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6">
-        <div class="flex flex-col xl:flex-row xl:items-end justify-between gap-3 pb-5 border-b border-hairline dark:border-darkHairline">
+      <section class="print-card" aria-labelledby="exam-plan-title">
+        <div data-plan-header>
           <div>
-            <span class="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-wider text-muted dark:text-darkMuted">
-              <span class="w-1.5 h-1.5 rounded-full bg-ink dark:bg-darkInk"></span>
-              Exam plan &middot; Sunday, Nov 29
-            </span>
-            <h2 class="text-2xl sm:text-3xl font-bold tracking-tight mt-1">Goal: 99+ Percentile</h2>
+            <p class="font-mono text-xs uppercase tracking-wider text-muted dark:text-darkMuted">Exam plan · Sunday, 29 Nov</p>
+            <h2 id="exam-plan-title" class="text-2xl sm:text-3xl font-bold tracking-tight">Goal: 99+ percentile</h2>
           </div>
-
-          <!-- 3 Benchmark & Target Pills -->
-          <div class="flex flex-wrap items-center gap-2">
-            <div class="font-mono text-xs font-semibold text-ink dark:text-darkInk bg-ink/[0.06] dark:bg-darkInk/10 border border-ink/20 dark:border-darkInk/25 px-3 py-1.5 rounded-lg">
-              Illustrative combined range (before DILR/QA penalties): <span data-plan="combined" class="text-dilr dark:text-emerald-300 font-bold">100–112 raw marks</span>
-            </div>
-            <div class="font-mono text-xs text-muted dark:text-darkMuted bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline px-3 py-1.5 rounded-lg">
-              Targets, not predictions. Raw marks differ from scaled scores. Question counts reflect past papers.
-            </div>
-            <div class="font-mono text-xs text-muted dark:text-darkMuted bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline px-3 py-1.5 rounded-lg">
-              3 &times; 40m = <span class="text-ink dark:text-darkInk font-semibold">120 Mins</span>
-            </div>
-          </div>
+          <a class="no-print text-xs underline text-muted dark:text-darkMuted" href="#readiness-title">Readiness checklist</a>
         </div>
-
-        <!-- 3 Section Target Cards -->
-        <div data-kpi-cards class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-5">
-          <!-- VARC KPI -->
-          <div class="rounded-xl p-4 bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-l-4 border-l-varc">
-            <div class="flex items-center justify-between gap-2">
-              <span class="text-xs font-semibold uppercase tracking-wider text-varc">VARC</span>
-              <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-varc/10 text-varc font-medium" data-plan="varcMarks">37–40 raw marks</span>
-            </div>
-            <p class="mt-2.5 text-lg font-bold tracking-tight font-mono" data-plan="attempts">17–18 attempts</p>
-            <p class="mt-1 text-xs text-muted dark:text-darkMuted leading-relaxed">
-              <span data-plan="summary">3 RCs + 8 VA (20-question pool). Accuracy before volume.</span>
-            </p>
-          </div>
-
-          <!-- DILR KPI (Explicitly Shows ~30–36 Marks) -->
-          <div class="rounded-xl p-4 bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-l-4 border-l-dilr">
-            <div class="flex items-center justify-between gap-2">
-              <span class="text-xs font-semibold uppercase tracking-wider text-dilr">DILR</span>
-              <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-dilr/10 text-dilr font-medium"><span data-plan="dilrMarks"></span></span>
-            </div>
-            <p class="mt-2.5 text-lg font-bold tracking-tight font-mono"><span data-plan="dilrCorrect"></span> Qs</p>
-            <p class="mt-1 text-xs text-muted dark:text-darkMuted leading-relaxed">
-              <strong class="text-ink dark:text-darkInk font-medium">Aim for two verified sets</strong>; try extra independent questions if time permits.
-            </p>
-          </div>
-
-          <!-- QA KPI -->
-          <div class="rounded-xl p-4 bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-l-4 border-l-qa">
-            <div class="flex items-center justify-between gap-2">
-              <span class="text-xs font-semibold uppercase tracking-wider text-qa">QA</span>
-              <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-qa/10 text-qa font-medium"><span data-plan="qaMarks"></span></span>
-            </div>
-            <p class="mt-2.5 text-lg font-bold tracking-tight font-mono"><span data-plan="qaCorrect"></span> Qs</p>
-            <p class="mt-1 text-xs text-muted dark:text-darkMuted leading-relaxed">
-              Aim to find 13–15 solvable questions. Priority topics may offer 10–15; not guaranteed.
-            </p>
-          </div>
+        <div data-kpi-cards class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <article class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-l-4 border-l-varc rounded-xl p-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-varc">VARC</h3>
+            <p class="text-lg font-semibold tracking-tight">Aim for <span data-plan="attempts"></span></p>
+            <p class="text-xs"><span data-plan="summary"></span></p>
+            <p class="text-xs"><strong>Move on</strong> · Still torn between two options after 45s? Flag it unanswered.</p>
+            <p class="text-xs"><strong>Check</strong> · Match the answer to the author’s claim and tone.</p>
+          </article>
+          <article class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-l-4 border-l-dilr rounded-xl p-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-dilr">DILR</h3>
+            <p class="text-lg font-semibold tracking-tight">Secure one set first</p>
+            <p class="text-xs">Aim for <span data-plan="dilrCorrect"></span> across sets. Start where you can make a deduction.</p>
+            <p class="text-xs"><strong>Move on</strong> · Still stalled after <span data-plan="dilrSwitch"></span> on the set? Save verified answers and switch.</p>
+            <p class="text-xs"><strong>Check</strong> · Does the value fit the clues and totals?</p>
+          </article>
+          <article class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline border-l-4 border-l-qa rounded-xl p-4">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-qa">QA</h3>
+            <p class="text-lg font-semibold tracking-tight">Aim for <span data-plan="qaCorrect"></span></p>
+            <p class="text-xs">Start with questions where you see a method.</p>
+            <p class="text-xs"><strong>Move on</strong> · No method by <span data-plan="qaIgnition"></span>? Leave it for now.</p>
+            <p class="text-xs"><strong>Check</strong> · Confirm the requested value, units and sign before saving.</p>
+          </article>
         </div>
-      </div>
-
-      <!-- Illustrative operating scenarios -->
-      <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6">
-        <h3 class="text-sm font-semibold uppercase tracking-wider">Score scenarios · raw marks</h3>
-        <p class="mt-1 text-xs text-muted dark:text-darkMuted">Examples, not cutoffs or percentile forecasts. Adjust to the paper; do not chase lost marks.</p>
-        <div class="overflow-x-auto mt-3"><table data-responsive-table data-table-kind="scenarios" role="table" class="w-full text-left text-xs border-collapse">
-          <thead role="rowgroup"><tr role="row" class="font-mono text-muted dark:text-darkMuted"><th role="columnheader" scope="col" class="px-2.5 py-2">Scenario</th><th role="columnheader" scope="col" class="px-2.5 py-2">VARC</th><th role="columnheader" scope="col" class="px-2.5 py-2">DILR</th><th role="columnheader" scope="col" class="px-2.5 py-2">QA</th><th role="columnheader" scope="col" class="px-2.5 py-2">Total</th><th role="columnheader" scope="col" class="px-2.5 py-2">Response</th></tr></thead>
-          <tbody role="rowgroup" id="scenario-rows"></tbody></table></div>
-        <p class="mt-2 text-xs text-muted dark:text-darkMuted">Correct +3; wrong MCQ −1; wrong TITA 0 under the recent pattern. DILR and QA correct-answer targets exclude wrong-MCQ deductions. Use actual exam instructions if they differ.</p>
       </section>
 
-      
-
-      <!-- region:rule-hierarchy | Conflict resolution for exam-day decisions -->
-      <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6" aria-labelledby="rule-hierarchy-title">
-        <h3 id="rule-hierarchy-title" class="text-sm font-semibold uppercase tracking-wider">Rule hierarchy · which instruction wins?</h3>
-        <p class="mt-1 text-xs text-muted dark:text-darkMuted">Higher rules take priority. Targets are flexible.</p>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3 text-xs leading-relaxed">
-          <article class="rounded-lg border border-hairline dark:border-darkHairline border-l-4 border-l-alert p-3">
-            <h4 class="font-semibold text-alert">1 · Non-negotiable safeguards</h4>
-            <p class="mt-1">Follow official instructions and time limits. Verify the answer, save it, clear accidental responses and leave time for a final check.</p>
-          </article>
-          <article class="rounded-lg border border-hairline dark:border-darkHairline border-l-4 border-l-dilr p-3">
-            <h4 class="font-semibold text-dilr">2 · Adaptive checkpoints</h4>
-            <p class="mt-1">VARC: 45–60s passage gate, 45s unresolved two-option deadlock. DILR: reassess <span data-plan="dilrReassess"></span>, switch by <span data-plan="dilrSwitch"></span> if stalled. QA: <span data-plan="qaIgnition"></span> ignition, about <span data-plan="qaRound1"></span> in R1 and <span data-plan="qaRound2"></span> in R2. Continue briefly only for a credible imminent payoff; otherwise move on. Protect the remaining section time.</p>
-          </article>
-          <article class="rounded-lg border border-hairline dark:border-darkHairline border-l-4 border-l-varc p-3">
-            <h4 class="font-semibold text-varc">3 · Strong default execution plans</h4>
-            <p class="mt-1">Use your chosen VARC plan, scan all DILR sets, and assess QA questions as you go. Adjust timing and attempts to the paper; never force completion.</p>
-          </article>
-          <article class="rounded-lg border border-hairline dark:border-darkHairline border-l-4 border-l-qa p-3">
-            <h4 class="font-semibold text-qa">4 · Personal preferences and tie-breakers</h4>
-            <p class="mt-1">Use preferences to break ties. Take easy questions in any topic. Use the calculator when faster or safer. Try RC 4 only if its timing and value justify it.</p>
-          </article>
-        </div>
-        <p class="mt-3 text-xs leading-relaxed"><strong>Conflict examples:</strong> extend a set with clear progress, not the section deadline. Take easy geometry; still verify it. Put reliable answers before guesses. Start each section fresh.</p>
-      </section>
-
-      <!-- 2. The Mechanical Bail-Out & Verification Matrix -->
-      <div class="print-card">
-        <div class="flex items-center justify-between mb-3">
-          <h3 class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">When to move on and what to check</h3>
-          <span class="font-mono text-[11px] text-alert font-medium">Zero Sunk-Cost Fallacy</span>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <!-- VARC Matrix Card -->
-          <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 flex flex-col justify-between">
-            <div>
-              <div class="flex items-center justify-between pb-3 border-b border-hairline dark:border-darkHairline">
-                <span class="font-semibold text-sm text-varc">VARC Rules</span>
-                <span class="font-mono text-[11px] text-muted dark:text-darkMuted">Recent: 24 Qs &middot; 40m</span>
-              </div>
-              <dl class="mt-3.5 space-y-3 text-xs">
-                <div>
-                  <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Entry Gate</dt>
-                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium"><span data-plan="gate">45–60s first-paragraph check; move on if comprehension stalls.</span></dd>
-                </div>
-                <div class="p-2.5 rounded-lg bg-alert/5 dark:bg-alert/15 border border-alert/20">
-                  <dt class="font-mono text-[10px] uppercase tracking-wider text-alert font-semibold">Adaptive checkpoint</dt>
-                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">45s on two-option deadlock → flag unanswered; revisit credible choices after safer work</dd>
-                </div>
-                <div>
-                  <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Time Cap</dt>
-                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium font-mono">About 2m/Q on VA; preserve cleanup</dd>
-                </div>
-                <div>
-                  <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Verification</dt>
-                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">Four traps: extreme, outside text, distorted meaning, half-right</dd>
-                </div>
-              </dl>
-            </div>
-          </div>
-
-          <!-- DILR Matrix Card -->
-          <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 flex flex-col justify-between">
-            <div>
-              <div class="flex items-center justify-between pb-3 border-b border-hairline dark:border-darkHairline">
-                <span class="font-semibold text-sm text-dilr">DILR Rules</span>
-                <span class="font-mono text-[11px] text-muted dark:text-darkMuted">Recent: 22 Qs &middot; 40m</span>
-              </div>
-              <dl class="mt-3.5 space-y-3 text-xs">
-                <div>
-                  <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Entry Gate</dt>
-                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium"><span data-plan="dilrScan"></span> scan and rank all available sets; prefer 5-Q only if equally viable</dd>
-                </div>
-                <div class="p-2.5 rounded-lg bg-alert/5 dark:bg-alert/15 border border-alert/20">
-                  <dt class="font-mono text-[10px] uppercase tracking-wider text-alert font-semibold">Adaptive checkpoint</dt>
-                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">Reassess at <span data-plan="dilrReassess"></span>; switch at <span data-plan="dilrSwitch"></span> if no useful deduction or credible path</dd>
-                </div>
-                <div>
-                  <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Pacing Cap</dt>
-                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium font-mono">About <span data-plan="dilrBudget"></span> per viable set; protect final 1m for save/TITA audit</dd>
-                </div>
-                <div>
-                  <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Verification</dt>
-                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">Check clues, totals and the answer (about 20–60s)</dd>
-                </div>
-              </dl>
-            </div>
-          </div>
-
-          <!-- QA Matrix Card -->
-          <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 flex flex-col justify-between">
-            <div>
-              <div class="flex items-center justify-between pb-3 border-b border-hairline dark:border-darkHairline">
-                <span class="font-semibold text-sm text-qa">QA Rules</span>
-                <span class="font-mono text-[11px] text-muted dark:text-darkMuted">Recent: 22 Qs &middot; 40m</span>
-              </div>
-              <dl class="mt-3.5 space-y-3 text-xs">
-                <div>
-                  <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Entry Gate</dt>
-                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium"><span data-plan="qaIgnition"></span> ignition: definite equation, ratio or conceptual route</dd>
-                </div>
-                <div class="p-2.5 rounded-lg bg-alert/5 dark:bg-alert/15 border border-alert/20">
-                  <dt class="font-mono text-[10px] uppercase tracking-wider text-alert font-semibold">Adaptive checkpoint</dt>
-                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium"><span data-plan="qaRound1"></span> in Round 1 (unless in final calc step)</dd>
-                </div>
-                <div>
-                  <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Topic preference</dt>
-                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">Deprioritise complex geometry; allow obvious sitters</dd>
-                </div>
-                <div>
-                  <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Verification</dt>
-                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">Brief answer audit: requested value, units, sign, domain and format before saving</dd>
-                </div>
-              </dl>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 3. NEW: Exam-Hall Transitions & TCS iON Interface Discipline Card -->
-      <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6 space-y-5">
-        <div class="flex flex-wrap items-center justify-between gap-2 pb-3.5 border-b border-hairline dark:border-darkHairline">
-          <div>
-            <h3 class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">Between sections and at the exam screen</h3>
-            <p class="text-xs text-muted dark:text-darkMuted mt-0.5">Reset your focus. Avoid accidental submissions and wasted clicks.</p>
-          </div>
-          <span class="font-mono text-[11px] px-2.5 py-1 rounded-md bg-ink/[0.06] dark:bg-darkInk/10 text-ink dark:text-darkInk font-semibold">Console Execution</span>
-        </div>
-
-        <!-- Part A: 10-Second Section-Switch Reset -->
-        <div class="rounded-xl bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-4">
-          <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
-            <h4 class="text-xs font-bold uppercase tracking-wider text-ink dark:text-darkInk">Part A &middot; 10-second reset between sections (VARC &rarr; DILR &rarr; QA)</h4>
-            <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-alert/10 text-alert font-semibold">Firewall Emotional Spillover</span>
-          </div>
-
-          <!-- Horizontal 4-Step Stepper Strip -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 text-xs">
-            <div class="p-2.5 rounded-lg bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline flex items-start gap-2">
-              <span class="font-mono text-[11px] font-bold text-ink dark:text-darkInk bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline w-5 h-5 rounded flex items-center justify-center shrink-0">1</span>
-              <span class="text-ink dark:text-darkInk font-medium leading-snug">Stop thinking about the previous section</span>
-            </div>
-            <div class="p-2.5 rounded-lg bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline flex items-start gap-2">
-              <span class="font-mono text-[11px] font-bold text-ink dark:text-darkInk bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline w-5 h-5 rounded flex items-center justify-center shrink-0">2</span>
-              <span class="text-ink dark:text-darkInk font-medium leading-snug">Take 2 slow breaths during screen switch</span>
-            </div>
-            <div class="p-2.5 rounded-lg bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline flex items-start gap-2">
-              <span class="font-mono text-[11px] font-bold text-ink dark:text-darkInk bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline w-5 h-5 rounded flex items-center justify-center shrink-0">3</span>
-              <span class="text-ink dark:text-darkInk font-medium leading-snug">Start on a clean page</span>
-            </div>
-            <div class="p-2.5 rounded-lg bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline flex items-start gap-2">
-              <span class="font-mono text-[11px] font-bold text-ink dark:text-darkInk bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline w-5 h-5 rounded flex items-center justify-center shrink-0">4</span>
-              <span class="text-ink dark:text-darkInk font-medium leading-snug">Start the next section with its first step</span>
-            </div>
-          </div>
-
-          <p class="mt-3 px-3 py-2 rounded-lg bg-alert/8 dark:bg-alert/15 border border-alert/25 text-xs text-ink dark:text-darkInk">
-            <strong class="font-mono text-[10px] uppercase tracking-wider text-alert mr-1.5">Firewall Rule:</strong>
-            A difficult DILR section is over. Start QA fresh.
-          </p>
-        </div>
-
-        <!-- Part B: TCS iON Question Palette & On-Screen Calculator Rules -->
-        <div>
-          <h4 class="text-xs font-bold uppercase tracking-wider text-muted dark:text-darkMuted mb-3">Part B &middot; TCS iON Question Palette &amp; On-Screen Calculator Rules</h4>
-          <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-            <!-- Left: Question Palette & Marked for Review (7 cols) -->
-            <div class="md:col-span-7 rounded-xl bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline p-4">
-              <h5 class="text-xs font-bold text-ink dark:text-darkInk mb-2.5 flex items-center justify-between">
-                <span>Question palette: three rules</span>
-                <span class="font-mono text-[10px] text-alert font-semibold">Avoid Hidden -1s</span>
-              </h5>
-              <ol class="space-y-2 text-xs text-muted dark:text-darkMuted leading-relaxed">
-                <li class="flex gap-2">
-                  <span class="font-mono font-bold text-alert shrink-0">1.</span>
-                  <span>
-                    <strong class="text-ink dark:text-darkInk">Answered + Marked for Review (purple + green dot) may count for scoring; check exam instructions</strong> &mdash; never leave an uncertain <span class="font-mono text-alert">-1</span> MCQ guess this way; click <strong class="text-ink dark:text-darkInk">Clear Response</strong> first.
-                  </span>
-                </li>
-                <li class="flex gap-2">
-                  <span class="font-mono font-bold text-varc shrink-0">2.</span>
-                  <span>
-                    Reserve <strong class="text-ink dark:text-darkInk">Unanswered + Marked for Review (Purple)</strong> strictly for genuine Round 2 / cleanup targets (never for conceptual-gap or dead skips).
-                  </span>
-                </li>
-                <li class="flex gap-2">
-                  <span class="font-mono font-bold text-dilr shrink-0">3.</span>
-                  <span>
-                    Use the <strong>question palette</strong> to move quickly between RC and VA.
-                  </span>
-                </li>
-              </ol>
-            </div>
-
-            <!-- Right: When to use the calculator (5 cols) -->
-            <div class="md:col-span-5 rounded-xl bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-l-4 border-l-qa p-4 flex flex-col justify-between">
-              <div>
-                <div class="flex items-center justify-between gap-2 mb-2">
-                  <h5 class="text-xs font-bold text-qa uppercase tracking-wider">When to use the calculator</h5>
-                  <span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-qa/10 text-qa font-semibold">DILR &amp; QA</span>
-                </div>
-                <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">
-                  Paper for simple sums and ratios. Use the on-screen calculator when faster or safer: difficult division, powers or totals.
-                </p>
-              </div>
-              <p class="mt-3 pt-2.5 border-t border-hairline dark:border-darkHairline font-mono text-[11px] text-alert font-medium">
-                Avoid calculator clicks for easy mental or written sums.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- 4. Stacked Interactive 40-Minute Visual Timelines -->
+      <!-- Stacked interactive 40-Minute Visual Timelines -->
       <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-4">
           <div>
             <h3 class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">40-Minute Visual Pacing Clocks</h3>
-            <p class="text-xs text-muted dark:text-darkMuted mt-0.5">Tap a phase for its instructions.</p>
+            <p class="text-xs text-muted dark:text-darkMuted mt-0.5">Times show minutes elapsed. Tap a phase for its instructions.</p>
           </div>
           <!-- Synced 3-Mode VARC Clock Toggle -->
           <div data-mode-switch role="group" aria-label="VARC strategy" class="no-print inline-flex flex-wrap items-center rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-0.5 text-[11px] self-start md:self-auto">
@@ -1140,110 +876,11 @@ input[type=checkbox]{flex-shrink:0}
         </div>
       </div>
 
-      <!-- 5. UPDATED: Final three days (26–28 Nov) -->
-      <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6">
-        <div class="flex flex-wrap items-center justify-between gap-2 pb-3.5 border-b border-hairline dark:border-darkHairline">
-          <div>
-            <h3 class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">Final three days (26–28 Nov)</h3>
-            <p class="text-xs text-muted dark:text-darkMuted mt-0.5">Review familiar methods. Reduce workload before Sunday, 29 Nov.</p>
-          </div>
-          <span class="font-mono text-[11px] px-2.5 py-1 rounded-md bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline text-ink dark:text-darkInk font-semibold">Sprint Countdown</span>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
-          <!-- Nov 26 (Today) -->
-          <div class="rounded-xl p-4 bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-t-4 border-t-varc">
-            <div class="flex items-center justify-between gap-2">
-              <span class="font-mono text-xs font-bold text-varc">NOV 26 (THURSDAY)</span>
-              <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-varc/10 text-varc font-semibold">Peak Simulation</span>
-            </div>
-            <p class="mt-2.5 text-xs text-muted dark:text-darkMuted leading-relaxed">
-              <strong class="text-ink dark:text-darkInk font-semibold">Optional final full mock</strong> at assigned slot time only if rested and useful; otherwise review earlier errors and rehearse the official interface. Verify admit card and travel arrangements today.
-            </p>
-          </div>
-
-          <!-- Nov 27 (Tomorrow) -->
-          <div class="rounded-xl p-4 bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-t-4 border-t-qa">
-            <div class="flex items-center justify-between gap-2">
-              <span class="font-mono text-xs font-bold text-qa">NOV 27 (FRIDAY)</span>
-              <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-qa/10 text-qa font-semibold">Habit Imprinting</span>
-            </div>
-            <p class="mt-2.5 text-xs text-muted dark:text-darkMuted leading-relaxed">
-              Choose one: short arithmetic review, one familiar DILR set, or 1–2 RCs. Review errors. Finish travel and document checks; skip drills if tired.
-            </p>
-          </div>
-
-          <!-- Nov 28 (Saturday) -->
-          <div class="rounded-xl p-4 bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-t-4 border-t-dilr">
-            <div class="flex items-center justify-between gap-2">
-              <span class="font-mono text-xs font-bold text-dilr">NOV 28 (SATURDAY)</span>
-              <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-dilr/10 text-dilr font-semibold">Light review</span>
-            </div>
-            <p class="mt-2.5 text-xs text-muted dark:text-darkMuted leading-relaxed">
-              <strong class="text-alert font-semibold">No full mocks or new hard sets.</strong> Skim this guide and error log. Check documents and departure time. Aim for 7–9 hours of sleep.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <!-- region:exam-logistics | Current verification and preparation -->
-      <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6" aria-labelledby="logistics-title">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <h3 id="logistics-title" class="text-sm font-semibold uppercase tracking-wider">CAT 2026 · examination logistics</h3>
-          <span class="text-xs text-muted dark:text-darkMuted font-mono">Reviewed 26 Nov 2026</span>
-        </div>
-        <p class="mt-2 text-xs leading-relaxed"><strong>Sunday, 29 November 2026.</strong> Three shifts; standard paper: 120 minutes, 40 per section. VARC → DILR → QA; no switching between sections. Follow approved accommodations and on-screen rules. Question counts and marks in this guide are estimates (IIM releases, 26 July and 4 November).</p>
-        <div class="mt-3 p-3 rounded-lg border border-alert/30 bg-alert/5 dark:bg-alert/15">
-          <p class="text-xs leading-relaxed"><strong class="text-alert">Your admit card is authoritative:</strong> check date, shift, centre, reporting and gate-closing times on your card. Arrive by reporting time or earlier. The gate closes before the exam starts; do not count on late admission.</p>
-        </div>
-        <h4 class="mt-3 text-xs font-semibold">Reported standard slot schedule (IST; cross-check your card)</h4>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mt-2 text-xs">
-          <article class="rounded-lg border border-hairline dark:border-darkHairline p-3"><h5 class="font-semibold">Slot 1 · Morning</h5><p class="mt-1">Report 07:00 · Gate 08:00</p><p class="mt-1 font-mono">08:30–10:30</p></article>
-          <article class="rounded-lg border border-hairline dark:border-darkHairline p-3"><h5 class="font-semibold">Slot 2 · Afternoon</h5><p class="mt-1">Report 11:00 · Gate 12:00</p><p class="mt-1 font-mono">12:30–14:30</p></article>
-          <article class="rounded-lg border border-hairline dark:border-darkHairline p-3"><h5 class="font-semibold">Slot 3 · Evening</h5><p class="mt-1">Report 15:00 · Gate 16:00</p><p class="mt-1 font-mono">16:30–18:30</p></article>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4 text-xs leading-relaxed">
-          <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
-            <h4 class="font-semibold">By Saturday, 28 November</h4>
-            <ul class="mt-2 list-disc list-inside space-y-1">
-              <li><strong>Admit card:</strong> download and print clearly. Check details and instructions. Attach the required photo. Sign before the invigilator if required.</li>
-              <li><strong>ID and documents:</strong> pack an accepted, original, valid photo ID and required medical/accommodation permissions. Follow your card's permitted-items list.</li>
-              <li><strong>Route:</strong> verify centre and entrance; visit if practical. Plan transport, backup ride, parking, walking and queues. Depart early: target arrival − travel time − buffer (e.g. 30–60 min if traffic is uncertain).</li>
-              <li><strong>Clothes and belongings:</strong> choose permitted clothing for the weather. Arrange storage outside; do not assume a locker is available. Save this guide offline for revision before entry, not during the exam.</li>
-            </ul>
-          </article>
-          <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
-            <h4 class="font-semibold">On Sunday · before leaving</h4>
-            <ul class="mt-2 list-disc list-inside space-y-1">
-              <li><strong>Before leaving:</strong> check updates, documents, route and departure time. Allow for security and ID checks (face matching and jammers at selected centres, per 4 November release).</li>
-              <li><strong>Food and rest:</strong> keep sleep and meals familiar. Eat early, hydrate normally, use the restroom. Avoid new caffeine or supplements. Check food/water and medical permissions.</li>
-              <li><strong>Restrictions:</strong> leave electronics, watches, calculators, notes, stationery and jewellery outside as instructed. Check clothing rules (reported: thick soles, large buttons). Ask ahead about medical devices or religious accommodations.</li>
-              <li><strong>Entry:</strong> bring only authorised items. Cooperate with checks. Do not rely on phone reception or digital documents.</li>
-            </ul>
-          </article>
-          <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
-            <h4 class="font-semibold">At the workstation</h4>
-            <ul class="mt-2 list-disc list-inside space-y-1">
-              <li><strong>At login:</strong> check identity, timer and marking. Confirm save, clear, review, TITA entry and calculator controls.</li>
-              <li><strong>Problems:</strong> Use only authorised rough-work material. Report a login, timer, mouse, calculator or display problem to the invigilator immediately. Do not fix the workstation yourself.</li>
-              <li><strong>During and after:</strong> no routine break expected. Follow emergency/accommodation rules. Return rough-work material and leave when told.</li>
-            </ul>
-          </article>
-          <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
-            <h4 class="font-semibold">Official mock and current instructions (online)</h4>
-            <p class="mt-1">Open <a class="underline font-semibold text-varc" href="https://iimcat.ac.in/" target="_blank" rel="noopener noreferrer">iimcat.ac.in — official CAT portal</a> for your admit card, latest notices, official mock, calculator guidance and helpdesk. Use the mock for interface practice, not prediction of question counts or difficulty.</p>
-            <p class="mt-2">Reported standard mock link: <a class="underline text-varc font-medium" href="https://cdn4.digialm.com//OnlineAssessment/index.html?32842@@M218" target="_blank" rel="noopener noreferrer">CAT 2026 interface mock</a>. Verify the link against the official portal first; use the appropriate accommodation-specific mock if needed. No login credentials should be shared outside the official portal.</p>
-            <p class="mt-2">Rehearse the palette, Save &amp; Next, Clear Response, Mark for Review, TITA keypad, calculator, section timer and transition once. Verify the actual instructions: an answered-and-reviewed question may be evaluated; an unintentional response must be cleared before moving on.</p>
-          </article>
-        </div>
-        <div class="mt-3 text-xs text-muted dark:text-darkMuted" data-source-note><strong>Sources and verification</strong><ul data-read-steps><li><a class="underline" href="https://futurecareerguidance.com/official-docs/cat-2026/cat-2026-press-release-26-07-2026.pdf" target="_blank" rel="noopener noreferrer">26 July IIM press release (mirror)</a></li><li><a class="underline" href="https://www.careerlauncher.com/blogs/wp-content/uploads/2026/11/9901914301.pdf" target="_blank" rel="noopener noreferrer">4 November IIM admit-card release (mirror)</a></li><li><a class="underline" href="https://www.careers360.com/mba/articles/cat-2026-exam-day-guidelines-documents-timings" target="_blank" rel="noopener noreferrer">Careers360, 24 November (reported timings and rules)</a></li><li><a class="underline" href="https://www.mbauniverse.com/cat/cat-mock-official" target="_blank" rel="noopener noreferrer">MBAUniverse (reported mock URL)</a></li></ul><p class="mt-2">The official portal was inaccessible; the direct mock could not be opened. Follow the latest official instructions on your admit card. Links require internet only when opened; this playbook remains offline.</p></div>
-      </section>
-
-      <!-- 6. Pre-Exam Interactive Mental Reset Checklist -->
+      <!-- Exam readiness checklist -->
       <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6">
         <div class="flex flex-wrap items-center justify-between gap-2 pb-4 border-b border-hairline dark:border-darkHairline">
           <div>
-            <h3 class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">Exam readiness checklist</h3>
+            <h3 id="readiness-title" tabindex="-1" class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">Exam readiness checklist</h3>
             <p class="text-xs text-muted dark:text-darkMuted mt-0.5">Saved in your browser and included in HTML backups.</p>
           </div>
           <div class="flex items-center gap-3">
@@ -1303,40 +940,254 @@ input[type=checkbox]{flex-shrink:0}
         </div>
       </div>
 
+      <div data-overview-reference class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl">
+        <details data-overview-detail>
+          <summary>Score scenarios and raw marks</summary>
+          <div data-overview-body>
+            <p class="mt-1 text-xs text-muted dark:text-darkMuted">Each row is an example of raw marks after penalties. Percentiles depend on scaled scores and the performance of other candidates.</p>
+            <div class="overflow-x-auto mt-3"><table data-responsive-table data-table-kind="scenarios" role="table" class="w-full text-left text-xs border-collapse">
+              <thead role="rowgroup"><tr role="row" class="font-mono text-muted dark:text-darkMuted"><th role="columnheader" scope="col" class="px-2.5 py-2">Scenario</th><th role="columnheader" scope="col" class="px-2.5 py-2">VARC</th><th role="columnheader" scope="col" class="px-2.5 py-2">DILR</th><th role="columnheader" scope="col" class="px-2.5 py-2">QA</th><th role="columnheader" scope="col" class="px-2.5 py-2">Total</th><th role="columnheader" scope="col" class="px-2.5 py-2">Response</th></tr></thead>
+              <tbody role="rowgroup" id="scenario-rows"></tbody></table></div>
+            <p class="mt-2 text-xs text-muted dark:text-darkMuted">Under recent marking, 11 correct and two wrong MCQs give (11 × 3) − (2 × 1) = <strong>31 raw marks</strong>. Wrong TITA answers and blanks score zero. Follow the marking shown on your exam screen.</p>
+          </div>
+        </details>
+        <!-- region:rule-hierarchy | Conflict resolution for exam-day decisions -->
+        <details data-overview-detail>
+          <summary id="rule-hierarchy-title">Which instruction takes priority?</summary>
+          <div data-overview-body>
+            <p class="mt-1 text-xs text-muted dark:text-darkMuted">Higher rules take priority. Targets are flexible.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3 text-xs leading-relaxed">
+              <article class="rounded-lg border border-hairline dark:border-darkHairline border-l-4 border-l-alert p-3">
+                <h4 class="font-semibold text-alert">1 · Non-negotiable safeguards</h4>
+                <p class="mt-1">Follow official instructions and time limits. Verify the answer, save it, clear accidental responses and leave time for a final check.</p>
+              </article>
+              <article class="rounded-lg border border-hairline dark:border-darkHairline border-l-4 border-l-dilr p-3">
+                <h4 class="font-semibold text-dilr">2 · Adaptive checkpoints</h4>
+                <p class="mt-1">VARC: 45–60s passage gate, 45s unresolved two-option deadlock. DILR: reassess <span data-plan="dilrReassess"></span>, switch by <span data-plan="dilrSwitch"></span> if stalled. QA: <span data-plan="qaIgnition"></span> ignition, about <span data-plan="qaRound1"></span> in R1 and <span data-plan="qaRound2"></span> in R2. Continue briefly only for a credible imminent payoff; otherwise move on. Protect the remaining section time.</p>
+              </article>
+              <article class="rounded-lg border border-hairline dark:border-darkHairline border-l-4 border-l-varc p-3">
+                <h4 class="font-semibold text-varc">3 · Strong default execution plans</h4>
+                <p class="mt-1">Use your chosen VARC plan, scan all DILR sets, and assess QA questions as you go. Adjust timing and attempts to the paper; never force completion.</p>
+              </article>
+              <article class="rounded-lg border border-hairline dark:border-darkHairline border-l-4 border-l-qa p-3">
+                <h4 class="font-semibold text-qa">4 · Personal preferences and tie-breakers</h4>
+                <p class="mt-1">Use preferences to break ties. Take easy questions in any topic. Use the calculator when faster or safer. Try RC 4 only if its timing and value justify it.</p>
+              </article>
+            </div>
+            <p class="mt-3 text-xs leading-relaxed"><strong>Conflict examples:</strong> extend a set with clear progress, not the section deadline. Take easy geometry; still verify it. Put reliable answers before guesses. Start each section fresh.</p>
+          </div>
+        </details>
+        <details data-overview-detail>
+          <summary>Between sections and at the exam screen</summary>
+          <div data-overview-body>
+            <!-- Part A: 10-Second Section-Switch Reset -->
+            <div class="rounded-xl bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-4">
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-ink dark:text-darkInk">Part A &middot; 10-second reset between sections (VARC &rarr; DILR &rarr; QA)</h4>
+                <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-alert/10 text-alert font-semibold">Firewall Emotional Spillover</span>
+              </div>
+
+              <!-- Horizontal 4-Step Stepper Strip -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 text-xs">
+                <div class="p-2.5 rounded-lg bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline flex items-start gap-2">
+                  <span class="font-mono text-[11px] font-bold text-ink dark:text-darkInk bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline w-5 h-5 rounded flex items-center justify-center shrink-0">1</span>
+                  <span class="text-ink dark:text-darkInk font-medium leading-snug">Stop thinking about the previous section</span>
+                </div>
+                <div class="p-2.5 rounded-lg bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline flex items-start gap-2">
+                  <span class="font-mono text-[11px] font-bold text-ink dark:text-darkInk bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline w-5 h-5 rounded flex items-center justify-center shrink-0">2</span>
+                  <span class="text-ink dark:text-darkInk font-medium leading-snug">Take 2 slow breaths during screen switch</span>
+                </div>
+                <div class="p-2.5 rounded-lg bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline flex items-start gap-2">
+                  <span class="font-mono text-[11px] font-bold text-ink dark:text-darkInk bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline w-5 h-5 rounded flex items-center justify-center shrink-0">3</span>
+                  <span class="text-ink dark:text-darkInk font-medium leading-snug">Start on a clean page</span>
+                </div>
+                <div class="p-2.5 rounded-lg bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline flex items-start gap-2">
+                  <span class="font-mono text-[11px] font-bold text-ink dark:text-darkInk bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline w-5 h-5 rounded flex items-center justify-center shrink-0">4</span>
+                  <span class="text-ink dark:text-darkInk font-medium leading-snug">Start the next section with its first step</span>
+                </div>
+              </div>
+
+              <p class="mt-3 px-3 py-2 rounded-lg bg-alert/8 dark:bg-alert/15 border border-alert/25 text-xs text-ink dark:text-darkInk">
+                <strong class="font-mono text-[10px] uppercase tracking-wider text-alert mr-1.5">Firewall Rule:</strong>
+                A difficult DILR section is over. Start QA fresh.
+              </p>
+            </div>
+
+            <!-- Part B: TCS iON Question Palette & On-Screen Calculator Rules -->
+            <div>
+              <h4 class="text-xs font-bold uppercase tracking-wider text-muted dark:text-darkMuted mb-3">Part B &middot; TCS iON Question Palette &amp; On-Screen Calculator Rules</h4>
+              <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+                <!-- Left: Question Palette & Marked for Review (7 cols) -->
+                <div class="md:col-span-7 rounded-xl bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline p-4">
+                  <h5 class="text-xs font-bold text-ink dark:text-darkInk mb-2.5 flex items-center justify-between">
+                    <span>Question palette: three rules</span>
+                    <span class="font-mono text-[10px] text-alert font-semibold">Avoid Hidden -1s</span>
+                  </h5>
+                  <ol class="space-y-2 text-xs text-muted dark:text-darkMuted leading-relaxed">
+                    <li class="flex gap-2">
+                      <span class="font-mono font-bold text-alert shrink-0">1.</span>
+                      <span>
+                        <strong class="text-ink dark:text-darkInk">Answered + Marked for Review (purple + green dot) may count for scoring; check exam instructions</strong> &mdash; never leave an uncertain <span class="font-mono text-alert">-1</span> MCQ guess this way; click <strong class="text-ink dark:text-darkInk">Clear Response</strong> first.
+                      </span>
+                    </li>
+                    <li class="flex gap-2">
+                      <span class="font-mono font-bold text-varc shrink-0">2.</span>
+                      <span>
+                        Reserve <strong class="text-ink dark:text-darkInk">Unanswered + Marked for Review (Purple)</strong> strictly for genuine Round 2 / cleanup targets (never for conceptual-gap or dead skips).
+                      </span>
+                    </li>
+                    <li class="flex gap-2">
+                      <span class="font-mono font-bold text-dilr shrink-0">3.</span>
+                      <span>
+                        Use the <strong>question palette</strong> to move quickly between RC and VA.
+                      </span>
+                    </li>
+                  </ol>
+                </div>
+
+                <!-- Right: When to use the calculator (5 cols) -->
+                <div class="md:col-span-5 rounded-xl bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-l-4 border-l-qa p-4 flex flex-col justify-between">
+                  <div>
+                    <div class="flex items-center justify-between gap-2 mb-2">
+                      <h5 class="text-xs font-bold text-qa uppercase tracking-wider">When to use the calculator</h5>
+                      <span class="font-mono text-[10px] px-1.5 py-0.5 rounded bg-qa/10 text-qa font-semibold">DILR &amp; QA</span>
+                    </div>
+                    <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">
+                      Paper for simple sums and ratios. Use the on-screen calculator when faster or safer: difficult division, powers or totals.
+                    </p>
+                  </div>
+                  <p class="mt-3 pt-2.5 border-t border-hairline dark:border-darkHairline font-mono text-[11px] text-alert font-medium">
+                    Avoid calculator clicks for easy mental or written sums.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </details>
+        <details data-overview-detail>
+          <summary>Final three days · 26–28 Nov</summary>
+          <div data-overview-body>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-4">
+              <!-- Nov 26 (Today) -->
+              <div class="rounded-xl p-4 bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-t-4 border-t-varc">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="font-mono text-xs font-bold text-varc">NOV 26 (THURSDAY)</span>
+                  <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-varc/10 text-varc font-semibold">Peak Simulation</span>
+                </div>
+                <p class="mt-2.5 text-xs text-muted dark:text-darkMuted leading-relaxed">
+                  <strong class="text-ink dark:text-darkInk font-semibold">Optional final full mock</strong> at assigned slot time only if rested and useful; otherwise review earlier errors and rehearse the official interface. Verify admit card and travel arrangements today.
+                </p>
+              </div>
+
+              <!-- Nov 27 (Tomorrow) -->
+              <div class="rounded-xl p-4 bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-t-4 border-t-qa">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="font-mono text-xs font-bold text-qa">NOV 27 (FRIDAY)</span>
+                  <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-qa/10 text-qa font-semibold">Habit Imprinting</span>
+                </div>
+                <p class="mt-2.5 text-xs text-muted dark:text-darkMuted leading-relaxed">
+                  Choose one: short arithmetic review, one familiar DILR set, or 1–2 RCs. Review errors. Finish travel and document checks; skip drills if tired.
+                </p>
+              </div>
+
+              <!-- Nov 28 (Saturday) -->
+              <div class="rounded-xl p-4 bg-canvas/70 dark:bg-darkCanvas/60 border border-hairline dark:border-darkHairline border-t-4 border-t-dilr">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="font-mono text-xs font-bold text-dilr">NOV 28 (SATURDAY)</span>
+                  <span class="font-mono text-[10px] px-2 py-0.5 rounded bg-dilr/10 text-dilr font-semibold">Light review</span>
+                </div>
+                <p class="mt-2.5 text-xs text-muted dark:text-darkMuted leading-relaxed">
+                  <strong class="text-alert font-semibold">No full mocks or new hard sets.</strong> Skim this guide and error log. Check documents and departure time. Aim for 7–9 hours of sleep.
+                </p>
+              </div>
+            </div>
+          </div>
+        </details>
+        <!-- region:exam-logistics | Current verification and preparation -->
+        <details data-overview-detail>
+          <summary id="logistics-title">Exam logistics · documents, reporting times and centre rules</summary>
+          <div data-overview-body>
+            <p class="font-mono text-xs text-muted dark:text-darkMuted">Reviewed 26 Nov 2026</p>
+            <p class="mt-2 text-xs leading-relaxed"><strong>Sunday, 29 November 2026.</strong> Three shifts; standard paper: 120 minutes, 40 per section. VARC → DILR → QA; no switching between sections. Follow approved accommodations and on-screen rules. Question counts and marks in this guide are estimates (IIM releases, 26 July and 4 November).</p>
+            <div class="mt-3 p-3 rounded-lg border border-alert/30 bg-alert/5 dark:bg-alert/15">
+              <p class="text-xs leading-relaxed"><strong class="text-alert">Your admit card is authoritative:</strong> check date, shift, centre, reporting and gate-closing times on your card. Arrive by reporting time or earlier. The gate closes before the exam starts; do not count on late admission.</p>
+            </div>
+            <h4 class="mt-3 text-xs font-semibold">Reported standard slot schedule (IST; cross-check your card)</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mt-2 text-xs">
+              <article class="rounded-lg border border-hairline dark:border-darkHairline p-3"><h5 class="font-semibold">Slot 1 · Morning</h5><p class="mt-1">Report 07:00 · Gate 08:00</p><p class="mt-1 font-mono">08:30–10:30</p></article>
+              <article class="rounded-lg border border-hairline dark:border-darkHairline p-3"><h5 class="font-semibold">Slot 2 · Afternoon</h5><p class="mt-1">Report 11:00 · Gate 12:00</p><p class="mt-1 font-mono">12:30–14:30</p></article>
+              <article class="rounded-lg border border-hairline dark:border-darkHairline p-3"><h5 class="font-semibold">Slot 3 · Evening</h5><p class="mt-1">Report 15:00 · Gate 16:00</p><p class="mt-1 font-mono">16:30–18:30</p></article>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-4 text-xs leading-relaxed">
+              <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
+                <h4 class="font-semibold">By Saturday, 28 November</h4>
+                <ul class="mt-2 list-disc list-inside space-y-1">
+                  <li><strong>Admit card:</strong> download and print clearly. Check details and instructions. Attach the required photo. Sign before the invigilator if required.</li>
+                  <li><strong>ID and documents:</strong> pack an accepted, original, valid photo ID and required medical/accommodation permissions. Follow your card's permitted-items list.</li>
+                  <li><strong>Route:</strong> verify centre and entrance; visit if practical. Plan transport, backup ride, parking, walking and queues. Depart early: target arrival − travel time − buffer (e.g. 30–60 min if traffic is uncertain).</li>
+                  <li><strong>Clothes and belongings:</strong> choose permitted clothing for the weather. Arrange storage outside; do not assume a locker is available. Save this guide offline for revision before entry, not during the exam.</li>
+                </ul>
+              </article>
+              <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
+                <h4 class="font-semibold">On Sunday · before leaving</h4>
+                <ul class="mt-2 list-disc list-inside space-y-1">
+                  <li><strong>Before leaving:</strong> check updates, documents, route and departure time. Allow for security and ID checks (face matching and jammers at selected centres, per 4 November release).</li>
+                  <li><strong>Food and rest:</strong> keep sleep and meals familiar. Eat early, hydrate normally, use the restroom. Avoid new caffeine or supplements. Check food/water and medical permissions.</li>
+                  <li><strong>Restrictions:</strong> leave electronics, watches, calculators, notes, stationery and jewellery outside as instructed. Check clothing rules (reported: thick soles, large buttons). Ask ahead about medical devices or religious accommodations.</li>
+                  <li><strong>Entry:</strong> bring only authorised items. Cooperate with checks. Do not rely on phone reception or digital documents.</li>
+                </ul>
+              </article>
+              <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
+                <h4 class="font-semibold">At the workstation</h4>
+                <ul class="mt-2 list-disc list-inside space-y-1">
+                  <li><strong>At login:</strong> check identity, timer and marking. Confirm save, clear, review, TITA entry and calculator controls.</li>
+                  <li><strong>Problems:</strong> Use only authorised rough-work material. Report a login, timer, mouse, calculator or display problem to the invigilator immediately. Do not fix the workstation yourself.</li>
+                  <li><strong>During and after:</strong> no routine break expected. Follow emergency/accommodation rules. Return rough-work material and leave when told.</li>
+                </ul>
+              </article>
+              <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
+                <h4 class="font-semibold">Official mock and current instructions (online)</h4>
+                <p class="mt-1">Open <a class="underline font-semibold text-varc" href="https://iimcat.ac.in/" target="_blank" rel="noopener noreferrer">iimcat.ac.in — official CAT portal</a> for your admit card, latest notices, official mock, calculator guidance and helpdesk. Use the mock for interface practice, not prediction of question counts or difficulty.</p>
+                <p class="mt-2">Reported standard mock link: <a class="underline text-varc font-medium" href="https://cdn4.digialm.com//OnlineAssessment/index.html?32842@@M218" target="_blank" rel="noopener noreferrer">CAT 2026 interface mock</a>. Verify the link against the official portal first; use the appropriate accommodation-specific mock if needed. No login credentials should be shared outside the official portal.</p>
+                <p class="mt-2">Rehearse the palette, Save &amp; Next, Clear Response, Mark for Review, TITA keypad, calculator, section timer and transition once. Verify the actual instructions: an answered-and-reviewed question may be evaluated; an unintentional response must be cleared before moving on.</p>
+              </article>
+            </div>
+            <div class="mt-3 text-xs text-muted dark:text-darkMuted" data-source-note><strong>Sources and verification</strong><ul data-read-steps><li><a class="underline" href="https://futurecareerguidance.com/official-docs/cat-2026/cat-2026-press-release-26-07-2026.pdf" target="_blank" rel="noopener noreferrer">26 July IIM press release (mirror)</a></li><li><a class="underline" href="https://www.careerlauncher.com/blogs/wp-content/uploads/2026/11/9901914301.pdf" target="_blank" rel="noopener noreferrer">4 November IIM admit-card release (mirror)</a></li><li><a class="underline" href="https://www.careers360.com/mba/articles/cat-2026-exam-day-guidelines-documents-timings" target="_blank" rel="noopener noreferrer">Careers360, 24 November (reported timings and rules)</a></li><li><a class="underline" href="https://www.mbauniverse.com/cat/cat-mock-official" target="_blank" rel="noopener noreferrer">MBAUniverse (reported mock URL)</a></li></ul><p class="mt-2">The official portal was inaccessible; the direct mock could not be opened. Follow the latest official instructions on your admit card. Links require internet only when opened; this playbook remains offline.</p></div>
+          </div>
+        </details>
+        <!-- region:error-log | Unified error log -->
+        <details data-overview-detail>
+          <summary id="error-log-title">Daily error log <span id="error-log-count" class="text-xs font-mono text-muted dark:text-darkMuted" aria-live="polite">0 entries</span></summary>
+          <div data-overview-body>
+            <form id="error-log-form" class="no-print mt-4 space-y-3 text-xs">
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <label class="flex flex-col gap-1 font-medium">Date<input required type="date" name="date" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"></label>
+                <label class="flex flex-col gap-1 font-medium">Section<select name="section" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"><option>VARC</option><option>DILR</option><option>QA</option></select></label>
+                <label class="flex flex-col gap-1 font-medium">Error type<select name="category" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"><option>Selection</option><option>Time management</option><option>Comprehension</option><option>Representation</option><option>Deduction / elimination</option><option>Arithmetic / execution</option><option>Verification</option><option>Interface</option><option>Other</option></select></label>
+              </div>
+              <label class="flex flex-col gap-1 font-medium">Mock / passage / set / question reference<input name="reference" maxlength="200" placeholder="e.g. Mock 2, RC 3, Q12" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"></label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <label class="flex flex-col gap-1 font-medium">What went wrong and why?<textarea required name="cause" maxlength="2000" rows="3" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2 resize-y" placeholder="e.g. Confused critic's view with author's."></textarea></label>
+                <label class="flex flex-col gap-1 font-medium">Correction / next review<textarea required name="correction" maxlength="2000" rows="3" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2 resize-y" placeholder="e.g. Verify who holds each view."></textarea></label>
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                <label class="flex flex-col gap-1 font-medium">Marks lost (optional)<input type="number" min="0" max="300" step="1" name="marks" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"></label>
+                <label class="flex flex-col gap-1 font-medium">Minutes lost (optional)<input type="number" min="0" max="120" step="0.5" name="minutes" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"></label>
+                <label class="flex flex-col gap-1 font-medium">Review status<select name="status" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"><option value="open">Open</option><option value="reviewed">Reviewed</option></select></label>
+              </div>
+              <div class="flex flex-wrap items-center gap-3">
+                <button id="error-log-submit" type="submit" class="rounded-md bg-ink dark:bg-darkInk text-canvas dark:text-darkCanvas px-3 py-2 font-semibold">Add error</button>
+                <button id="error-log-cancel" type="button" hidden class="underline text-muted dark:text-darkMuted">Cancel edit</button>
+              </div>
+            </form>
+            <div class="no-print flex items-center mt-4 text-xs"><label class="ml-auto flex items-center gap-2">Filter<select id="error-log-filter" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"><option value="all">All sections</option><option>VARC</option><option>DILR</option><option>QA</option></select></label></div>
+            <div id="error-log-list" class="mt-4 space-y-3 text-xs"></div>
+          </div>
+        </details>
+      </div>
+
       <details class="text-xs text-muted dark:text-darkMuted" data-glossary><summary>Common Admission Test (CAT) terminology</summary><dl><div><dt>VARC</dt><dd>Verbal Ability and Reading Comprehension</dd></div><div><dt>DILR</dt><dd>Data Interpretation and Logical Reasoning</dd></div><div><dt>QA</dt><dd>Quantitative Ability</dd></div><div><dt>RC / VA</dt><dd>Reading Comprehension / Verbal Ability</dd></div><div><dt>MCQ</dt><dd>Multiple-choice question</dd></div><div><dt>TITA</dt><dd>Type-in-the-answer</dd></div><div><dt>R1 / R2 / R3</dt><dd>QA rounds 1, 2 and 3</dd></div></dl></details>
       <details class="text-xs text-muted dark:text-darkMuted" data-storage-help><summary>How saving and backups work</summary><p>Notes, settings, checklist and errors save in browser storage. Tabs on the same site share records; the newest version of each record wins (simultaneous edits to one note are not merged). Avoid editing the same item in two tabs.</p><p>Downloaded HTML includes a snapshot. Newer saved records may take precedence when you reopen it. Local-file storage varies by browser and file location. Keep dated backups; for an independent copy, use a separate browser profile.</p></details>
-
-      <!-- region:error-log | Unified error log -->
-      <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6" aria-labelledby="error-log-title">
-        <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-hairline dark:border-darkHairline">
-          <div><h3 id="error-log-title" class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">Daily Error Log</h3>
-          <p class="text-xs text-muted dark:text-darkMuted mt-1">Why did it go wrong? What will you do differently next time?</p></div>
-          <span id="error-log-count" class="font-mono text-xs" aria-live="polite">0 entries</span>
-        </div>
-        <form id="error-log-form" class="no-print mt-4 space-y-3 text-xs">
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <label class="flex flex-col gap-1 font-medium">Date<input required type="date" name="date" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"></label>
-            <label class="flex flex-col gap-1 font-medium">Section<select name="section" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"><option>VARC</option><option>DILR</option><option>QA</option></select></label>
-            <label class="flex flex-col gap-1 font-medium">Error type<select name="category" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"><option>Selection</option><option>Time management</option><option>Comprehension</option><option>Representation</option><option>Deduction / elimination</option><option>Arithmetic / execution</option><option>Verification</option><option>Interface</option><option>Other</option></select></label>
-          </div>
-          <label class="flex flex-col gap-1 font-medium">Mock / passage / set / question reference<input name="reference" maxlength="200" placeholder="e.g. Mock 2, RC 3, Q12" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"></label>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <label class="flex flex-col gap-1 font-medium">What went wrong and why?<textarea required name="cause" maxlength="2000" rows="3" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2 resize-y" placeholder="e.g. Confused critic's view with author's."></textarea></label>
-            <label class="flex flex-col gap-1 font-medium">Correction / next review<textarea required name="correction" maxlength="2000" rows="3" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2 resize-y" placeholder="e.g. Verify who holds each view."></textarea></label>
-          </div>
-          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            <label class="flex flex-col gap-1 font-medium">Marks lost (optional)<input type="number" min="0" max="300" step="1" name="marks" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"></label>
-            <label class="flex flex-col gap-1 font-medium">Minutes lost (optional)<input type="number" min="0" max="120" step="0.5" name="minutes" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"></label>
-            <label class="flex flex-col gap-1 font-medium">Review status<select name="status" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"><option value="open">Open</option><option value="reviewed">Reviewed</option></select></label>
-          </div>
-          <div class="flex flex-wrap items-center gap-3">
-            <button id="error-log-submit" type="submit" class="rounded-md bg-ink dark:bg-darkInk text-canvas dark:text-darkCanvas px-3 py-2 font-semibold">Add error</button>
-            <button id="error-log-cancel" type="button" hidden class="underline text-muted dark:text-darkMuted">Cancel edit</button>
-          </div>
-        </form>
-        <div class="no-print flex items-center mt-4 text-xs"><label class="ml-auto flex items-center gap-2">Filter<select id="error-log-filter" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"><option value="all">All sections</option><option>VARC</option><option>DILR</option><option>QA</option></select></label></div>
-        <div id="error-log-list" class="mt-4 space-y-3 text-xs"></div>
-      </section>
 
       <!-- Editable Personal Notes Drawer (Overview) -->
       <details class="print-card notes-drawer group bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl overflow-hidden">
@@ -1371,7 +1222,7 @@ input[type=checkbox]{flex-shrink:0}
     <!-- =================================================================== -->
     <section id="panel-varc" role="tabpanel" aria-labelledby="tab-varc" tabindex="0" class="tab-panel hidden space-y-6">
       <div class="hidden print-show-heading pb-2 border-b border-varc/30 mb-4">
-        <h2 class="text-xl font-bold text-varc">02. VARC — <span data-plan="heading">3 RCs + 8 VA strategy</span></h2>
+        <h2 class="text-xl font-bold text-varc">02. VARC — <span data-plan="heading">Three RCs, then selective VA</span></h2>
       </div>
 
       <!-- 1. VARC Header & Interactive 3-Mode 40-Minute Clock Toggle -->
@@ -1379,7 +1230,7 @@ input[type=checkbox]{flex-shrink:0}
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-hairline dark:border-darkHairline">
           <div>
             <span class="font-mono text-[11px] uppercase tracking-wider text-varc font-semibold">Verbal Ability and Reading Comprehension (VARC) &middot; recent pattern: 24 questions / 40 minutes</span>
-            <h2 class="text-xl sm:text-2xl font-bold tracking-tight mt-0.5"><span data-plan="heading">3 RCs + 8 VA strategy (17–18 attempts)</span></h2>
+            <h2 class="text-xl sm:text-2xl font-bold tracking-tight mt-0.5"><span data-plan="heading">Three RCs, then selective VA (17–18 attempts)</span></h2>
           </div>
 
           <!-- Synced 3-Mode Toggle: Standard / Anti-Fatigue Split / Readable-Paper (4 RCs) -->
@@ -1409,8 +1260,8 @@ input[type=checkbox]{flex-shrink:0}
         <!-- Dynamic 40-Min VARC Clock Bar -->
         <div class="mt-4">
           <div class="flex flex-wrap items-center justify-between gap-2 text-xs mb-2">
-            <span id="varc-order-title" class="font-semibold text-ink dark:text-darkInk">Standard (3 RCs): 3 RCs &rarr; 4 TITA VA &rarr; 4 MCQ VA &rarr; 1m Cleanup</span>
-            <span id="varc-pool-badge" class="font-mono text-[11px] text-muted dark:text-darkMuted">20-Q Active Pool</span>
+            <span id="varc-order-title" class="font-semibold text-ink dark:text-darkInk">Three RCs &rarr; available TITA &rarr; selected VA MCQs &rarr; cleanup</span>
+            <span id="varc-pool-badge" class="font-mono text-[11px] text-muted dark:text-darkMuted">Elapsed minutes</span>
           </div>
           <div data-mobile-clock id="varc-tab-bar" class="flex w-full h-12 rounded-lg overflow-hidden border border-hairline dark:border-darkHairline gap-px bg-hairline dark:bg-darkHairline">
             <!-- Populated dynamically by JS -->
@@ -1654,7 +1505,7 @@ input[type=checkbox]{flex-shrink:0}
       <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl overflow-hidden">
         <div class="px-5 py-3.5 border-b border-hairline dark:border-darkHairline flex flex-wrap items-center justify-between gap-2">
           <h3 class="text-xs font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">Recent VARC question types and marks</h3>
-          <span class="text-[11px] font-mono text-varc font-medium">Recent-paper pattern: no standalone grammar/vocabulary; RC and VA may be interspersed. Prioritise available penalty-free TITA questions without sacrificing clearer marks.</span>
+          <span class="text-[11px] font-mono text-varc font-medium">CAT 2025 Slot 1 example. The counts below describe that paper. RC and VA may be interspersed. Prioritise available penalty-free TITA questions without sacrificing clearer marks.</span>
         </div>
         <div class="overflow-x-auto">
           <table data-responsive-table role="table" class="w-full text-left text-xs border-collapse">
@@ -1748,6 +1599,8 @@ input[type=checkbox]{flex-shrink:0}
           </div>
           <span class="font-mono text-xs px-2.5 py-1 rounded-md bg-dilr/10 text-dilr font-semibold self-start sm:self-auto shrink-0">Target: <span data-plan="dilrCorrect"></span> = <span data-plan="dilrMarks"></span></span>
         </div>
+
+        <p class="mt-3 text-xs">Two four-question sets give eight answers. To reach <span data-plan="dilrCorrect"></span>, you may need independent questions from a third set. Take them when you have a reliable route.</p>
 
         <!-- 40-Min DILR Bar -->
         <div class="mt-4">
@@ -2468,7 +2321,7 @@ input[type=checkbox]{flex-shrink:0}
         };
         const SCENARIOS = [
           {
-            "label": "Minimum / recovery",
+            "label": "Recovery",
             "varc": 30,
             "dilr": 24,
             "qa": 24,
@@ -2491,23 +2344,18 @@ input[type=checkbox]{flex-shrink:0}
         ];
         const MODES = {
           "standard": {
-            "heading": "3 RCs + 8 VA strategy",
+            "heading": "Three RCs, then selective VA",
             "attempts": [
               17,
               18
             ],
-            "marks": [
-              37,
-              40
-            ],
-            "summary": "20-question pool: aim for 10–11 RC, 4 TITA and 3–4 MCQ VA. Target 17–18; 19 optional.",
+            "summary": "Read three passages, then choose VA questions you can finish.",
             "gate": "Judge the first paragraph in 45–60s. Aim for 3 readable RCs; try a fourth only if it meets the timing rule.",
             "checkTitle": "Commit to Standard (3 RCs)",
             "checkDetail": "Protect three readable RCs and all available TITA VA; do not force weak MCQs.",
             "scoreExample": "Illustrative: 17–18 attempts, 13–14 correct, 2 wrong MCQs and 2 wrong TITAs = 37–40 raw marks (about 76–78% accuracy).",
-            "pool": 20,
             "label": "(Standard · 3 RCs)",
-            "title": "Standard: 3 RCs → 4 TITA → 4 MCQs → cleanup",
+            "title": "Three RCs → available TITA → selected VA MCQs → cleanup",
             "toast": "VARC: Standard (3 RCs) active",
             "segments": [
               {
@@ -2521,23 +2369,23 @@ input[type=checkbox]{flex-shrink:0}
               {
                 "start": 25,
                 "end": 32,
-                "label": "4 TITA VA",
+                "label": "Available TITA",
                 "classes": "bg-varc/75 hover:bg-varc/65 text-white",
-                "detail": "VARC | Min 25–32 (7m): 2 Para Jumbles + 2 Odd One Out (~1:45/Q). Under recent marking, wrong TITA answers have no penalty. Prioritise these questions; move on around 2:00/Q if stalled and reserve reasonable estimates for cleanup.",
-                "caption": "Try 2 Para Jumbles + 2 Odd One Out. No negative marking under recent rules."
+                "detail": "VARC | Min 25–32: Try available type-in questions. If you finish early or have no clear route, use the time for the next phase. Check the marking on screen.",
+                "caption": "Try available TITA. Move on early if the remaining questions stall."
               },
               {
                 "start": 32,
                 "end": 39,
-                "label": "4 MCQ VA",
+                "label": "Selected VA MCQs",
                 "classes": "bg-varc/40 hover:bg-varc/50 text-ink dark:text-darkInk",
-                "detail": "VARC | Min 32–39 (7m): 2 Para Summary + 2 Para Completion (~1:45/Q). Target 3–4 clean Qs; flag unresolved MCQs unanswered at 45s.",
-                "caption": "2 Summary + 2 Completion; aim for 3–4 reliable answers."
+                "detail": "VARC | Min 32–39: Choose VA multiple-choice questions you can answer from the text. Flag an unresolved two-option choice after 45s. Keep the final minute for cleanup.",
+                "caption": "Choose VA MCQs you can support from the text. Leave time to check saved answers."
               },
               {
                 "start": 39,
                 "end": 40,
-                "label": "1m",
+                "label": "Cleanup",
                 "classes": "bg-varc/20 hover:bg-varc/30 text-varc dark:text-indigo-300",
                 "detail": "VARC | Min 39–40 (1m): Cleanup — verify saved answers and enter reasonable TITA estimates where time permits; revisit a genuinely shortlisted MCQ only after clearer opportunities and TITA saves.",
                 "caption": "Cleanup → verify available TITA entries and saved responses."
@@ -2545,21 +2393,16 @@ input[type=checkbox]{flex-shrink:0}
             ]
           },
           "split": {
-            "heading": "Anti-fatigue split (3 RCs + 8 VA)",
+            "heading": "Split three RCs around a VA break",
             "attempts": [
               17,
               18
             ],
-            "marks": [
-              37,
-              40
-            ],
-            "summary": "20-question pool: aim for 10–11 RC, 4 TITA and 3–4 MCQ VA. Target 17–18; 19 optional.",
+            "summary": "Read two passages, try available TITA, then return to RC 3.",
             "gate": "Judge the first paragraph in 45–60s. Use the extra minute to switch if needed. Keep time for TITA.",
             "checkTitle": "Commit to Anti-Fatigue Split",
             "checkDetail": "2 RCs, TITA VA, 1 RC, MCQ VA; protect the cleanup minute.",
             "scoreExample": "Illustrative: 17–18 attempts, 13–14 correct, 2 wrong MCQs and 2 wrong TITAs = 37–40 raw marks (about 76–78% accuracy).",
-            "pool": 20,
             "label": "(Anti-Fatigue Split)",
             "title": "Split: 2 RCs → TITA → RC 3 → MCQ → cleanup",
             "toast": "VARC: Anti-Fatigue Split active",
@@ -2575,10 +2418,10 @@ input[type=checkbox]{flex-shrink:0}
               {
                 "start": 17,
                 "end": 24,
-                "label": "4 TITA VA",
+                "label": "Available TITA",
                 "classes": "bg-varc/70 hover:bg-varc/60 text-white",
-                "detail": "VARC | Min 17–24 (7m): Use the VA break: try 2 Para Jumbles and 2 Odd One Out (no negative marking in recent papers). Move on if stuck.",
-                "caption": "Solve TITA first; leave estimates for cleanup."
+                "detail": "VARC | Min 17–24: Try available type-in questions. If you finish early or have no clear route, use the time for the next phase. Check the marking on screen.",
+                "caption": "Try available TITA. Move on early if the remaining questions stall."
               },
               {
                 "start": 24,
@@ -2591,15 +2434,15 @@ input[type=checkbox]{flex-shrink:0}
               {
                 "start": 32,
                 "end": 39,
-                "label": "4 MCQ VA",
+                "label": "Selected VA MCQs",
                 "classes": "bg-varc/40 hover:bg-varc/50 text-ink dark:text-darkInk",
-                "detail": "VARC | Min 32–39 (7m): 2 Para Summary + 2 Para Completion (~1:45/Q). Choose reliable answers; flag unresolved MCQs unanswered at 45s.",
-                "caption": "4 MCQ VA (Summary + Completion) → 3–4 Qs."
+                "detail": "VARC | Min 32–39: Choose VA multiple-choice questions you can answer from the text. Flag an unresolved two-option choice after 45s. Keep the final minute for cleanup.",
+                "caption": "Choose VA MCQs you can support from the text. Leave time to check saved answers."
               },
               {
                 "start": 39,
                 "end": 40,
-                "label": "1m",
+                "label": "Cleanup",
                 "classes": "bg-varc/20 hover:bg-varc/30 text-varc dark:text-indigo-300",
                 "detail": "VARC | Min 39–40 (1m): Cleanup — verify saved answers and enter reasonable TITA estimates where time permits; revisit a genuinely shortlisted MCQ if time remains.",
                 "caption": "Final 1m TITA & flag audit."
@@ -2612,16 +2455,11 @@ input[type=checkbox]{flex-shrink:0}
               18,
               20
             ],
-            "marks": [
-              40,
-              43
-            ],
-            "summary": "4 RCs + selective VA (24-question potential pool). Aim for 13–14 RC, 4 TITA VA and 1–2 MCQ VA.",
+            "summary": "Try RC 4 only if three are done by 22m and it beats the remaining VA.",
             "gate": "Try RC 4 only if the first three finish by 22m and it is a better use of time than VA. Otherwise use Standard.",
             "checkTitle": "Understand Readable-Paper trigger",
             "checkDetail": "Fourth RC only if early and worthwhile; protect TITA VA and one-minute cleanup.",
             "scoreExample": "Illustrative: 18–19 attempts, 14–15 correct, 2 wrong MCQs and 2 wrong TITAs = 40–43 raw marks. A 20th attempt is optional, not required.",
-            "pool": 24,
             "label": "(Readable-Paper · 4 RCs)",
             "title": "RC 4 only if the first three finish by 22m and RC 4 is worth more than remaining VA. Otherwise use Standard.",
             "toast": "VARC: Readable-Paper (4 RCs) backup active",
@@ -2637,23 +2475,23 @@ input[type=checkbox]{flex-shrink:0}
               {
                 "start": 30,
                 "end": 36,
-                "label": "4 TITA VA",
+                "label": "Available TITA",
                 "classes": "bg-varc/75 hover:bg-varc/65 text-white",
-                "detail": "VARC (Backup) | Min 30–36 (6m): Prioritise available TITA VA (recent pattern: 2 Para Jumbles + 2 Odd One Out, no negative marking). Move on if stalled.",
-                "caption": "Available TITA VA first; no negative marking under recent rules."
+                "detail": "VARC | Min 30–36: Try available type-in questions. If you finish early or have no clear route, use the time for the next phase. Check the marking on screen.",
+                "caption": "Try available TITA. Move on early if the remaining questions stall."
               },
               {
                 "start": 36,
                 "end": 39,
-                "label": "MCQ",
+                "label": "Selected VA MCQs",
                 "classes": "bg-varc/40 hover:bg-varc/50 text-ink dark:text-darkInk",
-                "detail": "VARC (Backup) | Min 36–39 (3m): Pick 1–2 quick Para Summary / Para Completion MCQs for 18–20 total attempts.",
-                "caption": "1–2 quick Summary/Completion MCQs (Target: 18–20 total)."
+                "detail": "VARC | Min 36–39: Choose VA multiple-choice questions you can answer from the text. Flag an unresolved two-option choice after 45s. Keep the final minute for cleanup.",
+                "caption": "Choose VA MCQs you can support from the text. Leave time to check saved answers."
               },
               {
                 "start": 39,
                 "end": 40,
-                "label": "1m",
+                "label": "Cleanup",
                 "classes": "bg-varc/20 hover:bg-varc/30 text-varc dark:text-indigo-300",
                 "detail": "VARC (Backup) | Min 39–40 (1m): Cleanup — confirm available TITA entries are saved, then consider genuinely shortlisted MCQs if time remains.",
                 "caption": "Cleanup → verify saved responses and available TITA entries."
@@ -2676,9 +2514,6 @@ input[type=checkbox]{flex-shrink:0}
           const {segments, label, title, toast} = mode;
           return [key, {
             label, title, toast,
-            poolBadge: key === 'readable'
-              ? mode.pool + '-Q potential pool · target ' + range(mode.attempts) + ' attempts'
-              : mode.pool + '-Q Active Pool · Target ' + range(mode.attempts),
             segments: segments.map(({start, end, ...segment}) => ({
               ...segment, width: (end - start) * 2.5, time: start + '–' + end + 'm'
             }))
@@ -2720,7 +2555,6 @@ input[type=checkbox]{flex-shrink:0}
           for(const recovery of ['first','second']){
             out[recovery+'Recovery']=fixedBars[recovery].map(seg=>timeRange(seg)+' '+seg.label.toLowerCase()).join('; ')+'.';
           }
-          out.dilrRecoveryQuick='First failure: '+fixedBars.first.slice(2,4).map(timeRange).join(', ')+'. Second: '+timeRange(fixedBars.second[3])+'.';
           return out;
         }
         function planValues(key) {
@@ -2731,9 +2565,7 @@ input[type=checkbox]{flex-shrink:0}
             ...fixedValues(),
             quick: orders[mode].segments.map(seg => seg.time + ' ' + seg.label).join(' · '),
             heading: p.heading + ' (' + range(p.attempts) + ' attempts)',
-            attempts: range(p.attempts) + ' attempts',
-            varcMarks: range(p.marks) + ' illustrative raw marks',
-            combined: range(p.marks.map((v,i) => v + SCORE_TARGETS.dilr[i] + SCORE_TARGETS.qa[i])) + ' raw marks'
+            attempts: range(p.attempts) + ' attempts'
           };
         }
         function scenarioValues(mode) {
@@ -3195,6 +3027,15 @@ input[type=checkbox]{flex-shrink:0}
               applyTheme(storage.view().theme);
             });
           }
+          // Include folded Overview references in both browser and toolbar printing.
+          let foldedReferences = [];
+          window.addEventListener('beforeprint', () => {
+            foldedReferences = [...document.querySelectorAll('[data-overview-detail]:not([open])')];
+            foldedReferences.forEach(detail => { detail.open = true; });
+          });
+          window.addEventListener('afterprint', () => {
+            foldedReferences.forEach(detail => { detail.open = false; });
+          });
           // Print / Save PDF (opens any non-empty notes drawers automatically)
           const btnPrint = document.getElementById('btn-print');
           if (btnPrint) {
@@ -3464,12 +3305,9 @@ input[type=checkbox]{flex-shrink:0}
               .join('');
           }
 
-          // Update VARC tab title, pool badge, bar, and caption cards
+          // Update VARC tab title, bar and caption cards
           const varcTitle = document.getElementById('varc-order-title');
           if (varcTitle) varcTitle.textContent = config.title;
-
-          const varcPoolBadge = document.getElementById('varc-pool-badge');
-          if (varcPoolBadge) varcPoolBadge.textContent = config.poolBadge;
 
           const varcTabBar = document.getElementById('varc-tab-bar');
           if (varcTabBar) {
@@ -3599,6 +3437,7 @@ input[type=checkbox]{flex-shrink:0}
               embeddedClone.textContent = '\n    ' + portable + '\n  ';
             }
 
+            clone.querySelectorAll('[data-overview-detail]').forEach(detail => { detail.open = false; });
             clone.querySelector("#quick-revision").hidden = true;
             clone.querySelector("#overview-full").hidden = false;
             clone.querySelector("#btn-quick-revision").setAttribute("aria-pressed","false");

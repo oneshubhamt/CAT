@@ -4,7 +4,11 @@ const matrix=require('./visual-matrix.cjs');
 async function visual(api){
  const {page,desc,section,mode,top,disclosure,allDetails,bring,measure,snap,action}=api;
  await measure('overview-default');await snap('overview-default');
- assert(await page.locator('[data-kpi-cards] > div > div:first-child > span:first-child').evaluateAll(els=>els.length===3&&els.every(e=>{const r=document.createRange();r.selectNodeContents(e);return r.getClientRects().length===1;})),'KPI section names never break across lines');
+ assert(await page.locator('[data-kpi-cards] > article > h3').evaluateAll(els=>els.length===3&&els.every(e=>{const r=document.createRange();r.selectNodeContents(e);return r.getClientRects().length===1;})),'KPI section names never break across lines');
+ assert.equal(await page.locator('[data-overview-detail]:not([open])').count(),6);
+ await page.getByRole('link',{name:'Readiness checklist'}).click();
+ assert(await page.locator('#readiness-title').evaluate(e=>document.activeElement===e));
+ await top(page);
  assert.equal(await page.locator('[data-fixed-segment]').count(),24);
  assert.equal(await page.locator('[data-strategy-detail]').count(),7);
  assert(await page.locator('[data-fixed-segment]').evaluateAll(els=>els.every(e=>e.style.width&&/\d+–\d+m/.test(e.querySelector('[data-clock-time]')?.textContent||''))));
