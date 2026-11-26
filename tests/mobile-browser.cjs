@@ -99,9 +99,9 @@ async function runScenario(browser,desc,origin){
  const action=label=>rec.actions.push(label);
  try{
   const hosted=desc.kind==='journey'&&!['portable-webkit','keyboard-resize'].includes(desc.id);
-  ctx=await browser.newContext({viewport:{width:desc.width,height:desc.height},hasTouch:desc.width<768||desc.height<500,isMobile:desc.engine!=='firefox'&&(desc.width<768||desc.height<500),deviceScaleFactor:1,offline:!hosted,acceptDownloads:true,reducedMotion:'reduce',timezoneId:'Asia/Kolkata',locale:'en-IN',colorScheme:'light'});
+  ctx=await browser.newContext({viewport:{width:desc.width,height:desc.height},hasTouch:desc.width<768||desc.height<500,isMobile:desc.engine!=='firefox'&&(desc.width<768||desc.height<500),deviceScaleFactor:1,offline:!hosted&&desc.engine!=='webkit',acceptDownloads:true,reducedMotion:'reduce',timezoneId:'Asia/Kolkata',locale:'en-IN',colorScheme:'light'});
   await ctx.tracing.start({screenshots:true,snapshots:true,sources:false});tracing=true;
-  if(hosted)await ctx.route(/^https?:\/\//,route=>new URL(route.request().url()).origin===origin?route.continue():route.abort());
+  await ctx.route(/^https?:\/\//,route=>hosted&&new URL(route.request().url()).origin===origin?route.continue():route.abort());
   if(['recovery-journal','memory-only'].includes(desc.id)){
    await ctx.addInitScript(({both})=>{
     const original=window.indexedDB;

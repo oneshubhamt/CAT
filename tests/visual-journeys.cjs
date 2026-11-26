@@ -38,7 +38,8 @@ async function runJourney(api){
    const errorRecords=snapshot.records.filter(r=>r.key.startsWith('error:')&&r.value!==null);
    assert.equal(errorRecords.length,expectedErrors,'Expected saved error records in export');
    for(const [key,value] of Object.entries(expected))assert.deepEqual(snapshot.records.find(r=>r.key===key)?.value,value,'Exported '+key);
-   fresh=await browser.newContext({viewport:{width:desc.width,height:desc.height},hasTouch:desc.width<768,isMobile:desc.engine!=='firefox'&&desc.width<768,deviceScaleFactor:1,offline:true,acceptDownloads:true,reducedMotion:'reduce',locale:'en-IN',timezoneId:'Asia/Kolkata'});
+   fresh=await browser.newContext({viewport:{width:desc.width,height:desc.height},hasTouch:desc.width<768,isMobile:desc.engine!=='firefox'&&desc.width<768,deviceScaleFactor:1,offline:desc.engine!=='webkit',acceptDownloads:true,reducedMotion:'reduce',locale:'en-IN',timezoneId:'Asia/Kolkata'});
+   await fresh.route(/^https?:\/\//,route=>route.abort());
    const copy=await fresh.newPage();captureEvents(copy,null);await ready(copy,pathToFileURL(file).href);
    assert.equal(await copy.locator('#btn-quick-revision').getAttribute('aria-pressed'),'false');
    assert.equal(await copy.locator('#panel-overview').isVisible(),true);
@@ -60,7 +61,7 @@ async function runJourney(api){
   assert(await page.locator('#tab-varc').evaluate(e=>document.activeElement===e));
   await page.keyboard.press('End');assert.equal(await page.locator('#tab-qa').getAttribute('aria-selected'),'true');
   await page.keyboard.press('Home');assert.equal(await page.locator('#tab-overview').getAttribute('aria-selected'),'true');
-  await page.keyboard.press('3');assert(await page.locator('#panel-dilr').isVisible());
+  await page.keyboard.press('3');assert(await page.locator('#panel-dilr').isVisible());assert(await page.locator('#tab-dilr').evaluate(e=>document.activeElement===e));
   const d=page.locator('[data-strategy-detail="dilr-flags"]');
   await d.locator('summary').focus();await page.keyboard.press('Enter');assert(await d.evaluate(e=>e.open));
   await note(page,'dilr','1234');await page.locator('textarea[data-note-key="dilr"]').press('4');assert(await page.locator('#panel-dilr').isVisible());
@@ -107,8 +108,8 @@ async function runJourney(api){
  const card=page.locator('#error-log-list article').first();
  const button=name=>card.getByRole('button',{name,exact:true});
  await button('Edit').click();await measure('error-edit');await snap('error-edit');
- await page.locator('#error-log-cancel').click();assert.equal(await page.locator('#error-log-submit').textContent(),'Add error');
- await button('Edit').click();await page.locator('[name=correction]').fill('Edited correction.');await page.locator('#error-log-submit').click();assert((await card.textContent()).includes('Edited correction.'));
+ await page.locator('#error-log-cancel').click();assert.equal(await page.locator('#error-log-submit').textContent(),'Add error');assert.equal(await filter.inputValue(),'VARC');assert.equal(await page.locator('#error-log-list article').count(),1);
+ await button('Edit').click();await page.locator('[name=correction]').fill('Edited correction.');await page.locator('#error-log-submit').click();assert((await card.textContent()).includes('Edited correction.'));assert.equal(await filter.inputValue(),'VARC');assert.equal(await page.locator('#error-log-list article').count(),1);
  await button('Mark reviewed').click();assert((await card.textContent()).includes('Reviewed'));
  await measure('error-reviewed');await snap('error-reviewed');
  await button('Reopen').click();assert((await card.textContent()).includes('Open'));

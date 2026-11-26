@@ -541,6 +541,36 @@ input[type=checkbox]{flex-shrink:0}
       [data-recovery-clock] [data-clock-time]{font-size:13px!important}
     }
 
+    /* Readable pacing labels and opaque navigation at every viewport. */
+    @media screen {
+      #playbook-header{background-color:#FAF9F6;backdrop-filter:none}
+      .dark #playbook-header{background-color:#131312}
+      html:not(.dark) .text-varc{color:#3046B5}
+      html:not(.dark) .text-dilr{color:#115E59}
+      html:not(.dark) .text-qa{color:#92400E}
+      [data-mobile-clock]{height:auto;min-height:60px}
+      [data-mobile-clock] > *{min-width:76px;min-height:60px;white-space:normal;overflow:visible;text-overflow:clip;padding:6px 4px;text-align:center}
+      [data-mobile-clock] > * > span{max-width:100%;white-space:normal;overflow:visible;text-overflow:clip}
+      html:not(.dark) [data-mobile-clock] > *:not(.text-white){color:#22211F}
+      .dark [data-mobile-clock] > *:not(.text-white){color:#F5F4F0}
+      #overview-varc-bar > .text-white,#varc-tab-bar > .text-white{background-color:#384FC0}
+      #overview-varc-bar > .text-white:nth-child(even),#varc-tab-bar > .text-white:nth-child(even){background-color:#465AC6}
+      [data-mobile-clock] > [data-accent="dilr"].text-white,#panel-dilr [data-mobile-clock] > .text-white{background-color:#0F766E}
+      [data-mobile-clock] > [data-accent="dilr"].text-white:nth-child(odd),#panel-dilr [data-mobile-clock] > .text-white:nth-child(odd){background-color:#115E59}
+      [data-mobile-clock] > [data-accent="qa"].text-white,#panel-qa [data-mobile-clock] > .text-white{background-color:#92400E}
+      [data-mobile-clock] > [data-accent="qa"].text-white:nth-child(even),#panel-qa [data-mobile-clock] > .text-white:nth-child(even){background-color:#A34408}
+      [data-mobile-clock] > button:hover{box-shadow:inset 0 0 0 2px currentColor}
+      [data-mobile-clock] > button:focus-visible{outline:2px solid currentColor;outline-offset:-3px}
+      #quick-revision [data-plan="quick"],#quick-revision [data-plan$="Quick"]{text-wrap:pretty}
+      [data-storage-help] > summary{cursor:pointer;min-height:44px;padding:10px 0;font-weight:600}
+      [data-storage-help] p{margin:0 0 8px;max-width:75ch}
+      #error-log-filter{min-height:44px}
+    }
+    @media screen and (max-width:767px){
+      [data-mobile-clock] > *{min-width:0}
+      #error-log-filter{font-size:16px}
+    }
+
     /* Reading design: short actions, visible steps and readable body text. */
     @media screen {
       #playbook-main {line-height:1.55}
@@ -743,7 +773,6 @@ input[type=checkbox]{flex-shrink:0}
         <p class="mt-3 text-xs font-medium">Priority: exam rules and safety → time checks → pacing plan → preferences. Save answers, protect cleanup and reset between sections.</p>
       </section>
       <div id="overview-full" class="space-y-6">
-      <details class="text-xs text-muted dark:text-darkMuted" data-glossary><summary>Common Admission Test (CAT) terminology</summary><dl><div><dt>VARC</dt><dd>Verbal Ability and Reading Comprehension</dd></div><div><dt>DILR</dt><dd>Data Interpretation and Logical Reasoning</dd></div><div><dt>QA</dt><dd>Quantitative Ability</dd></div><div><dt>RC / VA</dt><dd>Reading Comprehension / Verbal Ability</dd></div><div><dt>MCQ</dt><dd>Multiple-choice question</dd></div><div><dt>TITA</dt><dd>Type-in-the-answer</dd></div><div><dt>R1 / R2 / R3</dt><dd>QA rounds 1, 2 and 3</dd></div></dl></details>
       <!-- 1. Header KPI Strip -->
       <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6">
         <div class="flex flex-col xl:flex-row xl:items-end justify-between gap-3 pb-5 border-b border-hairline dark:border-darkHairline">
@@ -868,7 +897,7 @@ input[type=checkbox]{flex-shrink:0}
                 </div>
                 <div class="p-2.5 rounded-lg bg-alert/5 dark:bg-alert/15 border border-alert/20">
                   <dt class="font-mono text-[10px] uppercase tracking-wider text-alert font-semibold">Adaptive checkpoint</dt>
-                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">45s on two-option deadlock → flag unanswered; revisit only in cleanup</dd>
+                  <dd class="mt-0.5 text-ink dark:text-darkInk font-medium">45s on two-option deadlock → flag unanswered; revisit credible choices after safer work</dd>
                 </div>
                 <div>
                   <dt class="font-mono text-[10px] uppercase tracking-wider text-muted dark:text-darkMuted">Time Cap</dt>
@@ -997,7 +1026,7 @@ input[type=checkbox]{flex-shrink:0}
                 <li class="flex gap-2">
                   <span class="font-mono font-bold text-alert shrink-0">1.</span>
                   <span>
-                    <strong class="text-ink dark:text-darkInk">Answered + Marked for Review (purple + green dot) counts for scoring</strong> &mdash; never leave an uncertain <span class="font-mono text-alert">-1</span> MCQ guess this way; click <strong class="text-ink dark:text-darkInk">Clear Response</strong> first.
+                    <strong class="text-ink dark:text-darkInk">Answered + Marked for Review (purple + green dot) may count for scoring; check exam instructions</strong> &mdash; never leave an uncertain <span class="font-mono text-alert">-1</span> MCQ guess this way; click <strong class="text-ink dark:text-darkInk">Clear Response</strong> first.
                   </span>
                 </li>
                 <li class="flex gap-2">
@@ -1090,7 +1119,7 @@ input[type=checkbox]{flex-shrink:0}
         </div>
 
         <!-- Interactive Timeline Inspector Readout -->
-        <div id="overview-timeline-readout" class="mt-4 px-3.5 py-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline text-xs text-muted dark:text-darkMuted font-mono flex items-center gap-2">
+        <div id="overview-timeline-readout" role="status" aria-live="polite" class="mt-4 px-3.5 py-2.5 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline text-xs text-muted dark:text-darkMuted font-mono flex items-center gap-2">
           <span class="w-2 h-2 rounded-full bg-ink/40 dark:bg-darkInk/40 shrink-0"></span>
           <span>Tap a phase to see what to do.</span>
         </div>
@@ -1259,6 +1288,9 @@ input[type=checkbox]{flex-shrink:0}
         </div>
       </div>
 
+      <details class="text-xs text-muted dark:text-darkMuted" data-glossary><summary>Common Admission Test (CAT) terminology</summary><dl><div><dt>VARC</dt><dd>Verbal Ability and Reading Comprehension</dd></div><div><dt>DILR</dt><dd>Data Interpretation and Logical Reasoning</dd></div><div><dt>QA</dt><dd>Quantitative Ability</dd></div><div><dt>RC / VA</dt><dd>Reading Comprehension / Verbal Ability</dd></div><div><dt>MCQ</dt><dd>Multiple-choice question</dd></div><div><dt>TITA</dt><dd>Type-in-the-answer</dd></div><div><dt>R1 / R2 / R3</dt><dd>QA rounds 1, 2 and 3</dd></div></dl></details>
+      <details class="text-xs text-muted dark:text-darkMuted" data-storage-help><summary>How saving and backups work</summary><p>Notes, settings, checklist and errors save in browser storage. Tabs on the same site share records; the newest version of each record wins (simultaneous edits to one note are not merged). Avoid editing the same item in two tabs.</p><p>Downloaded HTML includes a snapshot. Newer saved records may take precedence when you reopen it. Local-file storage varies by browser and file location. Keep dated backups; for an independent copy, use a separate browser profile.</p></details>
+
       <!-- region:error-log | Unified error log -->
       <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6" aria-labelledby="error-log-title">
         <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-hairline dark:border-darkHairline">
@@ -1285,9 +1317,9 @@ input[type=checkbox]{flex-shrink:0}
           <div class="flex flex-wrap items-center gap-3">
             <button id="error-log-submit" type="submit" class="rounded-md bg-ink dark:bg-darkInk text-canvas dark:text-darkCanvas px-3 py-2 font-semibold">Add error</button>
             <button id="error-log-cancel" type="button" hidden class="underline text-muted dark:text-darkMuted">Cancel edit</button>
-            <label class="ml-auto flex items-center gap-2">Filter<select id="error-log-filter" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"><option value="all">All sections</option><option>VARC</option><option>DILR</option><option>QA</option></select></label>
           </div>
         </form>
+        <div class="no-print flex items-center mt-4 text-xs"><label class="ml-auto flex items-center gap-2">Filter<select id="error-log-filter" class="rounded-md border border-hairline dark:border-darkHairline bg-canvas dark:bg-darkCanvas p-2"><option value="all">All sections</option><option>VARC</option><option>DILR</option><option>QA</option></select></label></div>
         <div id="error-log-list" class="mt-4 space-y-3 text-xs"></div>
       </section>
 
@@ -1834,7 +1866,7 @@ input[type=checkbox]{flex-shrink:0}
           </div>
         </div>
         <div class="mt-3 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-3">
-          <h4 class="text-xs font-bold">During the 0–4 minute scan</h4>
+          <h4 class="text-xs font-bold">During the first <span data-plan="dilrScan"></span> (scan)</h4>
           <p class="mt-1 text-xs leading-relaxed">Scan every set. Ask five questions:</p><ol data-selection-steps><li><strong>Model</strong><span>Can I draw a useful table or diagram?</span></li><li><strong>Starting fact</strong><span>What is given or quickly derived from totals, bounds or linked clues?</span></li><li><strong>Key deduction</strong><span>What unlocks the set? How long might it take?</span></li><li><strong>Work left</strong><span>How many cases or calculations remain?</span></li><li><strong>Payoff</strong><span>Which questions can I answer before a full solve?</span></li></ol>
           <p class="mt-2 text-xs leading-relaxed">Rank by time to reliable answers, not length, topic or number of clues. Use personal preference as a tie-breaker. Choose five questions over four only at similar effort and risk. After <span data-plan="dilrReassess"></span>, reassess actual progress; switch by <span data-plan="dilrSwitch"></span> if stalled.</p>
           <p class="mt-2 text-xs text-muted dark:text-darkMuted">In your error log: record your choice, reason, first deduction, time and unaided accuracy. Compare with other sets to refine your preference.</p>
@@ -2031,7 +2063,7 @@ input[type=checkbox]{flex-shrink:0}
       <!-- region:qa-skip-routing | Explicit skip classifications -->
       <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6" aria-labelledby="qa-skip-title">
         <h3 id="qa-skip-title" class="text-sm font-semibold text-qa">QA: what to skip and revisit</h3>
-        <ul class="mt-1 text-xs text-muted dark:text-darkMuted" data-read-steps><li><strong>At minute 22, if questions remain unseen:</strong> assess them before revisiting L/I.</li><li><strong>By minute 36:</strong> aim to see every question. Protect near-complete answers and cleanup.</li><li><strong>Navigation:</strong> use the question palette; note numbers only if useful.</li></ul>
+        <ul class="mt-1 text-xs text-muted dark:text-darkMuted" data-read-steps><li><strong>At minute <span data-plan="qaFirstEnd"></span>, if questions remain unseen:</strong> assess them before revisiting L/I.</li><li><strong>By minute <span data-plan="qaSecondEnd"></span>:</strong> aim to see every question. Protect near-complete answers and cleanup.</li><li><strong>Navigation:</strong> use the question palette; note numbers only if useful.</li></ul>
         <div class="overflow-x-auto mt-3">
           <table data-responsive-table role="table" class="w-full text-left text-xs border-collapse">
             <thead role="rowgroup"><tr role="row" class="text-muted dark:text-darkMuted"><th role="columnheader" scope="col" class="px-2.5 py-2">Skip class</th><th role="columnheader" scope="col" class="px-2.5 py-2">Signal</th><th role="columnheader" scope="col" class="px-2.5 py-2">Action</th></tr></thead>
@@ -2247,7 +2279,7 @@ input[type=checkbox]{flex-shrink:0}
   <!-- Minimal Editorial Footer -->
   <footer class="no-print border-t border-hairline dark:border-darkHairline mt-8">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] font-mono text-muted dark:text-darkMuted">
-      <span>CAT 99+ EXAM-DAY PLAYBOOK &middot; KEYS [1–4] TO SWITCH TABS</span>
+      <span>CAT 99+ EXAM-DAY PLAYBOOK &middot; FOCUS TABS: ARROWS OR 1–4</span>
       <span>DOWNLOAD HTML TO BACK UP YOUR NOTES</span>
     </div>
   </footer>
@@ -2653,6 +2685,8 @@ input[type=checkbox]{flex-shrink:0}
             dilrReassess:range(CHECKPOINTS.dilrReassess)+'m',
             dilrSwitch:range(CHECKPOINTS.dilrSwitch)+'m',
             dilrScan:(fixedClocks.dilr[0].end-fixedClocks.dilr[0].start)+'m',
+            qaFirstEnd:String(fixedClocks.qa[0].end),
+            qaSecondEnd:String(fixedClocks.qa[1].end),
             dilrBudget:(fixedClocks.dilr[1].end-fixedClocks.dilr[1].start)+'m',
             qaIgnition:CHECKPOINTS.qaIgnition+'s',
             qaRound1:CHECKPOINTS.qaRound1+'m',
@@ -3125,14 +3159,13 @@ input[type=checkbox]{flex-shrink:0}
             event.preventDefault(); activateTab(tabs[next].dataset.tab); tabs[next].focus();
           }));
 
-          // Keyboard shortcuts 1–4 for instant tab switching (when not typing)
+          // Single-character shortcuts operate only when the tab list has focus.
           document.addEventListener('keydown', (e) => {
-            const tag = (e.target && e.target.tagName) || '';
-            if (tag === 'TEXTAREA' || tag === 'INPUT' || tag === 'SELECT' || e.metaKey || e.ctrlKey || e.altKey) return;
-            if (e.key === '1') activateTab('overview');
-            if (e.key === '2') activateTab('varc');
-            if (e.key === '3') activateTab('dilr');
-            if (e.key === '4') activateTab('qa');
+            if (!tabs.includes(e.target) || e.metaKey || e.ctrlKey || e.altKey || e.shiftKey) return;
+            if (!/^[1-4]$/.test(e.key)) return;
+            const tab = tabs[Number(e.key)-1];
+            if (!tab) return;
+            e.preventDefault(); activateTab(tab.dataset.tab); tab.focus();
           });
 
           // Light / Dark theme toggle

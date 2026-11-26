@@ -86,6 +86,8 @@ node tools/build-offline-css.cjs
 node tools/build-offline-css.cjs --check
 ```
 
+Keep error-list filtering independent of the edit form, and preserve it through cancel/save/delete. Single-character tab shortcuts must be scoped to focused tabs; Arrow/Home/End remain supported. Timeline labels must fit without truncation, including short phases. Keep storage guidance consistent with per-record last-write-wins and snapshot reconciliation.
+
 The runtime has no dependency on Node or the generator. Use a saved HTML file for offline travel; private browsing, origin-specific storage policies or browser eviction can still prevent persistence. Export a backup before travelling.
 
 ## Validation
@@ -115,7 +117,7 @@ The manifest in `tests/visual-matrix.cjs` is the source of truth. Run distinct, 
 | Core | 8 (5 deep) | 4 | — |
 | Full | 17 (6 deep) | 6 | 10 sizes × 5 views |
 
-Core includes Chromium and WebKit, 320/390/430px phones, a 768px tablet, short landscape and desktop, with both themes and all screenshot modes represented on each engine. Full adds Firefox, 360/1024/1440px and further theme combinations. The separate layout-only boundary pass checks 639/640, 767/768, 1023/1024, 1279/1280px and landscape heights 499/501px. No routine duplicate screenshots at both edges; capture distinct failures instead. Profiles simulate viewports and touch, not certified physical devices.
+Core includes Chromium and WebKit, 320/390/430px phones, a 768px tablet, short landscape and desktop, with both themes and all screenshot modes represented on each engine. Full adds Firefox, 360/1024/1440px and further theme combinations. The separate layout-only boundary pass checks 639/640, 767/768, 1023/1024, 1279/1280px and landscape heights 499/501px. No routine duplicate screenshots at both edges; capture distinct failures instead. Profiles simulate viewports and touch, not certified physical devices. All local-file contexts block HTTP(S) requests; WebKit uses route-based network isolation instead of Playwright offline emulation because that emulation also prevents file navigation. The other engines additionally use native offline emulation. CI pins Ubuntu 24.04 for Playwright 1.56.1 compatibility.
 
 The four core state journeys cover normal hosted-origin IndexedDB, notes in all sections, checklist reset/mode reset, error-log validation/CRUD/review/filtering, cross-tab refresh, local-file WebKit export/reopen, journal fallback/retry and memory-only backup. Full adds keyboard/focus/live resize and durable Firefox. Use synthetic fixtures, a fresh browser context per scenario, an ephemeral loopback origin for native durable-storage checks, and a separate offline context to reopen each portable backup. Never use a user's personal export as input. Printing is intentionally excluded.
 
