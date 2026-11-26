@@ -48,12 +48,15 @@ async function main(){
        const snap=async(label,fullPage=false)=>{
          await page.screenshot({path:path.join(output,[engine,size.name,label].join('-')+'.png'),fullPage,animations:'disabled'});
        };
+       const top=async()=>{await page.evaluate(()=>scrollTo({top:0,behavior:'instant'}));};
        const section=async(tab)=>{await page.locator('#tab-'+tab).click();await page.waitForFunction(t=>!document.querySelector('#panel-'+t).classList.contains('hidden'),tab);await page.evaluate(()=>scrollTo(0,0));};
        await checkLayout('overview');await snap('overview');
+       await page.locator('[data-table-kind="scenarios"]').evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));await snap('score-scenarios');await top();
        for(const mode of ['standard','split','readable']){
          await page.locator('#panel-overview [data-varc-order="'+mode+'"]').click();
          assert.equal(await page.locator('#panel-varc [data-varc-order="'+mode+'"]').getAttribute('aria-pressed'),'true');
          await checkLayout('overview-'+mode);
+         await top();
          await page.locator('#btn-quick-revision').click();
          await checkLayout('quick-'+mode);await snap('quick-'+mode);
          await page.locator('#btn-close-revision').click();
@@ -66,7 +69,12 @@ async function main(){
        await page.locator('#dilr-personal-title').scrollIntoViewIfNeeded();await snap('dilr-selection');
        await page.locator('#dilr-recovery-title').scrollIntoViewIfNeeded();await snap('dilr-recovery');
        await section('qa');await checkLayout('qa');await snap('qa');
-       await page.locator('#qa-skip-title').scrollIntoViewIfNeeded();await snap('qa-routing');
+       await page.locator('#qa-skip-title').evaluate(el=>el.scrollIntoView({block:'start',behavior:'instant'}));
+       if(size.width<768) {
+         const pinned=await page.evaluate(()=>({navTop:document.querySelector('#section-nav').getBoundingClientRect().top,headerBottom:document.querySelector('#playbook-header').getBoundingClientRect().bottom,headingTop:document.querySelector('#qa-skip-title').getBoundingClientRect().top}));
+         assert(pinned.navTop>=-2 && pinned.navTop<=8 && pinned.headerBottom<84 && pinned.headingTop>=pinned.headerBottom-1,engine+' '+size.name+' pinned navigation '+JSON.stringify(pinned));
+       }
+       await checkLayout('qa-routing');await snap('qa-routing');
        await page.locator('#panel-qa [data-responsive-table]').last().scrollIntoViewIfNeeded();await snap('qa-priority');
        await page.locator('#panel-qa .notes-drawer summary').click();
        await page.locator('textarea[data-note-key="qa"]').fill('Native mobile QA — notes survive reload. Units, domain, sign.');
@@ -80,6 +88,7 @@ async function main(){
        await page.locator('#error-log-submit').click();
        assert.match(await page.locator('#error-log-count').textContent(),/1 entries/);
        await snap('error-saved');
+       await top();
        await page.locator('#btn-theme').click();
        await page.locator('#btn-quick-revision').click();
        await checkLayout('dark-quick');await snap('dark-quick');
@@ -88,6 +97,7 @@ async function main(){
        // Test true portable file export and reload once per engine, even if file-origin
        // IndexedDB policies differ. No personal data is written to the repository.
        if(size.name==='iphone'){
+         await top();
          const [download]=await Promise.all([page.waitForEvent('download'),page.locator('#btn-export-html').click()]);
          const backup=path.join(output,engine+'-portable-backup.html');
          await download.saveAs(backup);
