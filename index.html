@@ -97,6 +97,7 @@
 
         <!-- Action Utility Controls -->
         <div class="flex items-center gap-1.5 sm:gap-2">
+          <button id="btn-quick-revision" type="button" aria-pressed="false" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium border border-hairline dark:border-darkHairline">60s revision</button>
           <!-- Download Updated HTML -->
           <button
             id="btn-export-html"
@@ -179,6 +180,32 @@
         <h2 class="text-xl font-bold">01. Overview &amp; Clocks — CAT 99+ Exam-Day Playbook</h2>
       </div>
 
+      <!-- Compact revision: same active VARC model as the detailed view -->
+      <section id="quick-revision" hidden class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-4 sm:p-6" aria-labelledby="quick-revision-title">
+        <div class="flex items-center justify-between gap-3 mb-3">
+          <div><h2 id="quick-revision-title" tabindex="-1" class="text-lg font-bold">60-second revision</h2><p class="text-xs text-muted dark:text-darkMuted">Recall the clock, the exit rule and the final verification. Not a countdown timer.</p></div>
+          <button id="btn-close-revision" type="button" class="no-print px-3 py-2 rounded-md border border-hairline dark:border-darkHairline text-xs">Full playbook</button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <article class="border border-hairline dark:border-darkHairline border-t-4 border-t-varc rounded-lg p-3 text-sm leading-relaxed">
+            <h3 class="font-semibold text-varc">VARC · 40m</h3><p class="mt-1 font-medium" data-plan="attempts">17–18 attempts</p>
+            <p class="mt-1 text-xs font-mono" data-plan="quick">0–25 RCs · 25–32 TITA · 32–39 MCQ · 39–40 cleanup</p>
+            <p class="mt-2 text-xs" data-plan="gate">45–60s P1 gate.</p><p class="mt-2 text-xs">Map argument, verify scope/tone. 45s deadlock → flag unanswered; cleanup only if genuinely shortlisted after safer work.</p>
+          </article>
+          <article class="border border-hairline dark:border-darkHairline border-t-4 border-t-dilr rounded-lg p-3 text-sm leading-relaxed">
+            <h3 class="font-semibold text-dilr">DILR · 40m</h3><p class="mt-1 font-medium">One reliable set → two viable sets</p>
+            <p class="mt-1 text-xs font-mono">0–4 scan · 4–18 set 1 · 18–32 set 2 · 32–39 optional · 39–40 audit</p>
+            <p class="mt-2 text-xs">Reassess 4–6m; switch by 6–7m if stalled. First failure: 11–25, 25–39. Second: 25–39. Check clues and totals.</p>
+          </article>
+          <article class="border border-hairline dark:border-darkHairline border-t-4 border-t-qa rounded-lg p-3 text-sm leading-relaxed">
+            <h3 class="font-semibold text-qa">QA · 40m</h3><p class="mt-1 font-medium">11–12 correct as primary aim</p>
+            <p class="mt-1 text-xs font-mono">0–22 sitters · 22–36 mediums · 36–40 cleanup</p>
+            <p class="mt-2 text-xs">Pen down on arithmetic. 45s ignition; 2.5m R1 cap unless finishing. Skip complex geometry. Audit requested value, unit, sign and format.</p>
+          </article>
+        </div>
+        <p class="mt-3 text-xs font-medium">Save answers explicitly · protect TITA cleanup · reset between sections · never chase a score target. Check actual marking and section instructions.</p>
+      </section>
+      <div id="overview-full" class="space-y-6">
       <!-- 1. Header KPI Strip -->
       <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6">
         <div class="flex flex-col xl:flex-row xl:items-end justify-between gap-3 pb-5 border-b border-hairline dark:border-darkHairline">
@@ -243,6 +270,16 @@
           </div>
         </div>
       </div>
+
+      <!-- Illustrative operating scenarios -->
+      <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6">
+        <h3 class="text-sm font-semibold uppercase tracking-wider">Operating scenarios · raw marks</h3>
+        <p class="mt-1 text-xs text-muted dark:text-darkMuted">Illustrative planning outcomes, not guaranteed minimums, cutoffs or percentile forecasts. Adjust to difficulty without chasing losses.</p>
+        <div class="overflow-x-auto mt-3"><table class="w-full text-left text-xs border-collapse">
+          <thead><tr class="font-mono text-muted dark:text-darkMuted"><th class="px-2.5 py-2">Scenario</th><th class="px-2.5 py-2">VARC</th><th class="px-2.5 py-2">DILR</th><th class="px-2.5 py-2">QA</th><th class="px-2.5 py-2">Total</th><th class="px-2.5 py-2">Response</th></tr></thead>
+          <tbody id="scenario-rows"></tbody></table></div>
+        <p class="mt-2 text-xs text-muted dark:text-darkMuted">Correct +3; wrong MCQ −1; wrong TITA 0 under the recent pattern. DILR and QA correct-answer targets exclude wrong-MCQ deductions. Use actual exam instructions if they differ.</p>
+      </section>
 
       <!-- 2. The Mechanical Bail-Out & Verification Matrix -->
       <div class="print-card">
@@ -675,6 +712,7 @@
           </div>
         </div>
       </details>
+      </div><!-- overview-full -->
     </section>
 
     <!-- =================================================================== -->
@@ -1191,6 +1229,37 @@
           </ol>
         </div>
       </div>
+
+      <!-- Failure recovery clocks: examples, not mandatory quotas -->
+      <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6" aria-labelledby="dilr-recovery-title">
+        <h3 id="dilr-recovery-title" class="text-sm font-semibold uppercase tracking-wider text-dilr">DILR failure recovery · reset the clock, not the goal</h3>
+        <p class="mt-1 text-xs text-muted dark:text-darkMuted">Elapsed minutes; examples assume an early checkpoint switch and roughly 14 minutes per viable set. Do not force two sets if the remaining time or paper does not support them.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+          <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
+            <h4 class="text-xs font-bold">A · First set stalls</h4>
+            <div class="flex h-8 mt-2 rounded overflow-hidden text-[10px] font-mono text-center">
+              <div class="bg-dilr/20 flex items-center justify-center" style="width:10%">0–4</div>
+              <div class="bg-alert/15 flex items-center justify-center" style="width:17.5%">4–11</div>
+              <div class="bg-dilr text-white flex items-center justify-center" style="width:35%">11–25</div>
+              <div class="bg-dilr/80 text-white flex items-center justify-center" style="width:35%">25–39</div>
+              <div class="bg-dilr/20" style="width:2.5%"></div>
+            </div>
+            <p class="mt-2 text-xs leading-relaxed">0–4 scan; 4–10/11 initial set; 11–25 next ranked set; 25–39 another viable set; 39–40 save/TITA audit. Preserve any independently verified answers and switch promptly.</p>
+          </article>
+          <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
+            <h4 class="text-xs font-bold">B · Second set stalls</h4>
+            <div class="flex h-8 mt-2 rounded overflow-hidden text-[10px] font-mono text-center">
+              <div class="bg-dilr/20 flex items-center justify-center" style="width:10%">0–4</div>
+              <div class="bg-dilr text-white flex items-center justify-center" style="width:35%">4–18</div>
+              <div class="bg-alert/15 flex items-center justify-center" style="width:17.5%">18–25</div>
+              <div class="bg-dilr/80 text-white flex items-center justify-center" style="width:35%">25–39</div>
+              <div class="bg-dilr/20" style="width:2.5%"></div>
+            </div>
+            <p class="mt-2 text-xs leading-relaxed">0–4 scan; 4–18 verified first set; 18–24/25 stalled second; 25–39 next viable set; 39–40 audit. Your completed first set is secure; do not chase the failed set.</p>
+          </article>
+        </div>
+        <p class="mt-3 text-xs leading-relaxed text-muted dark:text-darkMuted"><strong class="text-ink dark:text-darkInk">Late failure / both stall:</strong> recalculate remaining minutes after reserving the last minute. Prefer independently answerable questions or a partly solved set with a credible breakthrough. If no complete set is feasible, protect reliable partial marks and reasoned TITA entries. Never invent a full solution to meet a target.</p>
+      </section>
 
       <!-- 4. Representation Checklist (5 Archetypes) -->
       <div class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6">
@@ -2034,7 +2103,17 @@
       /**
        * Switch active tab with crisp section-colored underline.
        */
-      function activateTab(tabName) {
+      let revisionOpen = false;
+      function toggleRevision(open, focus = true) {
+        revisionOpen = open;
+        document.getElementById('quick-revision').hidden = !open;
+        document.getElementById('overview-full').hidden = open;
+        document.getElementById('btn-quick-revision').setAttribute('aria-pressed',String(open));
+        if (open) { activateTab('overview',true); if(focus) document.getElementById('quick-revision-title').focus(); }
+        else if(focus) document.getElementById('btn-quick-revision').focus();
+      }
+      function activateTab(tabName, keepRevision = false) {
+        if (revisionOpen && !keepRevision) toggleRevision(false,false);
         const accentMap = {
           overview: 'border-ink dark:border-darkInk text-ink dark:text-darkInk',
           varc: 'border-varc text-varc',
@@ -2254,6 +2333,9 @@
             embeddedClone.textContent = '\n    ' + safeSnapshot() + '\n  ';
           }
 
+          clone.querySelector("#quick-revision").hidden = true;
+          clone.querySelector("#overview-full").hidden = false;
+          clone.querySelector("#btn-quick-revision").setAttribute("aria-pressed","false");
           // Derived log UI is reconstructed from the portable records on startup.
           clone.querySelector('#error-log-list').replaceChildren();
           clone.querySelector('#error-log-count').textContent = 'Loading…';
@@ -2303,6 +2385,9 @@
         renderChecklist();
         renderNotes();
         bindErrorLog();
+        toggleRevision(false,false);
+        document.getElementById("btn-quick-revision").addEventListener("click",()=>toggleRevision(!revisionOpen));
+        document.getElementById("btn-close-revision").addEventListener("click",()=>toggleRevision(false));
         document.getElementById('btn-retry-storage').addEventListener('click', async () => {
           if (db || saving) return;
           const button = document.getElementById('btn-retry-storage');
@@ -2387,7 +2472,9 @@
                 drawer.setAttribute('open', 'open');
               }
             });
-            window.print();
+            const wasRevision = revisionOpen;
+            if(wasRevision) toggleRevision(false,false);
+            try { window.print(); } finally { if(wasRevision) toggleRevision(true,false); }
           });
         }
 
