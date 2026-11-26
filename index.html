@@ -684,14 +684,14 @@ input[type=checkbox]{flex-shrink:0}
       <!-- region:quick-revision | Same active VARC model as detailed view -->
       <section id="quick-revision" hidden class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-4 sm:p-6" aria-labelledby="quick-revision-title">
         <div class="flex items-center justify-between gap-3 mb-3">
-          <div><h2 id="quick-revision-title" tabindex="-1" class="text-lg font-bold">60-second revision</h2><p class="text-xs text-muted dark:text-darkMuted">Recall the clock, the exit rule and the final verification. Not a countdown timer.</p></div>
+          <div><h2 id="quick-revision-title" tabindex="-1" class="text-lg font-bold">60-second revision</h2><p class="text-xs text-muted dark:text-darkMuted">Review the timing, when to move on, and what to check.</p></div>
           <button id="btn-close-revision" type="button" class="no-print px-3 py-2 rounded-md border border-hairline dark:border-darkHairline text-xs">Full playbook</button>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
           <article class="border border-hairline dark:border-darkHairline border-t-4 border-t-varc rounded-lg p-3 text-sm leading-relaxed">
             <h3 class="font-semibold text-varc">VARC · 40m</h3><p class="mt-1 font-medium" data-plan="attempts">17–18 attempts</p>
             <p class="mt-1 text-xs font-mono" data-plan="quick">0–25 RCs · 25–32 TITA · 32–39 MCQ · 39–40 cleanup</p>
-            <p class="mt-2 text-xs" data-plan="gate">45–60s first-paragraph gate.</p><p class="mt-2 text-xs">Map argument, verify scope/tone. 45s deadlock → flag unanswered; cleanup only if genuinely shortlisted after safer work.</p>
+            <p class="mt-2 text-xs" data-plan="gate">45–60s first-paragraph gate.</p><p class="mt-2 text-xs">Map the argument. Check scope and tone. At a 45s deadlock, flag unanswered; revisit only credible choices after safer work.</p>
           </article>
           <article class="border border-hairline dark:border-darkHairline border-t-4 border-t-dilr rounded-lg p-3 text-sm leading-relaxed">
             <h3 class="font-semibold text-dilr">DILR · 40m</h3><p class="mt-1 font-medium">One reliable set → two viable sets</p>
@@ -704,7 +704,7 @@ input[type=checkbox]{flex-shrink:0}
             <p class="mt-2 text-xs">Pen down on arithmetic. <span data-plan="qaIgnition"></span> ignition; <span data-plan="qaRound1"></span> R1 checkpoint unless finishing. R2: unseen first, then lengthy/incomplete (L/I); uncertain (U) later; conceptual gaps (X) leave. TITA cleanup. Audit requested value, unit, sign and format.</p>
           </article>
         </div>
-        <p class="mt-3 text-xs font-medium">Rule hierarchy: official instructions and safeguards → adaptive checkpoints → default clocks → preferences. Save explicitly, protect cleanup, reset between sections; never chase a score target.</p>
+        <p class="mt-3 text-xs font-medium">Priority: exam rules and safety → time checks → pacing plan → preferences. Save answers, protect cleanup and reset between sections.</p>
       </section>
       <div id="overview-full" class="space-y-6">
       <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">Common Admission Test (CAT) terminology: VARC — Verbal Ability and Reading Comprehension; DILR — Data Interpretation and Logical Reasoning; QA — Quantitative Ability; RC — Reading Comprehension; VA — Verbal Ability; MCQ — multiple-choice question; TITA — type-in-the-answer. R1/R2/R3 refer to the QA rounds.</p>
@@ -755,7 +755,7 @@ input[type=checkbox]{flex-shrink:0}
             </div>
             <p class="mt-2.5 text-lg font-bold tracking-tight font-mono"><span data-plan="dilrCorrect"></span> Qs</p>
             <p class="mt-1 text-xs text-muted dark:text-darkMuted leading-relaxed">
-              <strong class="text-ink dark:text-darkInk font-medium">Aim for two viable verified sets</strong>; pursue additional independent questions only if time permits.
+              <strong class="text-ink dark:text-darkInk font-medium">Aim for two verified sets</strong>; try extra independent questions if time permits.
             </p>
           </div>
 
@@ -775,7 +775,7 @@ input[type=checkbox]{flex-shrink:0}
 
       <!-- Illustrative operating scenarios -->
       <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6">
-        <h3 class="text-sm font-semibold uppercase tracking-wider">Operating scenarios · raw marks</h3>
+        <h3 class="text-sm font-semibold uppercase tracking-wider">Score scenarios · raw marks</h3>
         <p class="mt-1 text-xs text-muted dark:text-darkMuted">Examples, not cutoffs or percentile forecasts. Adjust to the paper; do not chase lost marks.</p>
         <div class="overflow-x-auto mt-3"><table data-responsive-table data-table-kind="scenarios" role="table" class="w-full text-left text-xs border-collapse">
           <thead role="rowgroup"><tr role="row" class="font-mono text-muted dark:text-darkMuted"><th role="columnheader" scope="col" class="px-2.5 py-2">Scenario</th><th role="columnheader" scope="col" class="px-2.5 py-2">VARC</th><th role="columnheader" scope="col" class="px-2.5 py-2">DILR</th><th role="columnheader" scope="col" class="px-2.5 py-2">QA</th><th role="columnheader" scope="col" class="px-2.5 py-2">Total</th><th role="columnheader" scope="col" class="px-2.5 py-2">Response</th></tr></thead>
@@ -792,7 +792,7 @@ input[type=checkbox]{flex-shrink:0}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3 text-xs leading-relaxed">
           <article class="rounded-lg border border-hairline dark:border-darkHairline border-l-4 border-l-alert p-3">
             <h4 class="font-semibold text-alert">1 · Non-negotiable safeguards</h4>
-            <p class="mt-1">Follow the official exam instructions, assigned time and invigilator directions. Save deliberately, check the asked value and answer format, clear unintentional MCQs, verify necessary premises, and protect a final response audit. Never let a score target justify violating these safeguards.</p>
+            <p class="mt-1">Follow official instructions and time limits. Verify the answer, save it, clear accidental responses and leave time for a final check.</p>
           </article>
           <article class="rounded-lg border border-hairline dark:border-darkHairline border-l-4 border-l-dilr p-3">
             <h4 class="font-semibold text-dilr">2 · Adaptive checkpoints</h4>
@@ -800,14 +800,14 @@ input[type=checkbox]{flex-shrink:0}
           </article>
           <article class="rounded-lg border border-hairline dark:border-darkHairline border-l-4 border-l-varc p-3">
             <h4 class="font-semibold text-varc">3 · Strong default execution plans</h4>
-            <p class="mt-1">Use the selected VARC mode, four-minute DILR scan, one reliable set then a second viable set, and QA rolling triage. The 40-minute clocks, attempt ranges and operating scenarios are planning guides; rebase them after a switch or unexpected difficulty. Never force completion.</p>
+            <p class="mt-1">Use your chosen VARC plan, scan all DILR sets, and assess QA questions as you go. Adjust timing and attempts to the paper; never force completion.</p>
           </article>
           <article class="rounded-lg border border-hairline dark:border-darkHairline border-l-4 border-l-qa p-3">
             <h4 class="font-semibold text-qa">4 · Personal preferences and tie-breakers</h4>
-            <p class="mt-1">Prefer coded or elimination-driven DILR only when equally viable; prefer your strongest QA topics, but take any obvious sitter. Prefer paper for simple calculation, calculator when faster or safer. Choose the fourth RC only under its specific trigger, not because a quota calls for it.</p>
+            <p class="mt-1">Use preferences to break ties. Take easy questions in any topic. Use the calculator when faster or safer. Try RC 4 only if its timing and value justify it.</p>
           </article>
         </div>
-        <p class="mt-3 text-xs leading-relaxed"><strong>Conflict examples:</strong> a productive DILR breakthrough can override the nominal set duration, not the section deadline. An easy geometry sitter can override topic preference, not verification. A weak TITA or 50/50 MCQ must not displace a more reliable answer; use cleanup only after safer work. A poor earlier section never changes the next section's marking or clock.</p>
+        <p class="mt-3 text-xs leading-relaxed"><strong>Conflict examples:</strong> extend a set with clear progress, not the section deadline. Take easy geometry; still verify it. Put reliable answers before guesses. Start each section fresh.</p>
       </section>
 
       <!-- 2. The Mechanical Bail-Out & Verification Matrix -->
@@ -961,7 +961,7 @@ input[type=checkbox]{flex-shrink:0}
                 <li class="flex gap-2">
                   <span class="font-mono font-bold text-alert shrink-0">1.</span>
                   <span>
-                    <strong class="text-ink dark:text-darkInk">Answered + Marked for Review (Purple + green dot) IS EVALUATED in CAT</strong> &mdash; never leave an uncertain <span class="font-mono text-alert">-1</span> MCQ guess this way; click <strong class="text-ink dark:text-darkInk">Clear Response</strong> first.
+                    <strong class="text-ink dark:text-darkInk">Answered + Marked for Review (purple + green dot) counts for scoring</strong> &mdash; never leave an uncertain <span class="font-mono text-alert">-1</span> MCQ guess this way; click <strong class="text-ink dark:text-darkInk">Clear Response</strong> first.
                   </span>
                 </li>
                 <li class="flex gap-2">
@@ -1065,7 +1065,7 @@ input[type=checkbox]{flex-shrink:0}
         <div class="flex flex-wrap items-center justify-between gap-2 pb-3.5 border-b border-hairline dark:border-darkHairline">
           <div>
             <h3 class="text-sm font-semibold uppercase tracking-wider text-muted dark:text-darkMuted">Final three days (26–28 Nov)</h3>
-            <p class="text-xs text-muted dark:text-darkMuted mt-0.5">No concept re-learning — peak calibration, habit imprinting, and strict taper into Sunday, Nov 29.</p>
+            <p class="text-xs text-muted dark:text-darkMuted mt-0.5">Review familiar methods. Reduce workload before Sunday, 29 Nov.</p>
           </div>
           <span class="font-mono text-[11px] px-2.5 py-1 rounded-md bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline text-ink dark:text-darkInk font-semibold">Sprint Countdown</span>
         </div>
@@ -1112,9 +1112,9 @@ input[type=checkbox]{flex-shrink:0}
           <h3 id="logistics-title" class="text-sm font-semibold uppercase tracking-wider">CAT 2026 · examination logistics</h3>
           <span class="text-xs text-muted dark:text-darkMuted font-mono">Reviewed 26 Nov 2026</span>
         </div>
-        <p class="mt-2 text-xs leading-relaxed"><strong>Sunday, 29 November 2026.</strong> IIM Indore's releases dated 26 July and 4 November announce three sessions and a standard 120-minute paper with 40 minutes per section, in VARC → DILR → QA order, without switching sections. Follow your approved accommodations and actual on-screen instructions if different. The question mix and marks shown elsewhere are planning assumptions, not a guaranteed blueprint.</p>
+        <p class="mt-2 text-xs leading-relaxed"><strong>Sunday, 29 November 2026.</strong> Three shifts; standard paper: 120 minutes, 40 per section. VARC → DILR → QA; no switching between sections. Follow approved accommodations and on-screen rules. Question counts and marks in this guide are estimates (IIM releases, 26 July and 4 November).</p>
         <div class="mt-3 p-3 rounded-lg border border-alert/30 bg-alert/5 dark:bg-alert/15">
-          <p class="text-xs leading-relaxed"><strong class="text-alert">Your admit card is authoritative:</strong> confirm the exact date, shift, centre address, reporting time and gate-closing time on your own card. The gate deadline is not the examination start. Aim to arrive by reporting time or earlier, not just before gate closure. Do not rely on admission after the stated gate deadline.</p>
+          <p class="text-xs leading-relaxed"><strong class="text-alert">Your admit card is authoritative:</strong> check date, shift, centre, reporting and gate-closing times on your card. Arrive by reporting time or earlier. The gate closes before the exam starts; do not count on late admission.</p>
         </div>
         <h4 class="mt-3 text-xs font-semibold">Reported standard slot schedule (IST; cross-check your card)</h4>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 mt-2 text-xs">
@@ -1126,27 +1126,27 @@ input[type=checkbox]{flex-shrink:0}
           <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
             <h4 class="font-semibold">By Saturday, 28 November</h4>
             <ul class="mt-2 list-disc list-inside space-y-1">
-              <li>Download the admit card from the official portal; print clearly. Check identity details, photo, signature and all special instructions. Attach the required photograph as directed; leave any invigilator-witnessed signature unsigned until asked.</li>
-              <li>Pack an accepted, original, valid photo ID listed on your card; required accommodation/medical documents and permissions if applicable. Check the card's permitted-items list, not a generic online checklist.</li>
-              <li>Verify the actual centre, entrance and route (visit if practical); plan transport, backup ride, parking/walking and queue time. Target arrival before reporting; departure = target arrival minus realistic journey time and contingency (for example, 30–60 minutes extra if traffic is uncertain).</li>
-              <li>Prepare simple permitted clothing, suitable for weather and security checks. Arrange storage for belongings outside the centre; do not assume a locker is available. Save a copy of this HTML offline for revision before entering, not for use in the exam.</li>
+              <li><strong>Admit card:</strong> download and print clearly. Check details and instructions. Attach the required photo. Sign before the invigilator if required.</li>
+              <li><strong>ID and documents:</strong> pack an accepted, original, valid photo ID and required medical/accommodation permissions. Follow your card's permitted-items list.</li>
+              <li><strong>Route:</strong> verify centre and entrance; visit if practical. Plan transport, backup ride, parking, walking and queues. Depart early: target arrival − travel time − buffer (e.g. 30–60 min if traffic is uncertain).</li>
+              <li><strong>Clothes and belongings:</strong> choose permitted clothing for the weather. Arrange storage outside; do not assume a locker is available. Save this guide offline for revision before entry, not during the exam.</li>
             </ul>
           </article>
           <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
             <h4 class="font-semibold">On Sunday · before leaving</h4>
             <ul class="mt-2 list-disc list-inside space-y-1">
-              <li>Recheck portal updates, admit card, ID, route and the departure deadline. Allow extra time for security and identity checks; the 4 November release describes face matching and jammers at selected centres.</li>
-              <li>Keep sleep and meals familiar. Eat a light familiar meal sufficiently before reporting; hydrate normally, use the restroom before entry, avoid experimenting with caffeine or supplements. Do not presume food or water is permitted inside; follow the card and medical permissions.</li>
-              <li>Keep phones, smartwatches, electronics, personal calculators, notes, stationery and jewellery out of the exam room as instructed. Follow centre-specific clothing restrictions, including reported guidance on thick soles and large buttons. Ask officials about any required medical device or religious accommodation in advance.</li>
-              <li>Keep only authorised documents/items. Cooperate with checks and follow invigilator instructions; do not depend on phone reception or a last-minute digital document.</li>
+              <li><strong>Before leaving:</strong> check updates, documents, route and departure time. Allow for security and ID checks (face matching and jammers at selected centres, per 4 November release).</li>
+              <li><strong>Food and rest:</strong> keep sleep and meals familiar. Eat early, hydrate normally, use the restroom. Avoid new caffeine or supplements. Check food/water and medical permissions.</li>
+              <li><strong>Restrictions:</strong> leave electronics, watches, calculators, notes, stationery and jewellery outside as instructed. Check clothing rules (reported: thick soles, large buttons). Ask ahead about medical devices or religious accommodations.</li>
+              <li><strong>Entry:</strong> bring only authorised items. Cooperate with checks. Do not rely on phone reception or digital documents.</li>
             </ul>
           </article>
           <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
             <h4 class="font-semibold">At the workstation</h4>
             <ul class="mt-2 list-disc list-inside space-y-1">
-              <li>Check identity, displayed section time, marking and response instructions. Confirm how to save, clear and review answers, enter type-in-the-answer responses (TITA), and use the provided calculator.</li>
-              <li>Use only authorised rough-work material supplied or permitted by the centre. Report a login, timer, mouse, calculator or display problem to the invigilator immediately; do not attempt to fix the workstation.</li>
-              <li>Expect no routine break; follow official emergency or accommodation procedures. Return supplied rough-work materials and leave only when instructed.</li>
+              <li><strong>At login:</strong> check identity, timer and marking. Confirm save, clear, review, TITA entry and calculator controls.</li>
+              <li><strong>Problems:</strong> Use only authorised rough-work material. Report a login, timer, mouse, calculator or display problem to the invigilator immediately. Do not fix the workstation yourself.</li>
+              <li><strong>During and after:</strong> no routine break expected. Follow emergency/accommodation rules. Return rough-work material and leave when told.</li>
             </ul>
           </article>
           <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
@@ -1399,7 +1399,7 @@ input[type=checkbox]{flex-shrink:0}
                 <h4 class="font-semibold text-ink dark:text-darkInk">Answering (<span class="font-mono">4:00–4:30</span>) — Split by Question Type</h4>
                 <ul class="text-muted dark:text-darkMuted mt-1 space-y-1 list-disc list-inside">
                   <li><strong class="text-ink dark:text-darkInk font-medium">Global Qs</strong> (Main Idea / Tone / Purpose / Structure): answer from the mental map first; verify selectively if needed. <strong>Practice diagnostic:</strong> extensive rereading for the main idea suggests the initial structural read needs improvement.</li>
-                  <li><strong class="text-ink dark:text-darkInk font-medium">Specific / EXCEPT:</strong> locate relevant evidence, check alternatives for EXCEPT, and read enough context to verify the qualifier. <strong>Inference:</strong> use local evidence where sufficient; otherwise combine premises across paragraphs and distinguish what follows from what is merely plausible. A 15–20s lookup is a guide, not a limit on understanding.</li>
+                  <li><strong class="text-ink dark:text-darkInk font-medium">Specific / EXCEPT:</strong> find the evidence; check all options for EXCEPT and read enough context to confirm qualifiers.</li><li><strong>Inference:</strong> use local evidence or combine premises across paragraphs. Ask what follows, not what merely sounds plausible. Aim for a 15–20s lookup; take longer if needed.</li>
                   <li>Never force 4/4 on a passage; <strong class="text-ink dark:text-darkInk font-medium">3/4 can be preferable</strong> if one inference trap is nasty.</li>
                 </ul>
               </div>
@@ -1448,7 +1448,7 @@ input[type=checkbox]{flex-shrink:0}
             <span class="text-xs font-semibold text-alert">Deadlock checkpoint</span>
             <span class="font-mono text-xs font-bold text-ink dark:text-darkInk">45s → stop deliberating; flag unanswered</span>
           </div>
-          <p class="mt-3 text-xs leading-relaxed text-muted dark:text-darkMuted">In cleanup, first save penalty-free TITA answers and any clearer opportunities. Revisit genuinely shortlisted MCQs only if time remains; if two options really are equally likely, the expected raw score is +1 (0.5 × 3 − 0.5 × 1). This is not a guarantee. If elimination is unreliable or sectional accuracy is at risk, leave blank. Clear any speculative saved MCQ before moving on unless deliberately committing to it.</p>
+          <div class="mt-3 text-xs leading-relaxed text-muted dark:text-darkMuted" data-decision-steps><p><strong>During cleanup:</strong> save reliable answers and penalty-free TITA first.</p><div data-decision-grid><div><strong>Two genuinely equal choices?</strong><span>Expected score +1 under +3/−1 marking (0.5 × 3 − 0.5 × 1). Not guaranteed.</span></div><div><strong>Weak elimination?</strong><span>Leave blank if confidence is low or accuracy is at risk. Clear accidental saved guesses.</span></div></div></div>
         </div>
       </div>
         </div>
@@ -1468,7 +1468,7 @@ input[type=checkbox]{flex-shrink:0}
         <!-- VA Accuracy Reality Check Strip -->
         <div class="bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-4">
           <div class="flex items-center justify-between gap-2 pb-2.5 border-b border-hairline dark:border-darkHairline">
-            <span class="text-xs font-bold uppercase tracking-wider text-varc">VA risk and opportunity — personal hypotheses</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-varc">VA: what to test in mocks</span>
             <span class="font-mono text-[10px] text-muted dark:text-darkMuted">Compare your accuracy</span>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-3 text-xs leading-relaxed">
@@ -1539,7 +1539,7 @@ input[type=checkbox]{flex-shrink:0}
             <ul class="mt-3 space-y-1.5 text-xs text-muted dark:text-darkMuted leading-relaxed">
               <li><strong class="text-ink dark:text-darkInk">Method:</strong> Build the <strong>4-sentence coherent paragraph</strong> first (find 3 sharing exact subject + angle).</li>
               <li><strong class="text-ink dark:text-darkInk">Trigger:</strong> Separate <strong>Topic</strong> from <strong>Scope</strong>; sanity-check by sequencing the remaining 4 lines.</li>
-              <li><strong class="text-ink dark:text-darkInk">Trap:</strong> Lexical Decoys — shared buzzwords planted in the odd line to disguise a scope drift.</li>
+              <li><strong class="text-ink dark:text-darkInk">Trap:</strong> Shared words can hide a different focus.</li>
             </ul>
           </div>
 
@@ -1774,34 +1774,34 @@ input[type=checkbox]{flex-shrink:0}
       <!-- region:dilr-personal-selection | Personalised four-minute set triage -->
       <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6" aria-labelledby="dilr-personal-title">
         <h3 id="dilr-personal-title" class="text-sm font-semibold text-dilr">Personal set-selection filter</h3>
-        <p class="mt-1 text-xs text-muted dark:text-darkMuted">Your stated preference is for constrained, coded-response reasoning rather than open positional casework or weak aggregate clues. Treat it as a starting hypothesis, not a proven advantage: choose the set with the best actual route to marks.</p>
+        <p class="mt-1 text-xs text-muted dark:text-darkMuted">You prefer coded sets with tight clues. Treat this as a preference, not a proven strength. Choose the set you can solve.</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
           <div class="rounded-lg border border-dilr/20 bg-dilr/8 dark:bg-dilr/15 p-3">
             <h4 class="text-xs font-bold text-dilr">Prefer when the clues are strong</h4>
             <ul class="mt-2 space-y-1 text-xs leading-relaxed list-disc list-inside">
               <li>Binary, yes/no or coded responses with clear meanings and restrictive totals.</li>
-              <li>Interdependent constraints that force elimination, chaining or a bounded case split.</li>
-              <li>Concrete placements, exact values or easily derivable anchors (totals, parity, bounds).</li>
-              <li>Intermediate states you can determine and verify without enumerating every possibility.</li>
-              <li>A central breakthrough you can plausibly reach, with linked or independently answerable questions.</li>
+              <li>Clues that link together, eliminate cases or limit choices.</li>
+              <li>Known positions, exact values, useful totals, parity or bounds.</li>
+              <li>Facts you can find without listing every case.</li>
+              <li>A clear next deduction and questions you can answer.</li>
             </ul>
           </div>
           <div class="rounded-lg border border-alert/20 bg-alert/8 dark:bg-alert/15 p-3">
             <h4 class="text-xs font-bold text-alert">Avoid when cases are hard to narrow</h4>
             <ul class="mt-2 space-y-1 text-xs leading-relaxed list-disc list-inside">
-              <li>Positional arrangements with many independent choices and little pruning.</li>
-              <li>Weakly constrained aggregates without a useful total, bound or cross-link.</li>
-              <li>Calculation-heavy missing tables, especially with several unknowns per relation.</li>
-              <li>Exhaustive enumeration or several competing cases with no obvious elimination.</li>
-              <li>Do not reject a genre automatically: a tight arrangement or aggregate set may be easier than a poorly constrained coded set.</li>
+              <li>Arrangements with many choices and few ways to rule them out.</li>
+              <li>Totals with too few clues to find individual values.</li>
+              <li>Missing tables with heavy arithmetic or several unknowns.</li>
+              <li>Too many cases to test one by one.</li>
+              <li>Do not reject a format outright: a tight arrangement may be easier than a coded set.</li>
             </ul>
           </div>
         </div>
         <div class="mt-3 rounded-lg bg-canvas dark:bg-darkCanvas border border-hairline dark:border-darkHairline p-3">
           <h4 class="text-xs font-bold">During the 0–4 minute scan</h4>
-          <p class="mt-1 text-xs leading-relaxed">Scan every available set. For each, ask: <strong>Can I represent it?</strong> What is directly given, and what anchor can be derived by totals, bounds or chaining? Which deduction unlocks the central constraint, and how long might it take? How many branches or calculations remain, and what questions pay off before a full solve?</p>
-          <p class="mt-2 text-xs leading-relaxed">Rank by credible time to reliable answers, not passage length, topic familiarity or raw constraint count. Use the personal preference as a tie-breaker; prefer a five-question set over a four-question set only when overall effort and risk are comparable. After <span data-plan="dilrReassess"></span>, reassess actual progress; switch by <span data-plan="dilrSwitch"></span> if stalled.</p>
-          <p class="mt-2 text-xs text-muted dark:text-darkMuted">Calibration: in the error log, record the set chosen, the reason, first useful deduction, time and independent correctness. Compare this with alternatives before strengthening or reversing your preference.</p>
+          <p class="mt-1 text-xs leading-relaxed">Scan every set. Ask five questions:</p><ol data-selection-steps><li><strong>Model</strong><span>Can I draw a useful table or diagram?</span></li><li><strong>Starting fact</strong><span>What is given or quickly derived from totals, bounds or linked clues?</span></li><li><strong>Key deduction</strong><span>What unlocks the set? How long might it take?</span></li><li><strong>Work left</strong><span>How many cases or calculations remain?</span></li><li><strong>Payoff</strong><span>Which questions can I answer before a full solve?</span></li></ol>
+          <p class="mt-2 text-xs leading-relaxed">Rank by time to reliable answers, not length, topic or number of clues. Use personal preference as a tie-breaker. Choose five questions over four only at similar effort and risk. After <span data-plan="dilrReassess"></span>, reassess actual progress; switch by <span data-plan="dilrSwitch"></span> if stalled.</p>
+          <p class="mt-2 text-xs text-muted dark:text-darkMuted">In your error log: record your choice, reason, first deduction, time and unaided accuracy. Compare with other sets to refine your preference.</p>
         </div>
       </section>
 
@@ -1816,11 +1816,11 @@ input[type=checkbox]{flex-shrink:0}
           <div class="mt-3.5 space-y-2.5 text-xs leading-relaxed">
             <p class="p-2.5 rounded-lg bg-dilr/8 dark:bg-dilr/15 border border-dilr/20">
               <strong class="text-dilr font-mono uppercase text-[11px]">Stay only if:</strong>
-              <span class="text-ink dark:text-darkInk"> A central constraint is unlocked, or meaningful deductions are accumulating with a credible route to answerable questions.</span>
+              <span class="text-ink dark:text-darkInk"> A key clue is unlocked or your deductions lead towards reliable answers.</span>
             </p>
             <p class="p-2.5 rounded-lg bg-alert/8 dark:bg-alert/15 border border-alert/20">
               <strong class="text-alert font-mono uppercase text-[11px]">Bail immediately if:</strong>
-              <span class="text-ink dark:text-darkInk"> You have no useful representation or new deduction, are circularly rereading, or a better ranked set has a more credible route. Reassess at <span data-plan="dilrReassess"></span>; switch by <span data-plan="dilrSwitch"></span> if still stalled.</span>
+              <span class="text-ink dark:text-darkInk"> No useful model or new deduction, repeated rereading, or a better set is available. Reassess at <span data-plan="dilrReassess"></span>; switch by <span data-plan="dilrSwitch"></span> if still stalled.</span>
             </p>
           </div>
         </div>
@@ -1841,7 +1841,7 @@ input[type=checkbox]{flex-shrink:0}
             <li class="flex gap-2.5">
               <span class="font-mono font-bold text-dilr bg-dilr/10 w-5 h-5 rounded flex items-center justify-center shrink-0 mt-0.5">2</span>
               <span>
-                <strong class="text-ink dark:text-darkInk">Write important totals:</strong> Record consequential intermediate totals, bounds and integer restrictions; independently cross-check vulnerable sums. Use the permitted calculator if it reduces time or error.
+                <strong class="text-ink dark:text-darkInk">Write important totals:</strong> Write key totals, bounds and integer limits. Recheck risky sums. Use the calculator if faster or safer.
               </span>
             </li>
           </ol>
@@ -1851,26 +1851,26 @@ input[type=checkbox]{flex-shrink:0}
       <!-- region:dilr-case-discipline | Keep assumptions separate -->
       <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-4" aria-labelledby="dilr-case-title">
         <h3 id="dilr-case-title" class="text-sm font-semibold text-dilr">Case discipline: master model vs hypothetical question</h3>
-        <p class="mt-2 text-xs leading-relaxed">Keep stated facts and necessary deductions in the master model. Label uncertain branches A/B; an "if" condition belongs in a separate temporary copy or clearly marked overlay. Never carry a question-specific assumption into the next question. Eliminate infeasible branches using the original clues, totals, bounds and integrality. If valid cases remain, test whether the asked value agrees in all of them; for possible/minimum/maximum questions, check the requested feasibility or bound instead of demanding uniqueness.</p>
+        <ul class="mt-2 text-xs leading-relaxed" data-read-steps><li><strong>Main model:</strong> record given facts and certain deductions.</li><li><strong>Cases:</strong> label alternatives A/B. Keep any question-specific “if” in a separate temporary copy; never carry it into the next question.</li><li><strong>Eliminate:</strong> check original clues, totals, bounds and integer limits.</li><li><strong>Answer:</strong> check that the value agrees across all valid cases. For possible/min/max questions, check feasibility or the bound instead.</li></ul>
       </section>
 
       <!-- Failure recovery clocks: examples, not mandatory quotas -->
       <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6" aria-labelledby="dilr-recovery-title">
-        <h3 id="dilr-recovery-title" class="text-sm font-semibold uppercase tracking-wider text-dilr">DILR failure recovery · reset the clock, not the goal</h3>
-        <p class="mt-1 text-xs text-muted dark:text-darkMuted">Elapsed minutes; examples assume an early checkpoint switch and roughly <span data-plan="dilrBudget"></span> per viable set. Do not force two sets if the remaining time or paper does not support them.</p>
+        <h3 id="dilr-recovery-title" class="text-sm font-semibold uppercase tracking-wider text-dilr">DILR: what to do when a set stalls</h3>
+        <p class="mt-1 text-xs text-muted dark:text-darkMuted">Elapsed time. Examples assume an early switch and about <span data-plan="dilrBudget"></span> per viable set. Do not force two sets if time or difficulty prevents it.</p>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
           <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
             <h4 class="text-xs font-bold">A · First set stalls</h4>
             <div data-recovery-clock class="flex h-8 mt-2 rounded overflow-hidden text-[10px] font-mono text-center"><div data-fixed-segment="first:0" class="bg-dilr/20 flex items-center justify-center"><span data-clock-time></span></div><div data-fixed-segment="first:1" class="bg-alert/15 flex items-center justify-center"><span data-clock-time></span></div><div data-fixed-segment="first:2" class="bg-dilr text-white flex items-center justify-center"><span data-clock-time></span></div><div data-fixed-segment="first:3" class="bg-dilr/80 text-white flex items-center justify-center"><span data-clock-time></span></div><div data-fixed-segment="first:4" class="bg-dilr/20 flex items-center justify-center"><span data-clock-time></span></div></div>
-            <p class="mt-2 text-xs leading-relaxed"><span data-plan="firstRecovery"></span> Preserve any independently verified answers and switch promptly.</p>
+            <p class="mt-2 text-xs leading-relaxed"><span data-plan="firstRecovery"></span> Save verified answers; switch promptly.</p>
           </article>
           <article class="rounded-lg border border-hairline dark:border-darkHairline p-3">
             <h4 class="text-xs font-bold">B · Second set stalls</h4>
             <div data-recovery-clock class="flex h-8 mt-2 rounded overflow-hidden text-[10px] font-mono text-center"><div data-fixed-segment="second:0" class="bg-dilr/20 flex items-center justify-center"><span data-clock-time></span></div><div data-fixed-segment="second:1" class="bg-dilr text-white flex items-center justify-center"><span data-clock-time></span></div><div data-fixed-segment="second:2" class="bg-alert/15 flex items-center justify-center"><span data-clock-time></span></div><div data-fixed-segment="second:3" class="bg-dilr/80 text-white flex items-center justify-center"><span data-clock-time></span></div><div data-fixed-segment="second:4" class="bg-dilr/20 flex items-center justify-center"><span data-clock-time></span></div></div>
-            <p class="mt-2 text-xs leading-relaxed"><span data-plan="secondRecovery"></span> Preserve saved, verified first-set answers; do not chase the failed set.</p>
+            <p class="mt-2 text-xs leading-relaxed"><span data-plan="secondRecovery"></span> Keep your verified first-set answers; move on.</p>
           </article>
         </div>
-        <p class="mt-3 text-xs leading-relaxed text-muted dark:text-darkMuted"><strong class="text-ink dark:text-darkInk">Late failure / both stall:</strong> recalculate remaining minutes after reserving the last minute. Prefer independently answerable questions or a partly solved set with a credible breakthrough. If no complete set is feasible, protect reliable partial marks and reasoned TITA entries. Never invent a full solution to meet a target.</p>
+        <p class="mt-3 text-xs leading-relaxed text-muted dark:text-darkMuted"><strong class="text-ink dark:text-darkInk">Late stall / both stall:</strong> reserve the last minute. Pick independent questions or a set with clear progress. Save verified partial answers and reasoned TITA entries. Do not force a full solution.</p>
       </section>
 
       <!-- region:strategy-detail-dilr-representation -->
@@ -1887,7 +1887,7 @@ input[type=checkbox]{flex-shrink:0}
         <div class="mt-4 divide-y divide-hairline dark:divide-darkHairline">
           <div class="py-3 first:pt-0 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 text-xs">
             <span class="font-semibold text-ink dark:text-darkInk sm:w-52 shrink-0"><span class="font-mono text-dilr mr-2">01</span>Mapping / Distribution</span>
-            <span class="text-muted dark:text-darkMuted">Put the <strong class="text-ink dark:text-darkInk font-medium">fixed entity</strong> (Days, Ranks, Slots, Teams) on rows/columns; never map floating variables against floating variables.</span>
+            <span class="text-muted dark:text-darkMuted">Use <strong class="text-ink dark:text-darkInk font-medium">fixed labels</strong> (days, ranks, slots, teams) as rows or columns. Avoid mapping two unknowns against each other.</span>
           </div>
           <div class="py-3 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 text-xs">
             <span class="font-semibold text-ink dark:text-darkInk sm:w-52 shrink-0"><span class="font-mono text-dilr mr-2">02</span>Games &amp; Tournaments</span>
@@ -1899,11 +1899,11 @@ input[type=checkbox]{flex-shrink:0}
           </div>
           <div class="py-3 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 text-xs">
             <span class="font-semibold text-ink dark:text-darkInk sm:w-52 shrink-0"><span class="font-mono text-dilr mr-2">04</span>Venn Diagrams</span>
-            <span class="text-muted dark:text-darkMuted">Label all <strong class="text-ink dark:text-darkInk font-medium">7 (or 15) atomic regions</strong> with variables (<span class="font-mono">a, b, c...</span>) before plugging in any clues.</span>
+            <span class="text-muted dark:text-darkMuted">Label the <strong class="text-ink dark:text-darkInk font-medium">7 (or 15) distinct regions</strong> of a 3-set (or 4-set) Venn diagram, plus the outside if needed, with variables (<span class="font-mono">a, b, c...</span>) before plugging in any clues.</span>
           </div>
           <div class="py-3 last:pb-0 flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 text-xs">
             <span class="font-semibold text-ink dark:text-darkInk sm:w-52 shrink-0"><span class="font-mono text-dilr mr-2">05</span>Routes &amp; Networks</span>
-            <span class="text-muted dark:text-darkMuted">Redraw messy diagrams cleanly with <strong class="text-ink dark:text-darkInk font-medium">directional arrows</strong> and explicit node capacities / costs.</span>
+            <span class="text-muted dark:text-darkMuted">Redraw the network with <strong class="text-ink dark:text-darkInk font-medium">directional arrows</strong> and clearly marked capacities or costs.</span>
           </div>
         </div>
       </div>
@@ -1994,17 +1994,17 @@ input[type=checkbox]{flex-shrink:0}
 
       <!-- region:qa-skip-routing | Explicit skip classifications -->
       <section class="print-card bg-surface dark:bg-darkSurface border border-hairline dark:border-darkHairline rounded-xl p-5 sm:p-6" aria-labelledby="qa-skip-title">
-        <h3 id="qa-skip-title" class="text-sm font-semibold text-qa">QA skip routing · classify once, revisit selectively</h3>
-        <p class="mt-1 text-xs text-muted dark:text-darkMuted">Keep the rolling triage; no separate full-paper scan. At minute 22, if questions remain unseen, continue first-pass triage before revisiting L/I, so easy unseen questions are not lost. Aim to assess every question before minute 36 without sacrificing a near-complete answer or the cleanup reserve. Use question numbers on the rough sheet only if useful; the exam palette remains your navigation aid.</p>
+        <h3 id="qa-skip-title" class="text-sm font-semibold text-qa">QA: what to skip and revisit</h3>
+        <ul class="mt-1 text-xs text-muted dark:text-darkMuted" data-read-steps><li><strong>At minute 22, if questions remain unseen:</strong> assess them before revisiting L/I.</li><li><strong>By minute 36:</strong> aim to see every question. Protect near-complete answers and cleanup.</li><li><strong>Navigation:</strong> use the question palette; note numbers only if useful.</li></ul>
         <div class="overflow-x-auto mt-3">
           <table data-responsive-table role="table" class="w-full text-left text-xs border-collapse">
             <thead role="rowgroup"><tr role="row" class="text-muted dark:text-darkMuted"><th role="columnheader" scope="col" class="px-2.5 py-2">Skip class</th><th role="columnheader" scope="col" class="px-2.5 py-2">Signal</th><th role="columnheader" scope="col" class="px-2.5 py-2">Action</th></tr></thead>
             <tbody role="rowgroup">
-              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold text-qa align-top"><div data-cell-value>L · Solvable but lengthy</div></td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top"><div data-cell-value>Clear method, more steps than R1 allows.</div></td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top"><div data-cell-value>Mark unanswered for review. R2 high priority.</div></td></tr>
-              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold text-qa align-top"><div data-cell-value>I · Calculation incomplete</div></td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top"><div data-cell-value>Known method and useful working already on paper.</div></td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top"><div data-cell-value>Mark unanswered for review. R2 high priority; finish first if near completion.</div></td></tr>
-              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold align-top"><div data-cell-value>U · Method uncertain</div></td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top"><div data-cell-value>Possible route, but no reliable setup.</div></td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top"><div data-cell-value>Low priority; mark only if there is a credible avenue. Revisit after L/I.</div></td></tr>
-              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold text-alert align-top"><div data-cell-value>X · Conceptual gap / unfamiliar geometry</div></td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top"><div data-cell-value>No meaningful route or requires a technique you do not know.</div></td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top"><div data-cell-value>Leave unanswered and unflagged; do not revisit for full solving.</div></td></tr>
-              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold text-dilr align-top"><div data-cell-value>T · Unsolved TITA</div></td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top"><div data-cell-value>Type-in-the-answer question, incomplete solution.</div></td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top"><div data-cell-value>In cleanup consider a reasoned estimate if penalty-free. T is an overlay, not a reason to spend extra solving time.</div></td></tr>
+              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold text-qa align-top"><div data-cell-value>L · Solvable but lengthy</div></td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top"><div data-cell-value>Clear method; needs more time.</div></td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top"><div data-cell-value>Mark unanswered for review. R2 high priority.</div></td></tr>
+              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold text-qa align-top"><div data-cell-value>I · Calculation incomplete</div></td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top"><div data-cell-value>Useful work already done.</div></td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top"><div data-cell-value>Mark unanswered for review. R2 high priority; finish first if near completion.</div></td></tr>
+              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold align-top"><div data-cell-value>U · Method uncertain</div></td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top"><div data-cell-value>Possible method; no clear setup.</div></td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top"><div data-cell-value>Low priority; mark only if there is a credible avenue. Revisit after L/I.</div></td></tr>
+              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold text-alert align-top"><div data-cell-value>X · Conceptual gap / unfamiliar geometry</div></td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top"><div data-cell-value>No method, or unfamiliar technique.</div></td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top"><div data-cell-value>Leave blank and unflagged. Do not revisit to solve.</div></td></tr>
+              <tr role="row" class="border-t border-hairline dark:border-darkHairline"><td role="cell" data-cell-label="Skip class" class="px-2.5 py-2 font-semibold text-dilr align-top"><div data-cell-value>T · Unsolved TITA</div></td><td role="cell" data-cell-label="Signal" class="px-2.5 py-2 align-top"><div data-cell-value>Type-in-the-answer question, incomplete solution.</div></td><td role="cell" data-cell-label="Action" class="px-2.5 py-2 align-top"><div data-cell-value>If penalty-free, estimate in cleanup. T can also be L/I/U/X; no extra solving time.</div></td></tr>
             </tbody>
           </table>
         </div>
@@ -2074,7 +2074,7 @@ input[type=checkbox]{flex-shrink:0}
               <h4 class="font-bold text-xs sm:text-sm">Final answer audit (about 15 seconds)</h4>
             </div>
             <p class="text-xs text-muted dark:text-darkMuted leading-relaxed">
-              Before saving deliberately via the verified interface, re-read the requested value (often the last 8–10 words), unit, sign, domain and answer format. Silly errors happen at the finish line — catch <span class="font-mono text-ink dark:text-darkInk">x</span> vs <span class="font-mono text-ink dark:text-darkInk">2x</span>, <em>"time taken by B alone"</em>, or <em>"% more than"</em> before losing 4 marks.
+              Before saving, check the requested value, unit, sign, domain and format. Watch for <span class="font-mono text-ink dark:text-darkInk">x</span> vs <span class="font-mono text-ink dark:text-darkInk">2x</span>, <em>"time taken by B alone"</em>, or <em>"% more than"</em> before submitting.
             </p>
           </div>
 
@@ -2173,7 +2173,7 @@ input[type=checkbox]{flex-shrink:0}
               </tr>
             </tfoot>
           </table>
-        <p class="px-5 py-3 text-xs text-muted dark:text-darkMuted border-t border-hairline dark:border-darkHairline">Historical revision reference (recent CAT papers, approximate): Geometry &amp; Mensuration around 2–3 questions; Modern Mathematics around 2–3 questions. Counts vary by slot and classification; these ranges overlap the priority table and must not be added to its totals or treated as a CAT 2026 forecast.</p>
+        <p class="px-5 py-3 text-xs text-muted dark:text-darkMuted border-t border-hairline dark:border-darkHairline">Past papers: geometry/mensuration and modern mathematics roughly 2–3 questions each. Counts vary by slot and topic grouping. These overlap the table; do not add them or treat them as a 2026 forecast.</p>
         </div>
       </div>
         </div>
