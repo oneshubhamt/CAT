@@ -1,46 +1,78 @@
-name: Mobile browser QA
+name: Visual browser QA
 
 on:
   push:
     branches: [working]
-    paths: [index.html, tests/mobile-browser.cjs, tests/smoke.cjs, tools/build-offline-css.cjs, .github/workflows/mobile-browser.yml]
+    paths: [index.html, 'tests/**', tools/build-offline-css.cjs, .github/workflows/mobile-browser.yml]
   workflow_dispatch:
+    inputs:
+      tier:
+        description: Coverage tier
+        type: choice
+        options: [core, full]
+        default: full
 
 permissions:
   contents: read
 
+concurrency:
+  group: visual-qa-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  mobile:
+  source:
     runs-on: ubuntu-latest
-    timeout-minutes: 18
-    strategy:
-      fail-fast: false
-      matrix:
-        engine: [chromium, webkit]
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Source checks
+      - name: Source and matrix contract
         run: |
           node tools/build-offline-css.cjs --check
           node tests/smoke.cjs
-      - name: Install browser test dependencies (development only)
+          node tests/visual-contract.cjs
+          for file in tests/*.cjs; do node --check "$file"; done
+          CAT_TIER=core node tests/mobile-browser.cjs --list
+          CAT_TIER=full node tests/mobile-browser.cjs --list
+  browser:
+    needs: source
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: ${{ fromJSON(((github.event_name == 'workflow_dispatch' && inputs.tier == 'full') || contains(github.event.head_commit.message || '', '[visual-full]')) && '["chromium","webkit","firefox"]' || '["chromium","webkit"]') }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install pinned development-only browser tooling
         run: |
-          npm install --no-save playwright@1.56.1
+          npm install --no-save --package-lock=false playwright@1.56.1
           npx playwright install --with-deps ${{ matrix.engine }}
-      - name: Offline native browser screenshots
+      - name: Run visual and stateful QA
         env:
           CAT_ENGINE: ${{ matrix.engine }}
+          CAT_TIER: ${{ ((github.event_name == 'workflow_dispatch' && inputs.tier == 'full') || contains(github.event.head_commit.message || '', '[visual-full]')) && 'full' || 'core' }}
         run: node tests/mobile-browser.cjs
-      - name: Upload screenshot and layout evidence
+      - name: Summarize actual results
+        if: always()
+        run: |
+          node -e 'const fs=require("fs");const p="artifacts/mobile/layout-report.json";if(!fs.existsSync(p)){console.log("No browser report produced.");process.exit(0)}const r=JSON.parse(fs.readFileSync(p));const passed=r.scenarios.filter(s=>s.status==="passed").length;console.log("### "+process.env.CAT_ENGINE+" visual QA\n"+passed+"/"+r.planned.length+" scenarios passed; "+r.scenarios.reduce((n,s)=>n+s.checks.length,0)+" layout audits.\n\nDownload the evidence artifact and open index.html. Warnings require review.")' >> "$GITHUB_STEP_SUMMARY"
+        env:
+          CAT_ENGINE: ${{ matrix.engine }}
+      - name: Upload gallery, screenshots, report and failure traces
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: mobile-${{ matrix.engine }}
+          name: visual-${{ matrix.engine }}-${{ github.run_attempt }}
           path: |
-            artifacts/mobile/*.png
+            artifacts/mobile/index.html
             artifacts/mobile/layout-report.json
-          if-no-files-found: ignore
+            artifacts/mobile/**/*.png
+            artifacts/mobile/**/trace.zip
+          if-no-files-found: warn
           retention-days: 7
