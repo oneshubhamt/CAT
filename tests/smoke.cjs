@@ -48,6 +48,11 @@ async function runSmoke(html) {
   check(html.includes('departure = target arrival minus realistic journey time and contingency') && html.includes('accepted, original, valid photo ID') && html.includes('do not assume a locker is available'), 'Travel, identity and belongings contingency');
   check(html.includes('Report a login, timer, mouse, calculator or display problem to the invigilator immediately') && html.includes('Use only authorised rough-work material'), 'Exam-hall fault handling and authorised materials');
   check(html.includes('4 November IIM admit-card release (mirror)') && html.includes('reported timings and rules') && html.includes('Links require internet only when opened'), 'Logistics provenance and offline link boundary');
+  check(!/Hard Cap:|lock your best sequence, type it in|\bP1\b|\bQBR\b|\bAP\/GP\b|\bPLD\b|\bTSD\b|\bSI\/CI\b/.test(html), 'Residual absolute rules and obscure shorthand removed');
+  check(html.includes('Save a defensible sequence if actual marking is penalty-free') && html.includes('as a tie-breaker only; rank by actual solvability'), 'Para Jumbles and compact DILR guidance are conditional');
+  check((html.match(/<details data-strategy-detail="/g)||[]).length===7 && (html.match(/<details data-strategy-detail="[^"]+" open/g)||[]).length===2, 'Seven native disclosures, two core sections open by default');
+  check(html.includes('aria-label="Dark mode" aria-pressed="false"'), 'Stable theme toggle label and initial pressed state');
+  check(html.includes('[data-clock-time]') && html.includes('font-variant-numeric:tabular-nums') && html.includes('font-size:15px!important'), 'Prominent numeric timing labels');
   const initial = html.match(/<script id="embedded-user-state"[^>]*>([\s\S]*?)<\/script>/)[1].trim();
   check(JSON.parse(initial).schemaVersion === 2 && JSON.parse(initial).records.length === 0, 'Empty repository snapshot');
 
@@ -109,7 +114,7 @@ async function runSmoke(html) {
     const handlers = new Map(), attrs = new Map(), classes = new Set();
     return {
       id, dataset:{}, value:'', textContent:'', innerHTML:'', className:'', hidden:false,
-      checked:false, disabled:false, children:[], selectionStart:0, selectionEnd:0,
+      checked:false, disabled:false, children:[], style:{setProperty(k,v){this[k]=v;}}, offsetHeight:0, selectionStart:0, selectionEnd:0,
       classList:{
         add(...c){c.forEach(x=>classes.add(x));},
         remove(...c){c.forEach(x=>classes.delete(x));},
@@ -147,11 +152,17 @@ async function runSmoke(html) {
     const badges=Object.fromEntries(noteKeys.map(k=>[k,makeNode()]));
     const checkboxes=[...new Set([...html.matchAll(/data-chk="([^"]+)"/g)].map(m=>m[1]))].map(chk=>Object.assign(makeNode(),{dataset:{chk}}));
     const bindings=[...html.matchAll(/data-plan="([^"]+)"/g)].map(m=>Object.assign(makeNode(),{dataset:{plan:m[1]}}));
+    const fixedSegments=[...html.matchAll(/data-fixed-segment="([^"]+)"/g)].map(m=>{
+      const el=makeNode(), label=makeNode(), time=makeNode();
+      el.dataset.fixedSegment=m[1];el.dataset.accent=m[1].split(':')[0];
+      el.querySelector=q=>q==='[data-clock-label]'?label:q==='[data-clock-time]'?time:null;
+      return {el,label,time};
+    });
     const statusNodes=sections.map(()=>makeNode()), modeLabels=sections.map(()=>makeNode());
     const select={
       '.tab-panel':sections.map(x=>node('panel-'+x)),
       '.tab-btn':tabBtns, '.varc-order-btn':modeBtns, '.reset-chk':checkboxes,
-      'textarea[data-note-key]':noteNodes,'[data-plan]':bindings,
+      'textarea[data-note-key]':noteNodes,'[data-plan]':bindings,'[data-fixed-segment]':fixedSegments.map(s=>s.el),
       '[data-note-status]':statusNodes,'.varc-mode-label':modeLabels,
       '#panel-overview .timeline-seg':[],'.notes-drawer':[]
     };
@@ -176,7 +187,7 @@ async function runSmoke(html) {
     const patched=script.trim().replace(/\}\)\(\);\s*$/,'return {strategy,schema,createRecordModel,createPersistence,createApp}; })();').replace(/^\(function/,'return (function');
     const api=new Function('document','window','globalThis','localStorage','console','setTimeout','clearTimeout','FormData',patched)(
       document,window,globalThis,localStorage,{warn(){},error(){}},setTimeout,clearTimeout,FormData);
-    return {api,node,document,window,fields,form,tabBtns,modeBtns,noteNodes,checkboxes,bindings,runTimers};
+    return {api,node,document,window,fields,form,tabBtns,modeBtns,noteNodes,checkboxes,bindings,fixedSegments,runTimers};
   }
   const env=environment();
   const {strategy,schema,createRecordModel,createPersistence}=env.api;
@@ -192,6 +203,17 @@ async function runSmoke(html) {
     check(p.quick===strategy.orders[mode].segments.map(s=>s.time+' '+s.label).join(' · '),mode+' derived revision clock');
     check(p.combined===(mode==='readable'?'103–115 raw marks':'100–112 raw marks'),mode+' combined score math');
   }
+  for(const [name,segments] of Object.entries(strategy.fixedClocks)){
+    let elapsed=0;
+    for(const seg of segments){check(seg.start===elapsed && seg.end>seg.start,name+' contiguous phase '+seg.start+'–'+seg.end);elapsed=seg.end;}
+    check(elapsed===40 && Object.isFrozen(segments[0]),name+' immutable 40-minute schedule');
+  }
+  const fixed=strategy.planValues('standard');
+  check(fixed.dilrQuick==='0–4m scan · 4–18m set 1 · 18–32m set 2 · 32–39m optional · 39–40m audit','DILR compact schedule derived');
+  check(fixed.qaQuick==='0–22m sitters · 22–36m mediums · 36–40m cleanup','QA compact schedule derived');
+  check(fixed.dilrCorrect==='10–12 correct' && fixed.qaCorrect==='11–12 correct' && fixed.dilrMarks==='30–36 before penalties' && fixed.qaMarks==='33–36 before penalties','Non-VARC scores and correct counts share source');
+  check(fixed.dilrSwitch==='6–7m' && fixed.qaIgnition==='45s' && fixed.qaRound1==='2.5m' && fixed.qaRound2==='3.5m','Shared adaptive checkpoint values');
+  check(strategy.fixedBars.dilr[3].start===32 && strategy.fixedBars.dilr[3].end===40 && fixed.dilrRecoveryQuick.includes('11–25m, 25–39m'),'Combined DILR bar and recovery projection');
   check(strategy.scenarioValues('standard').map(s=>s.total).join()==='78,101,122','Standard scenario totals');
   check(strategy.scenarioValues('readable').map(s=>s.total).join()==='78,104,122','Readable scenario totals');
   check(Object.isFrozen(strategy.orders.standard.segments[0]),'Strategy output immutable');
@@ -245,6 +267,12 @@ async function runSmoke(html) {
   await app.document.emit('DOMContentLoaded');
   check(!app.document.body.inert,'Bootstrap releases the interface');
   check(app.node('panel-overview').classList.contains('hidden')===false,'Overview initially active');
+  check(app.node('btn-theme').getAttribute('aria-pressed')==='false','Light theme pressed state on startup');
+  check(app.fixedSegments.length===24 && app.fixedSegments.every(({el,label,time})=>{
+    const [key,i]=el.dataset.fixedSegment.split(':');const seg=strategy.fixedBars[key][Number(i)];
+    return seg && el.style.width===((seg.end-seg.start)*2.5)+'%' && label.textContent===seg.label && time.textContent===seg.start+'–'+seg.end+'m';
+  }), 'All 24 fixed clock elements rendered from strategy data');
+  check(app.bindings.every(n=>typeof strategy.planValues('standard')[n.dataset.plan]==='string' && n.textContent===strategy.planValues('standard')[n.dataset.plan]),'Every plan binding is defined and rendered');
   await app.modeBtns[1].click();
   check(app.modeBtns[1].getAttribute('aria-pressed')==='true' && app.modeBtns[4].getAttribute('aria-pressed')==='true','Mode toggles synchronized');
   check(app.bindings.filter(n=>n.dataset.plan==='quick').every(n=>n.textContent.includes('0–17m')),'Quick view follows active mode');
@@ -253,7 +281,7 @@ async function runSmoke(html) {
   await app.tabBtns[2].click();
   check(app.node('quick-revision').hidden && !app.node('panel-dilr').classList.contains('hidden'),'Tab navigation exits revision');
   await app.node('btn-theme').click();
-  check(app.document.documentElement.classList.contains('dark'),'Theme switch');
+  check(app.document.documentElement.classList.contains('dark') && app.node('btn-theme').getAttribute('aria-pressed')==='true','Theme switch and pressed state');
   const qaNote=app.noteNodes[3];qaNote.value='Remember units';await qaNote.emit('input');
   check([...journal.values()].some(raw=>raw.includes('Remember units')),'Note input journals immediately');
   const item=app.checkboxes[0];item.checked=true;await item.emit('change');
@@ -272,6 +300,7 @@ async function runSmoke(html) {
   const reopened=environment();await reopened.document.emit('DOMContentLoaded');
   check(reopened.noteNodes[3].value==='Remember units' && reopened.document.documentElement.classList.contains('dark'),'UI reload hydrates saved data');
   check(reopened.modeBtns[1].getAttribute('aria-pressed')==='true','UI reload restores mode');
+  check(reopened.node('btn-theme').getAttribute('aria-pressed')==='true','Theme pressed state restored from storage');
   return checks;
 }
 
