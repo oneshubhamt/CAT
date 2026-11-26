@@ -10,6 +10,7 @@ const [base,current]=dirs.map(x=>path.resolve(x)),ratio=Number(process.env.CAT_D
 if(!Number.isFinite(ratio)||ratio<0||ratio>1)throw Error('CAT_DIFF_RATIO must be in [0,1]');
 const read=dir=>JSON.parse(fs.readFileSync(path.join(dir,'layout-report.json'),'utf8'));
 const a=read(base),b=read(current);
+if(a.platform!==b.platform||a.arch!==b.arch)throw Error('Compare runs from the same OS and architecture');
 const result={baseline:a.commit,current:b.commit,threshold:ratio,comparisons:[],unmatched:[]};
 const dir=path.join(current,'diffs');fs.mkdirSync(dir,{recursive:true});
 const keys=s=>new Map(s.evidence.filter(e=>e.kind==='screenshot'&&!e.label.startsWith('failure-')&&!e.label.includes('toast')).map(e=>[e.label,e]));
